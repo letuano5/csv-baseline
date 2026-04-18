@@ -1,0 +1,12 @@
+[project]
+name = "csv-baseline"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic>=0.95.0",
+    "google-genai>=1.73.1",
+    "openai>=2.31.0",
+    "python-dotenv>=1.2.2",
+    "tqdm>=4.67.3",
+]
