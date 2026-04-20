@@ -1,0 +1,264 @@
+{
+  "db_id": "power_plants_vn",
+  "file_path": "input/csv/power_plants_vn.csv",
+  "encoding": "utf-8",
+  "delimiter": ",",
+  "row_count": 537,
+  "column_count": 6,
+  "columns": [
+    "std_name",
+    "capacity_mw",
+    "latitude",
+    "longitude",
+    "std_fuel",
+    "commissioning_year"
+  ],
+  "inferred_types": {
+    "date_columns": [],
+    "numeric_columns": [
+      "capacity_mw",
+      "commissioning_year",
+      "latitude",
+      "longitude"
+    ],
+    "boolean_like_columns": [],
+    "id_like_columns": [],
+    "high_missing_columns": [],
+    "numeric_as_text_columns": []
+  },
+  "quality_flags": {
+    "mixed_date_format_columns": [],
+    "has_bom": false,
+    "non_comma_delimiter": false
+  },
+  "column_stats": {
+    "std_name": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 482,
+      "unique_ratio": 0.897579,
+      "top_values": [
+        [
+          "Alternative energy sources",
+          15
+        ],
+        [
+          "Vung Ang 3",
+          4
+        ],
+        [
+          "Dong Phu Yen",
+          3
+        ],
+        [
+          "Formosa Ha Tinh New",
+          3
+        ],
+        [
+          "Son My 1",
+          3
+        ]
+      ],
+      "sample_values": [
+        "A Lin",
+        "A Luoi",
+        "A Roang",
+        "A Vuong",
+        "Alin B1"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "capacity_mw": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 202,
+      "unique_ratio": 0.376164,
+      "top_values": [
+        [
+          "600",
+          48
+        ],
+        [
+          "750",
+          20
+        ],
+        [
+          "18",
+          16
+        ],
+        [
+          "1200",
+          14
+        ],
+        [
+          "30",
+          14
+        ]
+      ],
+      "sample_values": [
+        "62",
+        "170",
+        "7.2",
+        "210",
+        "42"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.001862
+    },
+    "latitude": {
+      "missing_count": 150,
+      "missing_ratio": 0.27933,
+      "unique_count": 373,
+      "unique_ratio": 0.963824,
+      "top_values": [
+        [
+          "11.317",
+          4
+        ],
+        [
+          "9.242",
+          2
+        ],
+        [
+          "19.36",
+          2
+        ],
+        [
+          "22.4119",
+          2
+        ],
+        [
+          "11.336",
+          2
+        ]
+      ],
+      "sample_values": [
+        "16.2839",
+        "16.12",
+        "15.7998",
+        "16.4042",
+        "10.9471"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "longitude": {
+      "missing_count": 150,
+      "missing_ratio": 0.27933,
+      "unique_count": 366,
+      "unique_ratio": 0.945736,
+      "top_values": [
+        [
+          "107.04",
+          4
+        ],
+        [
+          "108.81",
+          4
+        ],
+        [
+          "108.6796",
+          2
+        ],
+        [
+          "105.06",
+          2
+        ],
+        [
+          "107.03",
+          2
+        ]
+      ],
+      "sample_values": [
+        "107.3589",
+        "107.38",
+        "107.6171",
+        "107.1914",
+        "106.9"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "std_fuel": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 9,
+      "unique_ratio": 0.01676,
+      "top_values": [
+        [
+          "Hydro",
+          362
+        ],
+        [
+          "Coal",
+          95
+        ],
+        [
+          "Gas",
+          29
+        ],
+        [
+          "Renewable",
+          15
+        ],
+        [
+          "Oil",
+          10
+        ]
+      ],
+      "sample_values": [
+        "Hydro",
+        "Renewable",
+        "Oil",
+        "Coal",
+        "Biomass"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "commissioning_year": {
+      "missing_count": 27,
+      "missing_ratio": 0.050279,
+      "unique_count": 47,
+      "unique_ratio": 0.092157,
+      "top_values": [
+        [
+          "2012",
+          56
+        ],
+        [
+          "2013",
+          47
+        ],
+        [
+          "2011",
+          44
+        ],
+        [
+          "2014",
+          40
+        ],
+        [
+          "2010",
+          31
+        ]
+      ],
+      "sample_values": [
+        "2018",
+        "2012",
+        "2013",
+        "2008",
+        "2019"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    }
+  }
+}

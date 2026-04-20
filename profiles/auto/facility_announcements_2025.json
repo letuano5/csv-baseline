@@ -1,0 +1,430 @@
+{
+  "db_id": "facility_announcements_2025",
+  "file_path": "input/csv/facility_announcements_2025.csv",
+  "encoding": "utf-8",
+  "delimiter": ",",
+  "row_count": 1081,
+  "column_count": 13,
+  "columns": [
+    "stt",
+    "so_van_ban",
+    "ngay_cong_bo",
+    "ngay_syt_nhan",
+    "ghi_chu_ngay_cong_bo",
+    "ten_co_so",
+    "dia_chi",
+    "nguoi_dung_dau_phu_trach_chuyen_mon",
+    "so_dien_thoai",
+    "cong_bo_moi",
+    "cong_bo_lai",
+    "dung_hoat_dong",
+    "ghi_chu"
+  ],
+  "inferred_types": {
+    "date_columns": [
+      "ngay_cong_bo"
+    ],
+    "numeric_columns": [
+      "stt"
+    ],
+    "boolean_like_columns": [
+      "cong_bo_lai",
+      "cong_bo_moi",
+      "dung_hoat_dong"
+    ],
+    "id_like_columns": [],
+    "high_missing_columns": [
+      "cong_bo_lai",
+      "cong_bo_moi",
+      "dung_hoat_dong",
+      "ghi_chu",
+      "ghi_chu_ngay_cong_bo",
+      "ngay_syt_nhan"
+    ],
+    "numeric_as_text_columns": [
+      "so_dien_thoai"
+    ]
+  },
+  "quality_flags": {
+    "mixed_date_format_columns": [],
+    "has_bom": false,
+    "non_comma_delimiter": false
+  },
+  "column_stats": {
+    "stt": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 528,
+      "unique_ratio": 0.488437,
+      "top_values": [
+        [
+          "111",
+          12
+        ],
+        [
+          "196",
+          11
+        ],
+        [
+          "222",
+          11
+        ],
+        [
+          "131",
+          9
+        ],
+        [
+          "242",
+          9
+        ]
+      ],
+      "sample_values": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.000925
+    },
+    "so_van_ban": {
+      "missing_count": 4,
+      "missing_ratio": 0.0037,
+      "unique_count": 469,
+      "unique_ratio": 0.435469,
+      "top_values": [
+        [
+          "16/TB-TYT của TYT phường Hoàn Kiếm",
+          22
+        ],
+        [
+          "17/TB-TYT của TYT phường Chương Mỹ",
+          16
+        ],
+        [
+          "11/TB-SYT của TYT xã Phú Xuyên",
+          12
+        ],
+        [
+          "29/TB-TYT của TYT phường Sơn Tây",
+          12
+        ],
+        [
+          "02/TB-TYT của TYT phường Tây Hồ",
+          12
+        ]
+      ],
+      "sample_values": [
+        "2502/TB-FLC",
+        "01/TB-HTP-TCVN",
+        "02/TB-HTP-TCVN",
+        "2504/TB-FLC",
+        "3419/TB-TTYT"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "ngay_cong_bo": {
+      "missing_count": 4,
+      "missing_ratio": 0.0037,
+      "unique_count": 132,
+      "unique_ratio": 0.122563,
+      "top_values": [
+        [
+          "2025-07-17",
+          149
+        ],
+        [
+          "2025-07-16",
+          143
+        ],
+        [
+          "2025-07-21",
+          92
+        ],
+        [
+          "2025-07-15",
+          62
+        ],
+        [
+          "2025-07-22",
+          58
+        ]
+      ],
+      "sample_values": [
+        "2025-01-13",
+        "2025-01-20",
+        "2025-02-04",
+        "2024-12-06",
+        "2025-10-02"
+      ],
+      "date_match_ratio": 1.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "ngay_syt_nhan": {
+      "missing_count": 1081,
+      "missing_ratio": 1.0,
+      "unique_count": 0,
+      "unique_ratio": 0.0,
+      "top_values": [],
+      "sample_values": [],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "ghi_chu_ngay_cong_bo": {
+      "missing_count": 1081,
+      "missing_ratio": 1.0,
+      "unique_count": 0,
+      "unique_ratio": 0.0,
+      "top_values": [],
+      "sample_values": [],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "ten_co_so": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 900,
+      "unique_ratio": 0.832562,
+      "top_values": [
+        [
+          "Điểm Trạm Y tế",
+          5
+        ],
+        [
+          "Điểm Y tế Vân Hà",
+          4
+        ],
+        [
+          "Trung tâm tiêm chủng vaccine TCVN - Trực thuộc công ty cổ phần dịch vụ y tế HTP Việt Nam",
+          3
+        ],
+        [
+          "Trung tâm tiêm chủng vắc xin Nam Từ Liêm",
+          3
+        ],
+        [
+          "Trung tâm tiêm chủng Tokyo Vaccine Center - Công ty TNHH Wakasa Việt Nam",
+          3
+        ]
+      ],
+      "sample_values": [
+        "Công ty cổ phần dược phẩm FPT Long Châu - Địa điểm kinh doanh Trung tâm tiêm chủng Long Châu 156",
+        "Trung tâm tiêm chủng vaccine TCVN - Trực thuộc công ty cổ phần dịch vụ y tế HTP Việt Nam",
+        "Công ty cổ phần dược phẩm FPT Long Châu - Địa điểm kinh doanh Trung tâm tiêm chủng Long Châu 168",
+        "Trạm y tế phường Phú Đô",
+        "Trạm y tế phường Mỹ Đình 2"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "dia_chi": {
+      "missing_count": 1,
+      "missing_ratio": 0.000925,
+      "unique_count": 931,
+      "unique_ratio": 0.862037,
+      "top_values": [
+        [
+          "Thôn 2, xã Tây Phương, TP Hà Nội",
+          4
+        ],
+        [
+          "Thôn 4, xã Tây Phương, TP Hà Nội",
+          3
+        ],
+        [
+          "Thôn Vĩnh Lộc 1, xã Tây Phương, TP Hà Nội",
+          3
+        ],
+        [
+          "Thôn Bồng Mạc, Xã Yên Lãng - TP Hà Nội",
+          3
+        ],
+        [
+          "Tổ dân phố Nội An, Phường Chương Mỹ, Thành phố Hà Nội",
+          3
+        ]
+      ],
+      "sample_values": [
+        "Số 1 Hùng Nguyên, thị trấn Thường Tín, Thường Tín",
+        "Số 183 - phố Chùa Thông, phường Sơn Lộc, Sơn Tây",
+        "Số 123 - tiểu khu Phú Mỹ, thị trấn Phú Xuyên, Phú Xuyên",
+        "Số 07-09-11 Bắc Sơn, thị trấn Chúc Sơn, Chương Mỹ",
+        "Tổ dân phố 6, phường Phú Đô, Nam Từ Liêm"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "nguoi_dung_dau_phu_trach_chuyen_mon": {
+      "missing_count": 2,
+      "missing_ratio": 0.00185,
+      "unique_count": 841,
+      "unique_ratio": 0.779425,
+      "top_values": [
+        [
+          "Nguyễn Bạch Điệp",
+          11
+        ],
+        [
+          "02871026595",
+          11
+        ],
+        [
+          "02466896595",
+          5
+        ],
+        [
+          "0974167895",
+          5
+        ],
+        [
+          "0902267486",
+          5
+        ]
+      ],
+      "sample_values": [
+        "Nguyễn Thị Thủy",
+        "Vi Thị Soan",
+        "Nguyễn Thị Thu",
+        "Nguyễn Văn Đạt",
+        "Trần Linh Trang"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.128823,
+      "bool_match_ratio": 0.0
+    },
+    "so_dien_thoai": {
+      "missing_count": 2,
+      "missing_ratio": 0.00185,
+      "unique_count": 862,
+      "unique_ratio": 0.798888,
+      "top_values": [
+        [
+          "902267486.0",
+          18
+        ],
+        [
+          "18006928 0789154255",
+          11
+        ],
+        [
+          "867953890.0",
+          4
+        ],
+        [
+          "969623269.0",
+          4
+        ],
+        [
+          "949151818.0",
+          4
+        ]
+      ],
+      "sample_values": [
+        "18006928 0789154255",
+        "986808612.0",
+        "968518115.0",
+        "855676898.0",
+        "987676333.0"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.728452,
+      "bool_match_ratio": 0.0
+    },
+    "cong_bo_moi": {
+      "missing_count": 376,
+      "missing_ratio": 0.347826,
+      "unique_count": 1,
+      "unique_ratio": 0.001418,
+      "top_values": [
+        [
+          "1",
+          705
+        ]
+      ],
+      "sample_values": [
+        "1"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 1.0
+    },
+    "cong_bo_lai": {
+      "missing_count": 719,
+      "missing_ratio": 0.665125,
+      "unique_count": 1,
+      "unique_ratio": 0.002762,
+      "top_values": [
+        [
+          "1",
+          362
+        ]
+      ],
+      "sample_values": [
+        "1"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 1.0
+    },
+    "dung_hoat_dong": {
+      "missing_count": 1068,
+      "missing_ratio": 0.987974,
+      "unique_count": 1,
+      "unique_ratio": 0.076923,
+      "top_values": [
+        [
+          "1",
+          13
+        ]
+      ],
+      "sample_values": [
+        "1"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 1.0
+    },
+    "ghi_chu": {
+      "missing_count": 1077,
+      "missing_ratio": 0.9963,
+      "unique_count": 4,
+      "unique_ratio": 1.0,
+      "top_values": [
+        [
+          "Chuyển hình thức kinh doanh từ HKD sang Công ty, đổi tên cơ sở",
+          1
+        ],
+        [
+          "Ngừng hoạt động từ 10/7/2025",
+          1
+        ],
+        [
+          "Đối tên cho Điểm Trạm Y tế Thường Tín",
+          1
+        ],
+        [
+          "Sở Y tế rút công bố",
+          1
+        ]
+      ],
+      "sample_values": [
+        "Chuyển hình thức kinh doanh từ HKD sang Công ty, đổi tên cơ sở",
+        "Ngừng hoạt động từ 10/7/2025",
+        "Đối tên cho Điểm Trạm Y tế Thường Tín",
+        "Sở Y tế rút công bố"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    }
+  }
+}

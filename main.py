@@ -10,6 +10,7 @@ Usage:
   uv run main.py --provider claude  --model-id claude-sonnet-4-6           --checkpoint run-01
   uv run main.py --provider gemini  --model-id gemini-2.5-pro-preview       --checkpoint run-01
   uv run main.py --provider openai  --model-id gpt-5.4                      --checkpoint run-01
+  uv run main.py --provider openrouter --model-id google/gemma-4-26b-a4b-it --checkpoint run-01
 
   # Smoke-test with first N questions
   uv run main.py --provider claude --model-id claude-sonnet-4-6 --checkpoint run-01 --limit 5
@@ -36,11 +37,13 @@ from runners.base import load_questions
 from runners.claude_runner import ClaudeRunner
 from runners.gemini_runner import GeminiRunner
 from runners.openai_runner import OpenAIRunner
+from runners.openrouter_runner import OpenRouterRunner
 
 _RUNNER_REGISTRY = {
   "claude": ClaudeRunner,
   "gemini": GeminiRunner,
   "openai": OpenAIRunner,
+  "openrouter": OpenRouterRunner,
 }
 
 # Default model for each provider (used by --estimate without --model-id)
@@ -48,6 +51,7 @@ _DEFAULT_MODELS: dict[str, str] = {
   "claude": "claude-sonnet-4-6",
   "gemini": "gemini-3.1-pro-preview",
   "openai": "gpt-5.4",
+  "openrouter": "google/gemma-4-26b-a4b-it",
 }
 
 

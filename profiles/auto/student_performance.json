@@ -1,0 +1,622 @@
+{
+  "db_id": "student_performance",
+  "file_path": "input/csv/student_performance.csv",
+  "encoding": "utf-8",
+  "delimiter": ",",
+  "row_count": 443,
+  "column_count": 16,
+  "columns": [
+    "student_id",
+    "age",
+    "grade",
+    "gender",
+    "residential_area",
+    "father_age",
+    "father_job",
+    "mother_age",
+    "mother_job",
+    "chemistry",
+    "history",
+    "literature",
+    "biology",
+    "english",
+    "math",
+    "physics"
+  ],
+  "inferred_types": {
+    "date_columns": [],
+    "numeric_columns": [
+      "biology",
+      "chemistry",
+      "english",
+      "father_age",
+      "history",
+      "literature",
+      "math",
+      "mother_age",
+      "physics",
+      "student_id"
+    ],
+    "boolean_like_columns": [],
+    "id_like_columns": [
+      "student_id"
+    ],
+    "high_missing_columns": [],
+    "numeric_as_text_columns": []
+  },
+  "quality_flags": {
+    "mixed_date_format_columns": [],
+    "has_bom": false,
+    "non_comma_delimiter": false
+  },
+  "column_stats": {
+    "student_id": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 443,
+      "unique_ratio": 1.0,
+      "top_values": [
+        [
+          "47642659",
+          1
+        ],
+        [
+          "47642660",
+          1
+        ],
+        [
+          "47642663",
+          1
+        ],
+        [
+          "47642664",
+          1
+        ],
+        [
+          "47642665",
+          1
+        ]
+      ],
+      "sample_values": [
+        "47642659",
+        "47642660",
+        "47642663",
+        "47642664",
+        "47642665"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "age": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 4,
+      "unique_ratio": 0.009029,
+      "top_values": [
+        [
+          "16",
+          154
+        ],
+        [
+          "15",
+          146
+        ],
+        [
+          "17",
+          141
+        ],
+        [
+          "18",
+          2
+        ]
+      ],
+      "sample_values": [
+        "17",
+        "16",
+        "18",
+        "15"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "grade": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 3,
+      "unique_ratio": 0.006772,
+      "top_values": [
+        [
+          "11",
+          156
+        ],
+        [
+          "10",
+          148
+        ],
+        [
+          "12",
+          139
+        ]
+      ],
+      "sample_values": [
+        "12",
+        "11",
+        "10"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "gender": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 2,
+      "unique_ratio": 0.004515,
+      "top_values": [
+        [
+          "F",
+          242
+        ],
+        [
+          "M",
+          201
+        ]
+      ],
+      "sample_values": [
+        "F",
+        "M"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "residential_area": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 3,
+      "unique_ratio": 0.006772,
+      "top_values": [
+        [
+          "Rural",
+          214
+        ],
+        [
+          "Mountainous",
+          125
+        ],
+        [
+          "Urban",
+          104
+        ]
+      ],
+      "sample_values": [
+        "Mountainous",
+        "Rural",
+        "Urban"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "father_age": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 29,
+      "unique_ratio": 0.065463,
+      "top_values": [
+        [
+          "42",
+          44
+        ],
+        [
+          "45",
+          39
+        ],
+        [
+          "46",
+          37
+        ],
+        [
+          "43",
+          33
+        ],
+        [
+          "44",
+          30
+        ]
+      ],
+      "sample_values": [
+        "42",
+        "44",
+        "47",
+        "48",
+        "46"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "father_job": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 39,
+      "unique_ratio": 0.088036,
+      "top_values": [
+        [
+          "Farmer",
+          272
+        ],
+        [
+          "Teacher",
+          31
+        ],
+        [
+          "Freelancer",
+          27
+        ],
+        [
+          "Worker",
+          15
+        ],
+        [
+          "Driver",
+          12
+        ]
+      ],
+      "sample_values": [
+        "Farmer",
+        "Military Personnel",
+        "Small bussiness",
+        "Worker",
+        "Wage earner"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "mother_age": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 28,
+      "unique_ratio": 0.063205,
+      "top_values": [
+        [
+          "39",
+          46
+        ],
+        [
+          "41",
+          42
+        ],
+        [
+          "38",
+          37
+        ],
+        [
+          "44",
+          36
+        ],
+        [
+          "40",
+          34
+        ]
+      ],
+      "sample_values": [
+        "37",
+        "39",
+        "41",
+        "40",
+        "42"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "mother_job": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 27,
+      "unique_ratio": 0.060948,
+      "top_values": [
+        [
+          "Farmer",
+          256
+        ],
+        [
+          "Teacher",
+          41
+        ],
+        [
+          "Small Business",
+          28
+        ],
+        [
+          "Housewife",
+          27
+        ],
+        [
+          "Freelance",
+          25
+        ]
+      ],
+      "sample_values": [
+        "Farmer",
+        "Government Officer",
+        "Small Business",
+        "Teacher",
+        "Worker"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "chemistry": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 58,
+      "unique_ratio": 0.130926,
+      "top_values": [
+        [
+          "8.1",
+          23
+        ],
+        [
+          "8",
+          23
+        ],
+        [
+          "9",
+          19
+        ],
+        [
+          "8.3",
+          19
+        ],
+        [
+          "8.6",
+          19
+        ]
+      ],
+      "sample_values": [
+        "8.8",
+        "9.3",
+        "9.6",
+        "9.7",
+        "9"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "history": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 44,
+      "unique_ratio": 0.099323,
+      "top_values": [
+        [
+          "8.3",
+          25
+        ],
+        [
+          "8.6",
+          24
+        ],
+        [
+          "8.1",
+          22
+        ],
+        [
+          "8",
+          21
+        ],
+        [
+          "7.6",
+          20
+        ]
+      ],
+      "sample_values": [
+        "8",
+        "8.1",
+        "8.9",
+        "6.7",
+        "9.1"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "literature": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 44,
+      "unique_ratio": 0.099323,
+      "top_values": [
+        [
+          "8",
+          26
+        ],
+        [
+          "6.6",
+          24
+        ],
+        [
+          "6.5",
+          24
+        ],
+        [
+          "7.6",
+          23
+        ],
+        [
+          "7.4",
+          23
+        ]
+      ],
+      "sample_values": [
+        "7",
+        "7.7",
+        "8.1",
+        "7.3",
+        "7.6"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "biology": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 51,
+      "unique_ratio": 0.115124,
+      "top_values": [
+        [
+          "8",
+          32
+        ],
+        [
+          "8.1",
+          22
+        ],
+        [
+          "7",
+          19
+        ],
+        [
+          "8.3",
+          18
+        ],
+        [
+          "8.6",
+          18
+        ]
+      ],
+      "sample_values": [
+        "8.8",
+        "9",
+        "8.9",
+        "8.5",
+        "7.8"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "english": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 60,
+      "unique_ratio": 0.13544,
+      "top_values": [
+        [
+          "8",
+          23
+        ],
+        [
+          "7.7",
+          20
+        ],
+        [
+          "8.2",
+          19
+        ],
+        [
+          "8.6",
+          18
+        ],
+        [
+          "6.9",
+          14
+        ]
+      ],
+      "sample_values": [
+        "8.1",
+        "7.7",
+        "9.3",
+        "8.2",
+        "6.3"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "math": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 54,
+      "unique_ratio": 0.121896,
+      "top_values": [
+        [
+          "8",
+          21
+        ],
+        [
+          "7.6",
+          18
+        ],
+        [
+          "7.5",
+          16
+        ],
+        [
+          "7.7",
+          16
+        ],
+        [
+          "7.4",
+          15
+        ]
+      ],
+      "sample_values": [
+        "8.9",
+        "9.5",
+        "8.3",
+        "9.8",
+        "9.2"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "physics": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 60,
+      "unique_ratio": 0.13544,
+      "top_values": [
+        [
+          "6.9",
+          20
+        ],
+        [
+          "8",
+          19
+        ],
+        [
+          "7",
+          19
+        ],
+        [
+          "7.3",
+          17
+        ],
+        [
+          "7.1",
+          14
+        ]
+      ],
+      "sample_values": [
+        "8",
+        "9.2",
+        "9.7",
+        "6.9",
+        "9.8"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    }
+  }
+}

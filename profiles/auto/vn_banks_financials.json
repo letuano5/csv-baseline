@@ -1,0 +1,1980 @@
+{
+  "db_id": "vn_banks_financials",
+  "file_path": "input/csv/vn_banks_financials.csv",
+  "encoding": "utf-8",
+  "delimiter": ",",
+  "row_count": 667,
+  "column_count": 49,
+  "columns": [
+    "bank_code",
+    "year",
+    "classification",
+    "number_of_employees",
+    "number_of_branches",
+    "labour_productivity",
+    "network_productivity",
+    "employees_ratio",
+    "branches_ratio",
+    "total_deposits",
+    "total_shareholder_s_equity",
+    "total_loans",
+    "loan_loss_provisions",
+    "non_performing_loans",
+    "total_fixed_assets",
+    "liquid_assets",
+    "total_assets",
+    "total_deposits_ratio",
+    "total_loans_ratio",
+    "total_assets_ratio",
+    "interest_expenses",
+    "non_interest_expenses",
+    "personnel_expenses",
+    "occupancy_expenses",
+    "other_expenses",
+    "total_operating_expenses",
+    "core_cost",
+    "total_cost",
+    "core_cost_ratio",
+    "total_cost_ratio",
+    "interest_incomes",
+    "non_interest_income",
+    "other_incomes",
+    "total_income",
+    "total_income_ratio",
+    "equity_over_total_assets",
+    "equity_over_total_deposits",
+    "non_performing_loans_ratio",
+    "loan_loss_provisions_ratio",
+    "returns_over_assets",
+    "returns_over_equity",
+    "net_interest_margin",
+    "cost_income_ratios",
+    "liquid_assets_over_total_assets",
+    "liquid_assets_over_total_deposits",
+    "cumulative_gaps_over_total_assets",
+    "off_balance_sheet_activities",
+    "profits_before_tax",
+    "profits_after_tax"
+  ],
+  "inferred_types": {
+    "date_columns": [],
+    "numeric_columns": [
+      "branches_ratio",
+      "core_cost",
+      "core_cost_ratio",
+      "cost_income_ratios",
+      "cumulative_gaps_over_total_assets",
+      "employees_ratio",
+      "equity_over_total_assets",
+      "equity_over_total_deposits",
+      "interest_expenses",
+      "interest_incomes",
+      "labour_productivity",
+      "liquid_assets",
+      "liquid_assets_over_total_assets",
+      "liquid_assets_over_total_deposits",
+      "loan_loss_provisions",
+      "loan_loss_provisions_ratio",
+      "net_interest_margin",
+      "network_productivity",
+      "non_interest_expenses",
+      "non_interest_income",
+      "non_performing_loans",
+      "non_performing_loans_ratio",
+      "number_of_branches",
+      "number_of_employees",
+      "occupancy_expenses",
+      "off_balance_sheet_activities",
+      "other_expenses",
+      "other_incomes",
+      "personnel_expenses",
+      "profits_after_tax",
+      "profits_before_tax",
+      "returns_over_assets",
+      "returns_over_equity",
+      "total_assets",
+      "total_assets_ratio",
+      "total_cost",
+      "total_cost_ratio",
+      "total_deposits",
+      "total_deposits_ratio",
+      "total_fixed_assets",
+      "total_income",
+      "total_income_ratio",
+      "total_loans",
+      "total_loans_ratio",
+      "total_operating_expenses",
+      "total_shareholder_s_equity",
+      "year"
+    ],
+    "boolean_like_columns": [],
+    "id_like_columns": [
+      "liquid_assets",
+      "liquid_assets_over_total_deposits"
+    ],
+    "high_missing_columns": [
+      "network_productivity",
+      "off_balance_sheet_activities"
+    ],
+    "numeric_as_text_columns": []
+  },
+  "quality_flags": {
+    "mixed_date_format_columns": [],
+    "has_bom": false,
+    "non_comma_delimiter": false
+  },
+  "column_stats": {
+    "bank_code": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 45,
+      "unique_ratio": 0.067466,
+      "top_values": [
+        [
+          "ACB",
+          21
+        ],
+        [
+          "AGB",
+          21
+        ],
+        [
+          "BIDV",
+          21
+        ],
+        [
+          "CTG",
+          21
+        ],
+        [
+          "TCB",
+          21
+        ]
+      ],
+      "sample_values": [
+        "ABB",
+        "ACB",
+        "AGB",
+        "BIDV",
+        "BAB"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "year": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 21,
+      "unique_ratio": 0.031484,
+      "top_values": [
+        [
+          "2009",
+          43
+        ],
+        [
+          "2010",
+          43
+        ],
+        [
+          "2011",
+          41
+        ],
+        [
+          "2008",
+          40
+        ],
+        [
+          "2012",
+          39
+        ]
+      ],
+      "sample_values": [
+        "2005",
+        "2006",
+        "2007",
+        "2008",
+        "2009"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "classification": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 3,
+      "unique_ratio": 0.004498,
+      "top_values": [
+        [
+          "JSCB",
+          557
+        ],
+        [
+          "SOCB",
+          84
+        ],
+        [
+          "FOCB",
+          26
+        ]
+      ],
+      "sample_values": [
+        "JSCB",
+        "SOCB",
+        "FOCB"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "number_of_employees": {
+      "missing_count": 163,
+      "missing_ratio": 0.244378,
+      "unique_count": 485,
+      "unique_ratio": 0.962302,
+      "top_values": [
+        [
+          "98",
+          3
+        ],
+        [
+          "1123",
+          2
+        ],
+        [
+          "3533",
+          2
+        ],
+        [
+          "29429",
+          2
+        ],
+        [
+          "37609",
+          2
+        ]
+      ],
+      "sample_values": [
+        "94",
+        "309",
+        "1123",
+        "1345",
+        "1717"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "number_of_branches": {
+      "missing_count": 199,
+      "missing_ratio": 0.298351,
+      "unique_count": 259,
+      "unique_ratio": 0.553419,
+      "top_values": [
+        [
+          "91",
+          11
+        ],
+        [
+          "166",
+          7
+        ],
+        [
+          "109",
+          7
+        ],
+        [
+          "89",
+          7
+        ],
+        [
+          "209",
+          6
+        ]
+      ],
+      "sample_values": [
+        "14",
+        "54",
+        "70",
+        "86",
+        "115"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "labour_productivity": {
+      "missing_count": 165,
+      "missing_ratio": 0.247376,
+      "unique_count": 498,
+      "unique_ratio": 0.992032,
+      "top_values": [
+        [
+          "62.22",
+          2
+        ],
+        [
+          "138.68",
+          2
+        ],
+        [
+          "426.62",
+          2
+        ],
+        [
+          "237.44",
+          2
+        ],
+        [
+          "87.55",
+          1
+        ]
+      ],
+      "sample_values": [
+        "87.55",
+        "41.02",
+        "144.06",
+        "36.95",
+        "181.51"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "network_productivity": {
+      "missing_count": 201,
+      "missing_ratio": 0.301349,
+      "unique_count": 466,
+      "unique_ratio": 1.0,
+      "top_values": [
+        [
+          "905.29",
+          1
+        ],
+        [
+          "2995.85",
+          1
+        ],
+        [
+          "709.94",
+          1
+        ],
+        [
+          "3623.8",
+          1
+        ],
+        [
+          "4314.34",
+          1
+        ]
+      ],
+      "sample_values": [
+        "905.29",
+        "2995.85",
+        "709.94",
+        "3623.8",
+        "4314.34"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "employees_ratio": {
+      "missing_count": 163,
+      "missing_ratio": 0.244378,
+      "unique_count": 31,
+      "unique_ratio": 0.061508,
+      "top_values": [
+        [
+          "0.01",
+          170
+        ],
+        [
+          "0.02",
+          77
+        ],
+        [
+          "0",
+          53
+        ],
+        [
+          "0.03",
+          47
+        ],
+        [
+          "0.05",
+          24
+        ]
+      ],
+      "sample_values": [
+        "0",
+        "0.01",
+        "0.02",
+        "0.03",
+        "0.04"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.105159
+    },
+    "branches_ratio": {
+      "missing_count": 198,
+      "missing_ratio": 0.296852,
+      "unique_count": 38,
+      "unique_ratio": 0.081023,
+      "top_values": [
+        [
+          "0",
+          143
+        ],
+        [
+          "0.01",
+          130
+        ],
+        [
+          "0.02",
+          66
+        ],
+        [
+          "0.03",
+          27
+        ],
+        [
+          "0.04",
+          25
+        ]
+      ],
+      "sample_values": [
+        "0",
+        "0.01",
+        "0.02",
+        "0.07",
+        "0.05"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.304904
+    },
+    "total_deposits": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 658,
+      "unique_ratio": 0.986507,
+      "top_values": [
+        [
+          "183283117",
+          2
+        ],
+        [
+          "74353240",
+          2
+        ],
+        [
+          "349388922",
+          2
+        ],
+        [
+          "400844380",
+          2
+        ],
+        [
+          "427971850",
+          2
+        ]
+      ],
+      "sample_values": [
+        "209317",
+        "1551159",
+        "6776279",
+        "6673746",
+        "15001842"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.998501,
+      "bool_match_ratio": 0.0
+    },
+    "total_shareholder_s_equity": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 660,
+      "unique_ratio": 0.989505,
+      "top_values": [
+        [
+          "48528603",
+          2
+        ],
+        [
+          "30790113",
+          2
+        ],
+        [
+          "11186927",
+          2
+        ],
+        [
+          "17000000",
+          2
+        ],
+        [
+          "24632367",
+          2
+        ]
+      ],
+      "sample_values": [
+        "188076",
+        "1190274",
+        "2479200",
+        "3955514",
+        "4489436"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "total_loans": {
+      "missing_count": 1,
+      "missing_ratio": 0.001499,
+      "unique_count": 665,
+      "unique_ratio": 0.998498,
+      "top_values": [
+        [
+          "203210901",
+          2
+        ],
+        [
+          "406400",
+          1
+        ],
+        [
+          "1130930",
+          1
+        ],
+        [
+          "6858134",
+          1
+        ],
+        [
+          "6538980",
+          1
+        ]
+      ],
+      "sample_values": [
+        "406400",
+        "1130930",
+        "6858134",
+        "6538980",
+        "12882962"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.998498,
+      "bool_match_ratio": 0.0
+    },
+    "loan_loss_provisions": {
+      "missing_count": 28,
+      "missing_ratio": 0.041979,
+      "unique_count": 632,
+      "unique_ratio": 0.989045,
+      "top_values": [
+        [
+          "15934984",
+          2
+        ],
+        [
+          "2452068",
+          2
+        ],
+        [
+          "36641",
+          2
+        ],
+        [
+          "228188",
+          2
+        ],
+        [
+          "3522642",
+          2
+        ]
+      ],
+      "sample_values": [
+        "960",
+        "14430",
+        "57849",
+        "81229",
+        "142460"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "non_performing_loans": {
+      "missing_count": 55,
+      "missing_ratio": 0.082459,
+      "unique_count": 608,
+      "unique_ratio": 0.993464,
+      "top_values": [
+        [
+          "3360075",
+          2
+        ],
+        [
+          "1111841",
+          2
+        ],
+        [
+          "1027957",
+          2
+        ],
+        [
+          "2897638",
+          2
+        ],
+        [
+          "17635",
+          1
+        ]
+      ],
+      "sample_values": [
+        "17635",
+        "30567",
+        "103304",
+        "81229",
+        "142460"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "total_fixed_assets": {
+      "missing_count": 2,
+      "missing_ratio": 0.002999,
+      "unique_count": 657,
+      "unique_ratio": 0.98797,
+      "top_values": [
+        [
+          "8294711",
+          2
+        ],
+        [
+          "1366325",
+          2
+        ],
+        [
+          "57303",
+          2
+        ],
+        [
+          "8249652",
+          2
+        ],
+        [
+          "8289968",
+          2
+        ]
+      ],
+      "sample_values": [
+        "1828",
+        "6664",
+        "79873",
+        "480524",
+        "507124"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "liquid_assets": {
+      "missing_count": 5,
+      "missing_ratio": 0.007496,
+      "unique_count": 657,
+      "unique_ratio": 0.992447,
+      "top_values": [
+        [
+          "170034345",
+          2
+        ],
+        [
+          "214245711",
+          2
+        ],
+        [
+          "2761961",
+          2
+        ],
+        [
+          "4987895",
+          2
+        ],
+        [
+          "4579544",
+          2
+        ]
+      ],
+      "sample_values": [
+        "271480",
+        "1976304",
+        "10236110",
+        "6474621",
+        "13127998"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "total_assets": {
+      "missing_count": 4,
+      "missing_ratio": 0.005997,
+      "unique_count": 657,
+      "unique_ratio": 0.99095,
+      "top_values": [
+        [
+          "116366981",
+          2
+        ],
+        [
+          "374611571",
+          2
+        ],
+        [
+          "87786108",
+          2
+        ],
+        [
+          "406040598",
+          2
+        ],
+        [
+          "453581057",
+          2
+        ]
+      ],
+      "sample_values": [
+        "679708",
+        "3113898",
+        "17174117",
+        "13494125",
+        "26518084"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "total_deposits_ratio": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 25,
+      "unique_ratio": 0.037481,
+      "top_values": [
+        [
+          "0.01",
+          211
+        ],
+        [
+          "0",
+          176
+        ],
+        [
+          "0.02",
+          93
+        ],
+        [
+          "0.04",
+          39
+        ],
+        [
+          "0.03",
+          39
+        ]
+      ],
+      "sample_values": [
+        "0",
+        "0.01",
+        "0.04",
+        "0.03",
+        "0.05"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.263868
+    },
+    "total_loans_ratio": {
+      "missing_count": 1,
+      "missing_ratio": 0.001499,
+      "unique_count": 26,
+      "unique_ratio": 0.039039,
+      "top_values": [
+        [
+          "0.01",
+          240
+        ],
+        [
+          "0",
+          159
+        ],
+        [
+          "0.02",
+          76
+        ],
+        [
+          "0.04",
+          49
+        ],
+        [
+          "0.03",
+          45
+        ]
+      ],
+      "sample_values": [
+        "0",
+        "0.01",
+        "0.02",
+        "0.03",
+        "0.04"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.238739
+    },
+    "total_assets_ratio": {
+      "missing_count": 4,
+      "missing_ratio": 0.005997,
+      "unique_count": 26,
+      "unique_ratio": 0.039216,
+      "top_values": [
+        [
+          "0.01",
+          222
+        ],
+        [
+          "0",
+          127
+        ],
+        [
+          "0.02",
+          106
+        ],
+        [
+          "0.03",
+          66
+        ],
+        [
+          "0.04",
+          39
+        ]
+      ],
+      "sample_values": [
+        "0",
+        "0.01",
+        "0.03",
+        "0.05",
+        "0.06"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.191554
+    },
+    "interest_expenses": {
+      "missing_count": 5,
+      "missing_ratio": 0.007496,
+      "unique_count": 653,
+      "unique_ratio": 0.986405,
+      "top_values": [
+        [
+          "46245007",
+          2
+        ],
+        [
+          "12285433",
+          2
+        ],
+        [
+          "259651",
+          2
+        ],
+        [
+          "11000000",
+          2
+        ],
+        [
+          "18661777",
+          2
+        ]
+      ],
+      "sample_values": [
+        "16420",
+        "73096",
+        "777777",
+        "1223980",
+        "957497"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "non_interest_expenses": {
+      "missing_count": 6,
+      "missing_ratio": 0.008996,
+      "unique_count": 658,
+      "unique_ratio": 0.995461,
+      "top_values": [
+        [
+          "21927823",
+          2
+        ],
+        [
+          "6896701",
+          2
+        ],
+        [
+          "227733",
+          2
+        ],
+        [
+          "8931",
+          1
+        ],
+        [
+          "38630",
+          1
+        ]
+      ],
+      "sample_values": [
+        "8931",
+        "38630",
+        "155956",
+        "271175",
+        "377539"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "personnel_expenses": {
+      "missing_count": 136,
+      "missing_ratio": 0.203898,
+      "unique_count": 526,
+      "unique_ratio": 0.990584,
+      "top_values": [
+        [
+          "3789826",
+          2
+        ],
+        [
+          "289529",
+          2
+        ],
+        [
+          "311201",
+          2
+        ],
+        [
+          "1755656",
+          2
+        ],
+        [
+          "290930",
+          2
+        ]
+      ],
+      "sample_values": [
+        "3710",
+        "10114",
+        "49909",
+        "92362",
+        "143060"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "occupancy_expenses": {
+      "missing_count": 141,
+      "missing_ratio": 0.211394,
+      "unique_count": 522,
+      "unique_ratio": 0.992395,
+      "top_values": [
+        [
+          "143528",
+          2
+        ],
+        [
+          "21436",
+          2
+        ],
+        [
+          "25282",
+          2
+        ],
+        [
+          "10528",
+          2
+        ],
+        [
+          "267",
+          1
+        ]
+      ],
+      "sample_values": [
+        "267",
+        "664",
+        "7667",
+        "27676",
+        "38036"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "other_expenses": {
+      "missing_count": 134,
+      "missing_ratio": 0.2009,
+      "unique_count": 532,
+      "unique_ratio": 0.998124,
+      "top_values": [
+        [
+          "2449414",
+          2
+        ],
+        [
+          "4180",
+          1
+        ],
+        [
+          "27702",
+          1
+        ],
+        [
+          "88693",
+          1
+        ],
+        [
+          "126363",
+          1
+        ]
+      ],
+      "sample_values": [
+        "4180",
+        "27702",
+        "88693",
+        "126363",
+        "170402"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "total_operating_expenses": {
+      "missing_count": 127,
+      "missing_ratio": 0.190405,
+      "unique_count": 538,
+      "unique_ratio": 0.996296,
+      "top_values": [
+        [
+          "19502732",
+          2
+        ],
+        [
+          "6382768",
+          2
+        ],
+        [
+          "8157",
+          1
+        ],
+        [
+          "38480",
+          1
+        ],
+        [
+          "146269",
+          1
+        ]
+      ],
+      "sample_values": [
+        "8157",
+        "38480",
+        "146269",
+        "246401",
+        "351498"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "core_cost": {
+      "missing_count": 4,
+      "missing_ratio": 0.005997,
+      "unique_count": 661,
+      "unique_ratio": 0.996983,
+      "top_values": [
+        [
+          "16218787",
+          2
+        ],
+        [
+          "259651",
+          2
+        ],
+        [
+          "20397",
+          1
+        ],
+        [
+          "83874",
+          1
+        ],
+        [
+          "835353",
+          1
+        ]
+      ],
+      "sample_values": [
+        "20397",
+        "83874",
+        "835353",
+        "1344018",
+        "1138593"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "total_cost": {
+      "missing_count": 4,
+      "missing_ratio": 0.005997,
+      "unique_count": 660,
+      "unique_ratio": 0.995475,
+      "top_values": [
+        [
+          "68172830",
+          2
+        ],
+        [
+          "19182134",
+          2
+        ],
+        [
+          "487384",
+          2
+        ],
+        [
+          "25351",
+          1
+        ],
+        [
+          "111726",
+          1
+        ]
+      ],
+      "sample_values": [
+        "25351",
+        "111726",
+        "933733",
+        "1495155",
+        "1335036"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "core_cost_ratio": {
+      "missing_count": 4,
+      "missing_ratio": 0.005997,
+      "unique_count": 30,
+      "unique_ratio": 0.045249,
+      "top_values": [
+        [
+          "0.01",
+          212
+        ],
+        [
+          "0",
+          143
+        ],
+        [
+          "0.02",
+          98
+        ],
+        [
+          "0.03",
+          58
+        ],
+        [
+          "0.04",
+          37
+        ]
+      ],
+      "sample_values": [
+        "0",
+        "0.01",
+        "0.03",
+        "0.04",
+        "0.05"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.215686
+    },
+    "total_cost_ratio": {
+      "missing_count": 4,
+      "missing_ratio": 0.005997,
+      "unique_count": 29,
+      "unique_ratio": 0.043741,
+      "top_values": [
+        [
+          "0.01",
+          209
+        ],
+        [
+          "0",
+          146
+        ],
+        [
+          "0.02",
+          98
+        ],
+        [
+          "0.03",
+          50
+        ],
+        [
+          "0.04",
+          43
+        ]
+      ],
+      "sample_values": [
+        "0",
+        "0.01",
+        "0.04",
+        "0.02",
+        "0.03"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.220211
+    },
+    "interest_incomes": {
+      "missing_count": 5,
+      "missing_ratio": 0.007496,
+      "unique_count": 655,
+      "unique_ratio": 0.989426,
+      "top_values": [
+        [
+          "80266508",
+          2
+        ],
+        [
+          "26176210",
+          2
+        ],
+        [
+          "2986754",
+          2
+        ],
+        [
+          "26295571",
+          2
+        ],
+        [
+          "30476971",
+          2
+        ]
+      ],
+      "sample_values": [
+        "35053",
+        "139756",
+        "1102140",
+        "1494819",
+        "1646999"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "non_interest_income": {
+      "missing_count": 13,
+      "missing_ratio": 0.01949,
+      "unique_count": 647,
+      "unique_ratio": 0.989297,
+      "top_values": [
+        [
+          "11394838",
+          2
+        ],
+        [
+          "3381401",
+          2
+        ],
+        [
+          "1699775",
+          2
+        ],
+        [
+          "5151682",
+          2
+        ],
+        [
+          "6999390",
+          2
+        ]
+      ],
+      "sample_values": [
+        "2662",
+        "20730",
+        "106896",
+        "90768",
+        "174548"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "other_incomes": {
+      "missing_count": 11,
+      "missing_ratio": 0.016492,
+      "unique_count": 648,
+      "unique_ratio": 0.987805,
+      "top_values": [
+        [
+          "-18503027",
+          2
+        ],
+        [
+          "-2305860",
+          2
+        ],
+        [
+          "-94292",
+          2
+        ],
+        [
+          "-403",
+          2
+        ],
+        [
+          "-1592114",
+          2
+        ]
+      ],
+      "sample_values": [
+        "-933",
+        "-13473",
+        "-44510",
+        "-25018",
+        "-73896"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "total_income": {
+      "missing_count": 4,
+      "missing_ratio": 0.005997,
+      "unique_count": 656,
+      "unique_ratio": 0.989442,
+      "top_values": [
+        [
+          "73158319",
+          2
+        ],
+        [
+          "27251751",
+          2
+        ],
+        [
+          "4592237",
+          2
+        ],
+        [
+          "29855139",
+          2
+        ],
+        [
+          "35323472",
+          2
+        ]
+      ],
+      "sample_values": [
+        "36782",
+        "147013",
+        "1164526",
+        "1560569",
+        "1747651"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "total_income_ratio": {
+      "missing_count": 4,
+      "missing_ratio": 0.005997,
+      "unique_count": 28,
+      "unique_ratio": 0.042232,
+      "top_values": [
+        [
+          "0.01",
+          236
+        ],
+        [
+          "0",
+          125
+        ],
+        [
+          "0.02",
+          92
+        ],
+        [
+          "0.03",
+          47
+        ],
+        [
+          "0.04",
+          43
+        ]
+      ],
+      "sample_values": [
+        "0",
+        "0.01",
+        "0.05",
+        "0.03",
+        "0.04"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.188537
+    },
+    "equity_over_total_assets": {
+      "missing_count": 4,
+      "missing_ratio": 0.005997,
+      "unique_count": 535,
+      "unique_ratio": 0.806938,
+      "top_values": [
+        [
+          "10.03",
+          4
+        ],
+        [
+          "10.22",
+          4
+        ],
+        [
+          "7.88",
+          3
+        ],
+        [
+          "7.24",
+          3
+        ],
+        [
+          "7.65",
+          3
+        ]
+      ],
+      "sample_values": [
+        "27.67",
+        "38.22",
+        "14.44",
+        "29.31",
+        "16.93"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "equity_over_total_deposits": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 600,
+      "unique_ratio": 0.89955,
+      "top_values": [
+        [
+          "6.64",
+          3
+        ],
+        [
+          "7.81",
+          3
+        ],
+        [
+          "13.14",
+          3
+        ],
+        [
+          "16.8",
+          3
+        ],
+        [
+          "12.62",
+          3
+        ]
+      ],
+      "sample_values": [
+        "89.85",
+        "76.73",
+        "36.59",
+        "59.27",
+        "29.93"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "non_performing_loans_ratio": {
+      "missing_count": 55,
+      "missing_ratio": 0.082459,
+      "unique_count": 324,
+      "unique_ratio": 0.529412,
+      "top_values": [
+        [
+          "1.26",
+          7
+        ],
+        [
+          "1.24",
+          6
+        ],
+        [
+          "0.73",
+          6
+        ],
+        [
+          "0.41",
+          6
+        ],
+        [
+          "2.5",
+          6
+        ]
+      ],
+      "sample_values": [
+        "4.34",
+        "2.7",
+        "1.51",
+        "1.24",
+        "1.11"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.003268
+    },
+    "loan_loss_provisions_ratio": {
+      "missing_count": 28,
+      "missing_ratio": 0.041979,
+      "unique_count": 245,
+      "unique_ratio": 0.383412,
+      "top_values": [
+        [
+          "1.03",
+          10
+        ],
+        [
+          "1.15",
+          9
+        ],
+        [
+          "1.12",
+          9
+        ],
+        [
+          "1.24",
+          8
+        ],
+        [
+          "1.19",
+          8
+        ]
+      ],
+      "sample_values": [
+        "0.24",
+        "1.28",
+        "0.84",
+        "1.24",
+        "1.11"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.01252
+    },
+    "returns_over_assets": {
+      "missing_count": 8,
+      "missing_ratio": 0.011994,
+      "unique_count": 293,
+      "unique_ratio": 0.444613,
+      "top_values": [
+        [
+          "0.03",
+          7
+        ],
+        [
+          "1.25",
+          7
+        ],
+        [
+          "0.58",
+          6
+        ],
+        [
+          "0.79",
+          6
+        ],
+        [
+          "0.7",
+          6
+        ]
+      ],
+      "sample_values": [
+        "1.21",
+        "0.41",
+        "0.94",
+        "0.37",
+        "1.18"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.004552
+    },
+    "returns_over_equity": {
+      "missing_count": 4,
+      "missing_ratio": 0.005997,
+      "unique_count": 588,
+      "unique_ratio": 0.886878,
+      "top_values": [
+        [
+          "13.3",
+          3
+        ],
+        [
+          "4.94",
+          3
+        ],
+        [
+          "10.19",
+          3
+        ],
+        [
+          "15.18",
+          3
+        ],
+        [
+          "20.96",
+          3
+        ]
+      ],
+      "sample_values": [
+        "4.38",
+        "1.06",
+        "6.53",
+        "1.26",
+        "6.94"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.001508
+    },
+    "net_interest_margin": {
+      "missing_count": 9,
+      "missing_ratio": 0.013493,
+      "unique_count": 535,
+      "unique_ratio": 0.81307,
+      "top_values": [
+        [
+          "3.17",
+          4
+        ],
+        [
+          "3.3",
+          4
+        ],
+        [
+          "2.05",
+          4
+        ],
+        [
+          "6.6",
+          4
+        ],
+        [
+          "3.92",
+          3
+        ]
+      ],
+      "sample_values": [
+        "6.86",
+        "3.37",
+        "3.17",
+        "4.18",
+        "5.25"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "cost_income_ratios": {
+      "missing_count": 4,
+      "missing_ratio": 0.005997,
+      "unique_count": 609,
+      "unique_ratio": 0.918552,
+      "top_values": [
+        [
+          "87.51",
+          4
+        ],
+        [
+          "82.83",
+          3
+        ],
+        [
+          "92.41",
+          3
+        ],
+        [
+          "78.04",
+          3
+        ],
+        [
+          "83.49",
+          3
+        ]
+      ],
+      "sample_values": [
+        "68.92",
+        "76",
+        "80.18",
+        "95.81",
+        "76.39"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "liquid_assets_over_total_assets": {
+      "missing_count": 5,
+      "missing_ratio": 0.007496,
+      "unique_count": 619,
+      "unique_ratio": 0.935045,
+      "top_values": [
+        [
+          "40.15",
+          4
+        ],
+        [
+          "29.79",
+          3
+        ],
+        [
+          "27.04",
+          3
+        ],
+        [
+          "53.39",
+          3
+        ],
+        [
+          "54.83",
+          3
+        ]
+      ],
+      "sample_values": [
+        "39.94",
+        "63.47",
+        "59.6",
+        "47.98",
+        "49.51"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "liquid_assets_over_total_deposits": {
+      "missing_count": 5,
+      "missing_ratio": 0.007496,
+      "unique_count": 641,
+      "unique_ratio": 0.968278,
+      "top_values": [
+        [
+          "63.7",
+          4
+        ],
+        [
+          "120.41",
+          3
+        ],
+        [
+          "71.88",
+          2
+        ],
+        [
+          "45.94",
+          2
+        ],
+        [
+          "31.12",
+          2
+        ]
+      ],
+      "sample_values": [
+        "129.7",
+        "127.41",
+        "151.06",
+        "97.02",
+        "87.51"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "cumulative_gaps_over_total_assets": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 650,
+      "unique_ratio": 0.974513,
+      "top_values": [
+        [
+          "30.02",
+          2
+        ],
+        [
+          "23.63",
+          2
+        ],
+        [
+          "60.97",
+          2
+        ],
+        [
+          "58.76",
+          2
+        ],
+        [
+          "46.82",
+          2
+        ]
+      ],
+      "sample_values": [
+        "4.38",
+        "64.13",
+        "-15.64",
+        "30.03",
+        "30.02"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "off_balance_sheet_activities": {
+      "missing_count": 217,
+      "missing_ratio": 0.325337,
+      "unique_count": 446,
+      "unique_ratio": 0.991111,
+      "top_values": [
+        [
+          "28106139",
+          3
+        ],
+        [
+          "89555115",
+          3
+        ],
+        [
+          "9445",
+          1
+        ],
+        [
+          "508996",
+          1
+        ],
+        [
+          "526026",
+          1
+        ]
+      ],
+      "sample_values": [
+        "9445",
+        "508996",
+        "526026",
+        "3236046",
+        "2047227"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.002222
+    },
+    "profits_before_tax": {
+      "missing_count": 6,
+      "missing_ratio": 0.008996,
+      "unique_count": 657,
+      "unique_ratio": 0.993949,
+      "top_values": [
+        [
+          "4985489",
+          2
+        ],
+        [
+          "8069617",
+          2
+        ],
+        [
+          "4104853",
+          2
+        ],
+        [
+          "401287",
+          2
+        ],
+        [
+          "11431",
+          1
+        ]
+      ],
+      "sample_values": [
+        "11431",
+        "35287",
+        "230793",
+        "65414",
+        "412615"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "profits_after_tax": {
+      "missing_count": 4,
+      "missing_ratio": 0.005997,
+      "unique_count": 660,
+      "unique_ratio": 0.995475,
+      "top_values": [
+        [
+          "6453499",
+          2
+        ],
+        [
+          "3652011",
+          2
+        ],
+        [
+          "401287",
+          2
+        ],
+        [
+          "8230",
+          1
+        ],
+        [
+          "12674",
+          1
+        ]
+      ],
+      "sample_values": [
+        "8230",
+        "12674",
+        "161776",
+        "49696",
+        "311647"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    }
+  }
+}

@@ -1,0 +1,902 @@
+[
+  {
+    "db_id": "danang_hsg_list",
+    "sql_complexity": "Moderate",
+    "question_style": "Concise",
+    "question": "Liệt kê các trường có điểm trung bình môn Toán trên 5.0, bao gồm tên trường và điểm trung bình.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n**Quy trình suy luận:**\n\n1.  **Xác định mục tiêu:** Cần lấy tên trường (`truong`) và giá trị trung bình của cột điểm (`diem`) từ bảng `danang_hsg_list`.\n2.  **Lọc dữ liệu:** Chỉ xét các bản ghi có môn thi là 'Toán' bằng cách sử dụng mệnh đề `WHERE`.\n3.  **Nhóm dữ liệu:** Sử dụng `GROUP BY truong` để gom nhóm các kết quả theo từng trường học nhằm tính toán điểm trung bình.\n4.  **Điều kiện lọc sau nhóm:** Sử dụng `HAVING` để lọc ra các trường có giá trị trung bình (`AVG(diem)`) lớn hơn 5.0.\n\n**Truy vấn SQL:**\n\n```sql\nSELECT\n  truong,\n  AVG(diem) AS diem_trung_binh\nFROM danang_hsg_list\nWHERE\n  mon_thi = 'Toán'\nGROUP BY\n  truong\nHAVING\n  AVG(diem) > 5.0;\n```",
+    "sql": "SELECT\n  truong,\n  AVG(diem) AS diem_trung_binh\nFROM danang_hsg_list\nWHERE\n  mon_thi = 'Toán'\nGROUP BY\n  truong\nHAVING\n  AVG(diem) > 5.0;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Simple",
+    "question_style": "Metaphorical",
+    "question": "Hãy gọi tên và mã định danh của những \"ngọn đuốc trí tuệ\" thuộc lĩnh vực nghiên cứu khoa học được thắp sáng dưới sự quản lý của chính quyền thành phố cảng Hải Phòng.",
+    "external_knowledge": "'Ngọn đuốc trí tuệ' trong ngữ cảnh này ẩn dụ cho các dịch vụ công thuộc 'Hoạt động khoa học và công nghệ'; 'Chính quyền thành phố cảng Hải Phòng' tương đương với 'UBND Thành phố Hải Phòng'.",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   Câu hỏi yêu cầu liệt kê tên (`ten`) và mã định danh (`ma`) của các dịch vụ công.\n    *   Điều kiện thứ nhất: Lĩnh vực dịch vụ là 'Hoạt động khoa học và công nghệ' (tương ứng với ẩn dụ 'ngọn đuốc trí tuệ' thuộc lĩnh vực nghiên cứu khoa học).\n    *   Điều kiện thứ hai: Cơ quan quản lý là 'UBND Thành phố Hải Phòng' (tương ứng với 'Chính quyền thành phố cảng Hải Phòng').\n2.  **Xác định bảng dữ liệu:** Dữ liệu nằm trong bảng `hp_public_services`.\n3.  **Xây dựng điều kiện lọc:**\n    *   Sử dụng mệnh đề `WHERE` để lọc cột `linh_vuc` bằng giá trị `'Hoạt động khoa học và công nghệ'`.\n    *   Kết hợp thêm điều kiện cột `co_quan_cong_bo` bằng giá trị `'UBND Thành phố Hải Phòng'`.\n4.  **Chọn cột kết quả:** Chỉ lấy cột `ten` và `ma` như yêu cầu.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT ten, ma\nFROM hp_public_services\nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ'\n  AND co_quan_cong_bo = 'UBND Thành phố Hải Phòng';\n```",
+    "sql": "SELECT ten, ma\nFROM hp_public_services\nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ'\n  AND co_quan_cong_bo = 'UBND Thành phố Hải Phòng';"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Simple",
+    "question_style": "Vague",
+    "question": "Hãy liệt kê tên của các dịch vụ công thuộc nhóm đổi mới sáng tạo và nghiên cứu.",
+    "external_knowledge": "'nhóm đổi mới sáng tạo và nghiên cứu' tương ứng với giá trị 'Hoạt động khoa học và công nghệ' trong cơ sở dữ liệu.",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:** Người dùng muốn lấy danh sách các dịch vụ công (cột `ten`) thuộc lĩnh vực \"đổi mới sáng tạo và nghiên cứu\".\n2.  **Ánh xạ dữ liệu:** Theo mô tả, nhóm \"đổi mới sáng tạo và nghiên cứu\" tương ứng với giá trị `'Hoạt động khoa học và công nghệ'` trong cột `linh_vuc` của bảng `hp_public_services`.\n3.  **Xây dựng câu lệnh:**\n    *   Chọn cột cần hiển thị: `ten`.\n    *   Chọn bảng dữ liệu: `hp_public_services`.\n    *   Thêm điều kiện lọc: `linh_vuc = 'Hoạt động khoa học và công nghệ'`.\n4.  **Kiểm tra:** Câu lệnh truy vấn đảm bảo lấy đúng tên dịch vụ thỏa mãn điều kiện lĩnh vực được chỉ định.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT ten\nFROM hp_public_services\nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ';\n```",
+    "sql": "SELECT ten\nFROM hp_public_services\nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ';"
+  },
+  {
+    "db_id": "vn_banks_financials",
+    "sql_complexity": "Moderate",
+    "question_style": "Imperative",
+    "question": "Bạn có thể vui lòng tính toán giá trị tan hyperbolic của lợi nhuận trung bình trên vốn chủ sở hữu (returns_over_equity) cho các ngân hàng thương mại cổ phần (JSCB) trong giai đoạn từ năm 2005 đến 2006 được không? Hãy nhóm kết quả theo từng năm và chỉ liệt kê những năm có lợi nhuận trung bình trên vốn chủ sở hữu dương thôi nhé!",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n**Quy trình phân tích:**\n\n1.  **Xác định bảng dữ liệu**: Bảng cần truy vấn là `vn_banks_financials`.\n2.  **Lọc dữ liệu**:\n    *   Theo loại hình ngân hàng: `classification = 'JSCB'`.\n    *   Theo khoảng thời gian: `year BETWEEN 2005 AND 2006`.\n3.  **Tính toán**:\n    *   Tính giá trị trung bình của `returns_over_equity` theo từng năm (`AVG(returns_over_equity)`).\n    *   Áp dụng hàm toán học `TANH()` để tính tan hyperbolic của giá trị trung bình đó.\n4.  **Nhóm dữ liệu**: Sử dụng `GROUP BY year` để phân tách kết quả theo từng năm.\n5.  **Điều kiện lọc nhóm**: Chỉ lấy các nhóm có lợi nhuận trung bình trên vốn chủ sở hữu dương, sử dụng mệnh đề `HAVING AVG(returns_over_equity) > 0`.\n6.  **Chọn cột hiển thị**: Hiển thị `year` và giá trị đã tính toán để đảm bảo kết quả rõ ràng.\n\n**Truy vấn SQL:**\n\n```sql\nSELECT \n    year, \n    TANH(AVG(returns_over_equity)) AS tanh_avg_roe\nFROM vn_banks_financials\nWHERE classification = 'JSCB'\n  AND year BETWEEN 2005 AND 2006\nGROUP BY year\nHAVING AVG(returns_over_equity) > 0;\n```",
+    "sql": "SELECT \n    year, \n    TANH(AVG(returns_over_equity)) AS tanh_avg_roe\nFROM vn_banks_financials\nWHERE classification = 'JSCB'\n  AND year BETWEEN 2005 AND 2006\nGROUP BY year\nHAVING AVG(returns_over_equity) > 0;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Simple",
+    "question_style": "Concise",
+    "question": "Liệt kê tên, loại nhiên liệu, công suất và năm vận hành của các nhà máy điện có công suất trên 100 MW, sắp xếp theo năm vận hành giảm dần.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và câu lệnh SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định bảng cần truy vấn:** Dữ liệu nằm trong bảng `power_plants_vn`.\n2.  **Xác định các cột cần lấy:** Yêu cầu liệt kê tên (`std_name`), loại nhiên liệu (`std_fuel`), công suất (`capacity_mw`) và năm vận hành (`commissioning_year`).\n3.  **Xác định điều kiện lọc:** Công suất phải lớn hơn 100 MW, do đó ta sử dụng mệnh đề `WHERE capacity_mw > 100`.\n4.  **Xác định thứ tự sắp xếp:** Yêu cầu sắp xếp theo năm vận hành (`commissioning_year`) giảm dần, ta sử dụng `ORDER BY commissioning_year DESC`.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT \n    std_name, \n    std_fuel, \n    capacity_mw, \n    commissioning_year \nFROM power_plants_vn \nWHERE capacity_mw > 100 \nORDER BY commissioning_year DESC;\n```",
+    "sql": "SELECT \n    std_name, \n    std_fuel, \n    capacity_mw, \n    commissioning_year \nFROM power_plants_vn \nWHERE capacity_mw > 100 \nORDER BY commissioning_year DESC;"
+  },
+  {
+    "db_id": "student_performance",
+    "sql_complexity": "Simple",
+    "question_style": "Colloquial",
+    "question": "Này, bạn có thể tính giúp mình xem độ tuổi trung bình của các ông bố có con sống ở khu vực miền núi là bao nhiêu không? Nhớ làm tròn kết quả lên số nguyên gần nhất giúp mình nhé!",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:** Chúng ta cần tìm độ tuổi trung bình của các ông bố (`father_age`) từ bảng `student_performance` với điều kiện là học sinh đó sống tại khu vực miền núi (`residential_area = 'Mountainous'`).\n2.  **Xử lý yêu cầu làm tròn:** Yêu cầu đề bài là làm tròn kết quả lên số nguyên gần nhất. Trong SQLite, hàm `ROUND()` sẽ làm tròn đến số nguyên gần nhất (theo quy tắc thông thường), còn hàm `CEIL()` sẽ làm tròn lên số nguyên lớn hơn hoặc bằng giá trị đó. Tuy nhiên, theo yêu cầu \"làm tròn lên số nguyên gần nhất\", hàm `ROUND()` là lựa chọn chuẩn xác nhất trong môi trường SQLite để lấy giá trị số nguyên phù hợp.\n3.  **Xây dựng truy vấn:**\n    *   Sử dụng hàm `AVG(father_age)` để tính giá trị trung bình.\n    *   Sử dụng `WHERE residential_area = 'Mountainous'` để lọc dữ liệu theo khu vực.\n    *   Sử dụng `ROUND()` để làm tròn kết quả.\n\n### Truy vấn SQL:\n\n```sql\nSELECT ROUND(AVG(father_age)) \nFROM student_performance \nWHERE residential_area = 'Mountainous';\n```",
+    "sql": "SELECT ROUND(AVG(father_age)) \nFROM student_performance \nWHERE residential_area = 'Mountainous';"
+  },
+  {
+    "db_id": "vn_banks_financials",
+    "sql_complexity": "Moderate",
+    "question_style": "Concise",
+    "question": "Tìm mã ngân hàng có lợi nhuận trên vốn chủ sở hữu (ROE) trung bình cao nhất.",
+    "external_knowledge": "",
+    "cot": "Để tìm mã ngân hàng có lợi nhuận trên vốn chủ sở hữu (ROE) trung bình cao nhất, chúng ta thực hiện các bước phân tích sau:\n\n1.  **Xác định bảng**: Dữ liệu nằm trong bảng `vn_banks_financials`.\n2.  **Nhóm dữ liệu**: Cần nhóm các bản ghi theo `bank_code` để tính toán ROE trung bình cho từng ngân hàng.\n3.  **Tính toán**: Sử dụng hàm `AVG(returns_over_equity)` để tính ROE trung bình cho mỗi nhóm.\n4.  **Sắp xếp**: Sắp xếp kết quả theo giá trị trung bình vừa tính theo thứ tự giảm dần (`DESC`).\n5.  **Giới hạn**: Chọn ngân hàng đứng đầu danh sách bằng cách sử dụng `LIMIT 1`.\n\nDưới đây là truy vấn SQL tối ưu hóa dựa trên các bước trên:\n\n```sql\nSELECT bank_code\nFROM vn_banks_financials\nGROUP BY bank_code\nORDER BY AVG(returns_over_equity) DESC\nLIMIT 1;\n```",
+    "sql": "SELECT bank_code\nFROM vn_banks_financials\nGROUP BY bank_code\nORDER BY AVG(returns_over_equity) DESC\nLIMIT 1;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Simple",
+    "question_style": "Formal",
+    "question": "Hãy liệt kê tên của tất cả các nhà máy điện trong bảng `power_plants_vn` mà không có thông tin về vĩ độ hoặc kinh độ.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và giải pháp truy vấn SQL cho yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:** Chúng ta cần truy xuất cột `std_name` (tên nhà máy điện) từ bảng `power_plants_vn`.\n2.  **Xác định điều kiện lọc:** Câu hỏi yêu cầu tìm các nhà máy \"không có thông tin về vĩ độ hoặc kinh độ\". Trong SQL, thông tin bị thiếu thường được lưu trữ dưới dạng giá trị `NULL`.\n3.  **Xây dựng điều kiện:** \n    *   Cần kiểm tra xem `latitude` là `NULL` **HOẶC** `longitude` là `NULL`.\n    *   Sử dụng toán tử `OR` để kết hợp hai điều kiện này vì yêu cầu là thiếu một trong hai thông tin.\n4.  **Hoàn thiện truy vấn:** Kết hợp các thành phần trên để tạo ra câu lệnh `SELECT` cuối cùng.\n\n### Truy vấn SQL:\n\n```sql\nSELECT std_name\nFROM power_plants_vn\nWHERE latitude IS NULL OR longitude IS NULL;\n```",
+    "sql": "SELECT std_name\nFROM power_plants_vn\nWHERE latitude IS NULL OR longitude IS NULL;"
+  },
+  {
+    "db_id": "vn_banks_financials",
+    "sql_complexity": "Simple",
+    "question_style": "Colloquial",
+    "question": "Này, cậu tìm giúp mình các năm tài chính của từng ngân hàng thương mại cổ phần (JSCB) với nhé. Gom chúng lại thành một danh sách cho mỗi ngân hàng giúp mình nha!",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích để giải quyết yêu cầu của bạn:\n\n1. **Phân tích yêu cầu:**\n   - Mục tiêu: Liệt kê các năm tài chính (`year`) cho từng ngân hàng (`bank_code`).\n   - Điều kiện lọc: Chỉ lấy các ngân hàng có phân loại (`classification`) là 'JSCB'.\n   - Định dạng đầu ra: Gom các năm lại thành một danh sách (chuỗi) cho mỗi ngân hàng.\n\n2. **Xây dựng truy vấn:**\n   - Sử dụng lệnh `SELECT` để lấy `bank_code` (để biết danh sách năm thuộc về ngân hàng nào) và hàm `GROUP_CONCAT(year)` để gom các năm lại thành một chuỗi.\n   - Sử dụng `WHERE` để lọc theo giá trị 'JSCB' trong cột `classification`.\n   - Sử dụng `GROUP BY bank_code` để nhóm dữ liệu theo từng ngân hàng riêng biệt.\n\n3. **Kết quả truy vấn:**\n\n```sql\nSELECT bank_code, GROUP_CONCAT(year) \nFROM vn_banks_financials \nWHERE classification = 'JSCB' \nGROUP BY bank_code;\n```",
+    "sql": "SELECT bank_code, GROUP_CONCAT(year) \nFROM vn_banks_financials \nWHERE classification = 'JSCB' \nGROUP BY bank_code;"
+  },
+  {
+    "db_id": "facility_announcements_2025",
+    "sql_complexity": "Moderate",
+    "question_style": "Interrogative",
+    "question": "Bạn có thể cho biết danh sách những người đứng đầu phụ trách chuyên môn đã thực hiện các thông báo mới hoặc thông báo lại, kèm theo tổng số lượng thông báo mà mỗi người đó đã thực hiện là bao nhiêu không?",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và câu lệnh SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định mục tiêu:** Chúng ta cần liệt kê danh sách những người đứng đầu phụ trách chuyên môn và tổng số lượng thông báo mà họ đã thực hiện (bao gồm cả `cong_bo_moi` và `cong_bo_lai`).\n2.  **Lọc dữ liệu:** Cần lọc các bản ghi mà tại đó người đứng đầu đã thực hiện thông báo mới hoặc thông báo lại. Điều này tương ứng với điều kiện `cong_bo_moi = 1` hoặc `cong_bo_lai = 1`.\n3.  **Nhóm dữ liệu:** Sử dụng hàm `GROUP BY` trên cột `nguoi_dung_dau_phu_trach_chuyen_mon` để gom các thông báo theo từng người.\n4.  **Tính toán:** Sử dụng hàm `SUM` trên tổng của hai cột `cong_bo_moi` và `cong_bo_lai` để có được con số chính xác về tổng số thông báo mà mỗi người đã thực hiện.\n5.  **Kết quả:** Truy vấn sẽ trả về cột tên người đứng đầu và tổng số lượng thông báo tương ứng.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT \n    nguoi_dung_dau_phu_trach_chuyen_mon, \n    SUM(cong_bo_moi + cong_bo_lai) AS total_announcements\nFROM facility_announcements_2025\nWHERE cong_bo_moi = 1 OR cong_bo_lai = 1\nGROUP BY nguoi_dung_dau_phu_trach_chuyen_mon;\n```",
+    "sql": "SELECT \n    nguoi_dung_dau_phu_trach_chuyen_mon, \n    SUM(cong_bo_moi + cong_bo_lai) AS total_announcements\nFROM facility_announcements_2025\nWHERE cong_bo_moi = 1 OR cong_bo_lai = 1\nGROUP BY nguoi_dung_dau_phu_trach_chuyen_mon;"
+  },
+  {
+    "db_id": "vn_banks_financials",
+    "sql_complexity": "Simple",
+    "question_style": "Descriptive",
+    "question": "Hãy cho tôi biết mã ngân hàng cùng với giá trị trung bình của tổng tài sản và giá trị trung bình của lợi nhuận sau thuế cho từng ngân hàng có trong bảng dữ liệu tài chính.",
+    "external_knowledge": "",
+    "cot": "Để thực hiện truy vấn này, chúng ta cần thực hiện các bước sau:\n\n1. **Xác định bảng dữ liệu**: Bảng cần truy vấn là `vn_banks_financials`.\n2. **Xác định các cột cần lấy**:\n   - `bank_code`: Dùng để định danh từng ngân hàng.\n   - `total_assets`: Dùng để tính giá trị trung bình (`AVG`).\n   - `profits_after_tax`: Dùng để tính giá trị trung bình (`AVG`).\n3. **Thực hiện nhóm dữ liệu**: Vì yêu cầu tính trung bình cho \"từng ngân hàng\", ta cần sử dụng mệnh đề `GROUP BY bank_code`.\n4. **Xây dựng truy vấn**: Kết hợp các thành phần trên vào câu lệnh `SELECT`.\n\nDưới đây là truy vấn SQL tương ứng:\n\n```sql\nSELECT \n    bank_code, \n    AVG(total_assets), \n    AVG(profits_after_tax) \nFROM vn_banks_financials \nGROUP BY bank_code;\n```",
+    "sql": "SELECT \n    bank_code, \n    AVG(total_assets), \n    AVG(profits_after_tax) \nFROM vn_banks_financials \nGROUP BY bank_code;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Moderate",
+    "question_style": "Formal",
+    "question": "Hãy liệt kê các loại nhiên liệu tiêu chuẩn của các nhà máy điện được đưa vào vận hành sau năm 2010 mà có công suất trung bình lớn hơn 100 MW.",
+    "external_knowledge": "",
+    "cot": "Để giải quyết yêu cầu truy vấn này, tôi thực hiện các bước phân tích sau:\n\n1.  **Phân tích yêu cầu:**\n    *   Mục tiêu: Lấy danh sách các loại nhiên liệu (`std_fuel`).\n    *   Điều kiện lọc 1: Nhà máy phải được vận hành sau năm 2010 (`commissioning_year > 2010`).\n    *   Điều kiện lọc 2: Công suất trung bình của loại nhiên liệu đó phải lớn hơn 100 MW (`AVG(capacity_mw) > 100`).\n    *   Cấu trúc dữ liệu: Cần nhóm các bản ghi theo loại nhiên liệu để tính toán trung bình công suất.\n\n2.  **Xây dựng truy vấn:**\n    *   Sử dụng `SELECT std_fuel` để chọn cột kết quả.\n    *   Sử dụng mệnh đề `WHERE` để lọc các nhà máy có `commissioning_year > 2010`.\n    *   Sử dụng `GROUP BY std_fuel` để gom nhóm dữ liệu theo từng loại nhiên liệu.\n    *   Sử dụng mệnh đề `HAVING` kèm hàm `AVG(capacity_mw)` để lọc theo điều kiện công suất trung bình.\n\n3.  **Kết luận:** Truy vấn dưới đây đảm bảo tính chính xác và tối ưu cho yêu cầu được đặt ra.\n\n```sql\nSELECT std_fuel\nFROM power_plants_vn\nWHERE commissioning_year > 2010\nGROUP BY std_fuel\nHAVING AVG(capacity_mw) > 100;\n```",
+    "sql": "SELECT std_fuel\nFROM power_plants_vn\nWHERE commissioning_year > 2010\nGROUP BY std_fuel\nHAVING AVG(capacity_mw) > 100;"
+  },
+  {
+    "db_id": "wb_procurement_contracts",
+    "sql_complexity": "Simple",
+    "question_style": "Colloquial",
+    "question": "Chào bạn! Bạn xem giúp mình xem trong bảng các hợp đồng mua sắm (`wb_procurement_contracts`), các giá trị số tiền hợp đồng (`supplier_contract_amount_usd`) đang ở dạng nào nhỉ? Ý mình là muốn biết chúng có thể là số dương, số âm hay bằng không ấy, bạn liệt kê các trường hợp này ra giúp mình nhé!",
+    "external_knowledge": "",
+    "cot": "Để xác định các dạng giá trị của cột `supplier_contract_amount_usd` (dương, âm, hoặc bằng không), chúng ta có thể sử dụng hàm `SIGN()` trong SQLite. Hàm này trả về:\n- `1` nếu giá trị dương.\n- `-1` nếu giá trị âm.\n- `0` nếu giá trị bằng 0.\n- `NULL` nếu giá trị là NULL.\n\nViệc sử dụng từ khóa `DISTINCT` giúp chúng ta liệt kê duy nhất các trạng thái hiện có trong tập dữ liệu, từ đó trả lời được câu hỏi của bạn về các loại giá trị đang tồn tại.\n\nDưới đây là truy vấn SQL:\n\n```sql\nSELECT DISTINCT SIGN(supplier_contract_amount_usd) \nFROM wb_procurement_contracts;\n```\n\n**Giải thích các bước thực hiện:**\n1. **Chọn cột mục tiêu:** Chúng ta tập trung vào cột `supplier_contract_amount_usd` từ bảng `wb_procurement_contracts`.\n2. **Phân loại giá trị:** Sử dụng hàm `SIGN()` để chuyển đổi các giá trị số thực thành các nhóm đại diện (-1, 0, 1).\n3. **Lọc kết quả duy nhất:** Sử dụng `DISTINCT` để loại bỏ các giá trị trùng lặp, giúp danh sách kết quả chỉ hiển thị những trạng thái thực sự tồn tại trong bảng dữ liệu.",
+    "sql": "SELECT DISTINCT SIGN(supplier_contract_amount_usd) \nFROM wb_procurement_contracts;"
+  },
+  {
+    "db_id": "vn_banks_financials",
+    "sql_complexity": "Moderate",
+    "question_style": "Colloquial",
+    "question": "Chào bạn, bạn tìm giúp mình danh sách các mã ngân hàng thương mại cổ phần (JSCB) có năng suất lao động trên 50, mà đồng thời có biên lãi ròng trung bình lớn hơn 3.0 với nhé!",
+    "external_knowledge": "",
+    "cot": "Để giải quyết yêu cầu này, chúng ta cần thực hiện các bước phân tích sau:\n\n1.  **Xác định bảng cần truy vấn**: Dữ liệu nằm trong bảng `vn_banks_financials`.\n2.  **Lọc dữ liệu theo phân loại**: Cần lọc các ngân hàng thuộc nhóm thương mại cổ phần thông qua cột `classification` với giá trị là `'JSCB'`.\n3.  **Điều kiện về năng suất lao động**: Yêu cầu `labour_productivity` phải lớn hơn 50.\n4.  **Điều kiện về biên lãi ròng (NIM)**: Câu hỏi yêu cầu \"biên lãi ròng trung bình lớn hơn 3.0\". Do đó, chúng ta cần nhóm dữ liệu theo từng mã ngân hàng (`bank_code`) và sử dụng hàm `AVG()` trên cột `net_interest_margin` trong mệnh đề `HAVING`.\n5.  **Kết quả**: Truy vấn sẽ trả về danh sách các `bank_code` thỏa mãn tất cả các điều kiện nêu trên.\n\nDưới đây là câu lệnh SQL thực thi:\n\n```sql\nSELECT bank_code\nFROM vn_banks_financials\nWHERE classification = 'JSCB' \n  AND labour_productivity > 50\nGROUP BY bank_code\nHAVING AVG(net_interest_margin) > 3.0;\n```",
+    "sql": "SELECT bank_code\nFROM vn_banks_financials\nWHERE classification = 'JSCB' \n  AND labour_productivity > 50\nGROUP BY bank_code\nHAVING AVG(net_interest_margin) > 3.0;"
+  },
+  {
+    "db_id": "wb_procurement_contracts",
+    "sql_complexity": "Simple",
+    "question_style": "Metaphorical",
+    "question": "Hãy liệt kê tên các nhà cung cấp và tổng số vốn mà mỗi \"cây đại thụ\" đã gặt hái được từ mảnh đất \"Distribution Efficiency Project\".",
+    "external_knowledge": "'Cây đại thụ' trong ngữ cảnh này ám chỉ các nhà cung cấp tham gia dự án; 'gặt hái được' ám chỉ tổng giá trị hợp đồng bằng USD mà họ nhận được từ dự án.",
+    "cot": "Để giải quyết yêu cầu này, chúng ta cần thực hiện các bước phân tích sau:\n\n1.  **Xác định mục tiêu:** Cần liệt kê tên nhà cung cấp (`supplier`) và tổng giá trị hợp đồng (`supplier_contract_amount_usd`) cho dự án cụ thể là 'Distribution Efficiency Project'.\n2.  **Lọc dữ liệu:** Sử dụng mệnh đề `WHERE` để giới hạn các bản ghi thuộc về dự án có tên là 'Distribution Efficiency Project' thông qua cột `project_name`.\n3.  **Tổng hợp dữ liệu:** Vì yêu cầu tính tổng giá trị vốn mà mỗi nhà cung cấp nhận được, chúng ta cần sử dụng hàm tổng `SUM()` trên cột `supplier_contract_amount_usd` và nhóm kết quả theo cột `supplier` bằng mệnh đề `GROUP BY`.\n4.  **Xây dựng truy vấn:** Kết hợp các thành phần trên thành một câu lệnh SQL hoàn chỉnh.\n\nDưới đây là truy vấn SQL thực thi:\n\n```sql\nSELECT \n    supplier, \n    SUM(supplier_contract_amount_usd) AS total_contract_value\nFROM wb_procurement_contracts\nWHERE project_name = 'Distribution Efficiency Project'\nGROUP BY supplier;\n```",
+    "sql": "SELECT \n    supplier, \n    SUM(supplier_contract_amount_usd) AS total_contract_value\nFROM wb_procurement_contracts\nWHERE project_name = 'Distribution Efficiency Project'\nGROUP BY supplier;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Simple",
+    "question_style": "Descriptive",
+    "question": "Hãy tính công suất trung bình (tính bằng MW) của tất cả các nhà máy điện có trong cơ sở dữ liệu.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và giải quyết truy vấn SQL:\n\n**Các bước suy luận:**\n\n1.  **Xác định mục tiêu:** Câu hỏi yêu cầu tính giá trị trung bình của cột công suất (`capacity_mw`) cho tất cả các bản ghi trong bảng `power_plants_vn`.\n2.  **Chọn hàm tổng hợp:** Để tính giá trị trung bình trong SQL, ta sử dụng hàm `AVG()`.\n3.  **Xác định cột:** Cột cần tính toán là `capacity_mw`.\n4.  **Xác định bảng:** Dữ liệu nằm trong bảng `power_plants_vn`.\n5.  **Xây dựng truy vấn:** Kết hợp các thành phần trên, ta chọn cột `capacity_mw` đặt trong hàm `AVG()` và chỉ định bảng nguồn bằng mệnh đề `FROM`.\n\n**Truy vấn SQL:**\n\n```sql\nSELECT AVG(capacity_mw) \nFROM power_plants_vn;\n```",
+    "sql": "SELECT AVG(capacity_mw) \nFROM power_plants_vn;"
+  },
+  {
+    "db_id": "facility_announcements_2025",
+    "sql_complexity": "Complex",
+    "question_style": "Interrogative",
+    "question": "Bạn có thể cho tôi biết tên của các cơ sở đầu tiên trong mỗi quận (dựa trên thứ tự xuất hiện) kèm theo thông tin tóm tắt về quận và loại hình công bố của chúng không?",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích cấu trúc địa chỉ**: Cột `dia_chi` chứa thông tin về địa chỉ đầy đủ. Để xác định quận, chúng ta giả định thông tin quận nằm sau dấu phẩy cuối cùng hoặc phân tách bởi dấu phẩy. Dựa trên dữ liệu thông thường, ta sử dụng hàm `SUBSTR` và `INSTR` để tách tên quận.\n2.  **Xác định loại hình công bố**: Cần kiểm tra giá trị của các cột `cong_bo_moi` và `cong_bo_lai` để gán nhãn loại hình tương ứng.\n3.  **Xếp hạng**: Sử dụng hàm cửa sổ `ROW_NUMBER()` để đánh số thứ tự các cơ sở trong từng quận dựa trên cột `stt` (thứ tự xuất hiện).\n4.  **Lọc dữ liệu**: Chỉ chọn những bản ghi có `facility_rank_in_district = 1` để lấy cơ sở đầu tiên của mỗi quận.\n5.  **Định dạng kết quả**: Kết hợp tên quận và loại hình công bố thành một chuỗi tóm tắt như yêu cầu.\n\n### Truy vấn SQL:\n\n```sql\nWITH RankedFacilities AS (\n    SELECT \n        ten_co_so,\n        TRIM(SUBSTR(dia_chi, INSTR(dia_chi, ',') + 1)) AS district,\n        CASE \n            WHEN cong_bo_moi = 1 THEN 'Cong bo moi'\n            WHEN cong_bo_lai = 1 THEN 'Cong bo lai'\n            WHEN dung_hoat_dong = 1 THEN 'Dung hoat dong'\n            ELSE 'Khac'\n        END AS announcement_type,\n        ROW_NUMBER() OVER (\n            PARTITION BY TRIM(SUBSTR(dia_chi, INSTR(dia_chi, ',') + 1)) \n            ORDER BY stt ASC\n        ) AS rank\n    FROM facility_announcements_2025\n    WHERE dia_chi LIKE '%,%'\n)\nSELECT \n    ten_co_so,\n    district || ' - ' || announcement_type AS district_summary\nFROM RankedFacilities\nWHERE rank = 1;\n```",
+    "sql": "WITH RankedFacilities AS (\n    SELECT \n        ten_co_so,\n        TRIM(SUBSTR(dia_chi, INSTR(dia_chi, ',') + 1)) AS district,\n        CASE \n            WHEN cong_bo_moi = 1 THEN 'Cong bo moi'\n            WHEN cong_bo_lai = 1 THEN 'Cong bo lai'\n            WHEN dung_hoat_dong = 1 THEN 'Dung hoat dong'\n            ELSE 'Khac'\n        END AS announcement_type,\n        ROW_NUMBER() OVER (\n            PARTITION BY TRIM(SUBSTR(dia_chi, INSTR(dia_chi, ',') + 1)) \n            ORDER BY stt ASC\n        ) AS rank\n    FROM facility_announcements_2025\n    WHERE dia_chi LIKE '%,%'\n)\nSELECT \n    ten_co_so,\n    district || ' - ' || announcement_type AS district_summary\nFROM RankedFacilities\nWHERE rank = 1;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Simple",
+    "question_style": "Imperative",
+    "question": "Bạn vui lòng liệt kê tất cả các lĩnh vực dịch vụ công và tổng hợp danh sách các tên thủ tục tương ứng cho từng lĩnh vực đó vào một cột duy nhất giúp tôi nhé!",
+    "external_knowledge": "",
+    "cot": "Để giải quyết yêu cầu này, chúng ta cần thực hiện các bước phân tích sau:\n\n1.  **Phân tích yêu cầu:** Người dùng muốn liệt kê các lĩnh vực (`linh_vuc`) và gộp tất cả các tên thủ tục (`ten`) tương ứng của mỗi lĩnh vực đó vào một cột duy nhất.\n2.  **Lựa chọn hàm:** Để gộp các giá trị từ nhiều hàng vào một hàng duy nhất dựa trên một nhóm, hàm `GROUP_CONCAT` trong SQLite là công cụ phù hợp nhất.\n3.  **Xây dựng câu lệnh:**\n    *   Chọn cột `linh_vuc`.\n    *   Sử dụng `GROUP_CONCAT(ten, '; ')` để nối các giá trị của cột `ten` với dấu phân cách là dấu chấm phẩy và khoảng trắng.\n    *   Sử dụng mệnh đề `GROUP BY linh_vuc` để nhóm dữ liệu theo từng lĩnh vực cụ thể.\n\nDưới đây là câu lệnh SQL thực thi:\n\n```sql\nSELECT \n    linh_vuc, \n    GROUP_CONCAT(ten, '; ') AS danh_sach_thu_tuc\nFROM hp_public_services\nGROUP BY linh_vuc;\n```",
+    "sql": "SELECT \n    linh_vuc, \n    GROUP_CONCAT(ten, '; ') AS danh_sach_thu_tuc\nFROM hp_public_services\nGROUP BY linh_vuc;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Simple",
+    "question_style": "Interrogative",
+    "question": "Bạn có thể cho biết tên và lĩnh vực của những dịch vụ công nào có tên dài hơn 100 ký tự không?",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và giải quyết yêu cầu của bạn:\n\n**Quy trình phân tích:**\n\n1.  **Xác định mục tiêu:** Truy vấn cần lấy thông tin `ten` (tên dịch vụ) và `linh_vuc` (lĩnh vực) từ bảng `hp_public_services`.\n2.  **Xác định điều kiện lọc:** Câu hỏi yêu cầu lọc các dịch vụ có \"tên dài hơn 100 ký tự\". Trong SQLite, hàm `LENGTH()` được sử dụng để đếm số ký tự của một chuỗi. Do đó, điều kiện sẽ là `LENGTH(ten) > 100`.\n3.  **Xây dựng truy vấn:** Kết hợp các thành phần trên để tạo thành câu lệnh SQL hoàn chỉnh.\n\n**Câu lệnh SQL:**\n\n```sql\nSELECT ten, linh_vuc\nFROM hp_public_services\nWHERE LENGTH(ten) > 100;\n```",
+    "sql": "SELECT ten, linh_vuc\nFROM hp_public_services\nWHERE LENGTH(ten) > 100;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Moderate",
+    "question_style": "Interrogative",
+    "question": "Bạn có thể cho biết những cơ quan công bố nào có từ 2 dịch vụ công trở lên thuộc lĩnh vực \"Hoạt động khoa học và công nghệ\" không?",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để trả lời câu hỏi của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định bảng dữ liệu**: Dữ liệu cần thiết nằm trong bảng `hp_public_services`.\n2.  **Lọc dữ liệu**: Cần lọc các bản ghi có cột `linh_vuc` bằng với giá trị `'Hoạt động khoa học và công nghệ'`.\n3.  **Nhóm dữ liệu**: Vì câu hỏi yêu cầu đếm số lượng dịch vụ công theo từng cơ quan, ta cần sử dụng mệnh đề `GROUP BY` trên cột `co_quan_cong_bo`.\n4.  **Điều kiện lọc nhóm**: Sử dụng mệnh đề `HAVING` kết hợp với hàm `COUNT(*)` để đảm bảo chỉ lấy những cơ quan có từ 2 dịch vụ công trở lên (`COUNT(*) >= 2`).\n5.  **Chọn cột kết quả**: Trả về cột `co_quan_cong_bo`.\n\n### Truy vấn SQL:\n\n```sql\nSELECT co_quan_cong_bo\nFROM hp_public_services\nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ'\nGROUP BY co_quan_cong_bo\nHAVING COUNT(*) >= 2;\n```",
+    "sql": "SELECT co_quan_cong_bo\nFROM hp_public_services\nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ'\nGROUP BY co_quan_cong_bo\nHAVING COUNT(*) >= 2;"
+  },
+  {
+    "db_id": "vn_banks_financials",
+    "sql_complexity": "Simple",
+    "question_style": "Interrogative",
+    "question": "Bạn có thể liệt kê mã ngân hàng, năm, lợi nhuận sau thuế và tỷ lệ tài sản thanh khoản trên tổng tài sản của các ngân hàng từ năm 2005 trở đi, đồng thời sắp xếp theo thứ tự lợi nhuận sau thuế từ cao xuống thấp được không?",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n**Quy trình phân tích:**\n\n1.  **Xác định bảng dữ liệu:** Bảng cần truy vấn là `vn_banks_financials`.\n2.  **Chọn các cột cần thiết:** Theo yêu cầu, chúng ta cần lấy các cột:\n    *   `bank_code` (mã ngân hàng)\n    *   `year` (năm)\n    *   `profits_after_tax` (lợi nhuận sau thuế)\n    *   `liquid_assets_over_total_assets` (tỷ lệ tài sản thanh khoản trên tổng tài sản)\n3.  **Xác định điều kiện lọc:** Câu hỏi yêu cầu dữ liệu từ năm 2005 trở đi, nên ta sử dụng mệnh đề `WHERE year >= 2005`.\n4.  **Sắp xếp dữ liệu:** Yêu cầu sắp xếp theo lợi nhuận sau thuế từ cao xuống thấp, vì vậy ta sử dụng `ORDER BY profits_after_tax DESC`.\n\n**Câu lệnh SQL:**\n\n```sql\nSELECT \n    bank_code, \n    year, \n    profits_after_tax, \n    liquid_assets_over_total_assets\nFROM vn_banks_financials\nWHERE year >= 2005\nORDER BY profits_after_tax DESC;\n```",
+    "sql": "SELECT \n    bank_code, \n    year, \n    profits_after_tax, \n    liquid_assets_over_total_assets\nFROM vn_banks_financials\nWHERE year >= 2005\nORDER BY profits_after_tax DESC;"
+  },
+  {
+    "db_id": "student_performance",
+    "sql_complexity": "Simple",
+    "question_style": "Metaphorical",
+    "question": "Hãy liệt kê mã số, giới tính và điểm số môn toán của những \"đóa hoa núi rừng\" có thành tích học tập xuất sắc nhất.",
+    "external_knowledge": "'đóa hoa núi rừng' là cách gọi ẩn dụ cho các học sinh sinh sống tại khu vực miền núi (residential_area = 'Mountainous'); 'thành tích học tập xuất sắc nhất' ám chỉ việc sắp xếp điểm môn toán theo thứ tự giảm dần (ORDER BY math DESC).",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n**Quy trình phân tích:**\n\n1.  **Xác định mục tiêu:** Cần truy xuất ba cột thông tin là `student_id` (mã số), `gender` (giới tính) và `math` (điểm toán) từ bảng `student_performance`.\n2.  **Lọc dữ liệu:** Dựa trên định nghĩa \"đóa hoa núi rừng\", chúng ta cần áp dụng điều kiện lọc `residential_area = 'Mountainous'` trong mệnh đề `WHERE`.\n3.  **Sắp xếp:** Để tìm các học sinh có \"thành tích học tập xuất sắc nhất\" ở môn toán, chúng ta sử dụng mệnh đề `ORDER BY math DESC` để đưa những điểm số cao nhất lên đầu danh sách.\n4.  **Kết luận:** Truy vấn này sẽ liệt kê đầy đủ các học sinh thuộc khu vực miền núi, được sắp xếp theo điểm toán từ cao xuống thấp.\n\n**Truy vấn SQL:**\n\n```sql\nSELECT student_id, gender, math\nFROM student_performance\nWHERE residential_area = 'Mountainous'\nORDER BY math DESC;\n```",
+    "sql": "SELECT student_id, gender, math\nFROM student_performance\nWHERE residential_area = 'Mountainous'\nORDER BY math DESC;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Simple",
+    "question_style": "Formal",
+    "question": "Hãy liệt kê tên các dịch vụ công thuộc lĩnh vực 'Hoạt động khoa học và công nghệ' do 'UBND Thành phố Hải Phòng' công bố.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định bảng dữ liệu**: Dữ liệu cần thiết nằm trong bảng `hp_public_services`.\n2.  **Xác định cột mục tiêu**: Câu hỏi yêu cầu liệt kê \"tên các dịch vụ công\", nên ta cần chọn cột `ten`.\n3.  **Xác định các điều kiện lọc (Mệnh đề WHERE)**:\n    *   Điều kiện 1: \"lĩnh vực 'Hoạt động khoa học và công nghệ'\", tương ứng với cột `linh_vuc = 'Hoạt động khoa học và công nghệ'`.\n    *   Điều kiện 2: \"do 'UBND Thành phố Hải Phòng' công bố\", tương ứng với cột `co_quan_cong_bo = 'UBND Thành phố Hải Phòng'`.\n4.  **Kết hợp điều kiện**: Sử dụng toán tử `AND` để kết hợp cả hai điều kiện trên vì yêu cầu cần thỏa mãn đồng thời cả hai tiêu chí.\n\n### Truy vấn SQL:\n\n```sql\nSELECT ten\nFROM hp_public_services\nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ'\n  AND co_quan_cong_bo = 'UBND Thành phố Hải Phòng';\n```",
+    "sql": "SELECT ten\nFROM hp_public_services\nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ'\n  AND co_quan_cong_bo = 'UBND Thành phố Hải Phòng';"
+  },
+  {
+    "db_id": "wb_procurement_contracts",
+    "sql_complexity": "Simple",
+    "question_style": "Colloquial",
+    "question": "Chào bạn! Bạn có thể giúp mình tính xem mức giá trị trung bình của các hợp đồng cung cấp hàng hóa (GOODS) trong lĩnh vực năng lượng và khai khoáng (Energy and Extractives) là khoảng bao nhiêu USD không?",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước phân tích:\n\n1.  **Xác định bảng dữ liệu**: Dữ liệu cần thiết nằm trong bảng `wb_procurement_contracts`.\n2.  **Xác định mục tiêu**: Tính giá trị trung bình (`AVG`) của cột `supplier_contract_amount_usd`.\n3.  **Xác định điều kiện lọc (WHERE clause)**:\n    *   Loại hình mua sắm (`procurement_category`) phải là 'GOODS'.\n    *   Lĩnh vực dự án (`project_global_practice`) phải là 'Energy and Extractives'.\n4.  **Kết hợp**: Sử dụng hàm `AVG()` kết hợp với các điều kiện lọc đã xác định để có kết quả chính xác.\n\n### Truy vấn SQL:\n\n```sql\nSELECT AVG(supplier_contract_amount_usd)\nFROM wb_procurement_contracts\nWHERE procurement_category = 'GOODS'\n  AND project_global_practice = 'Energy and Extractives';\n```",
+    "sql": "SELECT AVG(supplier_contract_amount_usd)\nFROM wb_procurement_contracts\nWHERE procurement_category = 'GOODS'\n  AND project_global_practice = 'Energy and Extractives';"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Simple",
+    "question_style": "Colloquial",
+    "question": "Chào bạn! Bạn có thể liệt kê giúp mình mã, tên và lĩnh vực của các dịch vụ công thuộc lĩnh vực \"Hoạt động khoa học và công nghệ\" mà do UBND Thành phố Hải Phòng công bố được không?",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   Mục tiêu: Lấy thông tin mã (`ma`), tên (`ten`) và lĩnh vực (`linh_vuc`) của các dịch vụ công.\n    *   Điều kiện 1: Lĩnh vực phải là \"Hoạt động khoa học và công nghệ\".\n    *   Điều kiện 2: Cơ quan công bố phải là \"UBND Thành phố Hải Phòng\".\n\n2.  **Xác định bảng dữ liệu:**\n    *   Dựa vào schema được cung cấp, bảng `hp_public_services` chứa tất cả các cột cần thiết (`ma`, `ten`, `linh_vuc`, `co_quan_cong_bo`).\n\n3.  **Xây dựng truy vấn:**\n    *   Sử dụng lệnh `SELECT` để chỉ định các cột cần lấy: `ma`, `ten`, `linh_vuc`.\n    *   Sử dụng mệnh đề `FROM` với bảng `hp_public_services`.\n    *   Sử dụng mệnh đề `WHERE` để áp đặt hai điều kiện lọc bằng toán tử `AND`.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    ma, \n    ten, \n    linh_vuc\nFROM hp_public_services\nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ'\n  AND co_quan_cong_bo = 'UBND Thành phố Hải Phòng';\n```",
+    "sql": "SELECT \n    ma, \n    ten, \n    linh_vuc\nFROM hp_public_services\nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ'\n  AND co_quan_cong_bo = 'UBND Thành phố Hải Phòng';"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Moderate",
+    "question_style": "Multi-turn Dialogue",
+    "question": "**User**: Tôi muốn phân tích dữ liệu về các nhà máy điện tại Việt Nam.\n**Assistant**: Bạn muốn tìm hiểu thông tin cụ thể nào về các nhà máy điện này?\n**User**: Tôi cần số liệu thống kê về loại nhiên liệu và công suất trung bình theo từng thập kỷ vận hành.\n**Assistant**: Được ạ, bạn có muốn giới hạn loại nhiên liệu hay mức công suất cụ thể nào không?\n**User**: Vâng, hãy lọc các loại nhiên liệu là Thủy điện, Điện mặt trời, Điện gió và Nhiệt điện than. Đồng thời, chỉ hiển thị những nhóm có công suất trung bình trên 50 MW.\n**Assistant**: Tôi đã hiểu. Bạn có muốn sắp xếp kết quả theo thứ tự nào không?\n**User**: Hãy sắp xếp theo thập kỷ mới nhất trở về trước, và trong cùng một thập kỷ thì hiển thị nhóm có công suất trung bình cao nhất lên đầu.\n**Assistant**: Tôi đã hiểu yêu cầu của bạn. Tôi sẽ giúp bạn trích xuất dữ liệu này từ bảng power_plants_vn.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định thập kỷ**: Sử dụng phép toán chia nguyên `(commissioning_year / 10) * 10` để nhóm các năm vận hành thành từng thập kỷ (ví dụ: 2010, 2020).\n2.  **Lọc dữ liệu**: Sử dụng mệnh đề `WHERE` để giới hạn `std_fuel` trong các loại: 'Hydro' (Thủy điện), 'Solar' (Điện mặt trời), 'Wind' (Điện gió), và 'Coal' (Nhiệt điện than).\n3.  **Nhóm dữ liệu**: Sử dụng `GROUP BY` theo `std_fuel` và thập kỷ đã tính toán để tính công suất trung bình (`AVG(capacity_mw)`).\n4.  **Lọc kết quả nhóm**: Sử dụng `HAVING` để chỉ giữ lại những nhóm có công suất trung bình lớn hơn 50 MW.\n5.  **Sắp xếp**: Sử dụng `ORDER BY` theo thập kỷ (`decade`) giảm dần, và sau đó là công suất trung bình (`average_capacity`) giảm dần theo yêu cầu.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    std_fuel, \n    (commissioning_year / 10) * 10 AS decade, \n    AVG(capacity_mw) AS average_capacity\nFROM power_plants_vn\nWHERE std_fuel IN ('Hydro', 'Solar', 'Wind', 'Coal')\n  AND commissioning_year IS NOT NULL\nGROUP BY std_fuel, decade\nHAVING AVG(capacity_mw) > 50\nORDER BY decade DESC, average_capacity DESC;\n```",
+    "sql": "SELECT \n    std_fuel, \n    (commissioning_year / 10) * 10 AS decade, \n    AVG(capacity_mw) AS average_capacity\nFROM power_plants_vn\nWHERE std_fuel IN ('Hydro', 'Solar', 'Wind', 'Coal')\n  AND commissioning_year IS NOT NULL\nGROUP BY std_fuel, decade\nHAVING AVG(capacity_mw) > 50\nORDER BY decade DESC, average_capacity DESC;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Moderate",
+    "question_style": "Colloquial",
+    "question": "Chào bạn, bạn có thể giúp mình liệt kê các loại nhiên liệu tiêu chuẩn mà các nhà máy điện sử dụng chúng có công suất trung bình trên 100 MW không? Cảm ơn nhé!",
+    "external_knowledge": "",
+    "cot": "Để giải quyết yêu cầu truy vấn danh sách các loại nhiên liệu mà các nhà máy điện có công suất trung bình trên 100 MW sử dụng, tôi thực hiện các bước phân tích sau:\n\n1.  **Phân tích yêu cầu:** Chúng ta cần nhóm dữ liệu dựa trên loại nhiên liệu (`std_fuel`), tính toán giá trị trung bình của công suất (`capacity_mw`) cho từng nhóm, và lọc ra những nhóm có giá trị trung bình này lớn hơn 100.\n2.  **Xác định bảng:** Dữ liệu nằm trong bảng `power_plants_vn`.\n3.  **Thực hiện nhóm:** Sử dụng mệnh đề `GROUP BY std_fuel` để gom các nhà máy theo từng loại nhiên liệu.\n4.  **Lọc dữ liệu:** Sử dụng mệnh đề `HAVING` để áp dụng điều kiện lọc trên hàm tổng hợp `AVG(capacity_mw) > 100`.\n5.  **Chọn cột:** Chỉ cần chọn cột `std_fuel` để liệt kê loại nhiên liệu.\n\nDưới đây là câu lệnh SQL tối ưu cho yêu cầu của bạn:\n\n```sql\nSELECT std_fuel\nFROM power_plants_vn\nGROUP BY std_fuel\nHAVING AVG(capacity_mw) > 100;\n```",
+    "sql": "SELECT std_fuel\nFROM power_plants_vn\nGROUP BY std_fuel\nHAVING AVG(capacity_mw) > 100;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Moderate",
+    "question_style": "Vague",
+    "question": "Hãy liệt kê tên các lĩnh vực mà có chỉ số thứ tự trung bình của các dịch vụ công thuộc nhóm đó là các lĩnh vực có độ ưu tiên cao.",
+    "external_knowledge": "'Lĩnh vực có độ ưu tiên cao' được định nghĩa là các nhóm lĩnh vực có giá trị trung bình của số thứ tự (stt) lớn hơn 1.",
+    "cot": "Dưới đây là các bước phân tích và giải quyết truy vấn SQL:\n\n**Các bước suy luận:**\n\n1.  **Phân tích yêu cầu:**\n    *   Mục tiêu: Tìm tên các lĩnh vực (`linh_vuc`) thỏa mãn điều kiện \"có độ ưu tiên cao\".\n    *   Định nghĩa: \"Độ ưu tiên cao\" được xác định khi giá trị trung bình của cột `stt` trong nhóm lĩnh vực đó lớn hơn 1.\n\n2.  **Xây dựng truy vấn:**\n    *   Sử dụng bảng `hp_public_services`.\n    *   Thực hiện nhóm dữ liệu theo cột `linh_vuc` bằng mệnh đề `GROUP BY`.\n    *   Sử dụng hàm tổng hợp `AVG(stt)` để tính giá trị trung bình cho từng nhóm.\n    *   Sử dụng mệnh đề `HAVING` để lọc các nhóm có giá trị trung bình lớn hơn 1 theo đúng định nghĩa.\n    *   Chọn cột `linh_vuc` trong kết quả cuối cùng.\n\n3.  **Tối ưu hóa:**\n    *   Truy vấn không yêu cầu các hàm phức tạp hay điều kiện bổ sung, chỉ cần nhóm và lọc trên cột `stt` và `linh_vuc`.\n\n**Truy vấn SQL:**\n\n```sql\nSELECT linh_vuc\nFROM hp_public_services\nGROUP BY linh_vuc\nHAVING AVG(stt) > 1;\n```",
+    "sql": "SELECT linh_vuc\nFROM hp_public_services\nGROUP BY linh_vuc\nHAVING AVG(stt) > 1;"
+  },
+  {
+    "db_id": "wb_procurement_contracts",
+    "sql_complexity": "Moderate",
+    "question_style": "Multi-turn Dialogue",
+    "question": "**User**: Tôi muốn tìm hiểu về thông tin các nhà cung cấp trong cơ sở dữ liệu hợp đồng mua sắm.\n**Assistant**: Vâng, bạn muốn tìm thông tin cụ thể nào về các nhà cung cấp đó?\n**User**: Tôi cần danh sách các nhà cung cấp có hoạt động tại khu vực 'EAST ASIA AND PACIFIC'.\n**Assistant**: Được ạ. Bạn có muốn lọc thêm dựa trên giá trị hợp đồng của họ không?\n**User**: Có, hãy liệt kê những nhà cung cấp nào có tổng giá trị hợp đồng tại khu vực đó lớn hơn 500.000 USD.\n**Assistant**: Bạn có cần thêm thông tin gì khác về các nhà cung cấp này không?\n**User**: Không, chỉ cần tên nhà cung cấp là đủ.\n**Assistant**: OK, tôi sẽ giúp bạn truy xuất danh sách các nhà cung cấp thỏa mãn điều kiện đó.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định bảng cần thiết**: Dữ liệu nằm trong bảng `wb_procurement_contracts`.\n2.  **Xác định cột cần truy xuất**: Câu hỏi yêu cầu danh sách tên nhà cung cấp, tương ứng với cột `supplier`.\n3.  **Xác định điều kiện lọc (WHERE)**: Cần lọc các bản ghi có giá trị tại cột `region` bằng với chuỗi `'EAST ASIA AND PACIFIC'`.\n4.  **Xác định điều kiện nhóm (GROUP BY)**: Vì cần tính tổng giá trị hợp đồng cho từng nhà cung cấp, chúng ta cần nhóm dữ liệu theo cột `supplier`.\n5.  **Xác định điều kiện lọc sau nhóm (HAVING)**: Sử dụng hàm `SUM()` trên cột `supplier_contract_amount_usd` và thiết lập điều kiện lớn hơn `500000`.\n6.  **Kết quả**: Truy vấn sẽ trả về danh sách các nhà cung cấp thỏa mãn đồng thời điều kiện về khu vực và tổng giá trị hợp đồng.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT supplier\nFROM wb_procurement_contracts\nWHERE region = 'EAST ASIA AND PACIFIC'\nGROUP BY supplier\nHAVING SUM(supplier_contract_amount_usd) > 500000;\n```",
+    "sql": "SELECT supplier\nFROM wb_procurement_contracts\nWHERE region = 'EAST ASIA AND PACIFIC'\nGROUP BY supplier\nHAVING SUM(supplier_contract_amount_usd) > 500000;"
+  },
+  {
+    "db_id": "facility_announcements_2025",
+    "sql_complexity": "Highly Complex",
+    "question_style": "Multi-turn Dialogue",
+    "question": "**User**: Tôi cần xem danh sách các cơ sở từ bảng thông báo năm 2025.\n**Assistant**: Bạn muốn biết những thông tin cụ thể nào về các cơ sở đó?\n**User**: Tôi muốn biết tên cơ sở và trạng thái hoạt động của chúng.\n**Assistant**: Bạn có muốn tôi phân loại trạng thái đó dựa trên các cột công bố mới, công bố lại hay ngừng hoạt động không?\n**User**: Đúng vậy, hãy phân loại rõ ràng và kèm theo thông tin về phiên bản hệ thống SQLite đang chạy nhé.\n**Assistant**: Được thôi. Bạn có muốn sắp xếp danh sách này theo thứ tự nào không?\n**User**: Hãy sắp xếp theo thứ tự ưu tiên dựa trên số lượng tích lũy của từng loại trạng thái từ cao xuống thấp.\n**Assistant**: Tôi đã hiểu yêu cầu của bạn. Tôi sẽ truy vấn tên cơ sở, kết hợp trạng thái hoạt động và phiên bản SQLite, sau đó sắp xếp theo số lượng lũy kế giảm dần. Bạn có cần thêm điều kiện gì khác không?\n**User**: Không, như vậy là đủ rồi.\n**Assistant**: Được rồi, tôi sẽ thực hiện truy vấn cho bạn.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và câu lệnh SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định yêu cầu:** Người dùng muốn lấy tên cơ sở (`ten_co_so`) và trạng thái hoạt động. Trạng thái hoạt động được phân loại dựa trên các cột `cong_bo_moi`, `cong_bo_lai`, và `dung_hoat_dong`.\n2.  **Xử lý logic trạng thái:** Sử dụng biểu thức `CASE` để xác định trạng thái cho từng dòng.\n3.  **Tính toán số lượng lũy kế:** Để sắp xếp theo số lượng tích lũy của từng loại trạng thái, ta sử dụng hàm cửa sổ `COUNT(*) OVER` phân đoạn theo trạng thái.\n4.  **Thông tin hệ thống:** Sử dụng hàm `sqlite_version()` để lấy phiên bản của hệ thống SQLite.\n5.  **Kết hợp và sắp xếp:** Kết hợp các thông tin trên và thực hiện sắp xếp theo giá trị lũy kế đã tính toán theo thứ tự giảm dần (`DESC`).\n\n### Câu lệnh SQL:\n\n```sql\nSELECT \n    ten_co_so,\n    CASE \n        WHEN cong_bo_moi = 1 THEN 'Cong bo moi'\n        WHEN cong_bo_lai = 1 THEN 'Cong bo lai'\n        WHEN dung_hoat_dong = 1 THEN 'Dung hoat dong'\n        ELSE 'Khac'\n    END AS trang_thai_hoat_dong,\n    sqlite_version() AS sqlite_version,\n    COUNT(*) OVER (\n        PARTITION BY (\n            CASE \n                WHEN cong_bo_moi = 1 THEN 'Cong bo moi'\n                WHEN cong_bo_lai = 1 THEN 'Cong bo lai'\n                WHEN dung_hoat_dong = 1 THEN 'Dung hoat dong'\n                ELSE 'Khac'\n            END\n        ) \n        ORDER BY stt\n    ) AS so_luong_luy_ke\nFROM facility_announcements_2025\nORDER BY so_luong_luy_ke DESC;\n```",
+    "sql": "SELECT \n    ten_co_so,\n    CASE \n        WHEN cong_bo_moi = 1 THEN 'Cong bo moi'\n        WHEN cong_bo_lai = 1 THEN 'Cong bo lai'\n        WHEN dung_hoat_dong = 1 THEN 'Dung hoat dong'\n        ELSE 'Khac'\n    END AS trang_thai_hoat_dong,\n    sqlite_version() AS sqlite_version,\n    COUNT(*) OVER (\n        PARTITION BY (\n            CASE \n                WHEN cong_bo_moi = 1 THEN 'Cong bo moi'\n                WHEN cong_bo_lai = 1 THEN 'Cong bo lai'\n                WHEN dung_hoat_dong = 1 THEN 'Dung hoat dong'\n                ELSE 'Khac'\n            END\n        ) \n        ORDER BY stt\n    ) AS so_luong_luy_ke\nFROM facility_announcements_2025\nORDER BY so_luong_luy_ke DESC;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Moderate",
+    "question_style": "Colloquial",
+    "question": "Này, bạn có thể liệt kê giúp mình tên các thủ tục hành chính của UBND Thành phố Hải Phòng theo từng lĩnh vực được không? Lưu ý là chỉ liệt kê những lĩnh vực nào có từ 2 thủ tục trở lên thôi nhé, và nhớ nối tên các thủ tục lại bằng dấu \"|\" giúp mình nha!",
+    "external_knowledge": "",
+    "cot": "Để giải quyết yêu cầu này, chúng ta sẽ thực hiện theo các bước suy luận sau:\n\n1.  **Phân tích yêu cầu:**\n    *   Cần lấy danh sách tên các thủ tục (`ten`) theo từng lĩnh vực (`linh_vuc`).\n    *   Điều kiện lọc: Cơ quan công bố phải là 'UBND Thành phố Hải Phòng'.\n    *   Điều kiện nhóm: Chỉ lấy các lĩnh vực có từ 2 thủ tục trở lên (`COUNT(*) > 1`).\n    *   Định dạng đầu ra: Nối tên các thủ tục bằng dấu phân cách `\" | \"`.\n\n2.  **Xây dựng truy vấn:**\n    *   Sử dụng hàm `GROUP_CONCAT(ten, ' | ')` để nối chuỗi các tên thủ tục theo nhóm.\n    *   Sử dụng `GROUP BY linh_vuc` để phân loại dữ liệu theo từng lĩnh vực.\n    *   Sử dụng `WHERE co_quan_cong_bo = 'UBND Thành phố Hải Phòng'` để lọc đúng cơ quan theo yêu cầu.\n    *   Sử dụng `HAVING COUNT(*) > 1` để lọc ra các lĩnh vực có nhiều hơn hoặc bằng 2 thủ tục.\n    *   Để kết quả rõ ràng hơn, nên hiển thị thêm cột `linh_vuc`.\n\n3.  **Viết câu lệnh SQL:**\n\n```sql\nSELECT \n    linh_vuc, \n    GROUP_CONCAT(ten, ' | ') AS danh_sach_thu_tuc\nFROM hp_public_services\nWHERE co_quan_cong_bo = 'UBND Thành phố Hải Phòng'\nGROUP BY linh_vuc\nHAVING COUNT(*) > 1;\n```",
+    "sql": "SELECT \n    linh_vuc, \n    GROUP_CONCAT(ten, ' | ') AS danh_sach_thu_tuc\nFROM hp_public_services\nWHERE co_quan_cong_bo = 'UBND Thành phố Hải Phòng'\nGROUP BY linh_vuc\nHAVING COUNT(*) > 1;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Moderate",
+    "question_style": "Descriptive",
+    "question": "Hãy liệt kê tên các loại nhiên liệu tiêu chuẩn mà tại đó logarit của công suất trung bình (tính theo MW) của các nhà máy điện sử dụng loại nhiên liệu đó lớn hơn 1.5.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   Cần liệt kê `std_fuel` (tên các loại nhiên liệu).\n    *   Cần tính giá trị trung bình của `capacity_mw` cho từng loại nhiên liệu (`GROUP BY std_fuel`).\n    *   Cần tính logarit của giá trị trung bình đó. Trong SQLite, hàm tính logarit tự nhiên là `LOG()`.\n    *   Điều kiện lọc là kết quả của hàm logarit phải lớn hơn 1.5. Vì đây là điều kiện trên giá trị đã tổng hợp, ta sử dụng mệnh đề `HAVING`.\n\n2.  **Đánh giá hàm toán học:**\n    *   SQLite hỗ trợ hàm `LOG(x)` để tính logarit tự nhiên. Do đó, biểu thức `LOG(AVG(capacity_mw)) > 1.5` là chính xác và phù hợp với yêu cầu.\n\n3.  **Xây dựng truy vấn:**\n    *   Chọn cột `std_fuel` từ bảng `power_plants_vn`.\n    *   Nhóm dữ liệu theo `std_fuel`.\n    *   Sử dụng `HAVING` để áp dụng điều kiện lọc trên giá trị trung bình đã tính toán.\n\n### Truy vấn SQL:\n\n```sql\nSELECT std_fuel\nFROM power_plants_vn\nGROUP BY std_fuel\nHAVING LOG(AVG(capacity_mw)) > 1.5;\n```",
+    "sql": "SELECT std_fuel\nFROM power_plants_vn\nGROUP BY std_fuel\nHAVING LOG(AVG(capacity_mw)) > 1.5;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Moderate",
+    "question_style": "Metaphorical",
+    "question": "Hãy liệt kê những \"nguồn năng lượng chứa đựng chữ cái o\" nào đang đóng vai trò là những \"gã khổng lồ\" với công suất trung bình vượt ngưỡng 100 MW?",
+    "external_knowledge": "'Nguồn năng lượng chứa đựng chữ cái o' đề cập đến các loại nhiên liệu có tên chứa ký tự 'o' (ví dụ: coal, oil, wood); 'gã khổng lồ' ám chỉ các nhà máy có công suất trung bình (AVG(capacity_mw)) lớn hơn 100 MW.",
+    "cot": "Dưới đây là các bước phân tích và giải quyết truy vấn SQL cho yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   Mục tiêu: Tìm các loại nhiên liệu (`std_fuel`) thỏa mãn hai điều kiện.\n    *   Điều kiện 1: Tên nhiên liệu phải chứa ký tự 'o'. Trong SQL, ta có thể sử dụng toán tử `LIKE '%o%'` hoặc hàm `INSTR`.\n    *   Điều kiện 2: Công suất trung bình (`AVG(capacity_mw)`) của các nhà máy sử dụng loại nhiên liệu đó phải lớn hơn 100 MW.\n    *   Thao tác nhóm: Cần gom nhóm dữ liệu theo `std_fuel` để tính toán giá trị trung bình cho từng loại.\n\n2.  **Xây dựng truy vấn:**\n    *   Chọn cột `std_fuel` từ bảng `power_plants_vn`.\n    *   Sử dụng `GROUP BY std_fuel` để phân loại theo nhiên liệu.\n    *   Sử dụng điều kiện `HAVING` để lọc các nhóm có `AVG(capacity_mw) > 100`.\n    *   Sử dụng `WHERE std_fuel LIKE '%o%'` để lọc các tên nhiên liệu có chứa chữ 'o'.\n\n3.  **Kiểm tra và hoàn thiện:**\n    *   Truy vấn đảm bảo tính chính xác theo các điều kiện logic đã nêu.\n    *   Sử dụng toán tử `LIKE` là cách tiếp cận phổ biến và dễ hiểu nhất để tìm kiếm ký tự trong chuỗi.\n\n### Truy vấn SQL:\n\n```sql\nSELECT std_fuel\nFROM power_plants_vn\nWHERE std_fuel LIKE '%o%'\nGROUP BY std_fuel\nHAVING AVG(capacity_mw) > 100;\n```",
+    "sql": "SELECT std_fuel\nFROM power_plants_vn\nWHERE std_fuel LIKE '%o%'\nGROUP BY std_fuel\nHAVING AVG(capacity_mw) > 100;"
+  },
+  {
+    "db_id": "wb_procurement_contracts",
+    "sql_complexity": "Moderate",
+    "question_style": "Interrogative",
+    "question": "Bạn có thể cho biết những quốc gia đi vay nào có số lượng hợp đồng mua sắm lớn hơn 10 không?",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để trả lời câu hỏi của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định bảng dữ liệu**: Dữ liệu cần thiết nằm trong bảng `wb_procurement_contracts`.\n2.  **Xác định cột mục tiêu**: Cột cần lấy ra là `borrower_country` (quốc gia đi vay).\n3.  **Xác định điều kiện**:\n    *   Chúng ta cần đếm số lượng hợp đồng cho mỗi quốc gia. Cột `wb_contract_number` là đại diện cho các hợp đồng, vì vậy chúng ta sẽ sử dụng hàm `COUNT(wb_contract_number)`.\n    *   Yêu cầu là \"số lượng lớn hơn 10\", nên cần sử dụng mệnh đề `GROUP BY` theo `borrower_country` kết hợp với mệnh đề lọc `HAVING` để so sánh kết quả đếm với 10.\n4.  **Tổng hợp truy vấn**: Nhóm dữ liệu theo quốc gia, đếm số lượng bản ghi và lọc các nhóm có số lượng > 10.\n\n### Truy vấn SQL:\n\n```sql\nSELECT\n  borrower_country\nFROM wb_procurement_contracts\nGROUP BY\n  borrower_country\nHAVING\n  COUNT(wb_contract_number) > 10;\n```",
+    "sql": "SELECT\n  borrower_country\nFROM wb_procurement_contracts\nGROUP BY\n  borrower_country\nHAVING\n  COUNT(wb_contract_number) > 10;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Simple",
+    "question_style": "Colloquial",
+    "question": "Này, bạn có thể liệt kê giúp mình tên các dịch vụ thuộc lĩnh vực \"Hoạt động khoa học và công nghệ\" không? Với mỗi dịch vụ đó, hãy cho mình biết cả giá trị phân phối tích lũy dựa trên số thứ tự của chúng nữa nhé!",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   Cần truy xuất cột `ten` từ bảng `hp_public_services`.\n    *   Điều kiện lọc: Cột `linh_vuc` phải có giá trị là \"Hoạt động khoa học và công nghệ\".\n    *   Yêu cầu bổ sung: Tính giá trị phân phối tích lũy (cumulative distribution) dựa trên số thứ tự (`stt`).\n2.  **Chọn hàm SQL:**\n    *   Để tính giá trị phân phối tích lũy, hàm cửa sổ `CUME_DIST()` là lựa chọn chính xác và tối ưu nhất trong SQL.\n    *   Cú pháp yêu cầu `OVER (ORDER BY stt)` để thực hiện tính toán dựa trên thứ tự của cột `stt`.\n3.  **Xây dựng truy vấn:**\n    *   Chọn các cột cần thiết: `ten`.\n    *   Sử dụng `CUME_DIST() OVER (ORDER BY stt)` để tạo cột tính toán.\n    *   Sử dụng mệnh đề `WHERE` để lọc dữ liệu theo lĩnh vực đã chỉ định.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT \n    ten, \n    CUME_DIST() OVER (ORDER BY stt) AS cumulative_distribution\nFROM hp_public_services\nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ';\n```",
+    "sql": "SELECT \n    ten, \n    CUME_DIST() OVER (ORDER BY stt) AS cumulative_distribution\nFROM hp_public_services\nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ';"
+  },
+  {
+    "db_id": "danang_hsg_list",
+    "sql_complexity": "Moderate",
+    "question_style": "Multi-turn Dialogue",
+    "question": "**User**: Tôi muốn tìm hiểu thông tin về các trường học trong danh sách học sinh giỏi Đà Nẵng.\n**Assistant**: Vâng, bạn muốn tìm hiểu thông tin cụ thể gì về các trường học này?\n**User**: Tôi muốn biết trường nào có kết quả tốt nhất trong môn Toán.\n**Assistant**: Bạn có tiêu chí cụ thể nào để đánh giá 'kết quả tốt nhất' không? Chẳng hạn như số lượng học sinh tham gia hay điểm số?\n**User**: Hãy tìm trường nào có ít nhất 2 học sinh tham gia thi môn Toán và có điểm thấp nhất của học sinh trong trường là cao nhất.\n**Assistant**: Được, tôi sẽ giúp bạn lọc ra trường duy nhất thỏa mãn các điều kiện đó. Bạn có cần thêm thông tin gì khác không?\n**User**: Không, thế là đủ rồi.\n**Assistant**: OK, tôi sẽ giúp bạn chuyển yêu cầu này thành câu lệnh SQL.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định bảng dữ liệu**: Dữ liệu nằm trong bảng `danang_hsg_list`.\n2.  **Lọc dữ liệu**: Cần lọc các bản ghi có `mon_thi` là 'Toán'.\n3.  **Nhóm dữ liệu**: Nhóm kết quả theo `truong` để thực hiện tính toán trên từng trường.\n4.  **Điều kiện lọc nhóm**:\n    *   Sử dụng mệnh đề `HAVING` để đảm bảo mỗi trường có ít nhất 2 học sinh tham gia (`COUNT(sbd) >= 2`).\n5.  **Xác định tiêu chí \"kết quả tốt nhất\"**:\n    *   Yêu cầu là \"điểm thấp nhất của học sinh trong trường là cao nhất\". Điều này nghĩa là ta cần lấy giá trị `MIN(diem)` của từng trường, sau đó sắp xếp các giá trị này theo thứ tự giảm dần (`DESC`).\n6.  **Lấy kết quả**: Sử dụng `LIMIT 1` để chọn ra trường duy nhất đứng đầu danh sách sau khi đã sắp xếp.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT truong\nFROM danang_hsg_list\nWHERE mon_thi = 'Toán'\nGROUP BY truong\nHAVING COUNT(sbd) >= 2\nORDER BY MIN(diem) DESC\nLIMIT 1;\n```",
+    "sql": "SELECT truong\nFROM danang_hsg_list\nWHERE mon_thi = 'Toán'\nGROUP BY truong\nHAVING COUNT(sbd) >= 2\nORDER BY MIN(diem) DESC\nLIMIT 1;"
+  },
+  {
+    "db_id": "facility_announcements_2025",
+    "sql_complexity": "Complex",
+    "question_style": "Imperative",
+    "question": "Bạn có thể giúp tôi liệt kê tên của những cơ sở dẫn đầu về tổng số hoạt động (tổng công bố mới và công bố lại) tại từng địa phương cụ thể được không? Lưu ý là chỉ chọn những cơ sở có thứ hạng cao nhất trong khu vực đó và phải có tổng hoạt động lớn hơn 0 nhé!",
+    "external_knowledge": "",
+    "cot": "Để giải quyết yêu cầu này, chúng ta cần thực hiện các bước phân tích sau:\n\n1. **Xác định tổng hoạt động**: Tính tổng số hoạt động cho mỗi cơ sở bằng cách cộng `cong_bo_moi` và `cong_bo_lai`.\n2. **Phân loại theo địa phương**: Dựa vào cột `dia_chi` để xác định địa phương. Ở đây, ta giả định địa phương được xác định bởi phần sau dấu phẩy trong chuỗi `dia_chi` (hoặc toàn bộ `dia_chi` nếu không có dấu phẩy).\n3. **Xếp hạng**: Sử dụng hàm cửa sổ `ROW_NUMBER()` hoặc `RANK()` để xếp hạng các cơ sở trong từng địa phương dựa trên tổng hoạt động theo thứ tự giảm dần.\n4. **Lọc dữ liệu**: Chỉ lấy những cơ sở có thứ hạng là 1 (`region_rank = 1`) và đảm bảo tổng hoạt động lớn hơn 0.\n\nDưới đây là câu lệnh SQL thực hiện yêu cầu này:\n\n```sql\nWITH ActivityTotals AS (\n    SELECT \n        ten_co_so,\n        dia_chi,\n        (COALESCE(cong_bo_moi, 0) + COALESCE(cong_bo_lai, 0)) AS total_activity\n    FROM facility_announcements_2025\n),\nRankedFacilities AS (\n    SELECT \n        ten_co_so,\n        dia_chi,\n        total_activity,\n        RANK() OVER (PARTITION BY dia_chi ORDER BY total_activity DESC) as rnk\n    FROM ActivityTotals\n    WHERE total_activity > 0\n)\nSELECT \n    ten_co_so\nFROM RankedFacilities\nWHERE rnk = 1;\n```\n\n**Giải thích các bước:**\n- **ActivityTotals**: CTE đầu tiên dùng để tính tổng hoạt động cho từng cơ sở, sử dụng `COALESCE` để xử lý các giá trị `NULL` (nếu có) và đảm bảo phép cộng chính xác.\n- **RankedFacilities**: CTE thứ hai thực hiện xếp hạng (`RANK`) các cơ sở trong từng `dia_chi`. Việc sử dụng `RANK()` thay vì `ROW_NUMBER()` giúp xử lý trường hợp có nhiều cơ sở đồng hạng nhất trong cùng một địa phương.\n- **Kết quả cuối cùng**: Truy vấn chọn ra những `ten_co_so` có thứ hạng cao nhất (`rnk = 1`) với điều kiện `total_activity > 0`.",
+    "sql": "WITH ActivityTotals AS (\n    SELECT \n        ten_co_so,\n        dia_chi,\n        (COALESCE(cong_bo_moi, 0) + COALESCE(cong_bo_lai, 0)) AS total_activity\n    FROM facility_announcements_2025\n),\nRankedFacilities AS (\n    SELECT \n        ten_co_so,\n        dia_chi,\n        total_activity,\n        RANK() OVER (PARTITION BY dia_chi ORDER BY total_activity DESC) as rnk\n    FROM ActivityTotals\n    WHERE total_activity > 0\n)\nSELECT \n    ten_co_so\nFROM RankedFacilities\nWHERE rnk = 1;"
+  },
+  {
+    "db_id": "facility_announcements_2025",
+    "sql_complexity": "Highly Complex",
+    "question_style": "Vague",
+    "question": "Hãy liệt kê tên của những cơ sở có hiệu suất hoạt động vượt trội trong việc công bố thông tin.",
+    "external_knowledge": "'Hiệu suất hoạt động vượt trội' trong ngữ cảnh này được hiểu là tổng số lần công bố mới và công bố lại của cơ sở đó cao hơn mức trung bình của toàn bộ tập dữ liệu; 'Công bố thông tin' bao gồm hai loại là 'công bố mới' và 'công bố lại'.",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước phân tích:\n\n1.  **Xác định mục tiêu:** Tìm tên các cơ sở (`ten_co_so`) có tổng số lần công bố (`cong_bo_moi` + `cong_bo_lai`) lớn hơn mức trung bình cộng của toàn bộ tập dữ liệu.\n2.  **Tính tổng số lần công bố cho từng cơ sở:** Sử dụng biểu thức `(cong_bo_moi + cong_bo_lai)` cho mỗi dòng trong bảng `facility_announcements_2025`.\n3.  **Tính giá trị trung bình toàn cục:** Sử dụng truy vấn con hoặc `WITH` clause để tính giá trị trung bình của `(cong_bo_moi + cong_bo_lai)` trên toàn bộ bảng.\n4.  **Lọc dữ liệu:** So sánh tổng của từng cơ sở với giá trị trung bình đã tính ở bước 3 để chọn ra các cơ sở thỏa mãn điều kiện.\n5.  **Kết quả:** Trả về cột `ten_co_so` của các bản ghi thỏa mãn.\n\n### Truy vấn SQL:\n\n```sql\nWITH TotalActivity AS (\n    SELECT \n        ten_co_so,\n        (COALESCE(cong_bo_moi, 0) + COALESCE(cong_bo_lai, 0)) AS total_count\n    FROM facility_announcements_2025\n),\nAverageActivity AS (\n    SELECT AVG(total_count) AS avg_val\n    FROM TotalActivity\n)\nSELECT ten_co_so\nFROM TotalActivity, AverageActivity\nWHERE TotalActivity.total_count > AverageActivity.avg_val;\n```",
+    "sql": "WITH TotalActivity AS (\n    SELECT \n        ten_co_so,\n        (COALESCE(cong_bo_moi, 0) + COALESCE(cong_bo_lai, 0)) AS total_count\n    FROM facility_announcements_2025\n),\nAverageActivity AS (\n    SELECT AVG(total_count) AS avg_val\n    FROM TotalActivity\n)\nSELECT ten_co_so\nFROM TotalActivity, AverageActivity\nWHERE TotalActivity.total_count > AverageActivity.avg_val;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Simple",
+    "question_style": "Colloquial",
+    "question": "Chào bạn! Bạn có thể giúp mình liệt kê danh sách các nhà máy điện có công suất trên 100 MW được không? Mình muốn biết tên, loại nhiên liệu, công suất và cả năm bắt đầu vận hành của chúng nữa. Nhớ sắp xếp giúp mình theo thứ tự công suất từ lớn đến bé nhé!",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước thực hiện:\n\n1.  **Xác định bảng dữ liệu**: Dữ liệu nằm trong bảng `power_plants_vn`.\n2.  **Chọn các cột cần thiết**: Yêu cầu bao gồm tên nhà máy (`std_name`), loại nhiên liệu (`std_fuel`), công suất (`capacity_mw`) và năm bắt đầu vận hành (`commissioning_year`).\n3.  **Thiết lập điều kiện lọc**: Sử dụng mệnh đề `WHERE` để lọc các nhà máy có công suất (`capacity_mw`) lớn hơn 100 MW.\n4.  **Sắp xếp dữ liệu**: Sử dụng mệnh đề `ORDER BY` trên cột `capacity_mw` với từ khóa `DESC` để sắp xếp từ giá trị lớn nhất đến nhỏ nhất theo yêu cầu.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    std_name, \n    std_fuel, \n    capacity_mw, \n    commissioning_year\nFROM power_plants_vn\nWHERE capacity_mw > 100\nORDER BY capacity_mw DESC;\n```",
+    "sql": "SELECT \n    std_name, \n    std_fuel, \n    capacity_mw, \n    commissioning_year\nFROM power_plants_vn\nWHERE capacity_mw > 100\nORDER BY capacity_mw DESC;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Simple",
+    "question_style": "Interrogative",
+    "question": "Bạn có thể cho biết có bao nhiêu dịch vụ công thuộc lĩnh vực 'Hoạt động khoa học và công nghệ' không?",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và câu lệnh SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định mục tiêu:** Đếm tổng số dịch vụ công thỏa mãn điều kiện cụ thể.\n2.  **Chọn bảng:** Dữ liệu nằm trong bảng `hp_public_services`.\n3.  **Xác định điều kiện lọc:** Cột `linh_vuc` phải có giá trị là 'Hoạt động khoa học và công nghệ'.\n4.  **Hàm thực hiện:** Sử dụng hàm `COUNT(*)` để đếm số lượng bản ghi thỏa mãn điều kiện đã nêu.\n5.  **Xây dựng truy vấn:** Kết hợp các thành phần trên để tạo thành câu lệnh SQL hoàn chỉnh.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT COUNT(*) \nFROM hp_public_services \nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ';\n```",
+    "sql": "SELECT COUNT(*) \nFROM hp_public_services \nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ';"
+  },
+  {
+    "db_id": "facility_announcements_2025",
+    "sql_complexity": "Simple",
+    "question_style": "Colloquial",
+    "question": "Chào bạn! Bạn có thể xem giúp mình danh sách các cơ sở nào vừa có công bố mới trong năm 2025 không? Cho mình xin tên của mấy cơ sở đó nhé!",
+    "external_knowledge": "",
+    "cot": "Để giải quyết yêu cầu này, chúng ta sẽ thực hiện theo các bước sau:\n\n**Bước 1: Phân tích yêu cầu**\n- Người dùng muốn tìm danh sách tên các cơ sở có \"công bố mới\" trong năm 2025.\n- Dựa vào lược đồ bảng `facility_announcements_2025`, thông tin tên cơ sở nằm ở cột `ten_co_so`.\n- Trạng thái \"công bố mới\" được biểu thị bằng cột `cong_bo_moi` (giả định giá trị 1 tương ứng với có công bố mới).\n\n**Bước 2: Xây dựng truy vấn SQL**\n- Chọn cột `ten_co_so` từ bảng `facility_announcements_2025`.\n- Sử dụng điều kiện lọc `WHERE` để chọn các dòng có giá trị `cong_bo_moi = 1`.\n\n**Bước 3: Tối ưu hóa**\n- Truy vấn chỉ cần lấy cột tên cơ sở, không cần lấy toàn bộ các cột để giảm tải dữ liệu.\n- Không cần các hàm đặc biệt như `LIKELY` vì cấu trúc bảng đơn giản.\n\n```sql\nSELECT ten_co_so \nFROM facility_announcements_2025 \nWHERE cong_bo_moi = 1;\n```",
+    "sql": "SELECT ten_co_so \nFROM facility_announcements_2025 \nWHERE cong_bo_moi = 1;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Simple",
+    "question_style": "Colloquial",
+    "question": "Chào bạn! Bạn có thể liệt kê giúp mình tên và năm bắt đầu hoạt động của các nhà máy điện nào có công suất trên 100 MW không? Nhớ sắp xếp giúp mình theo thứ tự nhà máy mới nhất lên đầu danh sách nhé!",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và câu lệnh SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   Mục tiêu: Lấy thông tin về tên nhà máy (`std_name`) và năm bắt đầu hoạt động (`commissioning_year`).\n    *   Điều kiện lọc: Công suất (`capacity_mw`) phải lớn hơn 100 MW.\n    *   Sắp xếp: Theo thứ tự năm hoạt động giảm dần (để nhà máy mới nhất lên đầu danh sách), tương ứng với `commissioning_year DESC`.\n2.  **Chọn bảng:** Dữ liệu nằm trong bảng `power_plants_vn`.\n3.  **Xây dựng câu lệnh:**\n    *   `SELECT` các cột `std_name` và `commissioning_year`.\n    *   `FROM` bảng `power_plants_vn`.\n    *   `WHERE` điều kiện `capacity_mw > 100`.\n    *   `ORDER BY` cột `commissioning_year` với từ khóa `DESC` để lấy giá trị lớn nhất trước.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT std_name, commissioning_year\nFROM power_plants_vn\nWHERE capacity_mw > 100\nORDER BY commissioning_year DESC;\n```",
+    "sql": "SELECT std_name, commissioning_year\nFROM power_plants_vn\nWHERE capacity_mw > 100\nORDER BY commissioning_year DESC;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Simple",
+    "question_style": "Concise",
+    "question": "Tính công suất trung bình (MW) của các nhà máy thủy điện.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và câu lệnh SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định mục tiêu**: Câu hỏi yêu cầu tính giá trị trung bình của cột `capacity_mw`.\n2.  **Xác định bảng dữ liệu**: Bảng duy nhất có sẵn là `power_plants_vn`.\n3.  **Xác định điều kiện lọc**: Câu hỏi chỉ tập trung vào \"nhà máy thủy điện\", do đó cần lọc dữ liệu tại cột `std_fuel` với giá trị là 'Hydro'.\n4.  **Xác định hàm tính toán**: Sử dụng hàm `AVG()` trên cột `capacity_mw` để tính công suất trung bình.\n5.  **Xây dựng câu lệnh**: Kết hợp các thành phần trên vào cấu trúc `SELECT`, `FROM`, và `WHERE`.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT AVG(capacity_mw) \nFROM power_plants_vn \nWHERE std_fuel = 'Hydro';\n```",
+    "sql": "SELECT AVG(capacity_mw) \nFROM power_plants_vn \nWHERE std_fuel = 'Hydro';"
+  },
+  {
+    "db_id": "danang_hsg_list",
+    "sql_complexity": "Moderate",
+    "question_style": "Imperative",
+    "question": "Bạn có thể giúp tôi liệt kê danh sách tất cả các trường học có điểm trung bình của học sinh giỏi lớn hơn 6.0 không? Tôi rất cần thông tin này để đánh giá chất lượng học sinh của các trường!",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định bảng dữ liệu**: Dữ liệu cần thiết nằm trong bảng `danang_hsg_list`.\n2.  **Xác định mục tiêu**: Cần liệt kê tên các trường (`truong`) có điểm trung bình (`AVG(diem)`) của học sinh giỏi lớn hơn 6.0.\n3.  **Nhóm dữ liệu**: Vì yêu cầu tính điểm trung bình cho từng trường, chúng ta cần sử dụng mệnh đề `GROUP BY truong`.\n4.  **Lọc dữ liệu**: Sử dụng mệnh đề `HAVING` sau khi đã nhóm để lọc các trường có `AVG(diem) > 6.0`.\n5.  **Kết quả**: Truy vấn sẽ trả về danh sách các trường thỏa mãn điều kiện nêu trên.\n\n### Truy vấn SQL:\n\n```sql\nSELECT truong\nFROM danang_hsg_list\nGROUP BY truong\nHAVING AVG(diem) > 6.0;\n```",
+    "sql": "SELECT truong\nFROM danang_hsg_list\nGROUP BY truong\nHAVING AVG(diem) > 6.0;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Moderate",
+    "question_style": "Vague",
+    "question": "Hãy cung cấp thông tin về loại nhiên liệu, số lượng nhà máy, công suất trung bình, năm vận hành mới nhất và căn bậc hai của công suất trung bình cho những nhà máy điện hiện đại, được phân loại theo loại nhiên liệu.",
+    "external_knowledge": "'Nhà máy điện hiện đại' trong ngữ cảnh này được hiểu là các nhà máy có năm vận hành (commissioning_year) lớn hơn 2010.",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định bảng dữ liệu**: Dữ liệu cần thiết nằm trong bảng `power_plants_vn`.\n2.  **Lọc dữ liệu**: Theo yêu cầu \"nhà máy điện hiện đại\", ta cần lọc các bản ghi có `commissioning_year > 2010`.\n3.  **Phân nhóm**: Yêu cầu phân loại theo loại nhiên liệu, vì vậy ta sử dụng `GROUP BY std_fuel`.\n4.  **Các hàm tổng hợp**:\n    *   Số lượng nhà máy: Sử dụng `COUNT(std_name)`.\n    *   Công suất trung bình: Sử dụng `AVG(capacity_mw)`.\n    *   Năm vận hành mới nhất: Sử dụng `MAX(commissioning_year)`.\n    *   Căn bậc hai của công suất trung bình: Sử dụng hàm `SQRT()` bao quanh hàm `AVG(capacity_mw)`.\n5.  **Kết hợp**: Kết hợp các thành phần trên thành một truy vấn hoàn chỉnh.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    std_fuel, \n    COUNT(std_name) AS plant_count, \n    AVG(capacity_mw) AS average_capacity, \n    MAX(commissioning_year) AS latest_commissioning, \n    SQRT(AVG(capacity_mw)) AS sqrt_avg_capacity\nFROM power_plants_vn\nWHERE commissioning_year > 2010\nGROUP BY std_fuel;\n```",
+    "sql": "SELECT \n    std_fuel, \n    COUNT(std_name) AS plant_count, \n    AVG(capacity_mw) AS average_capacity, \n    MAX(commissioning_year) AS latest_commissioning, \n    SQRT(AVG(capacity_mw)) AS sqrt_avg_capacity\nFROM power_plants_vn\nWHERE commissioning_year > 2010\nGROUP BY std_fuel;"
+  },
+  {
+    "db_id": "vn_banks_financials",
+    "sql_complexity": "Moderate",
+    "question_style": "Descriptive",
+    "question": "Hãy liệt kê các mã ngân hàng có tổng tài sản lớn hơn 1.000.000 và có tỷ suất lợi nhuận trên vốn chủ sở hữu (returns over equity) trung bình lớn hơn 2.0.",
+    "external_knowledge": "",
+    "cot": "Để giải quyết yêu cầu này, tôi sẽ thực hiện các bước phân tích sau:\n\n1.  **Phân tích yêu cầu:**\n    *   Cần truy xuất `bank_code` từ bảng `vn_banks_financials`.\n    *   Điều kiện thứ nhất: `total_assets` phải lớn hơn 1.000.000.\n    *   Điều kiện thứ hai: Giá trị trung bình của `returns_over_equity` phải lớn hơn 2.0.\n    *   Vì cần tính giá trị trung bình theo từng ngân hàng, tôi sẽ sử dụng mệnh đề `GROUP BY` trên cột `bank_code` và mệnh đề `HAVING` để lọc kết quả dựa trên giá trị trung bình đó.\n\n2.  **Các bước thực hiện:**\n    *   Chọn cột `bank_code` từ bảng `vn_banks_financials`.\n    *   Sử dụng điều kiện lọc `WHERE total_assets > 1000000` để giới hạn các bản ghi trước khi nhóm.\n    *   Nhóm các bản ghi theo `bank_code` bằng `GROUP BY bank_code`.\n    *   Sử dụng `HAVING AVG(returns_over_equity) > 2.0` để áp dụng bộ lọc trên kết quả trung bình đã nhóm.\n\n3.  **Câu lệnh SQL:**\n\n```sql\nSELECT bank_code\nFROM vn_banks_financials\nWHERE total_assets > 1000000\nGROUP BY bank_code\nHAVING AVG(returns_over_equity) > 2.0;\n```",
+    "sql": "SELECT bank_code\nFROM vn_banks_financials\nWHERE total_assets > 1000000\nGROUP BY bank_code\nHAVING AVG(returns_over_equity) > 2.0;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Simple",
+    "question_style": "Formal",
+    "question": "Hãy liệt kê các loại nhiên liệu tiêu chuẩn (std_fuel) có công suất trung bình của các nhà máy điện lớn hơn 100 MW.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích mục tiêu**: Câu hỏi yêu cầu liệt kê các loại nhiên liệu (`std_fuel`) sao cho giá trị trung bình của công suất (`capacity_mw`) của các nhà máy điện sử dụng loại nhiên liệu đó phải lớn hơn 100 MW.\n2.  **Xác định bảng**: Dữ liệu nằm trong bảng `power_plants_vn`.\n3.  **Thực hiện nhóm dữ liệu**: Vì chúng ta cần tính giá trị trung bình theo từng loại nhiên liệu, ta sử dụng mệnh đề `GROUP BY std_fuel`.\n4.  **Tính toán và lọc**:\n    *   Sử dụng hàm tổng hợp `AVG(capacity_mw)` để tính công suất trung bình cho mỗi nhóm nhiên liệu.\n    *   Sử dụng mệnh đề `HAVING` để lọc kết quả với điều kiện `AVG(capacity_mw) > 100`.\n5.  **Kết quả**: Truy vấn sẽ trả về danh sách các giá trị `std_fuel` thỏa mãn điều kiện trên.\n\n### Truy vấn SQL:\n\n```sql\nSELECT std_fuel\nFROM power_plants_vn\nGROUP BY std_fuel\nHAVING AVG(capacity_mw) > 100;\n```",
+    "sql": "SELECT std_fuel\nFROM power_plants_vn\nGROUP BY std_fuel\nHAVING AVG(capacity_mw) > 100;"
+  },
+  {
+    "db_id": "danang_hsg_list",
+    "sql_complexity": "Moderate",
+    "question_style": "Descriptive",
+    "question": "Hãy liệt kê thông tin tổng hợp bao gồm tên trường, tên môn thi và điểm trung bình (được làm tròn đến 2 chữ số thập phân) cho tất cả các nhóm trường và môn thi có điểm trung bình lớn hơn 6.0, với định dạng là \"Tên trường - Tên môn thi - Điểm trung bình\".",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   Cần lấy thông tin từ bảng `danang_hsg_list`.\n    *   Nhóm dữ liệu theo `truong` và `mon_thi`.\n    *   Tính điểm trung bình (`AVG(diem)`) và làm tròn đến 2 chữ số thập phân (`ROUND(..., 2)`).\n    *   Lọc các nhóm có điểm trung bình lớn hơn 6.0 (`HAVING AVG(diem) > 6.0`).\n    *   Định dạng kết quả theo kiểu nối chuỗi: \"Tên trường - Tên môn thi - Điểm trung bình\".\n2.  **Xử lý kỹ thuật:**\n    *   Vì SQLite sử dụng toán tử `||` để nối chuỗi thay vì hàm `CONCAT_WS` như các hệ quản trị khác, tôi sẽ sử dụng `||` kết hợp với hàm `ROUND`.\n    *   Đảm bảo các giá trị được nhóm đúng theo trường và môn thi.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n  truong || ' - ' || mon_thi || ' - ' || ROUND(AVG(diem), 2) AS school_subject_performance\nFROM danang_hsg_list\nGROUP BY truong, mon_thi\nHAVING AVG(diem) > 6.0;\n```",
+    "sql": "SELECT \n  truong || ' - ' || mon_thi || ' - ' || ROUND(AVG(diem), 2) AS school_subject_performance\nFROM danang_hsg_list\nGROUP BY truong, mon_thi\nHAVING AVG(diem) > 6.0;"
+  },
+  {
+    "db_id": "danang_hsg_list",
+    "sql_complexity": "Simple",
+    "question_style": "Concise",
+    "question": "Liệt kê họ tên, trường, điểm và xếp hạng của các thí sinh thi môn Toán, sắp xếp theo điểm giảm dần.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   Cần lấy thông tin: `ho_va_ten`, `truong`, `diem`, và `xep_giai`.\n    *   Điều kiện lọc: Chỉ lấy các thí sinh có `mon_thi` là 'Toán'.\n    *   Sắp xếp: Yêu cầu sắp xếp theo `diem` từ cao xuống thấp (giảm dần).\n    *   Lưu ý về xếp hạng: Câu hỏi yêu cầu \"xếp hạng\", trong bảng đã có sẵn cột `xep_giai` lưu trữ kết quả xếp giải của thí sinh, nên ta sẽ sử dụng cột này thay vì tạo hàm xếp hạng mới.\n\n2.  **Xây dựng truy vấn:**\n    *   Chọn các cột cần thiết từ bảng `danang_hsg_list`.\n    *   Sử dụng mệnh đề `WHERE` để lọc theo môn thi 'Toán'.\n    *   Sử dụng mệnh đề `ORDER BY` với cột `diem` và từ khóa `DESC` để sắp xếp giảm dần.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    ho_va_ten, \n    truong, \n    diem, \n    xep_giai \nFROM danang_hsg_list \nWHERE mon_thi = 'Toán' \nORDER BY diem DESC;\n```",
+    "sql": "SELECT \n    ho_va_ten, \n    truong, \n    diem, \n    xep_giai \nFROM danang_hsg_list \nWHERE mon_thi = 'Toán' \nORDER BY diem DESC;"
+  },
+  {
+    "db_id": "danang_hsg_list",
+    "sql_complexity": "Moderate",
+    "question_style": "Concise",
+    "question": "Tính điểm trung bình môn Toán của từng trường có từ 2 thí sinh dự thi trở lên, làm tròn đến 2 chữ số thập phân.",
+    "external_knowledge": "",
+    "cot": "Để giải quyết câu hỏi này, chúng ta sẽ thực hiện các bước phân tích sau:\n\n1. **Xác định bảng dữ liệu**: Dữ liệu nằm trong bảng `danang_hsg_list`.\n2. **Lọc dữ liệu**: Chỉ chọn các bản ghi có `mon_thi` là 'Toán'.\n3. **Nhóm dữ liệu**: Sử dụng `GROUP BY truong` để gom nhóm theo từng trường.\n4. **Điều kiện lọc nhóm**: Sử dụng `HAVING COUNT(sbd) >= 2` để chỉ lấy các trường có từ 2 thí sinh trở lên.\n5. **Tính toán và định dạng**: Sử dụng hàm `AVG(diem)` để tính điểm trung bình, sau đó dùng hàm `ROUND(..., 2)` để làm tròn kết quả đến 2 chữ số thập phân.\n6. **Chọn kết quả**: Hiển thị tên trường (`truong`) và điểm trung bình đã tính để thông tin rõ ràng hơn.\n\nDưới đây là truy vấn SQL:\n\n```sql\nSELECT truong, ROUND(AVG(diem), 2)\nFROM danang_hsg_list\nWHERE mon_thi = 'Toán'\nGROUP BY truong\nHAVING COUNT(sbd) >= 2;\n```",
+    "sql": "SELECT truong, ROUND(AVG(diem), 2)\nFROM danang_hsg_list\nWHERE mon_thi = 'Toán'\nGROUP BY truong\nHAVING COUNT(sbd) >= 2;"
+  },
+  {
+    "db_id": "facility_announcements_2025",
+    "sql_complexity": "Highly Complex",
+    "question_style": "Multi-turn Dialogue",
+    "question": "**User**: Tôi muốn xem báo cáo tổng hợp về các thông báo của các cơ sở trong năm 2025.\n**Assistant**: Bạn muốn báo cáo này hiển thị những thông tin cụ thể nào cho từng cơ sở?\n**User**: Tôi cần biết tên cơ sở, loại thông báo (mới hay tái thông báo), tổng số lượng thông báo theo loại đó và thứ hạng của cơ sở dựa trên ngày công bố gần nhất.\n**Assistant**: Được ạ, còn thông tin nào khác bạn muốn thêm vào báo cáo này không?\n**User**: Có, hãy thêm một dòng tổng kết ở cuối cho biết tổng số lượng cơ sở duy nhất đang được theo dõi.\n**Assistant**: Tôi đã hiểu yêu cầu của bạn. Tôi sẽ chuẩn bị một báo cáo định dạng văn bản bao gồm các chi tiết trên cùng với dòng tổng kết. Bạn có muốn tôi thực hiện ngay không?\n**User**: Vâng, hãy thực hiện đi.\n**Assistant**: OK, tôi sẽ giúp bạn chuyển yêu cầu này thành câu lệnh SQL.",
+    "external_knowledge": "",
+    "cot": "Để giải quyết yêu cầu này, chúng ta sẽ thực hiện phân tích và xây dựng truy vấn SQL theo các bước sau:\n\n**Các bước suy luận:**\n\n1.  **Phân loại loại thông báo:** Dựa vào hai cột `cong_bo_moi` và `cong_bo_lai`, chúng ta sẽ xác định loại thông báo cho từng bản ghi.\n2.  **Tính toán số lượng:** Sử dụng hàm `COUNT` để đếm tổng số lượng thông báo theo từng loại (`announcement_type`) cho mỗi cơ sở (`ten_co_so`).\n3.  **Xác định thứ hạng:** Sử dụng hàm cửa sổ `ROW_NUMBER()` dựa trên `ngay_cong_bo` sắp xếp giảm dần để xác định thứ hạng của cơ sở theo từng loại thông báo.\n4.  **Tổng kết:** Sử dụng `GROUPING SETS` hoặc `UNION ALL` để tạo dòng tổng số lượng cơ sở duy nhất (`COUNT(DISTINCT ten_co_so)`) ở cuối bảng kết quả.\n5.  **Định dạng:** Sử dụng hàm `CAST` và `||` để nối chuỗi theo yêu cầu hiển thị.\n\n**Câu lệnh SQL:**\n\n```sql\nWITH BaseData AS (\n    SELECT \n        ten_co_so,\n        CASE \n            WHEN cong_bo_moi = 1 THEN 'Cong bo moi'\n            WHEN cong_bo_lai = 1 THEN 'Cong bo lai'\n            ELSE 'Khac'\n        END AS loai_thong_bao,\n        ngay_cong_bo\n    FROM facility_announcements_2025\n),\nRankedData AS (\n    SELECT \n        ten_co_so,\n        loai_thong_bao,\n        COUNT(*) OVER(PARTITION BY ten_co_so, loai_thong_bao) AS tong_so_luong,\n        ROW_NUMBER() OVER(PARTITION BY loai_thong_bao ORDER BY ngay_cong_bo DESC) AS thu_hang\n    FROM BaseData\n)\nSELECT \n    ten_co_so, \n    loai_thong_bao, \n    tong_so_luong, \n    thu_hang\nFROM RankedData\nUNION ALL\nSELECT \n    'TONG SO CO SO DUY NHAT', \n    '', \n    COUNT(DISTINCT ten_co_so), \n    NULL\nFROM facility_announcements_2025;\n```",
+    "sql": "WITH BaseData AS (\n    SELECT \n        ten_co_so,\n        CASE \n            WHEN cong_bo_moi = 1 THEN 'Cong bo moi'\n            WHEN cong_bo_lai = 1 THEN 'Cong bo lai'\n            ELSE 'Khac'\n        END AS loai_thong_bao,\n        ngay_cong_bo\n    FROM facility_announcements_2025\n),\nRankedData AS (\n    SELECT \n        ten_co_so,\n        loai_thong_bao,\n        COUNT(*) OVER(PARTITION BY ten_co_so, loai_thong_bao) AS tong_so_luong,\n        ROW_NUMBER() OVER(PARTITION BY loai_thong_bao ORDER BY ngay_cong_bo DESC) AS thu_hang\n    FROM BaseData\n)\nSELECT \n    ten_co_so, \n    loai_thong_bao, \n    tong_so_luong, \n    thu_hang\nFROM RankedData\nUNION ALL\nSELECT \n    'TONG SO CO SO DUY NHAT', \n    '', \n    COUNT(DISTINCT ten_co_so), \n    NULL\nFROM facility_announcements_2025;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Moderate",
+    "question_style": "Formal",
+    "question": "Hãy liệt kê lĩnh vực, cơ quan công bố, tổng số lượng dịch vụ, số thứ tự nhỏ nhất, số thứ tự lớn nhất và danh sách các mã dịch vụ của các dịch vụ công thuộc lĩnh vực có chứa từ \"khoa học\", được nhóm theo lĩnh vực và cơ quan công bố.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   Cần lấy thông tin: `linh_vuc`, `co_quan_cong_bo`.\n    *   Cần tính toán các giá trị tổng hợp:\n        *   Tổng số lượng dịch vụ: Sử dụng hàm `COUNT(ma)`.\n        *   Số thứ tự nhỏ nhất: Sử dụng hàm `MIN(stt)`.\n        *   Số thứ tự lớn nhất: Sử dụng hàm `MAX(stt)`.\n        *   Danh sách các mã dịch vụ: Sử dụng hàm `GROUP_CONCAT(ma)` để nối các mã dịch vụ lại với nhau.\n    *   Điều kiện lọc: Trường `linh_vuc` phải chứa từ khóa \"khoa học\", sử dụng toán tử `LIKE '%khoa học%'`.\n    *   Nhóm dữ liệu: Phân nhóm theo `linh_vuc` và `co_quan_cong_bo` bằng mệnh đề `GROUP BY`.\n\n2.  **Xây dựng truy vấn:**\n    *   Chọn các cột cần thiết từ bảng `hp_public_services`.\n    *   Áp dụng bộ lọc `WHERE` trước khi gom nhóm.\n    *   Sử dụng `GROUP BY` để thực hiện các phép tính tổng hợp trên từng nhóm.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    linh_vuc, \n    co_quan_cong_bo, \n    COUNT(ma) AS tong_so_luong_dich_vu, \n    MIN(stt) AS stt_nho_nhat, \n    MAX(stt) AS stt_lon_nhat, \n    GROUP_CONCAT(ma, ', ') AS danh_sach_ma_dich_vu\nFROM hp_public_services\nWHERE linh_vuc LIKE '%khoa học%'\nGROUP BY linh_vuc, co_quan_cong_bo;\n```",
+    "sql": "SELECT \n    linh_vuc, \n    co_quan_cong_bo, \n    COUNT(ma) AS tong_so_luong_dich_vu, \n    MIN(stt) AS stt_nho_nhat, \n    MAX(stt) AS stt_lon_nhat, \n    GROUP_CONCAT(ma, ', ') AS danh_sach_ma_dich_vu\nFROM hp_public_services\nWHERE linh_vuc LIKE '%khoa học%'\nGROUP BY linh_vuc, co_quan_cong_bo;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Moderate",
+    "question_style": "Descriptive",
+    "question": "Hãy liệt kê tên các loại nhiên liệu (đã loại bỏ khoảng trắng thừa) được sử dụng tại các nhà máy điện trong bảng `power_plants_vn`, với điều kiện là công suất trung bình của các nhà máy sử dụng loại nhiên liệu đó phải lớn hơn 100 MW (kết quả công suất trung bình được làm tròn lên số nguyên gần nhất).",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   Cần lấy danh sách các loại nhiên liệu (`std_fuel`) từ bảng `power_plants_vn`.\n    *   Yêu cầu loại bỏ khoảng trắng thừa ở hai đầu của tên nhiên liệu, ta sử dụng hàm `TRIM()`.\n    *   Cần nhóm các nhà máy theo loại nhiên liệu (`GROUP BY`) để tính toán.\n    *   Tính công suất trung bình (`AVG(capacity_mw)`) cho mỗi nhóm nhiên liệu.\n    *   Làm tròn lên số nguyên gần nhất bằng hàm `CEIL()`.\n    *   Đặt điều kiện lọc (`HAVING`) sao cho kết quả làm tròn này phải lớn hơn 100 MW.\n\n2.  **Xây dựng truy vấn:**\n    *   Sử dụng `SELECT DISTINCT TRIM(std_fuel)` để đảm bảo lấy tên nhiên liệu đã được làm sạch và không trùng lặp sau khi nhóm.\n    *   Sử dụng `GROUP BY TRIM(std_fuel)` để gom nhóm theo tên nhiên liệu đã làm sạch.\n    *   Sử dụng `HAVING CEIL(AVG(capacity_mw)) > 100` để lọc theo điều kiện công suất trung bình.\n\n### Truy vấn SQL:\n\n```sql\nSELECT TRIM(std_fuel)\nFROM power_plants_vn\nGROUP BY TRIM(std_fuel)\nHAVING CEIL(AVG(capacity_mw)) > 100;\n```",
+    "sql": "SELECT TRIM(std_fuel)\nFROM power_plants_vn\nGROUP BY TRIM(std_fuel)\nHAVING CEIL(AVG(capacity_mw)) > 100;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Simple",
+    "question_style": "Imperative",
+    "question": "Bạn vui lòng thống kê giúp tôi giá trị `stt` nhỏ nhất cho từng lĩnh vực và cơ quan công bố trong bảng dịch vụ công nhé! Tôi cần biết danh sách các nhóm lĩnh vực, cơ quan công bố cùng với chỉ số `stt` thấp nhất tương ứng.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:** Người dùng muốn lấy giá trị nhỏ nhất của cột `stt` cho mỗi nhóm kết hợp giữa `linh_vuc` và `co_quan_cong_bo`.\n2.  **Chọn bảng:** Dữ liệu nằm trong bảng `hp_public_services`.\n3.  **Xác định hàm tập hợp:** Để tìm giá trị nhỏ nhất, ta sử dụng hàm `MIN(stt)`.\n4.  **Phân nhóm dữ liệu:** Vì yêu cầu là thống kê \"cho từng lĩnh vực và cơ quan công bố\", ta cần sử dụng mệnh đề `GROUP BY` với hai cột là `linh_vuc` và `co_quan_cong_bo`.\n5.  **Xây dựng câu lệnh:** Kết hợp các thành phần trên để tạo ra câu truy vấn hoàn chỉnh.\n\n### Câu truy vấn SQL:\n\n```sql\nSELECT \n    linh_vuc, \n    co_quan_cong_bo, \n    MIN(stt) AS min_stt\nFROM hp_public_services\nGROUP BY linh_vuc, co_quan_cong_bo;\n```",
+    "sql": "SELECT \n    linh_vuc, \n    co_quan_cong_bo, \n    MIN(stt) AS min_stt\nFROM hp_public_services\nGROUP BY linh_vuc, co_quan_cong_bo;"
+  },
+  {
+    "db_id": "facility_announcements_2025",
+    "sql_complexity": "Moderate",
+    "question_style": "Colloquial",
+    "question": "Chào bạn! Bạn có thể giúp mình thống kê xem mỗi người đứng đầu phụ trách chuyên môn hiện đang quản lý bao nhiêu cơ sở không? Chỉ liệt kê những người có quản lý cơ sở thôi nhé!",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước phân tích:\n\n1.  **Xác định bảng dữ liệu**: Bảng duy nhất cần sử dụng là `facility_announcements_2025`.\n2.  **Xác định cột cần truy vấn**:\n    *   Cột `nguoi_dung_dau_phu_trach_chuyen_mon`: Dùng để nhóm (group) dữ liệu theo từng cá nhân.\n    *   Cột `stt` (hoặc bất kỳ cột định danh nào): Dùng để đếm số lượng cơ sở mà mỗi người quản lý.\n3.  **Điều kiện lọc**:\n    *   Yêu cầu chỉ liệt kê những người có quản lý cơ sở, vì vậy cần loại bỏ các giá trị trống (NULL) trong cột `nguoi_dung_dau_phu_trach_chuyen_mon`.\n    *   Sử dụng mệnh đề `GROUP BY` trên cột `nguoi_dung_dau_phu_trach_chuyen_mon` để thống kê số lượng cơ sở cho từng người.\n    *   Sử dụng hàm `COUNT()` để tính tổng số cơ sở cho mỗi nhóm.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT \n    nguoi_dung_dau_phu_trach_chuyen_mon, \n    COUNT(*) AS so_luong_co_so\nFROM facility_announcements_2025\nWHERE nguoi_dung_dau_phu_trach_chuyen_mon IS NOT NULL \n  AND nguoi_dung_dau_phu_trach_chuyen_mon <> ''\nGROUP BY nguoi_dung_dau_phu_trach_chuyen_mon;\n```",
+    "sql": "SELECT \n    nguoi_dung_dau_phu_trach_chuyen_mon, \n    COUNT(*) AS so_luong_co_so\nFROM facility_announcements_2025\nWHERE nguoi_dung_dau_phu_trach_chuyen_mon IS NOT NULL \n  AND nguoi_dung_dau_phu_trach_chuyen_mon <> ''\nGROUP BY nguoi_dung_dau_phu_trach_chuyen_mon;"
+  },
+  {
+    "db_id": "student_performance",
+    "sql_complexity": "Moderate",
+    "question_style": "Vague",
+    "question": "Hãy liệt kê điểm trung bình toán học (đã làm tròn) của những khối lớp có thành tích xuất sắc tại các khu vực miền núi.",
+    "external_knowledge": "'Thành tích xuất sắc' trong ngữ cảnh này được hiểu là điểm trung bình môn toán sau khi làm tròn lớn hơn 8; 'Khu vực miền núi' tương ứng với giá trị 'Mountainous' trong cột `residential_area`.",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   Mục tiêu: Tính điểm trung bình môn toán theo từng khối lớp (`grade`).\n    *   Điều kiện lọc: Chỉ xét các học sinh sống tại khu vực `residential_area` là 'Mountainous'.\n    *   Điều kiện lọc sau khi nhóm: Điểm trung bình môn toán sau khi làm tròn phải lớn hơn 8.\n    *   Xử lý dữ liệu: Cột `math` có thể chứa dữ liệu dạng văn bản (text), cần đảm bảo tính toán chính xác. Trong SQLite, hàm `ROUND` được sử dụng để làm tròn.\n\n2.  **Xây dựng truy vấn:**\n    *   Sử dụng `AVG(math)` để tính trung bình cộng của môn toán.\n    *   Sử dụng `ROUND()` để làm tròn giá trị trung bình theo yêu cầu.\n    *   Sử dụng `GROUP BY grade` để phân loại theo khối lớp.\n    *   Sử dụng `HAVING` để lọc các nhóm có điểm trung bình sau khi làm tròn lớn hơn 8.\n\n3.  **Lưu ý kỹ thuật:**\n    *   Vì cột `math` được lưu dưới dạng `TEXT` trong schema, việc thực hiện các phép tính toán học trực tiếp trên cột này trong SQLite sẽ tự động chuyển đổi kiểu dữ liệu nếu dữ liệu hợp lệ.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    grade, \n    ROUND(AVG(math)) AS average_math_score\nFROM student_performance\nWHERE residential_area = 'Mountainous'\nGROUP BY grade\nHAVING ROUND(AVG(math)) > 8;\n```",
+    "sql": "SELECT \n    grade, \n    ROUND(AVG(math)) AS average_math_score\nFROM student_performance\nWHERE residential_area = 'Mountainous'\nGROUP BY grade\nHAVING ROUND(AVG(math)) > 8;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Moderate",
+    "question_style": "Descriptive",
+    "question": "Hãy liệt kê tên các cơ quan công bố và tổng số dịch vụ công mà mỗi cơ quan đó cung cấp trong lĩnh vực \"Hoạt động khoa học và công nghệ\".",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước phân tích:\n1. **Xác định bảng dữ liệu**: Dữ liệu cần lấy nằm trong bảng `hp_public_services`.\n2. **Lọc dữ liệu**: Sử dụng mệnh đề `WHERE` để chỉ chọn các bản ghi có cột `linh_vuc` bằng với giá trị `'Hoạt động khoa học và công nghệ'`.\n3. **Nhóm dữ liệu**: Sử dụng `GROUP BY` theo cột `co_quan_cong_bo` để gom các dịch vụ công theo từng cơ quan.\n4. **Tính toán**: Sử dụng hàm `COUNT(*)` để đếm tổng số dịch vụ công tương ứng với mỗi nhóm cơ quan đã được lọc.\n5. **Kết quả**: Truy vấn sẽ trả về hai cột: tên cơ quan và tổng số dịch vụ công của cơ quan đó.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    co_quan_cong_bo, \n    COUNT(*) AS total_services\nFROM hp_public_services\nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ'\nGROUP BY co_quan_cong_bo;\n```",
+    "sql": "SELECT \n    co_quan_cong_bo, \n    COUNT(*) AS total_services\nFROM hp_public_services\nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ'\nGROUP BY co_quan_cong_bo;"
+  },
+  {
+    "db_id": "student_performance",
+    "sql_complexity": "Moderate",
+    "question_style": "Multi-turn Dialogue",
+    "question": "**User**: Tôi muốn tìm hiểu thông tin về kết quả học tập và gia đình của học sinh.\n**Assistant**: Bạn muốn biết những thông tin cụ thể nào về học sinh và gia đình của họ?\n**User**: Tôi muốn biết về khu vực sinh sống, nghề nghiệp của cha mẹ và độ tuổi nhỏ nhất của người mẹ.\n**Assistant**: Bạn có muốn áp dụng bộ lọc nào cho các nhóm này không?\n**User**: Vâng, chỉ lấy những học sinh sống ở vùng miền núi ('Mountainous') có cha làm nghề nông ('Farmer').\n**Assistant**: Được rồi, tôi đã ghi nhận. Bạn có yêu cầu gì thêm về độ tuổi của người mẹ không?\n**User**: Chỉ hiển thị những nhóm mà tuổi nhỏ nhất của người mẹ lớn hơn 30.\n**Assistant**: OK, tôi sẽ giúp bạn chuyển yêu cầu này thành câu lệnh truy vấn SQL.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n**Quy trình suy luận:**\n\n1.  **Xác định các cột cần lấy:** Yêu cầu bao gồm khu vực sinh sống (`residential_area`), nghề nghiệp của cha (`father_job`), nghề nghiệp của mẹ (`mother_job`) và độ tuổi nhỏ nhất của người mẹ (`MIN(mother_age)`).\n2.  **Xác định bảng dữ liệu:** Tất cả thông tin đều nằm trong bảng `student_performance`.\n3.  **Thiết lập các điều kiện lọc (WHERE):**\n    *   Khu vực sinh sống là vùng miền núi: `residential_area = 'Mountainous'`.\n    *   Nghề nghiệp của cha là làm nông: `father_job = 'Farmer'`.\n4.  **Nhóm dữ liệu (GROUP BY):** Vì có sử dụng hàm tổng hợp `MIN()` trên cột `mother_age`, chúng ta cần nhóm các dòng theo các cột còn lại: `residential_area`, `father_job`, và `mother_job`.\n5.  **Thiết lập điều kiện lọc sau khi nhóm (HAVING):** Yêu cầu độ tuổi nhỏ nhất của người mẹ phải lớn hơn 30, nên ta sử dụng `HAVING MIN(mother_age) > 30`.\n\n**Câu lệnh SQL:**\n\n```sql\nSELECT \n    residential_area, \n    father_job, \n    mother_job, \n    MIN(mother_age) AS min_mother_age\nFROM student_performance\nWHERE residential_area = 'Mountainous' \n  AND father_job = 'Farmer'\nGROUP BY residential_area, father_job, mother_job\nHAVING MIN(mother_age) > 30;\n```",
+    "sql": "SELECT \n    residential_area, \n    father_job, \n    mother_job, \n    MIN(mother_age) AS min_mother_age\nFROM student_performance\nWHERE residential_area = 'Mountainous' \n  AND father_job = 'Farmer'\nGROUP BY residential_area, father_job, mother_job\nHAVING MIN(mother_age) > 30;"
+  },
+  {
+    "db_id": "facility_announcements_2025",
+    "sql_complexity": "Complex",
+    "question_style": "Descriptive",
+    "question": "Hãy liệt kê tên của những cơ sở nằm trong top 5 cơ sở có thông báo mới nhất hoặc thông báo lại mới nhất từ bảng dữ liệu công bố năm 2025.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:** Mục tiêu là tìm tên các cơ sở nằm trong top 5 cơ sở có ngày công bố gần nhất, xét trên cả hai trường hợp là thông báo mới (`cong_bo_moi`) hoặc thông báo lại (`cong_bo_lai`).\n2.  **Xử lý dữ liệu:**\n    *   Chúng ta cần xác định các bản ghi có giá trị `cong_bo_moi = 1` hoặc `cong_bo_lai = 1`.\n    *   Vì cột `ngay_cong_bo` là kiểu dữ liệu `TEXT`, chúng ta cần sắp xếp theo cột này theo thứ tự giảm dần (`DESC`) để lấy các bản ghi gần nhất.\n    *   Sử dụng hàm `ROW_NUMBER()` hoặc `LIMIT` để lấy 5 bản ghi đầu tiên sau khi đã sắp xếp.\n3.  **Xây dựng câu lệnh SQL:**\n    *   Chọn cột `ten_co_so` từ bảng `facility_announcements_2025`.\n    *   Lọc các dòng mà `cong_bo_moi = 1` hoặc `cong_bo_lai = 1`.\n    *   Sắp xếp theo `ngay_cong_bo` giảm dần.\n    *   Giới hạn kết quả trả về là 5 dòng bằng `LIMIT 5`.\n    *   Sử dụng `DISTINCT` để đảm bảo tên cơ sở không bị trùng lặp nếu một cơ sở có nhiều thông báo.\n\n### Truy vấn SQL:\n\n```sql\nSELECT DISTINCT ten_co_so\nFROM facility_announcements_2025\nWHERE cong_bo_moi = 1 OR cong_bo_lai = 1\nORDER BY ngay_cong_bo DESC\nLIMIT 5;\n```",
+    "sql": "SELECT DISTINCT ten_co_so\nFROM facility_announcements_2025\nWHERE cong_bo_moi = 1 OR cong_bo_lai = 1\nORDER BY ngay_cong_bo DESC\nLIMIT 5;"
+  },
+  {
+    "db_id": "vn_banks_financials",
+    "sql_complexity": "Moderate",
+    "question_style": "Concise",
+    "question": "Liệt kê các mã ngân hàng có lợi nhuận trên vốn chủ sở hữu trung bình lớn hơn 2.0 trong giai đoạn 2005-2006, sắp xếp theo tỷ lệ chi phí trên thu nhập trung bình tăng dần.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để trả lời câu hỏi của bạn:\n\n### Các bước phân tích:\n\n1.  **Xác định bảng cần thiết:** Dữ liệu nằm trong bảng `vn_banks_financials`.\n2.  **Lọc dữ liệu theo điều kiện thời gian:** Sử dụng mệnh đề `WHERE` để chọn các năm trong khoảng từ 2005 đến 2006 (`year BETWEEN 2005 AND 2006`).\n3.  **Nhóm dữ liệu:** Để tính giá trị trung bình cho từng ngân hàng, chúng ta cần nhóm theo `bank_code` bằng mệnh đề `GROUP BY`.\n4.  **Điều kiện lọc nhóm:** Yêu cầu lợi nhuận trên vốn chủ sở hữu (`returns_over_equity`) trung bình lớn hơn 2.0, nên ta sử dụng `HAVING AVG(returns_over_equity) > 2.0`.\n5.  **Sắp xếp:** Yêu cầu sắp xếp theo tỷ lệ chi phí trên thu nhập (`cost_income_ratios`) trung bình tăng dần, ta sử dụng `ORDER BY AVG(cost_income_ratios) ASC`.\n6.  **Chọn cột:** Truy vấn chỉ yêu cầu liệt kê các mã ngân hàng, nên ta chọn `bank_code`.\n\n### Truy vấn SQL:\n\n```sql\nSELECT bank_code\nFROM vn_banks_financials\nWHERE year BETWEEN 2005 AND 2006\nGROUP BY bank_code\nHAVING AVG(returns_over_equity) > 2.0\nORDER BY AVG(cost_income_ratios) ASC;\n```",
+    "sql": "SELECT bank_code\nFROM vn_banks_financials\nWHERE year BETWEEN 2005 AND 2006\nGROUP BY bank_code\nHAVING AVG(returns_over_equity) > 2.0\nORDER BY AVG(cost_income_ratios) ASC;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Moderate",
+    "question_style": "Imperative",
+    "question": "Bạn có thể liệt kê giúp tôi các loại nhiên liệu tiêu chuẩn của những nhà máy điện có tọa độ vĩ độ hợp lệ không? Tôi cần danh sách này với điều kiện là các nhà máy thuộc mỗi loại nhiên liệu phải có công suất trung bình lớn hơn 100 MW và giá trị trung bình của hàm cosin vĩ độ lớn hơn 0.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   Mục tiêu: Lấy danh sách các loại nhiên liệu (`std_fuel`).\n    *   Điều kiện lọc dữ liệu ban đầu: Các nhà máy phải có tọa độ vĩ độ (`latitude`) hợp lệ (không bị `NULL`).\n    *   Nhóm dữ liệu: Phải nhóm theo loại nhiên liệu (`std_fuel`) để thực hiện các phép toán tính trung bình.\n    *   Điều kiện lọc sau khi nhóm (`HAVING`):\n        *   Công suất trung bình (`AVG(capacity_mw)`) phải lớn hơn 100.\n        *   Giá trị trung bình của hàm cosin vĩ độ (`AVG(COS(latitude))`) phải lớn hơn 0.\n\n2.  **Xây dựng truy vấn:**\n    *   Sử dụng lệnh `SELECT std_fuel` để lấy tên loại nhiên liệu.\n    *   Sử dụng `FROM power_plants_vn` để chỉ định bảng dữ liệu.\n    *   Sử dụng `WHERE latitude IS NOT NULL` để đảm bảo dữ liệu vĩ độ hợp lệ.\n    *   Sử dụng `GROUP BY std_fuel` để gom nhóm các nhà máy theo từng loại nhiên liệu.\n    *   Sử dụng `HAVING` để áp dụng các điều kiện về giá trị trung bình đã nêu trên.\n\n### Truy vấn SQL:\n\n```sql\nSELECT std_fuel\nFROM power_plants_vn\nWHERE latitude IS NOT NULL\nGROUP BY std_fuel\nHAVING AVG(capacity_mw) > 100 AND AVG(COS(latitude)) > 0;\n```",
+    "sql": "SELECT std_fuel\nFROM power_plants_vn\nWHERE latitude IS NOT NULL\nGROUP BY std_fuel\nHAVING AVG(capacity_mw) > 100 AND AVG(COS(latitude)) > 0;"
+  },
+  {
+    "db_id": "vn_banks_financials",
+    "sql_complexity": "Moderate",
+    "question_style": "Colloquial",
+    "question": "Chào bạn, bạn tìm giúp mình danh sách các mã ngân hàng thương mại cổ phần (JSCB) mà có tỷ suất lợi nhuận trên vốn chủ sở hữu (returns_over_equity) trung bình trên 2.0 với nhé. Cảm ơn bạn nhiều!",
+    "external_knowledge": "",
+    "cot": "Để giải quyết yêu cầu này, chúng ta cần thực hiện các bước phân tích sau:\n\n1. **Phân tích yêu cầu**: Chúng ta cần truy xuất danh sách các `bank_code` từ bảng `vn_banks_financials`.\n2. **Điều kiện lọc**:\n    * Chỉ chọn những bản ghi có `classification` là 'JSCB' (Ngân hàng thương mại cổ phần).\n    * Cần tính giá trị trung bình của cột `returns_over_equity` cho từng ngân hàng.\n    * Chỉ giữ lại các ngân hàng có giá trị trung bình này lớn hơn 2.0.\n3. **Thực hiện truy vấn**:\n    * Sử dụng `SELECT` để lấy `bank_code`.\n    * Sử dụng `WHERE` để lọc `classification = 'JSCB'`.\n    * Sử dụng `GROUP BY` theo `bank_code` để gom nhóm dữ liệu theo từng ngân hàng.\n    * Sử dụng mệnh đề `HAVING` để lọc kết quả dựa trên hàm tổng hợp `AVG(returns_over_equity) > 2.0`.\n\nDưới đây là câu lệnh SQL thực thi:\n\n```sql\nSELECT bank_code\nFROM vn_banks_financials\nWHERE classification = 'JSCB'\nGROUP BY bank_code\nHAVING AVG(returns_over_equity) > 2.0;\n```",
+    "sql": "SELECT bank_code\nFROM vn_banks_financials\nWHERE classification = 'JSCB'\nGROUP BY bank_code\nHAVING AVG(returns_over_equity) > 2.0;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Simple",
+    "question_style": "Colloquial",
+    "question": "Chào bạn! Bạn có thể giúp mình thống kê xem mỗi lĩnh vực dịch vụ công có bao nhiêu dịch vụ không? Tiện thể, bạn xếp hạng luôn các lĩnh vực đó dựa trên số lượng dịch vụ từ cao xuống thấp giúp mình với nhé!",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   Mục tiêu: Đếm số lượng dịch vụ cho từng lĩnh vực (`linh_vuc`).\n    *   Yêu cầu thêm: Sắp xếp kết quả dựa trên số lượng dịch vụ đã đếm từ cao xuống thấp.\n2.  **Xác định bảng và cột:**\n    *   Bảng dữ liệu: `hp_public_services`.\n    *   Cột cần nhóm: `linh_vuc`.\n    *   Cột cần tính toán: Sử dụng hàm `COUNT(*)` để đếm số lượng dịch vụ.\n3.  **Xây dựng câu lệnh SQL:**\n    *   Sử dụng `GROUP BY linh_vuc` để gom nhóm dữ liệu theo từng lĩnh vực.\n    *   Sử dụng `COUNT(*)` để lấy tổng số lượng dịch vụ cho mỗi nhóm.\n    *   Sử dụng `ORDER BY` kết hợp với `DESC` để sắp xếp số lượng từ cao xuống thấp theo yêu cầu.\n4.  **Tối ưu hóa:**\n    *   Không cần sử dụng hàm xếp hạng phức tạp (`DENSE_RANK`) vì yêu cầu chỉ đơn giản là sắp xếp theo số lượng, vì vậy lệnh `ORDER BY` là đủ và hiệu quả nhất.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT \n    linh_vuc, \n    COUNT(*) AS so_luong_dich_vu\nFROM hp_public_services\nGROUP BY linh_vuc\nORDER BY so_luong_dich_vu DESC;\n```",
+    "sql": "SELECT \n    linh_vuc, \n    COUNT(*) AS so_luong_dich_vu\nFROM hp_public_services\nGROUP BY linh_vuc\nORDER BY so_luong_dich_vu DESC;"
+  },
+  {
+    "db_id": "student_performance",
+    "sql_complexity": "Moderate",
+    "question_style": "Concise",
+    "question": "Liệt kê các nghề nghiệp của cha mà học sinh ở khu vực miền núi, độ tuổi từ 15 đến 18, có điểm toán trung bình lớn hơn 5.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:** Chúng ta cần tìm các nghề nghiệp của người cha (`father_job`) thỏa mãn ba điều kiện:\n    *   `residential_area` phải là khu vực miền núi (trong cơ sở dữ liệu thường được biểu diễn là `'Mountainous'`).\n    *   `age` nằm trong khoảng từ 15 đến 18.\n    *   Điểm trung bình môn toán (`math`) của nhóm học sinh này phải lớn hơn 5.\n2.  **Xử lý dữ liệu:** Vì yêu cầu tính điểm trung bình theo từng nhóm nghề nghiệp, chúng ta cần sử dụng mệnh đề `GROUP BY father_job`.\n3.  **Điều kiện lọc:**\n    *   Sử dụng `WHERE` cho các điều kiện đơn lẻ (`residential_area` và `age`).\n    *   Sử dụng `HAVING` để lọc kết quả dựa trên giá trị tính toán (`AVG(math) > 5`).\n4.  **Lưu ý kỹ thuật:** Môn toán (`math`) trong bảng được định nghĩa là kiểu `TEXT`, vì vậy khi thực hiện các phép tính toán học (như `AVG`), SQLite sẽ tự động chuyển đổi các giá trị này sang số. Nếu cột có giá trị rỗng hoặc không phải số, chúng ta nên đảm bảo tính chính xác bằng cách lọc hoặc chuyển đổi dữ liệu.\n\n### Truy vấn SQL:\n\n```sql\nSELECT father_job\nFROM student_performance\nWHERE residential_area = 'Mountainous' \n  AND age BETWEEN 15 AND 18\nGROUP BY father_job\nHAVING AVG(math) > 5;\n```",
+    "sql": "SELECT father_job\nFROM student_performance\nWHERE residential_area = 'Mountainous' \n  AND age BETWEEN 15 AND 18\nGROUP BY father_job\nHAVING AVG(math) > 5;"
+  },
+  {
+    "db_id": "student_performance",
+    "sql_complexity": "Simple",
+    "question_style": "Formal",
+    "question": "Hãy phân loại điểm môn toán của sinh viên trong bảng `student_performance` thành 4 nhóm (tứ phân vị) dựa trên điểm số từ cao xuống thấp.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích dữ liệu:** Cột `math` trong bảng `student_performance` đang lưu trữ dữ liệu dưới dạng văn bản (TEXT), có thể chứa dấu phẩy làm phân cách thập phân. Để thực hiện các phép tính toán học hoặc sắp xếp chính xác, chúng ta cần chuyển đổi giá trị này sang kiểu số thực (REAL).\n2.  **Xử lý dữ liệu:** Sử dụng hàm `REPLACE` để thay thế dấu phẩy (nếu có) thành dấu chấm, sau đó dùng `CAST` để ép kiểu sang `REAL`.\n3.  **Phân nhóm (Tứ phân vị):** Để chia dữ liệu thành 4 nhóm dựa trên thứ tự từ cao xuống thấp, hàm `NTILE(4)` là công cụ tối ưu nhất. Hàm này sẽ gán mỗi hàng vào một nhóm từ 1 đến 4 dựa trên giá trị đã được sắp xếp thông qua mệnh đề `ORDER BY ... DESC`.\n4.  **Kết quả:** Truy vấn sẽ trả về cột `math` gốc (để đối chiếu) và cột phân loại nhóm `quartile` tương ứng.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n  math,\n  NTILE(4) OVER (ORDER BY CAST(REPLACE(math, ',', '.') AS REAL) DESC) AS quartile\nFROM student_performance;\n```",
+    "sql": "SELECT \n  math,\n  NTILE(4) OVER (ORDER BY CAST(REPLACE(math, ',', '.') AS REAL) DESC) AS quartile\nFROM student_performance;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Moderate",
+    "question_style": "Vague",
+    "question": "Hãy liệt kê các loại nhiên liệu chính được sử dụng bởi những nhà máy điện hiện đại có quy mô lớn.",
+    "external_knowledge": "'Nhà máy điện hiện đại' được định nghĩa là các nhà máy đi vào vận hành từ năm 2000 đến năm 2025; 'Quy mô lớn' được hiểu là các nhà máy có công suất trung bình vượt quá 100 MW.",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   **Điều kiện thời gian:** \"Nhà máy điện hiện đại\" là những nhà máy có `commissioning_year` nằm trong khoảng từ 2000 đến 2025.\n    *   **Điều kiện quy mô:** \"Quy mô lớn\" được định nghĩa là có công suất trung bình (`AVG(capacity_mw)`) vượt quá 100 MW.\n    *   **Mục tiêu:** Liệt kê các loại nhiên liệu chính (`std_fuel`) thỏa mãn cả hai điều kiện trên.\n\n2.  **Xây dựng truy vấn:**\n    *   Sử dụng bảng `power_plants_vn`.\n    *   Dùng mệnh đề `WHERE` để lọc các nhà máy theo `commissioning_year` từ 2000 đến 2025.\n    *   Sử dụng `GROUP BY std_fuel` để nhóm các nhà máy theo loại nhiên liệu.\n    *   Sử dụng mệnh đề `HAVING` để lọc các nhóm có giá trị trung bình của `capacity_mw` lớn hơn 100.\n    *   Chọn cột `std_fuel` để hiển thị kết quả.\n\n### Truy vấn SQL:\n\n```sql\nSELECT std_fuel\nFROM power_plants_vn\nWHERE commissioning_year BETWEEN 2000 AND 2025\nGROUP BY std_fuel\nHAVING AVG(capacity_mw) > 100;\n```",
+    "sql": "SELECT std_fuel\nFROM power_plants_vn\nWHERE commissioning_year BETWEEN 2000 AND 2025\nGROUP BY std_fuel\nHAVING AVG(capacity_mw) > 100;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Moderate",
+    "question_style": "Descriptive",
+    "question": "Hãy liệt kê tên các lĩnh vực, tổng số lượng thủ tục hành chính tương ứng và tạo một mã báo cáo định danh duy nhất cho từng nhóm, đối với những lĩnh vực có trên 1 thủ tục hành chính được công bố bởi \"UBND Thành phố Hải Phòng\".",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và câu lệnh SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   Cần lấy danh sách các lĩnh vực (`linh_vuc`).\n    *   Cần tính tổng số lượng thủ tục hành chính (`COUNT(ten)`) cho mỗi lĩnh vực.\n    *   Cần tạo một mã định danh duy nhất cho mỗi dòng kết quả.\n    *   Điều kiện lọc: Chỉ tính các thủ tục có `co_quan_cong_bo` bằng \"UBND Thành phố Hải Phòng\".\n    *   Điều kiện nhóm: Chỉ lấy các lĩnh vực có số lượng thủ tục lớn hơn 1 (`HAVING COUNT(ten) > 1`).\n\n2.  **Xây dựng truy vấn:**\n    *   Sử dụng `GROUP BY linh_vuc` để gom nhóm dữ liệu theo lĩnh vực.\n    *   Sử dụng hàm `COUNT(ten)` để đếm số lượng thủ tục.\n    *   Sử dụng hàm `hex(randomblob(8))` (hoặc tương tự) để tạo mã định danh ngẫu nhiên cho mỗi nhóm kết quả.\n    *   Sử dụng `WHERE` để lọc theo cơ quan công bố.\n    *   Sử dụng `HAVING` để lọc theo số lượng thủ tục thỏa mãn điều kiện > 1.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT \n    linh_vuc, \n    COUNT(ten) AS so_luong_thu_tuc, \n    hex(randomblob(8)) AS ma_bao_cao_dinh_danh\nFROM hp_public_services\nWHERE co_quan_cong_bo = 'UBND Thành phố Hải Phòng'\nGROUP BY linh_vuc\nHAVING COUNT(ten) > 1;\n```",
+    "sql": "SELECT \n    linh_vuc, \n    COUNT(ten) AS so_luong_thu_tuc, \n    hex(randomblob(8)) AS ma_bao_cao_dinh_danh\nFROM hp_public_services\nWHERE co_quan_cong_bo = 'UBND Thành phố Hải Phòng'\nGROUP BY linh_vuc\nHAVING COUNT(ten) > 1;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Moderate",
+    "question_style": "Multi-turn Dialogue",
+    "question": "**User**: Tôi muốn tìm hiểu thông tin về các nhà máy điện trong cơ sở dữ liệu.\n**Assistant**: Bạn muốn biết những thông tin cụ thể nào về các nhà máy điện này?\n**User**: Tôi muốn biết về loại nhiên liệu, năm vận hành, tổng số lượng nhà máy và công suất trung bình của chúng.\n**Assistant**: Bạn có muốn giới hạn dữ liệu theo thời gian hay điều kiện cụ thể nào không?\n**User**: Vâng, hãy chỉ lấy những nhà máy vận hành từ sau năm 2010 và phải có thông tin về loại nhiên liệu.\n**Assistant**: Bạn có muốn lọc thêm dựa trên số lượng nhà máy không?\n**User**: Có, chỉ hiển thị những nhóm có nhiều hơn 1 nhà máy thôi.\n**Assistant**: Được rồi, tôi sẽ giúp bạn trích xuất dữ liệu cho các loại nhiên liệu và năm vận hành tương ứng với các điều kiện đó.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:** Người dùng muốn thống kê thông tin về các nhà máy điện dựa trên loại nhiên liệu (`std_fuel`) và năm vận hành (`commissioning_year`).\n2.  **Xác định các chỉ số cần tính:**\n    *   Tổng số lượng nhà máy: Sử dụng hàm `COUNT(*)`.\n    *   Công suất trung bình: Sử dụng hàm `AVG(capacity_mw)`.\n3.  **Thiết lập các điều kiện lọc (WHERE):**\n    *   Năm vận hành phải sau năm 2010: `commissioning_year > 2010`.\n    *   Phải có thông tin về loại nhiên liệu: `std_fuel IS NOT NULL`.\n4.  **Nhóm dữ liệu (GROUP BY):** Cần nhóm theo cả hai tiêu chí là loại nhiên liệu và năm vận hành: `GROUP BY std_fuel, commissioning_year`.\n5.  **Áp dụng điều kiện lọc sau nhóm (HAVING):** Chỉ hiển thị các nhóm có số lượng nhà máy lớn hơn 1: `HAVING COUNT(*) > 1`.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    std_fuel, \n    commissioning_year, \n    COUNT(*) AS total_plants, \n    AVG(capacity_mw) AS avg_capacity\nFROM power_plants_vn\nWHERE commissioning_year > 2010 \n  AND std_fuel IS NOT NULL\nGROUP BY std_fuel, commissioning_year\nHAVING COUNT(*) > 1;\n```",
+    "sql": "SELECT \n    std_fuel, \n    commissioning_year, \n    COUNT(*) AS total_plants, \n    AVG(capacity_mw) AS avg_capacity\nFROM power_plants_vn\nWHERE commissioning_year > 2010 \n  AND std_fuel IS NOT NULL\nGROUP BY std_fuel, commissioning_year\nHAVING COUNT(*) > 1;"
+  },
+  {
+    "db_id": "wb_procurement_contracts",
+    "sql_complexity": "Simple",
+    "question_style": "Multi-turn Dialogue",
+    "question": "**User**: Tôi muốn xem thông tin về các hợp đồng mua sắm của Ngân hàng Thế giới.\n**Assistant**: Bạn muốn xem thông tin cụ thể nào về các hợp đồng này?\n**User**: Tôi muốn biết về các nhà cung cấp và giá trị hợp đồng của họ.\n**Assistant**: Bạn có muốn giới hạn phạm vi khu vực địa lý nào không?\n**User**: Có, chỉ tính những nhà cung cấp ở khu vực 'EAST ASIA AND PACIFIC' thôi.\n**Assistant**: Bạn có muốn xem giá trị hợp đồng trung bình cho từng nhà cung cấp ở khu vực đó không?\n**User**: Đúng vậy, hãy giúp tôi tính giá trị trung bình đó.\n**Assistant**: Được rồi, tôi sẽ giúp bạn truy vấn danh sách nhà cung cấp cùng với số tiền hợp đồng trung bình của họ tại khu vực Đông Á và Thái Bình Dương.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định bảng dữ liệu**: Dựa trên yêu cầu, bảng cần thiết là `wb_procurement_contracts` vì nó chứa thông tin về hợp đồng, nhà cung cấp và khu vực.\n2.  **Lọc dữ liệu**: Câu hỏi yêu cầu chỉ tính toán cho các nhà cung cấp thuộc khu vực 'EAST ASIA AND PACIFIC'. Do đó, ta cần sử dụng mệnh đề `WHERE` với điều kiện `region = 'EAST ASIA AND PACIFIC'`.\n3.  **Nhóm dữ liệu**: Vì yêu cầu tính giá trị trung bình cho *từng* nhà cung cấp, ta cần sử dụng mệnh đề `GROUP BY` dựa trên cột `supplier`.\n4.  **Tính toán**: Sử dụng hàm tổng hợp `AVG()` trên cột `supplier_contract_amount_usd` để tính giá trị trung bình của các hợp đồng cho mỗi nhà cung cấp.\n5.  **Hoàn thiện truy vấn**: Kết hợp các thành phần trên để tạo ra câu lệnh SQL hoàn chỉnh.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    supplier, \n    AVG(supplier_contract_amount_usd) AS average_contract_amount\nFROM wb_procurement_contracts\nWHERE region = 'EAST ASIA AND PACIFIC'\nGROUP BY supplier;\n```",
+    "sql": "SELECT \n    supplier, \n    AVG(supplier_contract_amount_usd) AS average_contract_amount\nFROM wb_procurement_contracts\nWHERE region = 'EAST ASIA AND PACIFIC'\nGROUP BY supplier;"
+  },
+  {
+    "db_id": "vn_banks_financials",
+    "sql_complexity": "Simple",
+    "question_style": "Colloquial",
+    "question": "Này, bạn có thể giúp mình lọc ra mã của các ngân hàng đang có tỷ lệ nợ xấu trên 2% không? Cho mình biết luôn lợi nhuận sau thuế của mấy ngân hàng đó nhé, và sắp xếp giúp mình theo thứ tự lợi nhuận từ cao xuống thấp luôn nha!",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định bảng dữ liệu**: Dữ liệu cần thiết nằm trong bảng `vn_banks_financials`.\n2.  **Xác định các cột cần lấy**: Theo yêu cầu, chúng ta cần lấy mã ngân hàng (`bank_code`) và lợi nhuận sau thuế (`profits_after_tax`).\n3.  **Xác định điều kiện lọc**: Chúng ta cần lọc các hàng có tỷ lệ nợ xấu (`non_performing_loans_ratio`) lớn hơn 2.0 (tương ứng với 2%).\n4.  **Xác định thứ tự sắp xếp**: Kết quả cần được sắp xếp theo lợi nhuận sau thuế (`profits_after_tax`) theo thứ tự giảm dần (`DESC`).\n\n### Truy vấn SQL:\n\n```sql\nSELECT bank_code, profits_after_tax\nFROM vn_banks_financials\nWHERE non_performing_loans_ratio > 2.0\nORDER BY profits_after_tax DESC;\n```",
+    "sql": "SELECT bank_code, profits_after_tax\nFROM vn_banks_financials\nWHERE non_performing_loans_ratio > 2.0\nORDER BY profits_after_tax DESC;"
+  },
+  {
+    "db_id": "danang_hsg_list",
+    "sql_complexity": "Moderate",
+    "question_style": "Imperative",
+    "question": "Bạn có thể liệt kê giúp tôi danh sách các trường học có điểm trung bình của học sinh lớn hơn 5.0 không? Lưu ý là bạn chỉ nên tính toán dựa trên các bản ghi có giá trị điểm là số thực thôi nhé!",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và câu lệnh SQL để giải quyết yêu cầu của bạn:\n\n### Các bước phân tích:\n\n1. **Xác định mục tiêu**: Tìm danh sách các trường học (`truong`) thỏa mãn điều kiện điểm trung bình (`AVG(diem)`) của học sinh tại trường đó lớn hơn 5.0.\n2. **Xử lý điều kiện dữ liệu**: Câu hỏi yêu cầu tính toán dựa trên các bản ghi có giá trị điểm là số thực. Trong SQLite, hàm `TYPEOF` có thể được sử dụng để kiểm tra kiểu dữ liệu của cột `diem`.\n3. **Nhóm dữ liệu**: Vì chúng ta cần tính điểm trung bình theo từng trường, chúng ta sử dụng mệnh đề `GROUP BY truong`.\n4. **Lọc kết quả sau nhóm**: Mệnh đề `HAVING` được sử dụng để lọc các trường có `AVG(diem) > 5.0` sau khi đã thực hiện tính toán nhóm.\n5. **Truy vấn cuối cùng**: Kết hợp các bước trên để tạo thành câu lệnh SQL hoàn chỉnh.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT truong\nFROM danang_hsg_list\nWHERE TYPEOF(diem) = 'real'\nGROUP BY truong\nHAVING AVG(diem) > 5.0;\n```",
+    "sql": "SELECT truong\nFROM danang_hsg_list\nWHERE TYPEOF(diem) = 'real'\nGROUP BY truong\nHAVING AVG(diem) > 5.0;"
+  },
+  {
+    "db_id": "vn_banks_financials",
+    "sql_complexity": "Moderate",
+    "question_style": "Concise",
+    "question": "Với các ngân hàng có lợi nhuận trên tài sản dương, hãy tính lợi nhuận sau thuế trung bình theo từng loại, chỉ hiển thị những nhóm có lợi nhuận trung bình trên 10.000.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích để giải quyết câu hỏi:\n\n1.  **Xác định bảng dữ liệu**: Dữ liệu cần thiết nằm trong bảng `vn_banks_financials`.\n2.  **Lọc dữ liệu**: Câu hỏi yêu cầu lọc các ngân hàng có \"lợi nhuận trên tài sản dương\" (`returns_over_assets > 0`).\n3.  **Nhóm dữ liệu**: Yêu cầu tính trung bình theo \"từng loại\", do đó cần sử dụng `GROUP BY classification`.\n4.  **Tính toán**: Cần tính trung bình của `profits_after_tax` bằng hàm `AVG()`.\n5.  **Điều kiện lọc nhóm**: Chỉ hiển thị các nhóm có giá trị trung bình vừa tính lớn hơn 10.000, vì vậy cần sử dụng mệnh đề `HAVING AVG(profits_after_tax) > 10000`.\n6.  **Hiển thị kết quả**: Để biết kết quả thuộc loại nào, cần hiển thị thêm cột `classification` trong câu lệnh `SELECT`.\n\n```sql\nSELECT classification, AVG(profits_after_tax)\nFROM vn_banks_financials\nWHERE returns_over_assets > 0\nGROUP BY classification\nHAVING AVG(profits_after_tax) > 10000;\n```",
+    "sql": "SELECT classification, AVG(profits_after_tax)\nFROM vn_banks_financials\nWHERE returns_over_assets > 0\nGROUP BY classification\nHAVING AVG(profits_after_tax) > 10000;"
+  },
+  {
+    "db_id": "student_performance",
+    "sql_complexity": "Moderate",
+    "question_style": "Multi-turn Dialogue",
+    "question": "**User**: Tôi muốn tìm hiểu thông tin về kết quả học tập của học sinh.\n**Assistant**: Vâng, bạn muốn biết thông tin cụ thể nào về kết quả học tập của học sinh?\n**User**: Tôi muốn biết các khu vực cư trú của những học sinh có cha làm nghề nông.\n**Assistant**: Được, bạn có muốn lọc thêm điều kiện nào về điểm số của các học sinh này không?\n**User**: Có, hãy chỉ liệt kê những khu vực có điểm trung bình môn Toán lớn hơn 5.0.\n**Assistant**: Tôi hiểu rồi. Bạn có muốn sắp xếp danh sách các khu vực này theo một tiêu chí nào không?\n**User**: Hãy sắp xếp theo điểm trung bình môn Toán từ cao xuống thấp nhé.\n**Assistant**: Đã rõ, tôi sẽ giúp bạn truy xuất danh sách các khu vực cư trú thỏa mãn yêu cầu của bạn.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định bảng dữ liệu**: Dữ liệu cần thiết nằm trong bảng `student_performance`.\n2.  **Lọc dữ liệu theo điều kiện của cha**: Yêu cầu tìm học sinh có cha làm nghề nông, do đó ta sử dụng điều kiện `father_job = 'Farmer'`.\n3.  **Nhóm dữ liệu**: Để tính điểm trung bình môn Toán theo từng khu vực cư trú, ta cần sử dụng mệnh đề `GROUP BY residential_area`.\n4.  **Lọc theo kết quả học tập**: Yêu cầu điểm trung bình môn Toán lớn hơn 5.0, vì đây là điều kiện trên kết quả của hàm tập hợp (AVG), ta phải sử dụng mệnh đề `HAVING AVG(math) > 5.0`.\n5.  **Sắp xếp**: Yêu cầu sắp xếp theo điểm trung bình môn Toán từ cao xuống thấp, ta sử dụng `ORDER BY AVG(math) DESC`.\n6.  **Chọn cột**: Chỉ cần hiển thị cột `residential_area`.\n\n### Truy vấn SQL:\n\n```sql\nSELECT residential_area\nFROM student_performance\nWHERE father_job = 'Farmer'\nGROUP BY residential_area\nHAVING AVG(math) > 5.0\nORDER BY AVG(math) DESC;\n```",
+    "sql": "SELECT residential_area\nFROM student_performance\nWHERE father_job = 'Farmer'\nGROUP BY residential_area\nHAVING AVG(math) > 5.0\nORDER BY AVG(math) DESC;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Simple",
+    "question_style": "Imperative",
+    "question": "Bạn có thể liệt kê giúp tôi tên của các dịch vụ công thuộc lĩnh vực \"Hoạt động khoa học và công nghệ\" không? Nếu tên dịch vụ nào chưa được xác định (giá trị trống), vui lòng hiển thị là \"Unknown Service Name\" giúp tôi nhé!",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước thực hiện:\n\n1.  **Phân tích yêu cầu:**\n    *   Mục tiêu: Lấy danh sách tên dịch vụ (`ten`) từ bảng `hp_public_services`.\n    *   Điều kiện lọc: Chỉ lấy các dịch vụ thuộc lĩnh vực (`linh_vuc`) là \"Hoạt động khoa học và công nghệ\".\n    *   Xử lý giá trị trống: Sử dụng hàm `COALESCE` để kiểm tra nếu cột `ten` bị `NULL`, thay thế bằng giá trị 'Unknown Service Name'.\n\n2.  **Xây dựng truy vấn:**\n    *   Sử dụng `SELECT` để chọn cột `ten`.\n    *   Sử dụng `COALESCE(ten, 'Unknown Service Name')` để đảm bảo yêu cầu hiển thị giá trị mặc định khi tên dịch vụ không xác định.\n    *   Sử dụng `FROM hp_public_services` để chỉ định bảng dữ liệu.\n    *   Sử dụng `WHERE linh_vuc = 'Hoạt động khoa học và công nghệ'` để lọc theo lĩnh vực yêu cầu.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    COALESCE(ten, 'Unknown Service Name') \nFROM hp_public_services \nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ';\n```",
+    "sql": "SELECT \n    COALESCE(ten, 'Unknown Service Name') \nFROM hp_public_services \nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ';"
+  },
+  {
+    "db_id": "facility_announcements_2025",
+    "sql_complexity": "Moderate",
+    "question_style": "Interrogative",
+    "question": "Bạn có thể cho tôi biết tên và địa chỉ của những cơ sở nào có tổng số lượng công bố mới và công bố lại cao nhất trong bảng dữ liệu năm 2025 không?",
+    "external_knowledge": "",
+    "cot": "Để giải quyết câu hỏi này, chúng ta cần xác định cơ sở có tổng số lượng \"công bố mới\" và \"công bố lại\" đạt giá trị lớn nhất. Dưới đây là các bước thực hiện:\n\n1. **Phân tích yêu cầu**: Tính tổng của hai cột `cong_bo_moi` và `cong_bo_lai` cho từng cơ sở, sau đó tìm các cơ sở có giá trị tổng này bằng với giá trị lớn nhất của toàn bộ bảng.\n2. **Xây dựng truy vấn**:\n   - Sử dụng một truy vấn con (subquery) hoặc hàm tổng hợp để tìm giá trị lớn nhất của tổng (`cong_bo_moi + cong_bo_lai`).\n   - Lọc các hàng trong bảng `facility_announcements_2025` sao cho tổng của hai cột này bằng với giá trị lớn nhất đã tìm được.\n   - Trả về cột `ten_co_so` và `dia_chi`.\n3. **Tối ưu hóa**: SQLite hỗ trợ mệnh đề `ORDER BY` kết hợp với `LIMIT 1` hoặc so sánh với một truy vấn con để tìm giá trị lớn nhất một cách hiệu quả.\n\n**Giải thích các bước thực hiện:**\n- Bước 1: Tính tổng `cong_bo_moi + cong_bo_lai`.\n- Bước 2: Sắp xếp kết quả theo tổng này theo thứ tự giảm dần (`DESC`).\n- Bước 3: Lấy các bản ghi có giá trị bằng với giá trị cao nhất.\n\n```sql\nSELECT \n    ten_co_so, \n    dia_chi \nFROM facility_announcements_2025 \nWHERE (cong_bo_moi + cong_bo_lai) = (\n    SELECT MAX(cong_bo_moi + cong_bo_lai) \n    FROM facility_announcements_2025\n);\n```",
+    "sql": "SELECT \n    ten_co_so, \n    dia_chi \nFROM facility_announcements_2025 \nWHERE (cong_bo_moi + cong_bo_lai) = (\n    SELECT MAX(cong_bo_moi + cong_bo_lai) \n    FROM facility_announcements_2025\n);"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Moderate",
+    "question_style": "Concise",
+    "question": "Liệt kê các lĩnh vực có từ 2 dịch vụ công trở lên do UBND Thành phố Hải Phòng công bố.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định bảng dữ liệu**: Dữ liệu cần thiết nằm trong bảng `hp_public_services`.\n2.  **Lọc dữ liệu**: Câu hỏi yêu cầu dịch vụ công phải do \"UBND Thành phố Hải Phòng\" công bố, vì vậy cần áp dụng điều kiện `WHERE co_quan_cong_bo = 'UBND Thành phố Hải Phòng'`.\n3.  **Nhóm dữ liệu**: Để đếm số lượng dịch vụ theo từng lĩnh vực, ta sử dụng mệnh đề `GROUP BY linh_vuc`.\n4.  **Lọc theo điều kiện tổng hợp**: Câu hỏi yêu cầu \"từ 2 dịch vụ công trở lên\", do đó ta sử dụng mệnh đề `HAVING COUNT(*) >= 2` (hoặc `COUNT(ma) >= 2`).\n5.  **Chọn cột kết quả**: Yêu cầu liệt kê các lĩnh vực, nên ta chọn cột `linh_vuc`.\n\n### Truy vấn SQL:\n\n```sql\nSELECT linh_vuc\nFROM hp_public_services\nWHERE co_quan_cong_bo = 'UBND Thành phố Hải Phòng'\nGROUP BY linh_vuc\nHAVING COUNT(*) >= 2;\n```",
+    "sql": "SELECT linh_vuc\nFROM hp_public_services\nWHERE co_quan_cong_bo = 'UBND Thành phố Hải Phòng'\nGROUP BY linh_vuc\nHAVING COUNT(*) >= 2;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Simple",
+    "question_style": "Interrogative",
+    "question": "Bạn có thể cho biết tên và cơ quan công bố của các dịch vụ công thuộc lĩnh vực \"Hoạt động khoa học và công nghệ\" là gì không?",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định bảng dữ liệu**: Dựa trên lược đồ, thông tin về các dịch vụ công nằm trong bảng `hp_public_services`.\n2.  **Xác định các cột cần truy xuất**: Câu hỏi yêu cầu lấy \"tên\" và \"cơ quan công bố\", tương ứng với các cột `ten` và `co_quan_cong_bo` trong bảng.\n3.  **Xác định điều kiện lọc**: Câu hỏi yêu cầu lọc các dịch vụ thuộc lĩnh vực \"Hoạt động khoa học và công nghệ\". Do đó, chúng ta cần sử dụng mệnh đề `WHERE` trên cột `linh_vuc` với giá trị là `'Hoạt động khoa học và công nghệ'`.\n4.  **Tối ưu hóa**: Không cần sử dụng các hàm phụ trợ không cần thiết, chỉ cần sử dụng toán tử so sánh bằng `=` để đảm bảo tính chuẩn xác và hiệu năng của truy vấn.\n\n### Truy vấn SQL:\n\n```sql\nSELECT ten, co_quan_cong_bo\nFROM hp_public_services\nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ';\n```",
+    "sql": "SELECT ten, co_quan_cong_bo\nFROM hp_public_services\nWHERE linh_vuc = 'Hoạt động khoa học và công nghệ';"
+  },
+  {
+    "db_id": "facility_announcements_2025",
+    "sql_complexity": "Moderate",
+    "question_style": "Colloquial",
+    "question": "Chào bạn, bạn có thể liệt kê giúp mình tên các quận mà có các cơ sở mới được công bố không? Mình chỉ muốn xem danh sách các quận thôi nhé!",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n1.  **Phân tích yêu cầu:** Chúng ta cần tìm tên các quận từ cột `dia_chi` của các cơ sở có `cong_bo_moi = 1`.\n2.  **Xử lý dữ liệu địa chỉ:** Cột `dia_chi` thường chứa thông tin theo định dạng \"Số nhà, Đường, Phường, Quận, Thành phố\". Để trích xuất tên quận, chúng ta giả định quận nằm sau dấu phẩy cuối cùng hoặc cấu trúc địa chỉ có dấu phẩy phân cách. Tuy nhiên, dựa trên yêu cầu liệt kê danh sách quận, tôi sẽ sử dụng hàm `SUBSTR` và `INSTR` để lấy phần thông tin đại diện cho quận.\n3.  **Lọc dữ liệu:** Sử dụng điều kiện `WHERE cong_bo_moi = 1` để chỉ lấy các cơ sở mới được công bố.\n4.  **Loại bỏ trùng lặp:** Sử dụng từ khóa `DISTINCT` để đảm bảo mỗi tên quận chỉ xuất hiện một lần trong kết quả cuối cùng, thay vì sử dụng `GROUP BY` phức tạp.\n\n### Truy vấn SQL:\n\n```sql\nSELECT DISTINCT \n    TRIM(SUBSTR(dia_chi, INSTR(dia_chi, ',') + 1)) AS district\nFROM facility_announcements_2025\nWHERE cong_bo_moi = 1;\n```\n\n*Lưu ý: Truy vấn này giả định rằng tên quận nằm ở phần cuối của chuỗi địa chỉ sau dấu phẩy. Nếu dữ liệu của bạn có cấu trúc phức tạp hơn (ví dụ: \"Phường, Quận, Thành phố\"), bạn có thể cần điều chỉnh hàm `SUBSTR` để trích xuất đúng phân đoạn mong muốn.*",
+    "sql": "SELECT DISTINCT \n    TRIM(SUBSTR(dia_chi, INSTR(dia_chi, ',') + 1)) AS district\nFROM facility_announcements_2025\nWHERE cong_bo_moi = 1;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Moderate",
+    "question_style": "Interrogative",
+    "question": "Bạn có thể cho biết loại nhiên liệu, thập kỷ vận hành, số lượng nhà máy và công suất trung bình của các nhà máy điện trong bảng `power_plants_vn` mà có công suất trung bình trên 100 MW không? Hãy sắp xếp kết quả theo công suất trung bình từ cao xuống thấp.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định các thông tin cần lấy:** Truy vấn yêu cầu lấy loại nhiên liệu (`std_fuel`), thập kỷ vận hành (tính bằng cách lấy `commissioning_year` chia cho 10 rồi nhân với 10), số lượng nhà máy (`COUNT(*)`) và công suất trung bình (`AVG(capacity_mw)`).\n2.  **Nhóm dữ liệu:** Vì yêu cầu liên quan đến các nhóm nhiên liệu và thập kỷ, chúng ta cần sử dụng `GROUP BY` cho cả hai cột này.\n3.  **Tính toán thập kỷ:** Công thức `(commissioning_year / 10) * 10` trong SQLite sẽ trả về giá trị thập kỷ (ví dụ: 2015 sẽ thành 2010).\n4.  **Điều kiện lọc:** Yêu cầu lọc các nhóm có công suất trung bình trên 100 MW, do đó cần dùng mệnh đề `HAVING AVG(capacity_mw) > 100`.\n5.  **Sắp xếp:** Kết quả cần được sắp xếp theo công suất trung bình giảm dần (`ORDER BY average_capacity DESC`).\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    std_fuel, \n    (commissioning_year / 10) * 10 AS commissioning_decade, \n    COUNT(*) AS plant_count, \n    AVG(capacity_mw) AS average_capacity\nFROM power_plants_vn\nGROUP BY std_fuel, commissioning_decade\nHAVING AVG(capacity_mw) > 100\nORDER BY average_capacity DESC;\n```",
+    "sql": "SELECT \n    std_fuel, \n    (commissioning_year / 10) * 10 AS commissioning_decade, \n    COUNT(*) AS plant_count, \n    AVG(capacity_mw) AS average_capacity\nFROM power_plants_vn\nGROUP BY std_fuel, commissioning_decade\nHAVING AVG(capacity_mw) > 100\nORDER BY average_capacity DESC;"
+  },
+  {
+    "db_id": "wb_procurement_contracts",
+    "sql_complexity": "Moderate",
+    "question_style": "Multi-turn Dialogue",
+    "question": "**User**: Tôi muốn xem thông tin về các nhà cung cấp trong cơ sở dữ liệu hợp đồng.\n**Assistant**: Bạn muốn xem thông tin cụ thể nào về các nhà cung cấp này?\n**User**: Tôi quan tâm đến các nhà cung cấp thuộc lĩnh vực 'Energy and Extractives' (Năng lượng và Khai khoáng).\n**Assistant**: Được ạ, bạn muốn biết những chỉ số nào liên quan đến họ?\n**User**: Hãy cho tôi biết tổng số hợp đồng và giá trị hợp đồng trung bình của mỗi nhà cung cấp đó.\n**Assistant**: Bạn có muốn giới hạn số lượng nhà cung cấp được hiển thị không?\n**User**: Có, hãy liệt kê 3 nhà cung cấp có số lượng hợp đồng nhiều nhất và sắp xếp theo thứ tự giảm dần.\n**Assistant**: OK, tôi sẽ giúp bạn truy vấn dữ liệu này.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để trả lời câu hỏi của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định bảng dữ liệu**: Dữ liệu cần thiết nằm trong bảng `wb_procurement_contracts`.\n2.  **Lọc dữ liệu**: Sử dụng mệnh đề `WHERE` để chọn các bản ghi có `project_global_practice` là 'Energy and Extractives'.\n3.  **Nhóm dữ liệu**: Sử dụng `GROUP BY supplier` để thực hiện tính toán cho từng nhà cung cấp riêng biệt.\n4.  **Tính toán chỉ số**:\n    *   Tổng số hợp đồng: Sử dụng hàm `COUNT(wb_contract_number)`.\n    *   Giá trị hợp đồng trung bình: Sử dụng hàm `AVG(supplier_contract_amount_usd)`.\n5.  **Sắp xếp và giới hạn**: Sử dụng `ORDER BY` theo tổng số hợp đồng theo thứ tự giảm dần (`DESC`) và sử dụng `LIMIT 3` để lấy ra đúng 3 nhà cung cấp đứng đầu theo yêu cầu.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    supplier, \n    COUNT(wb_contract_number) AS total_contracts, \n    AVG(supplier_contract_amount_usd) AS average_contract_value\nFROM wb_procurement_contracts\nWHERE project_global_practice = 'Energy and Extractives'\nGROUP BY supplier\nORDER BY total_contracts DESC\nLIMIT 3;\n```",
+    "sql": "SELECT \n    supplier, \n    COUNT(wb_contract_number) AS total_contracts, \n    AVG(supplier_contract_amount_usd) AS average_contract_value\nFROM wb_procurement_contracts\nWHERE project_global_practice = 'Energy and Extractives'\nGROUP BY supplier\nORDER BY total_contracts DESC\nLIMIT 3;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Moderate",
+    "question_style": "Descriptive",
+    "question": "Hãy liệt kê loại nhiên liệu tiêu chuẩn, công suất trung bình (tính bằng MW) và tổng số lượng nhà máy điện cho từng loại nhiên liệu, chỉ tính những nhà máy đã đi vào hoạt động sau năm 2010.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và câu lệnh SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   Cần lấy thông tin về: loại nhiên liệu (`std_fuel`), công suất trung bình (`AVG(capacity_mw)`), và tổng số lượng nhà máy (`COUNT(*)`).\n    *   Điều kiện lọc: Chỉ tính các nhà máy có năm vận hành (`commissioning_year`) lớn hơn 2010.\n    *   Nhóm dữ liệu: Phân loại theo `std_fuel`.\n\n2.  **Xây dựng truy vấn:**\n    *   Sử dụng bảng `power_plants_vn`.\n    *   Sử dụng mệnh đề `WHERE` để áp dụng điều kiện `commissioning_year > 2010`.\n    *   Sử dụng mệnh đề `GROUP BY std_fuel` để tính toán các giá trị thống kê cho từng loại nhiên liệu.\n    *   Không cần sử dụng mệnh đề `HAVING` vì đề bài không yêu cầu lọc thêm trên kết quả tổng hợp.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT \n    std_fuel, \n    AVG(capacity_mw) AS average_capacity, \n    COUNT(*) AS total_plants\nFROM power_plants_vn\nWHERE commissioning_year > 2010\nGROUP BY std_fuel;\n```",
+    "sql": "SELECT \n    std_fuel, \n    AVG(capacity_mw) AS average_capacity, \n    COUNT(*) AS total_plants\nFROM power_plants_vn\nWHERE commissioning_year > 2010\nGROUP BY std_fuel;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Moderate",
+    "question_style": "Colloquial",
+    "question": "Này, bạn có thể giúp mình tìm xem những loại nhiên liệu nào được các nhà máy điện đi vào hoạt động từ sau năm 2010 sử dụng, với điều kiện là công suất trung bình của các nhà máy đó phải trên 100 MW không? Nhớ loại bỏ khoảng trắng trong tên loại nhiên liệu giúp mình nhé!",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n**Quy trình suy luận:**\n\n1.  **Xác định mục tiêu:** Tìm các loại nhiên liệu (`std_fuel`) được sử dụng bởi các nhà máy điện có năm vận hành (`commissioning_year`) sau năm 2010.\n2.  **Xử lý dữ liệu:** Loại bỏ khoảng trắng trong tên loại nhiên liệu bằng hàm `REPLACE(std_fuel, ' ', '')`.\n3.  **Điều kiện lọc:**\n    *   Sử dụng mệnh đề `WHERE` để lọc các nhà máy có `commissioning_year > 2010`.\n    *   Sử dụng `GROUP BY` để nhóm theo loại nhiên liệu đã được xử lý.\n    *   Sử dụng mệnh đề `HAVING` để lọc các nhóm có giá trị trung bình của cột `capacity_mw` lớn hơn 100.\n4.  **Kết quả:** Truy vấn sẽ trả về danh sách các loại nhiên liệu thỏa mãn cả hai điều kiện về thời gian và công suất trung bình.\n\n**Truy vấn SQL:**\n\n```sql\nSELECT \n    REPLACE(std_fuel, ' ', '') AS fuel_type\nFROM power_plants_vn\nWHERE commissioning_year > 2010\nGROUP BY fuel_type\nHAVING AVG(capacity_mw) > 100;\n```",
+    "sql": "SELECT \n    REPLACE(std_fuel, ' ', '') AS fuel_type\nFROM power_plants_vn\nWHERE commissioning_year > 2010\nGROUP BY fuel_type\nHAVING AVG(capacity_mw) > 100;"
+  },
+  {
+    "db_id": "facility_announcements_2025",
+    "sql_complexity": "Complex",
+    "question_style": "Descriptive",
+    "question": "Hãy liệt kê tên của các cơ sở có trạng thái là 'Mới' hoặc 'Công bố lại' nằm trong top 5 cơ sở ưu tiên của mỗi quận. Trong đó, tiêu chí ưu tiên được xác định bởi các cơ sở có số điện thoại dài (trên 12 ký tự) trước, sau đó là sắp xếp theo tên cơ sở theo thứ tự bảng chữ cái.",
+    "external_knowledge": "",
+    "cot": "Để giải quyết yêu cầu này, chúng ta cần thực hiện các bước sau:\n\n1. **Xác định trạng thái**: Dựa trên schema, 'Mới' tương ứng với cột `cong_bo_moi = 1` và 'Công bố lại' tương ứng với `cong_bo_lai = 1`.\n2. **Trích xuất quận**: Giả định thông tin quận nằm ở phần cuối của cột `dia_chi` (sau dấu phẩy). Chúng ta sẽ sử dụng hàm `SUBSTR` và `INSTR` để tách lấy tên quận.\n3. **Xác định tiêu chí ưu tiên**:\n    - Ưu tiên 1: Độ dài `so_dien_thoai` lớn hơn 12 ký tự.\n    - Ưu tiên 2: Tên cơ sở (`ten_co_so`) theo thứ tự bảng chữ cái (ASC).\n4. **Xếp hạng**: Sử dụng hàm cửa sổ `ROW_NUMBER()` phân vùng theo quận (`PARTITION BY district`) để chọn ra top 5.\n5. **Truy vấn**: Lọc các cơ sở thỏa mãn điều kiện trạng thái và lấy top 5 kết quả.\n\nDưới đây là truy vấn SQL:\n\n```sql\nWITH ProcessedData AS (\n    SELECT \n        ten_co_so,\n        TRIM(SUBSTR(dia_chi, INSTR(dia_chi, ',') + 1)) AS district,\n        CASE WHEN LENGTH(so_dien_thoai) > 12 THEN 1 ELSE 0 END AS is_long_phone\n    FROM facility_announcements_2025\n    WHERE cong_bo_moi = 1 OR cong_bo_lai = 1\n),\nRankedFacilities AS (\n    SELECT \n        ten_co_so,\n        ROW_NUMBER() OVER (\n            PARTITION BY district \n            ORDER BY is_long_phone DESC, ten_co_so ASC\n        ) as rank\n    FROM ProcessedData\n)\nSELECT ten_co_so\nFROM RankedFacilities\nWHERE rank <= 5;\n```",
+    "sql": "WITH ProcessedData AS (\n    SELECT \n        ten_co_so,\n        TRIM(SUBSTR(dia_chi, INSTR(dia_chi, ',') + 1)) AS district,\n        CASE WHEN LENGTH(so_dien_thoai) > 12 THEN 1 ELSE 0 END AS is_long_phone\n    FROM facility_announcements_2025\n    WHERE cong_bo_moi = 1 OR cong_bo_lai = 1\n),\nRankedFacilities AS (\n    SELECT \n        ten_co_so,\n        ROW_NUMBER() OVER (\n            PARTITION BY district \n            ORDER BY is_long_phone DESC, ten_co_so ASC\n        ) as rank\n    FROM ProcessedData\n)\nSELECT ten_co_so\nFROM RankedFacilities\nWHERE rank <= 5;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Simple",
+    "question_style": "Multi-turn Dialogue",
+    "question": "**User**: Tôi muốn tìm kiếm thông tin về các dịch vụ công.\n**Assistant**: Bạn muốn biết thông tin gì cụ thể về các dịch vụ công này?\n**User**: Tôi muốn xem tên của các dịch vụ công được công bố bởi một cơ quan cụ thể.\n**Assistant**: Đó là cơ quan nào vậy ạ?\n**User**: Là UBND Thành phố Hải Phòng.\n**Assistant**: Bạn có muốn tôi liệt kê tên các dịch vụ đó ra không?\n**User**: Có, làm ơn hãy liệt kê tên các dịch vụ công đó.\n**Assistant**: Được, tôi sẽ truy xuất tên các dịch vụ công do UBND Thành phố Hải Phòng công bố cho bạn.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n**Quy trình suy luận:**\n\n1.  **Phân tích yêu cầu:** Người dùng muốn lấy danh sách \"tên\" của các dịch vụ công dựa trên điều kiện \"cơ quan công bố\" là \"UBND Thành phố Hải Phòng\".\n2.  **Xác định bảng:** Dữ liệu nằm trong bảng `hp_public_services`.\n3.  **Xác định cột:**\n    *   Cột cần lấy: `ten`.\n    *   Cột dùng để lọc: `co_quan_cong_bo`.\n4.  **Xây dựng điều kiện lọc:** Sử dụng mệnh đề `WHERE` để so sánh cột `co_quan_cong_bo` với giá trị chuỗi `'UBND Thành phố Hải Phòng'`.\n5.  **Tối ưu hóa:** Chỉ cần chọn cột `ten` từ bảng đã chỉ định mà không cần thực hiện các thao tác xử lý chuỗi phức tạp nếu dữ liệu không chứa khoảng trắng thừa đáng kể.\n\n**Truy vấn SQL:**\n\n```sql\nSELECT ten\nFROM hp_public_services\nWHERE co_quan_cong_bo = 'UBND Thành phố Hải Phòng';\n```",
+    "sql": "SELECT ten\nFROM hp_public_services\nWHERE co_quan_cong_bo = 'UBND Thành phố Hải Phòng';"
+  },
+  {
+    "db_id": "student_performance",
+    "sql_complexity": "Simple",
+    "question_style": "Colloquial",
+    "question": "Này, bạn có thể tính giúp mình xem điểm toán trung bình của các bạn học sinh dựa trên nghề nghiệp của bố các bạn ấy được không? Mình muốn biết cụ thể từng nhóm nghề nghiệp thì điểm toán trung bình là bao nhiêu.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n**Quy trình phân tích:**\n\n1.  **Xác định mục tiêu:** Yêu cầu tính giá trị trung bình của cột `math` (điểm toán) theo từng nhóm `father_job` (nghề nghiệp của bố).\n2.  **Lựa chọn bảng:** Dữ liệu nằm trong bảng `student_performance`.\n3.  **Hàm tính toán:** Sử dụng hàm `AVG()` trên cột `math` để tính điểm trung bình.\n4.  **Nhóm dữ liệu:** Sử dụng mệnh đề `GROUP BY` trên cột `father_job` để phân loại dữ liệu theo từng nghề nghiệp của bố.\n5.  **Lưu ý về kiểu dữ liệu:** Cột `math` trong schema được định nghĩa là kiểu `TEXT`. Trong SQL, để tính trung bình cộng, ta cần ép kiểu (cast) cột này sang kiểu số (ví dụ: `REAL` hoặc `INTEGER`) để hàm `AVG()` hoạt động chính xác.\n\n**Truy vấn SQL:**\n\n```sql\nSELECT \n    father_job, \n    AVG(CAST(math AS REAL)) AS average_math_score\nFROM student_performance\nGROUP BY father_job;\n```",
+    "sql": "SELECT \n    father_job, \n    AVG(CAST(math AS REAL)) AS average_math_score\nFROM student_performance\nGROUP BY father_job;"
+  },
+  {
+    "db_id": "student_performance",
+    "sql_complexity": "Moderate",
+    "question_style": "Vague",
+    "question": "Hãy liệt kê tên các khu vực cư trú mà ở đó học sinh có kết quả học tập môn Toán xuất sắc.",
+    "external_knowledge": "'Kết quả học tập môn Toán xuất sắc' được định nghĩa là điểm trung bình môn Toán lớn hơn 8.0.",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:** Mục tiêu là tìm danh sách các khu vực cư trú (`residential_area`) nơi mà học sinh có điểm môn Toán (`math`) trung bình lớn hơn 8.0.\n2.  **Xử lý dữ liệu:** Vì cột `math` được lưu dưới dạng văn bản (TEXT), chúng ta cần chuyển đổi kiểu dữ liệu của nó sang số thực (REAL) để thực hiện tính toán. Trong trường hợp dữ liệu có chứa dấu phẩy thay vì dấu chấm, cần sử dụng hàm `REPLACE` để chuẩn hóa trước khi ép kiểu.\n3.  **Nhóm dữ liệu:** Để tính điểm trung bình cho từng khu vực, chúng ta sử dụng `GROUP BY residential_area`.\n4.  **Lọc kết quả:** Sử dụng mệnh đề `HAVING` để lọc các nhóm có giá trị trung bình (`AVG`) lớn hơn 8.0.\n5.  **Tối ưu hóa:** Chỉ cần liệt kê các khu vực duy nhất, vì vậy việc sử dụng `GROUP BY` là hoàn toàn chính xác và đủ để loại bỏ các giá trị trùng lặp.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    residential_area\nFROM student_performance\nGROUP BY residential_area\nHAVING AVG(CAST(REPLACE(math, ',', '.') AS REAL)) > 8.0;\n```",
+    "sql": "SELECT \n    residential_area\nFROM student_performance\nGROUP BY residential_area\nHAVING AVG(CAST(REPLACE(math, ',', '.') AS REAL)) > 8.0;"
+  },
+  {
+    "db_id": "facility_announcements_2025",
+    "sql_complexity": "Moderate",
+    "question_style": "Colloquial",
+    "question": "Chào bạn! Bạn có thể giúp mình liệt kê danh sách các cơ sở mới được công bố không? Mình muốn xem thông tin bao gồm tên cơ sở, địa chỉ và ngày công bố của chúng dưới dạng một đoạn văn bản tóm tắt cho dễ theo dõi nhé.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:** Người dùng muốn liệt kê các cơ sở mới được công bố. Dữ liệu cần lấy bao gồm: `ten_co_so`, `dia_chi`, và `ngay_cong_bo`.\n2.  **Xác định điều kiện:** Dựa trên cấu trúc bảng, cột `cong_bo_moi` với giá trị là 1 (hoặc khác 0) đại diện cho các cơ sở mới được công bố.\n3.  **Định dạng kết quả:** Người dùng yêu cầu hiển thị dưới dạng một đoạn văn bản tóm tắt. Tôi sẽ sử dụng hàm `printf` (hàm chuẩn trong SQLite để định dạng chuỗi) để kết hợp các cột lại với nhau theo định dạng mong muốn.\n4.  **Tối ưu hóa:** Không cần thiết phải sử dụng `GROUP BY` hay `HAVING` vì mục tiêu là liệt kê danh sách các bản ghi thỏa mãn điều kiện, không phải tính toán tổng hợp.\n\n### Truy vấn SQL:\n\n```sql\nSELECT printf('Cơ sở: %s, Địa chỉ: %s, Ngày công bố: %s', ten_co_so, dia_chi, ngay_cong_bo) AS announcement_summary\nFROM facility_announcements_2025\nWHERE cong_bo_moi = 1;\n```",
+    "sql": "SELECT printf('Cơ sở: %s, Địa chỉ: %s, Ngày công bố: %s', ten_co_so, dia_chi, ngay_cong_bo) AS announcement_summary\nFROM facility_announcements_2025\nWHERE cong_bo_moi = 1;"
+  },
+  {
+    "db_id": "hp_public_services",
+    "sql_complexity": "Moderate",
+    "question_style": "Vague",
+    "question": "Hãy liệt kê các lĩnh vực chính mà cơ quan đầu não của Hải Phòng đã thực hiện công bố các dịch vụ công.",
+    "external_knowledge": "'Cơ quan đầu não của Hải Phòng' được hiểu là UBND Thành phố Hải Phòng; 'Thực hiện công bố' tương ứng với điều kiện lọc theo cột co_quan_cong_bo.",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:**\n    *   Mục tiêu: Liệt kê các lĩnh vực (`linh_vuc`) mà cơ quan 'UBND Thành phố Hải Phòng' đã thực hiện công bố.\n    *   Điều kiện: Cột `co_quan_cong_bo` phải có giá trị là 'UBND Thành phố Hải Phòng'.\n    *   Yêu cầu bổ sung: Liệt kê các lĩnh vực chính, nghĩa là các giá trị không bị trùng lặp.\n\n2.  **Xây dựng truy vấn:**\n    *   Chọn cột `linh_vuc` từ bảng `hp_public_services`.\n    *   Sử dụng mệnh đề `WHERE` để lọc theo điều kiện `co_quan_cong_bo = 'UBND Thành phố Hải Phòng'`.\n    *   Sử dụng từ khóa `DISTINCT` để đảm bảo mỗi lĩnh vực chỉ xuất hiện một lần trong kết quả trả về, thay vì sử dụng `GROUP BY` khi không có hàm tính toán tổng hợp nào cần thiết.\n\n3.  **Tối ưu hóa:**\n    *   Việc sử dụng `DISTINCT` là cách trực tiếp và hiệu quả nhất để lấy danh sách các giá trị duy nhất thỏa mãn điều kiện lọc.\n\n### Truy vấn SQL:\n\n```sql\nSELECT DISTINCT linh_vuc\nFROM hp_public_services\nWHERE co_quan_cong_bo = 'UBND Thành phố Hải Phòng';\n```",
+    "sql": "SELECT DISTINCT linh_vuc\nFROM hp_public_services\nWHERE co_quan_cong_bo = 'UBND Thành phố Hải Phòng';"
+  },
+  {
+    "db_id": "facility_announcements_2025",
+    "sql_complexity": "Complex",
+    "question_style": "Colloquial",
+    "question": "Chào bạn! Bạn có thể giúp mình liệt kê tên của 10 cơ sở có hoạt động sôi nổi nhất không? Mình muốn xem tổng số sự kiện công bố (bao gồm cả công bố mới và công bố lại) cùng với thứ hạng hoạt động của chúng. Hãy sắp xếp danh sách này theo số lượng hoạt động từ cao xuống thấp nhé!",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và câu lệnh SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Xác định mục tiêu:** Cần liệt kê 10 cơ sở có tổng số lần \"công bố mới\" (`cong_bo_moi`) và \"công bố lại\" (`cong_bo_lai`) cao nhất.\n2.  **Tính toán tổng hoạt động:** Sử dụng hàm `SUM(cong_bo_moi + cong_bo_lai)` cho mỗi cơ sở bằng cách nhóm theo cột `ten_co_so`.\n3.  **Xếp hạng:** Sử dụng hàm cửa sổ `DENSE_RANK()` hoặc `RANK()` dựa trên tổng số hoạt động đã tính để xác định thứ hạng hoạt động của từng cơ sở.\n4.  **Sắp xếp và giới hạn:** Sắp xếp kết quả theo tổng hoạt động từ cao xuống thấp và sử dụng `LIMIT 10` để lấy 10 cơ sở hàng đầu.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT \n    ten_co_so, \n    SUM(cong_bo_moi + cong_bo_lai) AS total_active_events,\n    RANK() OVER (ORDER BY SUM(cong_bo_moi + cong_bo_lai) DESC) AS activity_rank\nFROM facility_announcements_2025\nGROUP BY ten_co_so\nORDER BY total_active_events DESC\nLIMIT 10;\n```",
+    "sql": "SELECT \n    ten_co_so, \n    SUM(cong_bo_moi + cong_bo_lai) AS total_active_events,\n    RANK() OVER (ORDER BY SUM(cong_bo_moi + cong_bo_lai) DESC) AS activity_rank\nFROM facility_announcements_2025\nGROUP BY ten_co_so\nORDER BY total_active_events DESC\nLIMIT 10;"
+  },
+  {
+    "db_id": "danang_hsg_list",
+    "sql_complexity": "Moderate",
+    "question_style": "Vague",
+    "question": "Hãy liệt kê môn thi và điểm số cao nhất của những môn học có chất lượng đào tạo khá trở lên.",
+    "external_knowledge": "\"Chất lượng đào tạo khá trở lên\" được hiểu là điểm trung bình của môn thi đó lớn hơn 5.0.",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:** \n    *   Cần lấy thông tin về `mon_thi` và điểm số cao nhất (`MAX(diem)`) của các môn học.\n    *   Điều kiện lọc: Chỉ lấy những môn thi có \"chất lượng đào tạo khá trở lên\", được định nghĩa là điểm trung bình (`AVG(diem)`) của môn đó phải lớn hơn 5.0.\n2.  **Xây dựng truy vấn:**\n    *   Sử dụng bảng `danang_hsg_list`.\n    *   Sử dụng hàm tổng hợp `MAX(diem)` để tìm điểm cao nhất cho mỗi môn.\n    *   Sử dụng `GROUP BY mon_thi` để nhóm dữ liệu theo từng môn học.\n    *   Sử dụng mệnh đề `HAVING` để áp dụng điều kiện lọc trên giá trị trung bình của nhóm (`AVG(diem) > 5.0`).\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    mon_thi, \n    MAX(diem) AS max_diem\nFROM danang_hsg_list\nGROUP BY mon_thi\nHAVING AVG(diem) > 5.0;\n```",
+    "sql": "SELECT \n    mon_thi, \n    MAX(diem) AS max_diem\nFROM danang_hsg_list\nGROUP BY mon_thi\nHAVING AVG(diem) > 5.0;"
+  },
+  {
+    "db_id": "vn_banks_financials",
+    "sql_complexity": "Simple",
+    "question_style": "Metaphorical",
+    "question": "Hãy điểm danh những \"ngôi sao\" thuộc khối ngân hàng thương mại cổ phần và cho biết trung bình mỗi năm họ đã gặt hái được bao nhiêu \"trái ngọt\" lợi nhuận sau thuế?",
+    "external_knowledge": "'JSCB' là viết tắt của Joint Stock Commercial Bank, nghĩa là Ngân hàng thương mại cổ phần; 'trái ngọt' trong ngữ cảnh này ẩn dụ cho lợi nhuận sau thuế.",
+    "cot": "Để giải quyết yêu cầu này, chúng ta cần thực hiện các bước phân tích sau:\n\n1. **Phân tích yêu cầu**: \n   - Đối tượng: Các ngân hàng thuộc khối \"JSCB\" (Joint Stock Commercial Bank - Ngân hàng thương mại cổ phần).\n   - Chỉ số: \"Trái ngọt\" được xác định là `profits_after_tax` (lợi nhuận sau thuế).\n   - Phép toán: Tính trung bình (`AVG`) của lợi nhuận sau thuế theo từng ngân hàng qua các năm.\n\n2. **Xây dựng truy vấn**:\n   - Chọn cột `bank_code` để định danh ngân hàng.\n   - Sử dụng hàm `AVG(profits_after_tax)` để tính giá trị trung bình của lợi nhuận sau thuế.\n   - Sử dụng mệnh đề `WHERE` để lọc các bản ghi có `classification` là 'JSCB'.\n   - Sử dụng mệnh đề `GROUP BY bank_code` để gom nhóm dữ liệu theo từng ngân hàng, giúp tính toán giá trị trung bình cho mỗi đơn vị.\n\n3. **Kiểm tra tính logic**: Truy vấn này sẽ liệt kê tên mã ngân hàng và giá trị lợi nhuận sau thuế trung bình hàng năm cho tất cả các ngân hàng thương mại cổ phần có trong bảng dữ liệu.\n\nDưới đây là câu lệnh SQL thực thi:\n\n```sql\nSELECT \n    bank_code, \n    AVG(profits_after_tax) AS average_profits_after_tax\nFROM vn_banks_financials\nWHERE classification = 'JSCB'\nGROUP BY bank_code;\n```",
+    "sql": "SELECT \n    bank_code, \n    AVG(profits_after_tax) AS average_profits_after_tax\nFROM vn_banks_financials\nWHERE classification = 'JSCB'\nGROUP BY bank_code;"
+  },
+  {
+    "db_id": "vn_banks_financials",
+    "sql_complexity": "Simple",
+    "question_style": "Descriptive",
+    "question": "Hãy cho tôi biết tỷ suất lợi nhuận trên tài sản (returns_over_assets) trung bình của tất cả các ngân hàng có trong bảng dữ liệu tài chính ngân hàng Việt Nam.",
+    "external_knowledge": "",
+    "cot": "Để giải quyết câu hỏi này, chúng ta cần thực hiện các bước sau:\n\n1.  **Xác định bảng dữ liệu**: Câu hỏi yêu cầu thông tin từ bảng `vn_banks_financials`, nơi lưu trữ các dữ liệu tài chính của các ngân hàng.\n2.  **Xác định cột cần tính toán**: Chúng ta cần tính giá trị trung bình của tỷ suất lợi nhuận trên tài sản. Cột tương ứng trong bảng là `returns_over_assets`.\n3.  **Sử dụng hàm tập hợp**: Để tính giá trị trung bình trong SQL, ta sử dụng hàm `AVG()`.\n4.  **Xây dựng câu lệnh truy vấn**: Kết hợp hàm `AVG` với tên cột `returns_over_assets` từ bảng `vn_banks_financials`. Câu lệnh đơn giản là chọn giá trị trung bình của cột đã chỉ định từ bảng dữ liệu.\n\nDưới đây là câu lệnh SQL thực thi:\n\n```sql\nSELECT AVG(returns_over_assets) \nFROM vn_banks_financials;\n```",
+    "sql": "SELECT AVG(returns_over_assets) \nFROM vn_banks_financials;"
+  },
+  {
+    "db_id": "student_performance",
+    "sql_complexity": "Simple",
+    "question_style": "Concise",
+    "question": "Tính điểm trung bình môn Toán theo độ tuổi và giới tính của học sinh sống tại khu vực Miền núi.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:** Chúng ta cần tính điểm trung bình môn Toán (`math`) dựa trên hai tiêu chí phân nhóm là độ tuổi (`age`) và giới tính (`gender`).\n2.  **Lọc dữ liệu:** Chỉ chọn những học sinh có `residential_area` là 'Mountainous' (Miền núi).\n3.  **Xử lý dữ liệu:** Vì cột `math` được lưu dưới dạng văn bản (`TEXT`), chúng ta cần chuyển đổi nó sang kiểu số để tính giá trị trung bình. Trong SQLite, hàm `AVG` sẽ tự động chuyển đổi các chuỗi số hợp lệ. Nếu dữ liệu có chứa dấu phẩy thập phân (định dạng vùng), ta sử dụng `REPLACE` để thay thế dấu phẩy bằng dấu chấm trước khi tính toán.\n4.  **Nhóm dữ liệu:** Sử dụng mệnh đề `GROUP BY` với `age` và `gender` để phân loại kết quả.\n5.  **Kết quả:** Chọn các cột `age`, `gender` và giá trị trung bình đã tính.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    age, \n    gender, \n    AVG(REPLACE(math, ',', '.')) AS average_math_score\nFROM student_performance\nWHERE residential_area = 'Mountainous'\nGROUP BY age, gender;\n```",
+    "sql": "SELECT \n    age, \n    gender, \n    AVG(REPLACE(math, ',', '.')) AS average_math_score\nFROM student_performance\nWHERE residential_area = 'Mountainous'\nGROUP BY age, gender;"
+  },
+  {
+    "db_id": "vn_banks_financials",
+    "sql_complexity": "Moderate",
+    "question_style": "Imperative",
+    "question": "Hãy liệt kê cho tôi mã của các ngân hàng có tỷ lệ chi phí trên thu nhập trung bình thấp hơn mức trung bình chung của toàn bộ các ngân hàng trong bảng dữ liệu. Tôi rất cần danh sách này để đánh giá hiệu quả quản lý chi phí của họ!",
+    "external_knowledge": "",
+    "cot": "Để giải quyết yêu cầu này, chúng ta cần thực hiện theo các bước phân tích logic sau:\n\n1.  **Xác định mục tiêu**: Tìm `bank_code` mà giá trị trung bình của `cost_income_ratios` cho từng ngân hàng đó nhỏ hơn giá trị trung bình tổng thể của `cost_income_ratios` trên toàn bộ dữ liệu.\n2.  **Tính trung bình chung toàn bộ**: Sử dụng một truy vấn con (subquery) để tính giá trị trung bình của cột `cost_income_ratios` trên toàn bảng `vn_banks_financials`.\n3.  **Nhóm dữ liệu theo ngân hàng**: Sử dụng `GROUP BY bank_code` để có thể tính giá trị trung bình của `cost_income_ratios` cho từng ngân hàng cụ thể.\n4.  **Lọc dữ liệu**: Sử dụng mệnh đề `HAVING` để so sánh giá trị trung bình của từng nhóm (ngân hàng) với kết quả từ truy vấn con ở bước 2.\n\nDưới đây là câu lệnh SQL thực thi:\n\n```sql\nSELECT bank_code\nFROM vn_banks_financials\nGROUP BY bank_code\nHAVING AVG(cost_income_ratios) < (\n    SELECT AVG(cost_income_ratios) \n    FROM vn_banks_financials\n);\n```",
+    "sql": "SELECT bank_code\nFROM vn_banks_financials\nGROUP BY bank_code\nHAVING AVG(cost_income_ratios) < (\n    SELECT AVG(cost_income_ratios) \n    FROM vn_banks_financials\n);"
+  },
+  {
+    "db_id": "vn_banks_financials",
+    "sql_complexity": "Simple",
+    "question_style": "Multi-turn Dialogue",
+    "question": "**User**: Tôi muốn xem thông tin về các chỉ số tài chính của các ngân hàng.\n**Assistant**: Bạn muốn xem thông tin cụ thể nào về các chỉ số tài chính này?\n**User**: Tôi muốn biết lợi nhuận trên tài sản trung bình của từng ngân hàng.\n**Assistant**: Bạn có muốn định dạng giá trị trung bình này như thế nào không, ví dụ như làm tròn số?\n**User**: Hãy làm tròn lên số nguyên gần nhất cho giá trị trung bình đó.\n**Assistant**: Được rồi, tôi sẽ liệt kê mã ngân hàng cùng với giá trị lợi nhuận trên tài sản trung bình (đã làm tròn lên) cho bạn. Bạn có cần thêm thông tin gì khác không?\n**User**: Không, thế là đủ rồi.\n**Assistant**: OK, tôi sẽ giúp bạn chuyển yêu cầu này thành câu lệnh SQL.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và giải pháp SQL cho yêu cầu của bạn:\n\n### Các bước phân tích:\n\n1.  **Xác định mục tiêu**: Yêu cầu là tính lợi nhuận trên tài sản trung bình (`returns_over_assets`) cho từng ngân hàng (`bank_code`).\n2.  **Xử lý dữ liệu**: \n    *   Sử dụng hàm `AVG()` để tính giá trị trung bình của cột `returns_over_assets` cho mỗi nhóm ngân hàng.\n    *   Sử dụng hàm `GROUP BY` trên cột `bank_code` để phân loại dữ liệu theo từng ngân hàng.\n    *   Sử dụng hàm `CEIL()` để làm tròn giá trị trung bình nhận được lên số nguyên gần nhất theo đúng yêu cầu.\n3.  **Xây dựng câu lệnh**: Kết hợp các thành phần trên vào câu lệnh `SELECT` để truy xuất dữ liệu từ bảng `vn_banks_financials`.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT \n    bank_code, \n    CEIL(AVG(returns_over_assets)) \nFROM vn_banks_financials \nGROUP BY bank_code;\n```",
+    "sql": "SELECT \n    bank_code, \n    CEIL(AVG(returns_over_assets)) \nFROM vn_banks_financials \nGROUP BY bank_code;"
+  },
+  {
+    "db_id": "student_performance",
+    "sql_complexity": "Simple",
+    "question_style": "Metaphorical",
+    "question": "Hãy tính xem \"trái ngọt\" trung bình mà các sĩ tử gặt hái được trong môn Toán là bao nhiêu?",
+    "external_knowledge": "'trái ngọt' trong ngữ cảnh này ám chỉ điểm số môn Toán của học sinh; việc tính giá trị trung bình dựa trên dữ liệu đã được chuẩn hóa định dạng số từ dấu phẩy sang dấu chấm.",
+    "cot": "Dưới đây là các bước phân tích và giải quyết truy vấn:\n\n**Quy trình suy luận:**\n\n1.  **Phân tích yêu cầu:** Câu hỏi yêu cầu tính giá trị trung bình của môn Toán (\"math\"). Dữ liệu trong cột \"math\" đang ở định dạng chuỗi với dấu phẩy ngăn cách phần thập phân (ví dụ: '8,5'), do đó cần chuyển đổi sang định dạng số (dấu chấm) trước khi tính toán.\n2.  **Xử lý dữ liệu:** Sử dụng hàm `REPLACE` để thay thế tất cả các dấu phẩy (`,`) bằng dấu chấm (`.`) trong cột `math`.\n3.  **Ép kiểu dữ liệu:** Trong SQLite, khi thực hiện phép tính toán học trên một chuỗi đã được thay thế dấu, hệ thống sẽ tự động hiểu đó là giá trị số (numeric).\n4.  **Tổng hợp:** Sử dụng hàm `AVG()` để tính giá trị trung bình trên tập hợp các giá trị đã được chuẩn hóa.\n\n**Câu lệnh SQL:**\n\n```sql\nSELECT AVG(REPLACE(math, ',', '.')) \nFROM student_performance;\n```",
+    "sql": "SELECT AVG(REPLACE(math, ',', '.')) \nFROM student_performance;"
+  },
+  {
+    "db_id": "wb_procurement_contracts",
+    "sql_complexity": "Simple",
+    "question_style": "Interrogative",
+    "question": "Bạn có thể cho biết giá trị trung bình của các khoản tiền hợp đồng nhà cung cấp đối với dự án \"Distribution Efficiency Project\" là bao nhiêu không?",
+    "external_knowledge": "",
+    "cot": "Để giải quyết yêu cầu này, tôi sẽ thực hiện các bước phân tích sau:\n\n1. **Phân tích mục tiêu**: Cần tính giá trị trung bình của cột `supplier_contract_amount_usd` từ bảng `wb_procurement_contracts`.\n2. **Xác định điều kiện lọc**: Dữ liệu chỉ được giới hạn cho các bản ghi có `project_name` là 'Distribution Efficiency Project'.\n3. **Lựa chọn hàm**: Sử dụng hàm tổng hợp `AVG()` trên cột `supplier_contract_amount_usd` để tính giá trị trung bình theo yêu cầu.\n4. **Xây dựng câu lệnh**: Kết hợp các thành phần trên vào một câu lệnh `SELECT` đơn giản.\n\nDưới đây là câu lệnh SQL thực thi:\n\n```sql\nSELECT AVG(supplier_contract_amount_usd) \nFROM wb_procurement_contracts \nWHERE project_name = 'Distribution Efficiency Project';\n```",
+    "sql": "SELECT AVG(supplier_contract_amount_usd) \nFROM wb_procurement_contracts \nWHERE project_name = 'Distribution Efficiency Project';"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Moderate",
+    "question_style": "Interrogative",
+    "question": "Bạn có thể liệt kê danh sách tên các nhà máy điện (ngăn cách bởi dấu |) cho từng loại nhiên liệu mà có công suất trung bình lớn hơn 100 MW không?",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và truy vấn SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:** Chúng ta cần nhóm các nhà máy điện dựa trên loại nhiên liệu (`std_fuel`) và tính toán công suất trung bình (`AVG(capacity_mw)`) cho từng nhóm đó.\n2.  **Lọc dữ liệu:** Chỉ chọn những nhóm nhiên liệu có công suất trung bình lớn hơn 100 MW. Điều này yêu cầu sử dụng mệnh đề `HAVING`.\n3.  **Xử lý định dạng:** Yêu cầu liệt kê danh sách tên các nhà máy (`std_name`) trong mỗi nhóm và ngăn cách chúng bằng ký tự `|`. Hàm `GROUP_CONCAT` trong SQLite là công cụ phù hợp nhất cho việc này, cho phép nối các chuỗi với dấu phân cách tùy chọn.\n4.  **Kết quả:** Truy vấn cần trả về hai cột: loại nhiên liệu và danh sách tên các nhà máy tương ứng.\n\n### Truy vấn SQL:\n\n```sql\nSELECT \n    std_fuel, \n    GROUP_CONCAT(std_name, ' | ') AS power_plants_list\nFROM power_plants_vn\nGROUP BY std_fuel\nHAVING AVG(capacity_mw) > 100;\n```",
+    "sql": "SELECT \n    std_fuel, \n    GROUP_CONCAT(std_name, ' | ') AS power_plants_list\nFROM power_plants_vn\nGROUP BY std_fuel\nHAVING AVG(capacity_mw) > 100;"
+  },
+  {
+    "db_id": "wb_procurement_contracts",
+    "sql_complexity": "Moderate",
+    "question_style": "Imperative",
+    "question": "Bạn vui lòng liệt kê danh mục mua sắm và giá trị logarit cơ số 10 của tổng số tiền hợp đồng cho các danh mục có giá trị trung bình mỗi hợp đồng vượt quá 50.000 USD, trong đó chỉ tính các hợp đồng đơn lẻ có giá trị trên 10.000 USD giúp tôi nhé!",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và giải quyết yêu cầu truy vấn dữ liệu:\n\n**Quy trình phân tích:**\n\n1.  **Xác định bảng dữ liệu**: Sử dụng bảng `wb_procurement_contracts` vì chứa thông tin về danh mục mua sắm (`procurement_category`) và giá trị hợp đồng (`supplier_contract_amount_usd`).\n2.  **Lọc dữ liệu**: Câu hỏi yêu cầu chỉ tính các hợp đồng đơn lẻ có giá trị trên 10.000 USD. Do đó, cần áp dụng điều kiện `WHERE supplier_contract_amount_usd > 10000`.\n3.  **Nhóm dữ liệu**: Yêu cầu tính toán dựa trên từng danh mục mua sắm, nên ta cần nhóm theo `procurement_category`.\n4.  **Áp dụng điều kiện lọc nhóm**: Câu hỏi yêu cầu danh mục phải có giá trị trung bình mỗi hợp đồng vượt quá 50.000 USD. Ta sử dụng mệnh đề `HAVING AVG(supplier_contract_amount_usd) > 50000`.\n5.  **Tính toán kết quả**: Câu hỏi yêu cầu \"giá trị logarit cơ số 10 của tổng số tiền hợp đồng\". Trong SQLite, hàm logarit cơ số 10 được thực hiện bằng cách lấy `LOG(SUM(...)) / LOG(10)` hoặc sử dụng hàm `LOG10()` tùy thuộc vào phần mở rộng của hệ thống. Ở đây, tôi sử dụng cấu trúc chuẩn cho SQLite là `LOG10` (nếu môi trường hỗ trợ) hoặc công thức tính toán `LOG` tương đương.\n\n**Truy vấn SQL:**\n\n```sql\nSELECT \n    procurement_category, \n    LOG10(SUM(supplier_contract_amount_usd)) AS log_total_amount\nFROM wb_procurement_contracts\nWHERE supplier_contract_amount_usd > 10000\nGROUP BY procurement_category\nHAVING AVG(supplier_contract_amount_usd) > 50000;\n```",
+    "sql": "SELECT \n    procurement_category, \n    LOG10(SUM(supplier_contract_amount_usd)) AS log_total_amount\nFROM wb_procurement_contracts\nWHERE supplier_contract_amount_usd > 10000\nGROUP BY procurement_category\nHAVING AVG(supplier_contract_amount_usd) > 50000;"
+  },
+  {
+    "db_id": "power_plants_vn",
+    "sql_complexity": "Simple",
+    "question_style": "Concise",
+    "question": "Tính công suất trung bình (theo megawatt) của tất cả các nhà máy điện.",
+    "external_knowledge": "",
+    "cot": "Dưới đây là các bước phân tích và câu lệnh SQL để giải quyết yêu cầu của bạn:\n\n### Các bước suy luận:\n\n1.  **Phân tích yêu cầu:** Câu hỏi yêu cầu tính giá trị trung bình của cột \"công suất\" (tính bằng megawatt) cho tất cả các bản ghi có trong bảng.\n2.  **Xác định bảng:** Dữ liệu nằm trong bảng `power_plants_vn`.\n3.  **Xác định cột:** Cột chứa thông tin về công suất là `capacity_mw`.\n4.  **Hàm tính toán:** Để tính giá trị trung bình trong SQL, chúng ta sử dụng hàm tổng hợp `AVG()`.\n5.  **Xây dựng truy vấn:** Kết hợp hàm `AVG()` với tên cột và bảng đã xác định để có câu lệnh hoàn chỉnh.\n\n### Câu lệnh SQL:\n\n```sql\nSELECT AVG(capacity_mw) \nFROM power_plants_vn;\n```",
+    "sql": "SELECT AVG(capacity_mw) \nFROM power_plants_vn;"
+  }
+]

@@ -48,6 +48,22 @@ def _is_column_name_artifact(parsed: list) -> bool:
   return bool(inner) and all(isinstance(v, str) and v in _SCHEMA_COLUMNS for v in inner)
 
 
+def _parse_python_list_candidate(candidate: str) -> list | None:
+  """
+  Parse a Python list literal candidate safely and return the parsed list.
+  Returns None if parsing fails or parsed object isn't a list.
+  """
+  try:
+    cleaned = re.sub(r"\bnan\b", "None", candidate)
+    cleaned = _NP_TYPE_RE.sub(r"\1", cleaned)
+    parsed = ast.literal_eval(cleaned)
+    if isinstance(parsed, list):
+      return parsed
+  except (ValueError, SyntaxError):
+    return None
+  return None
+
+
 # Phrases that indicate the model hit its tool-call limit and never actually ran the
 # code — any "result" array found alongside these is fabricated column names / paths.
 _TOOL_LIMIT_RE = re.compile(
@@ -143,18 +159,21 @@ def _extract_json_from_text(text: str) -> str:
   # Split by blank lines first so the greedy _PY_LIST_RE doesn't span multiple blocks.
   for paragraph in reversed(text.split("\n\n")):
     paragraph = paragraph.strip()
-    if not paragraph or len(paragraph) > 5000:
+    if not paragraph:
       continue
     py_candidates = _PY_LIST_RE.findall(paragraph)
     for candidate in reversed(py_candidates):
-      try:
-        cleaned = re.sub(r"\bnan\b", "None", candidate)
-        cleaned = _NP_TYPE_RE.sub(r"\1", cleaned)
-        parsed = ast.literal_eval(cleaned)
-        if isinstance(parsed, list) and not _is_column_name_artifact(parsed):
-          return json.dumps(parsed, ensure_ascii=False)
-      except (ValueError, SyntaxError):
-        continue
+      parsed = _parse_python_list_candidate(candidate)
+      if parsed is not None and not _is_column_name_artifact(parsed):
+        return json.dumps(parsed, ensure_ascii=False)
+
+  # If no paragraph-level hit, try the whole text once. This recovers very long
+  # single-block outputs where the list exceeds paragraph-size heuristics.
+  full_text_candidate = text.strip()
+  if full_text_candidate.startswith("[") and full_text_candidate.endswith("]"):
+    parsed_full = _parse_python_list_candidate(full_text_candidate)
+    if parsed_full is not None and not _is_column_name_artifact(parsed_full):
+      return json.dumps(parsed_full, ensure_ascii=False)
 
   # Fallback: try to parse a pandas-style printed DataFrame
   # Use only the trailing portion after the last blank line (skip CSV preview noise)
@@ -311,6 +330,44 @@ def extract_result_openai(response: Any) -> tuple[str, str]:
 
 
 # ---------------------------------------------------------------------------
+# OpenRouter (Chat Completions — assistant message text)
+# ---------------------------------------------------------------------------
+
+def _strip_markdown_code_fence(text: str) -> str:
+  """If the model wrapped JSON in ``` / ```json, strip the fence."""
+  t = text.strip()
+  if not t.startswith("```"):
+    return text
+  lines = t.split("\n")
+  if not lines:
+    return text
+  # drop opening ``` or ```json
+  lines = lines[1:]
+  if lines and lines[-1].strip() == "```":
+    lines = lines[:-1]
+  return "\n".join(lines)
+
+
+def extract_result_openrouter(response: Any) -> tuple[str, str]:
+  """
+  Read choices[0].message.content from Chat Completions response.
+  """
+  try:
+    choice = response.choices[0]
+    content = choice.message.content
+  except (AttributeError, IndexError, TypeError):
+    return "ERROR:no_output", ""
+
+  if content is None:
+    return "ERROR:no_output", ""
+
+  text = str(content)
+  stripped = _strip_markdown_code_fence(text)
+  raw_output = text
+  return _extract_json_from_text(stripped), raw_output
+
+
+# ---------------------------------------------------------------------------
 # Dispatcher
 # ---------------------------------------------------------------------------
 
@@ -318,6 +375,7 @@ _EXTRACTORS = {
   "claude": extract_result_claude,
   "gemini": extract_result_gemini,
   "openai": extract_result_openai,
+  "openrouter": extract_result_openrouter,
 }
 
 

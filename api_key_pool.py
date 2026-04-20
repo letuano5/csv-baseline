@@ -15,6 +15,7 @@ Env var patterns (any of these work):
   ANTHROPIC_API_KEY_1, _2 ...  (multiple keys, 1-indexed)
   OPENAI_API_KEY / OPENAI_API_KEY_1 ...
   GOOGLE_API_KEY / GOOGLE_API_KEY_1 ...
+  OPENROUTER_API_KEY / OPENROUTER_API_KEY_1 ...
 """
 
 import asyncio
@@ -26,6 +27,7 @@ _ENV_PREFIXES: dict[str, str] = {
   "anthropic": "ANTHROPIC_API_KEY",
   "openai": "OPENAI_API_KEY",
   "gemini": "GOOGLE_API_KEY",
+  "openrouter": "OPENROUTER_API_KEY",
 }
 
 _SLEEP_ALL_EXHAUSTED = 360  # 6 minutes when every key is blocked

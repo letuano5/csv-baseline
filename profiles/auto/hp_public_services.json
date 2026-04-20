@@ -1,0 +1,205 @@
+{
+  "db_id": "hp_public_services",
+  "file_path": "input/csv/hp_public_services.csv",
+  "encoding": "utf-8",
+  "delimiter": ",",
+  "row_count": 2246,
+  "column_count": 5,
+  "columns": [
+    "stt",
+    "ma",
+    "ten",
+    "linh_vuc",
+    "co_quan_cong_bo"
+  ],
+  "inferred_types": {
+    "date_columns": [],
+    "numeric_columns": [
+      "stt"
+    ],
+    "boolean_like_columns": [],
+    "id_like_columns": [
+      "ma",
+      "stt"
+    ],
+    "high_missing_columns": [],
+    "numeric_as_text_columns": []
+  },
+  "quality_flags": {
+    "mixed_date_format_columns": [],
+    "has_bom": false,
+    "non_comma_delimiter": false
+  },
+  "column_stats": {
+    "stt": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 2246,
+      "unique_ratio": 1.0,
+      "top_values": [
+        [
+          "1",
+          1
+        ],
+        [
+          "2",
+          1
+        ],
+        [
+          "3",
+          1
+        ],
+        [
+          "4",
+          1
+        ],
+        [
+          "5",
+          1
+        ]
+      ],
+      "sample_values": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.000445
+    },
+    "ma": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 2246,
+      "unique_ratio": 1.0,
+      "top_values": [
+        [
+          "1.011812.000.00.00.H24",
+          1
+        ],
+        [
+          "1.011816.000.00.00.H24",
+          1
+        ],
+        [
+          "1.011814.000.00.00.H24",
+          1
+        ],
+        [
+          "1.011815.000.00.00.H24",
+          1
+        ],
+        [
+          "1.013852.H24",
+          1
+        ]
+      ],
+      "sample_values": [
+        "1.011812.000.00.00.H24",
+        "1.011816.000.00.00.H24",
+        "1.011814.000.00.00.H24",
+        "1.011815.000.00.00.H24",
+        "1.013852.H24"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.001336,
+      "bool_match_ratio": 0.0
+    },
+    "ten": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 2245,
+      "unique_ratio": 0.999555,
+      "top_values": [
+        [
+          "Tuyển sinh trung học cơ sở",
+          2
+        ],
+        [
+          "(Cấp tỉnh) Thủ tục công nhận kết quả nghiên cứu khoa học và phát triển công nghệ do tổ chức, cá nhân tự đầu tư nghiên cứu",
+          1
+        ],
+        [
+          "(Cấp tỉnh) Thủ tục hỗ trợ kinh phí hoặc mua công nghệ được tổ chức, cá nhân trong nước tạo ra từ kết quả nghiên cứu khoa học và phát triển công nghệ để sản xuất sản phẩm quốc gia, trọng điểm, chủ lực",
+          1
+        ],
+        [
+          "(Cấp tỉnh) Thủ tục hỗ trợ kinh phí, mua kết quả nghiên cứu khoa học và phát triển công nghệ do tổ chức, cá nhân tự đầu tư nghiên cứu",
+          1
+        ],
+        [
+          "(Cấp tỉnh) Thủ tục mua sáng chế, sáng kiến",
+          1
+        ]
+      ],
+      "sample_values": [
+        "(Cấp tỉnh) Thủ tục công nhận kết quả nghiên cứu khoa học và phát triển công nghệ do tổ chức, cá nhân tự đầu tư nghiên cứu",
+        "(Cấp tỉnh) Thủ tục hỗ trợ kinh phí hoặc mua công nghệ được tổ chức, cá nhân trong nước tạo ra từ kết quả nghiên cứu khoa học và phát triển công nghệ để sản xuất sản phẩm quốc gia, trọng điểm, chủ lực",
+        "(Cấp tỉnh) Thủ tục hỗ trợ kinh phí, mua kết quả nghiên cứu khoa học và phát triển công nghệ do tổ chức, cá nhân tự đầu tư nghiên cứu",
+        "(Cấp tỉnh) Thủ tục mua sáng chế, sáng kiến",
+        "Bán Văn phòng công chứng theo loại hình doanh nghiệp tư nhân"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "linh_vuc": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 184,
+      "unique_ratio": 0.081923,
+      "top_values": [
+        [
+          "Hàng hải và đường thủy nội địa",
+          78
+        ],
+        [
+          "Xuất nhập khẩu",
+          58
+        ],
+        [
+          "Tiêu chuẩn đo lường chất lượng",
+          58
+        ],
+        [
+          "Đường bộ",
+          56
+        ],
+        [
+          "Hoạt động khoa học và công nghệ",
+          49
+        ]
+      ],
+      "sample_values": [
+        "Hoạt động khoa học và công nghệ",
+        "Công chứng",
+        "Nhà ở và công sở",
+        "Quản lý nhà nước về hội, quỹ",
+        "Quản lý lao động ngoài nước"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "co_quan_cong_bo": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 1,
+      "unique_ratio": 0.000445,
+      "top_values": [
+        [
+          "UBND Thành phố Hải Phòng",
+          2246
+        ]
+      ],
+      "sample_values": [
+        "UBND Thành phố Hải Phòng"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    }
+  }
+}

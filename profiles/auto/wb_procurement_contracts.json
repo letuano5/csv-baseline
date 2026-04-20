@@ -1,0 +1,673 @@
+{
+  "db_id": "wb_procurement_contracts",
+  "file_path": "input/csv/wb_procurement_contracts.csv",
+  "encoding": "utf-8",
+  "delimiter": ",",
+  "row_count": 4218,
+  "column_count": 19,
+  "columns": [
+    "as_of_date",
+    "fiscal_year",
+    "region",
+    "borrower_country",
+    "borrower_country_code",
+    "project_id",
+    "project_name",
+    "procurement_category",
+    "procurement_method",
+    "project_global_practice",
+    "wb_contract_number",
+    "contract_description",
+    "contract_signing_date",
+    "supplier",
+    "supplier_country",
+    "supplier_country_code",
+    "supplier_contract_amount_usd",
+    "borrower_contract_reference_number",
+    "review_type"
+  ],
+  "inferred_types": {
+    "date_columns": [
+      "as_of_date",
+      "contract_signing_date"
+    ],
+    "numeric_columns": [
+      "fiscal_year",
+      "supplier_contract_amount_usd",
+      "wb_contract_number"
+    ],
+    "boolean_like_columns": [],
+    "id_like_columns": [],
+    "high_missing_columns": [],
+    "numeric_as_text_columns": []
+  },
+  "quality_flags": {
+    "mixed_date_format_columns": [],
+    "has_bom": false,
+    "non_comma_delimiter": false
+  },
+  "column_stats": {
+    "as_of_date": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 1,
+      "unique_ratio": 0.000237,
+      "top_values": [
+        [
+          "2024-10-05",
+          4218
+        ]
+      ],
+      "sample_values": [
+        "2024-10-05"
+      ],
+      "date_match_ratio": 1.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "fiscal_year": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 9,
+      "unique_ratio": 0.002134,
+      "top_values": [
+        [
+          "2021",
+          935
+        ],
+        [
+          "2020",
+          865
+        ],
+        [
+          "2022",
+          815
+        ],
+        [
+          "2019",
+          480
+        ],
+        [
+          "2023",
+          354
+        ]
+      ],
+      "sample_values": [
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "region": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 1,
+      "unique_ratio": 0.000237,
+      "top_values": [
+        [
+          "EAST ASIA AND PACIFIC",
+          4218
+        ]
+      ],
+      "sample_values": [
+        "EAST ASIA AND PACIFIC"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "borrower_country": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 1,
+      "unique_ratio": 0.000237,
+      "top_values": [
+        [
+          "Vietnam",
+          4218
+        ]
+      ],
+      "sample_values": [
+        "Vietnam"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "borrower_country_code": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 1,
+      "unique_ratio": 0.000237,
+      "top_values": [
+        [
+          "VN",
+          4218
+        ]
+      ],
+      "sample_values": [
+        "VN"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "project_id": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 68,
+      "unique_ratio": 0.016121,
+      "top_values": [
+        [
+          "P152309",
+          709
+        ],
+        [
+          "P145055",
+          479
+        ],
+        [
+          "P154387",
+          364
+        ],
+        [
+          "P157127",
+          217
+        ],
+        [
+          "P153544",
+          200
+        ]
+      ],
+      "sample_values": [
+        "P125996",
+        "P103238",
+        "P131558",
+        "P113493",
+        "P119090"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "project_name": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 67,
+      "unique_ratio": 0.015884,
+      "top_values": [
+        [
+          "Vietnam Dam Rehabilitation and Safety Improvement Project",
+          709
+        ],
+        [
+          "Sustainable Agriculture Transformation Project",
+          479
+        ],
+        [
+          "Vietnam: Project for Improved Land Governance and Databases (VILG)",
+          364
+        ],
+        [
+          "Forest Sector Modernization and Coastal Resilience Enhancement Project",
+          217
+        ],
+        [
+          "Mekong Delta Integrated Climate Resilience and Sustainable Livelihoods Project",
+          200
+        ]
+      ],
+      "sample_values": [
+        "Distribution Efficiency Project",
+        "Vietnam Renewable Energy Development Project",
+        "Transmission Efficiency Project (TEP)",
+        "Second Northern Mountains Poverty Reduction Project",
+        "Hospital Waste Management Support Project"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "procurement_category": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 4,
+      "unique_ratio": 0.000948,
+      "top_values": [
+        [
+          "Civil Works",
+          1728
+        ],
+        [
+          "Consultant Services",
+          1496
+        ],
+        [
+          "Goods",
+          654
+        ],
+        [
+          "Non-consulting Services",
+          340
+        ]
+      ],
+      "sample_values": [
+        "Goods",
+        "Consultant Services",
+        "Civil Works",
+        "Non-consulting Services"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "procurement_method": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 11,
+      "unique_ratio": 0.002608,
+      "top_values": [
+        [
+          "Request for Bids",
+          2192
+        ],
+        [
+          "Consultant Qualification  Selection",
+          723
+        ],
+        [
+          "Individual Consultant Selection",
+          623
+        ],
+        [
+          "Request for Quotations",
+          395
+        ],
+        [
+          "Quality And Cost-Based Selection",
+          119
+        ]
+      ],
+      "sample_values": [
+        "International Competitive Bidding",
+        "Single Source Selection",
+        "Request for Bids",
+        "Quality And Cost-Based Selection",
+        "Direct Selection"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "project_global_practice": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 37,
+      "unique_ratio": 0.008772,
+      "top_values": [
+        [
+          "Water, Sanitation and Waste Management;Agriculture, Fishing and Forestry",
+          712
+        ],
+        [
+          "Agriculture, Fishing and Forestry;Industry, Trade and Services",
+          479
+        ],
+        [
+          "Education",
+          465
+        ],
+        [
+          "Information and Communications Technologies;Agriculture, Fishing and Forestry",
+          364
+        ],
+        [
+          "Health",
+          320
+        ]
+      ],
+      "sample_values": [
+        "Energy and Extractives",
+        "Financial Sector;Education;Agriculture, Fishing and Forestry;Public Administration",
+        "Health;Water, Sanitation and Waste Management",
+        "Education",
+        "Agriculture, Fishing and Forestry"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "wb_contract_number": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 3079,
+      "unique_ratio": 0.729967,
+      "top_values": [
+        [
+          "1662270",
+          8
+        ],
+        [
+          "1581025",
+          7
+        ],
+        [
+          "1693086",
+          7
+        ],
+        [
+          "1702150",
+          6
+        ],
+        [
+          "1571406",
+          5
+        ]
+      ],
+      "sample_values": [
+        "1538442",
+        "1541107",
+        "1541267",
+        "1541441",
+        "1541478"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "contract_description": {
+      "missing_count": 2,
+      "missing_ratio": 0.000474,
+      "unique_count": 2945,
+      "unique_ratio": 0.698529,
+      "top_values": [
+        [
+          "Contract for Lot 2",
+          15
+        ],
+        [
+          "Contract for Lot 1",
+          14
+        ],
+        [
+          "Contract of Lot 1",
+          9
+        ],
+        [
+          "Contract of Lot 2",
+          9
+        ],
+        [
+          "Contract for Lot 3",
+          8
+        ]
+      ],
+      "sample_values": [
+        "Lot 3: DEP-CPC-AMR-G1: Procurement of Metering Data Management System (MDMS) for CPC",
+        "Collect data of biomass resource and planning in the North of Vietnam",
+        "TU-G03: Supply and Installation Control System, Protection System, and Measurement System, Control Cables, Communication system and SCADA (including Testing Communication system, SCADA)",
+        "CQS consulting services package in Son La",
+        "Provision of Mobile Lab"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.000237,
+      "bool_match_ratio": 0.0
+    },
+    "contract_signing_date": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 1201,
+      "unique_ratio": 0.284732,
+      "top_values": [
+        [
+          "2017-03-14",
+          38
+        ],
+        [
+          "2020-12-28",
+          36
+        ],
+        [
+          "2017-04-26",
+          35
+        ],
+        [
+          "2020-08-03",
+          31
+        ],
+        [
+          "2019-12-30",
+          26
+        ]
+      ],
+      "sample_values": [
+        "2016-08-10",
+        "2016-07-25",
+        "2016-08-02",
+        "2016-07-01",
+        "2016-08-31"
+      ],
+      "date_match_ratio": 1.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "supplier": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 2936,
+      "unique_ratio": 0.696064,
+      "top_values": [
+        [
+          "CMC TECHNOLOGY AND SOLUTION COMPANY LIMITED",
+          28
+        ],
+        [
+          "CÔNG TY TNHH TƯ VẤN TRƯỜNG ĐẠI HỌC THỦY LỢI",
+          27
+        ],
+        [
+          "CONG TY CP CONG NGHE TIN HOC VA TRAC DIA BAN DO BINH MINH",
+          27
+        ],
+        [
+          "TECOS JSC",
+          17
+        ],
+        [
+          "CÔNG TY CỔ PHẦN CÔNG NGHỆ SINH THÁI VIỆT",
+          15
+        ]
+      ],
+      "sample_values": [
+        "FPT INFORMATION SYSTEM CORPORATION FIS",
+        "LANDIS & GYR PTY LTD",
+        "VIETNAM NATIONAL UNIVERSITY OF AGRICULTURE (VNUA)",
+        "SIEMENS, LTD.",
+        "EDH TECHNOLOGY DEVELOPMENT JSC (VIETNAM)"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.000237,
+      "bool_match_ratio": 0.0
+    },
+    "supplier_country": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 35,
+      "unique_ratio": 0.008298,
+      "top_values": [
+        [
+          "Viet Nam",
+          4067
+        ],
+        [
+          "Korea, Republic of",
+          18
+        ],
+        [
+          "China",
+          16
+        ],
+        [
+          "Netherlands",
+          14
+        ],
+        [
+          "Australia",
+          9
+        ]
+      ],
+      "sample_values": [
+        "Viet Nam",
+        "Australia",
+        "United Kingdom",
+        "Finland",
+        "China"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "supplier_country_code": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 35,
+      "unique_ratio": 0.008298,
+      "top_values": [
+        [
+          "VN",
+          4067
+        ],
+        [
+          "KR",
+          18
+        ],
+        [
+          "CN",
+          16
+        ],
+        [
+          "NL",
+          14
+        ],
+        [
+          "AU",
+          9
+        ]
+      ],
+      "sample_values": [
+        "VN",
+        "AU",
+        "GB",
+        "FI",
+        "CN"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    },
+    "supplier_contract_amount_usd": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 2897,
+      "unique_ratio": 0.686818,
+      "top_values": [
+        [
+          "439.8",
+          32
+        ],
+        [
+          "30997.1",
+          24
+        ],
+        [
+          "36082.11",
+          17
+        ],
+        [
+          "33659.42",
+          14
+        ],
+        [
+          "2588.76",
+          13
+        ]
+      ],
+      "sample_values": [
+        "399568.02",
+        "83503.06",
+        "956389.34",
+        "63807.67",
+        "397520.55"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 1.0,
+      "bool_match_ratio": 0.0
+    },
+    "borrower_contract_reference_number": {
+      "missing_count": 12,
+      "missing_ratio": 0.002845,
+      "unique_count": 2964,
+      "unique_ratio": 0.704708,
+      "top_values": [
+        [
+          "VN-PMU-RGEP-5004-CS-INDV",
+          38
+        ],
+        [
+          "VN-PMU-RGEP-5003-CS-INDV",
+          17
+        ],
+        [
+          "RAP/CP15,16,17",
+          12
+        ],
+        [
+          "C1-QN-W1",
+          9
+        ],
+        [
+          "C1-QN-GD2-W1",
+          8
+        ]
+      ],
+      "sample_values": [
+        "CPC/DEP-AMR-G1-LOT 3/CPC-FIS & L",
+        "PACKAGE 2.2.4.B1",
+        "TU-G03",
+        "CQS-01.2015SL",
+        "CPMU/C1/G/02"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.000713,
+      "bool_match_ratio": 0.0
+    },
+    "review_type": {
+      "missing_count": 0,
+      "missing_ratio": 0.0,
+      "unique_count": 2,
+      "unique_ratio": 0.000474,
+      "top_values": [
+        [
+          "Post",
+          3622
+        ],
+        [
+          "Prior",
+          596
+        ]
+      ],
+      "sample_values": [
+        "Prior",
+        "Post"
+      ],
+      "date_match_ratio": 0.0,
+      "numeric_match_ratio": 0.0,
+      "bool_match_ratio": 0.0
+    }
+  }
+}
