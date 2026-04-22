@@ -116,6 +116,8 @@ def infer_column_stats(values: list[str], total_rows: int) -> ColumnStats:
   )
 
 
+# Classification thresholds below were tuned on the Vietnamese CSV corpus in input/csv/.
+# If a new dataset misfires, adjust the ratio thresholds rather than adding special cases.
 def infer_semantic_groups(column_stats: dict[str, ColumnStats]) -> dict[str, list[str]]:
   date_columns: list[str] = []
   numeric_columns: list[str] = []

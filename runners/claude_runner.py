@@ -47,7 +47,9 @@ class ClaudeRunner(BaseRunner):
     self._file_id_cache: dict[str, str] = self._load_file_id_cache()
     self._files_api_available: bool | None = None  # None = not yet probed
     self._csv_cache: dict[str, str] = {}          # db_id → raw CSV text (inline fallback)
-    self._use_batch = False  # set to True to use Batch API
+    # Batch API saves 50% on cost but has up to 24 h turnaround; disabled by default
+    # so interactive runs use the faster async path. Set True to opt in.
+    self._use_batch = False
 
   @staticmethod
   def _load_file_id_cache() -> dict[str, str]:
@@ -325,6 +327,7 @@ class ClaudeRunner(BaseRunner):
       betas = self._request_betas()
       messages = self._build_messages(q)
       last_response = None
+      # Bound prevents an unbounded loop if the model emits pause_turn repeatedly.
       max_continuations = 5
 
       for _ in range(max_continuations):

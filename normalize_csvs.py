@@ -345,6 +345,8 @@ def normalize_file(path: Path, inplace: bool) -> FileStats:
       cleaned[new_h] = stripped
     cleaned_rows.append(cleaned)
 
+  # facility_announcements_2025.csv embeds SYT receipt dates inside parentheses in
+  # the ngay_cong_bo column; _postprocess_facility splits them into separate columns.
   if path.name == "facility_announcements_2025.csv":
     headers, cleaned_rows = _postprocess_facility(headers, cleaned_rows, stats)
 

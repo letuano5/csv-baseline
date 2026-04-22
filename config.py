@@ -51,6 +51,7 @@ class CsvMeta:
 
   @property
   def approx_tokens(self) -> int:
+    # 4 bytes per token is a stable approximation for CSV content across all providers.
     return self.size_bytes // 4
 
 

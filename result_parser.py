@@ -32,8 +32,9 @@ _PY_LIST_RE = re.compile(r"\[[\s\S]*\]")
 # Regex to replace numpy scalar constructors with their values: np.float64(x) → x
 _NP_TYPE_RE = re.compile(r"\bnp\.\w+\(([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)\)")
 
-# Schema column names — a parsed list containing only these strings is a false positive
-# from pandas column-selection syntax: result[["std_fuel", "capacity_mw"]].values.tolist()
+# Column names from power_plants_vn that triggered a false positive when the model
+# accidentally printed the column-selection list instead of the result:
+# result[["std_fuel", "capacity_mw"]].values.tolist() → [["std_fuel", "capacity_mw"]]
 _SCHEMA_COLUMNS = {
   "std_fuel", "capacity_mw", "std_name", "commissioning_year",
   "latitude", "longitude", "country", "owner", "source", "db_id",
