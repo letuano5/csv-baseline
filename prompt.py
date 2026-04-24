@@ -13,11 +13,15 @@ Answer the question using the provided data and tools.
 OUTPUT FORMAT (required):
 - Your LAST print statement must output ONLY a valid JSON array of arrays.
 - Each inner array is one result row. No column headers.
+- Column order must exactly follow the order requested in the question (for example, if asked "name then year", output [name, year], not [year, name]).
 - Empty result: []
 - Single scalar: [[42]]
+- For floating-point values, output with at most 2 decimal places unless the question explicitly requires a different precision.
 - Do NOT print a pandas DataFrame directly — always convert: df.values.tolist()
 - Do NOT print anything before the final JSON result. No df.head(), no df.info(), no intermediate prints.
 - Your response must contain EXACTLY ONE print statement.
+- Use `import json` and print with `print(json.dumps(..., ensure_ascii=False))`.
+- The output must be pure JSON text only; any extra character before `[` or after `]` is invalid.
 
 BAD (do NOT do this):
     df = pd.read_csv("data.csv")
@@ -28,7 +32,8 @@ BAD (do NOT do this):
 GOOD:
     df = pd.read_csv("data.csv")
     result = df.groupby("category")["revenue"].mean().reset_index()
-    print(result.values.tolist())
+    import json
+    print(json.dumps(result.values.tolist(), ensure_ascii=False))
 
 ---
 EXAMPLE 1 — aggregation question:
@@ -64,11 +69,13 @@ Output: [[17]]
 OPENROUTER_SYSTEM_SUFFIX = """\
 
 ---
-IMPORTANT — OpenRouter / no code interpreter:
-You do NOT have Python or any code execution tool. The full CSV text is in the user message.
-Read it carefully, reason about the answer, and respond with ONLY a valid JSON array of arrays
-as your final output (each inner array = one row; no column headers). Empty result: [].
-Do not wrap the JSON in markdown fences. No extra text after the closing bracket.
+IMPORTANT — OpenRouter execution mode:
+Write Python code only (no explanation text). Your code will be executed externally.
+Rules:
+- Use pandas to read CSV from "data.csv" (UTF-8).
+- Your LAST print statement must print ONLY a valid JSON array-of-arrays.
+- Exactly ONE print statement in the whole response.
+- No markdown fences, no comments, no prose.
 """
 
 _PROFILE_DIR = Path(__file__).parent / "profiles" / "auto"

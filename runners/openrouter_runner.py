@@ -14,8 +14,14 @@ Design (same style as other runners):
 from __future__ import annotations
 
 import asyncio
+import json
 import os
+import re
+import subprocess
+import sys
+import tempfile
 from typing import Any
+from types import SimpleNamespace
 
 import openai
 from openai import AsyncOpenAI
@@ -29,6 +35,9 @@ _MAX_TOKENS = 4096
 _REQUEST_TIMEOUT_SECONDS = 180
 _MAX_ATTEMPTS_PER_QUESTION = 8
 _DEFAULT_BASE_URL = "https://openrouter.ai/api/v1"
+_LOCAL_EXEC_TIMEOUT_SECONDS = 40
+
+_PY_CODE_FENCE_RE = re.compile(r"```(?:python)?\s*([\s\S]*?)```", re.IGNORECASE)
 
 
 class OpenRouterRunner(BaseRunner):
@@ -88,6 +97,85 @@ class OpenRouterRunner(BaseRunner):
       {"role": "user", "content": user_text},
     ]
 
+  @staticmethod
+  def _extract_python_code(content: str) -> str | None:
+    text = (content or "").strip()
+    if not text:
+      return None
+    m = _PY_CODE_FENCE_RE.search(text)
+    if m:
+      code = m.group(1).strip()
+      return code or None
+    # If model already returns plain code (no fences), accept it directly.
+    if "\n" in text and ("import pandas" in text or "pd.read_csv" in text):
+      return text
+    return None
+
+  def _execute_python_code(self, code: str, q: Question) -> str | None:
+    meta = CSV_REGISTRY[q.db_id]
+    csv_text = self._csv_text(q.db_id)
+    with tempfile.TemporaryDirectory(prefix="openrouter_exec_") as tmpdir:
+      tmp = tempfile.gettempdir()
+      _ = tmp  # keep linter quiet on some environments
+      script_path = os.path.join(tmpdir, "script.py")
+      data_path = os.path.join(tmpdir, "data.csv")
+      alt_name_path = os.path.join(tmpdir, meta.filename)
+      try:
+        with open(script_path, "w", encoding="utf-8") as fh:
+          fh.write(code)
+        with open(data_path, "w", encoding="utf-8") as fh:
+          fh.write(csv_text)
+        # Also provide original filename in case model uses meta filename.
+        with open(alt_name_path, "w", encoding="utf-8") as fh:
+          fh.write(csv_text)
+      except OSError:
+        return None
+
+      try:
+        proc = subprocess.run(
+          [sys.executable, script_path],
+          cwd=tmpdir,
+          capture_output=True,
+          text=True,
+          timeout=_LOCAL_EXEC_TIMEOUT_SECONDS,
+          check=False,
+        )
+      except (subprocess.SubprocessError, OSError):
+        return None
+
+      if proc.returncode != 0:
+        return None
+      stdout = (proc.stdout or "").strip()
+      if not stdout:
+        return None
+      return stdout
+
+  def _maybe_convert_response_to_exec_output(self, response: Any, q: Question) -> Any:
+    """
+    OpenRouter sometimes returns Python code instead of final JSON.
+    To align behavior with other providers' code-execution flow, run that code locally
+    and convert the response content into execution stdout.
+    """
+    try:
+      content = response.choices[0].message.content
+    except (AttributeError, IndexError, TypeError):
+      return response
+    if content is None:
+      return response
+
+    code = self._extract_python_code(str(content))
+    if not code:
+      return response
+
+    stdout = self._execute_python_code(code, q)
+    if not stdout:
+      return response
+
+    # Build a lightweight response shape compatible with extract_result_openrouter().
+    return SimpleNamespace(
+      choices=[SimpleNamespace(message=SimpleNamespace(content=stdout))]
+    )
+
   async def _call_one_async(
     self,
     q: Question,
@@ -110,6 +198,7 @@ class OpenRouterRunner(BaseRunner):
             ),
             timeout=_REQUEST_TIMEOUT_SECONDS,
           )
+          response = self._maybe_convert_response_to_exec_output(response, q)
           return q.index, response
         except asyncio.TimeoutError:
           # Treat timeout as transient congestion on that key/route.

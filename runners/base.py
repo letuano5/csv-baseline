@@ -23,6 +23,7 @@ from tqdm import tqdm
 
 import checkpointing
 from config import CSV_REGISTRY, MINI_BATCH_SIZE
+from evaluator import is_column_order_mismatch_result
 from result_parser import extract_result
 
 
@@ -98,6 +99,14 @@ class BaseRunner(ABC):
   def _batch_size(self) -> int:
     return MINI_BATCH_SIZE
 
+  @staticmethod
+  def _column_order_retry_hint() -> str:
+    return (
+      "IMPORTANT CORRECTION: In your previous answer, column order was wrong. "
+      "Keep the exact output column order required by the question/SQL SELECT list. "
+      "Do not swap columns."
+    )
+
   # -- Template method --
 
   def run(
@@ -162,6 +171,28 @@ class BaseRunner(ABC):
             result_str, raw_output = "ERROR:no_response", ""
           else:
             result_str, raw_output = extract_result(raw, self.provider)
+
+          # Auto-retry once for column-order mistakes with a focused correction hint.
+          # This fixes cases where model computes right values but swaps output columns.
+          if raw is not None and not result_str.startswith("ERROR:"):
+            if is_column_order_mismatch_result(q, result_str):
+              retry_q = Question(
+                index=q.index,
+                db_id=q.db_id,
+                sql_complexity=q.sql_complexity,
+                question_style=q.question_style,
+                question=q.question,
+                external_knowledge=(
+                  (q.external_knowledge + "\n\n") if q.external_knowledge else ""
+                ) + self._column_order_retry_hint(),
+                cot=q.cot,
+                sql=q.sql,
+              )
+              retry_raw = self._process_batch([retry_q]).get(q.index)
+              if retry_raw is not None:
+                retry_result, retry_raw_output = extract_result(retry_raw, self.provider)
+                if not retry_result.startswith("ERROR:"):
+                  result_str, raw_output = retry_result, retry_raw_output
 
           answered = AnsweredQuestion(
             index=q.index,

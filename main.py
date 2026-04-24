@@ -33,6 +33,7 @@ load_dotenv()
 
 from config import QUESTIONS_PATH, get_csv_meta
 from estimator import estimate, PRICING
+from evaluator import evaluate_results, print_eval_report, save_eval_report
 from runners.base import load_questions
 from runners.claude_runner import ClaudeRunner
 from runners.gemini_runner import GeminiRunner
@@ -165,6 +166,11 @@ def main() -> None:
   errors = sum(1 for r in results if r.result.startswith("ERROR:"))
   print(f"\nDone. {len(results)} answers, {errors} errors.")
   print(f"Output: output/{args.checkpoint}/{model_id}.json")
+  summary = evaluate_results(results, questions)
+  print_eval_report(summary)
+  report_path = Path("output") / args.checkpoint / f"{model_id}.report.json"
+  save_eval_report(report_path, summary)
+  print(f"Report: {report_path}")
 
 
 if __name__ == "__main__":

@@ -19,6 +19,16 @@ Tạo file `.env` từ mẫu và điền API key:
 cp .env.example .env
 ```
 
+## Evaluation Rules
+
+- Sau mỗi lần chạy `main.py` (run mode), hệ thống tự động chấm kết quả dựa trên SQL ground truth trong file câu hỏi.
+- Quy tắc số thực: nếu `round(pred, 2) == round(expected, 2)` thì được tính đúng.
+- So sánh ưu tiên theo đúng thứ tự dòng; nếu lệch thứ tự nhưng cùng tập kết quả (thường do ORDER BY có tie), hệ thống vẫn tính đúng theo chế độ order-insensitive fallback.
+- Thứ tự cột vẫn được so sánh chặt: nếu đảo cột sẽ bị tính sai.
+- Khi phát hiện lỗi đảo thứ tự cột trong lúc chạy, runner sẽ tự retry 1 lần với nhắc sửa thứ tự cột.
+- Terminal sẽ in báo cáo chi tiết: tổng số câu, đúng/sai, accuracy, danh sách `wrong_indices`, và preview expected/predicted cho các câu sai.
+- Report đầy đủ được lưu tại: `output/<checkpoint>/<model-id>.report.json`.
+
 Các biến cần thiết trong `.env`:
 
 ```
@@ -208,9 +218,18 @@ Trường `result` là JSON array-of-arrays hoặc chuỗi `ERROR:...` nếu par
 | append result item -> checkpoint saved after each mini-batch                         |
 +--------------------------------------------------------------------------------------+
                                          |
-[7] FINAL ARTIFACTS                      v
+[7] EVALUATION                            v
++--------------------------------------------------------------------------------------+
+| execute SQL ground truth from questions                                              |
+| compare predicted JSON with rounding rule (2 decimals for numerics)                  |
+| print wrong indices and mismatch preview to terminal                                 |
+| save full report JSON                                                                 |
++--------------------------------------------------------------------------------------+
+                                         |
+[8] FINAL ARTIFACTS                       v
 +---------------------------------------------------------------+
 | file     : output/<checkpoint>/<model_id>.json               |
-| terminal : progress logs + error count summary               |
+| report   : output/<checkpoint>/<model_id>.report.json        |
+| terminal : progress logs + eval detail + wrong indices       |
 +---------------------------------------------------------------+
 ```
