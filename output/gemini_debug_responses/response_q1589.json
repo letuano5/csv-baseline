@@ -1,0 +1,51 @@
+{
+  "model_version": "gemini-3-flash-preview",
+  "response_id": "oQ4CatyfL_iy2roPk7mboAQ",
+  "usage_metadata": {
+    "prompt_token_count": 198289,
+    "candidates_token_count": 1698,
+    "total_token_count": 207702,
+    "cached_content_token_count": 393656
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv('input_file_0.csv')\n\n# Clean and convert Total Assets\ndef clean_numeric(val):\n    if pd.isna(val):\n        return val\n    s = str(val).replace('.', '').replace(',', '.')\n    return s\n\ndf['Total Assets'] = pd.to_numeric(df['Total Assets'].apply(clean_numeric), errors='coerce')\ndf['Returns Over Assets'] = pd.to_numeric(df['Returns Over Assets'].apply(clean_numeric), errors='coerce')\n\n# Group by Bank Code and calculate means\ngrouped = df.groupby('Bank Code').agg({\n    'Total Assets': 'mean',\n    'Returns Over Assets': 'mean'\n}).reset_index()\n\n# Filter based on the question's criteria\n# Average Total Assets > 1,000,000 AND Average ROA > 0.5\nfiltered_banks = grouped[(grouped['Total Assets'] > 1000000) & (grouped['Returns Over Assets'] > 0.5)]\n\n# Select only the Bank Code column\nresult = filtered_banks[['Bank Code']].values.tolist()\n\nprint(json.dumps(result, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"ABB\"], [\"ACB\"], [\"BAB\"], [\"BIDV\"], [\"CB\"], [\"CTG\"], [\"EIB\"], [\"FCB\"], [\"GAB\"], [\"GPB\"], [\"HBB\"], [\"HDB\"], [\"HSBC\"], [\"IVB\"], [\"KLB\"], [\"LVB\"], [\"MB\"], [\"MDB\"], [\"MHB\"], [\"MSB\"], [\"NAB\"], [\"OB\"], [\"OCB\"], [\"PGB\"], [\"PNB\"], [\"PVB\"], [\"SCB\"], [\"SEAB\"], [\"SGB\"], [\"SHB\"], [\"STB\"], [\"TCB\"], [\"TNB\"], [\"TPB\"], [\"VAB\"], [\"VBSP\"], [\"VCB\"], [\"VCPB\"], [\"VIB\"], [\"VPB\"], [\"WEB\"]]\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv('input_file_0.csv')\n\n# Clean columns for numeric conversion\ndef clean_numeric_val(val):\n    if pd.isna(val) or val == '':\n        return None\n    s = str(val).strip().replace('.', '').replace(',', '.')\n    try:\n        return float(s)\n    except ValueError:\n        return None\n\ndf['Total Assets Numeric'] = df['Total Assets'].apply(clean_numeric_val)\ndf['ROA Numeric'] = df['Returns Over Assets'].apply(clean_numeric_val)\n\n# Group by Bank Code\ngrouped = df.groupby('Bank Code').agg({\n    'Total Assets Numeric': 'mean',\n    'ROA Numeric': 'mean'\n}).reset_index()\n\n# Filter: Avg Assets > 1,000,000 AND Avg ROA > 0.5\nfinal_filtered = grouped[(grouped['Total Assets Numeric'] > 1000000) & (grouped['ROA Numeric'] > 0.5)]\n\n# Sort by Bank Code just in case\nfinal_filtered = final_filtered.sort_values('Bank Code')\n\n# Result\nresult_list = final_filtered[['Bank Code']].values.tolist()\nprint(json.dumps(result_list, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"ABB\"], [\"ACB\"], [\"BAB\"], [\"BIDV\"], [\"CB\"], [\"CTG\"], [\"EIB\"], [\"FCB\"], [\"GAB\"], [\"GPB\"], [\"HBB\"], [\"HDB\"], [\"HSBC\"], [\"IVB\"], [\"KLB\"], [\"LVB\"], [\"MB\"], [\"MDB\"], [\"MHB\"], [\"MSB\"], [\"NAB\"], [\"OB\"], [\"OCB\"], [\"PGB\"], [\"PNB\"], [\"PVB\"], [\"SCB\"], [\"SEAB\"], [\"SGB\"], [\"SHB\"], [\"STB\"], [\"TCB\"], [\"TNB\"], [\"TPB\"], [\"VAB\"], [\"VBSP\"], [\"VCB\"], [\"VCPB\"], [\"VIB\"], [\"VPB\"], [\"WEB\"]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "[[\"ABB\"], [\"ACB\"], [\"BAB\"], [\"BIDV\"], [\"CB\"], [\"CTG\"], [\"EIB\"], [\"FCB\"], [\"GAB\"], [\"GPB\"], [\"HBB\"], [\"HDB\"], [\"HSBC\"], [\"IVB\"], [\"KLB\"], [\"LVB\"], [\"MB\"], [\"MDB\"], [\"MHB\"], [\"MSB\"], [\"NAB\"], [\"OB\"], [\"OCB\"], [\"PGB\"], [\"PNB\"], [\"PVB\"], [\"SCB\"], [\"SEAB\"], [\"SGB\"], [\"SHB\"], [\"STB\"], [\"TCB\"], [\"TNB\"], [\"TPB\"], [\"VAB\"], [\"VBSP\"], [\"VCB\"], [\"VCPB\"], [\"VIB\"], [\"VPB\"], [\"WEB\"]]"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

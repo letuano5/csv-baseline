@@ -1,0 +1,51 @@
+{
+  "model_version": "gemini-3.1-pro-preview",
+  "response_id": "bYECav72Lviy2roPk7mboAQ",
+  "usage_metadata": {
+    "prompt_token_count": 146589,
+    "candidates_token_count": 667,
+    "total_token_count": 444294,
+    "cached_content_token_count": null
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\ndf['Điểm'] = pd.to_numeric(df['Điểm'], errors='coerce')\n\ndf_math = df[df['Môn thi'] == 'Toán']\ndf_math_prize = df_math[df_math['Xếp giải'].notna() & (df_math['Xếp giải'].str.strip() != '')]\n\nschool_avg = df_math_prize.groupby('Trường')['Điểm'].mean().reset_index()\ngood_schools = school_avg[school_avg['Điểm'] > 6.0]\n\nresult = [[s] for s in good_schools['Trường']]\nprint(json.dumps(result, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"THCS Hoàng Diệu\"], [\"THCS Huỳnh Thúc Kháng\"], [\"THCS Lê Anh Xuân\"], [\"THCS Lê Lợi\"], [\"THCS Lê Độ\"], [\"THCS Lý Thường Kiệt\"], [\"THCS Lương Thế Vinh\"], [\"THCS Nguyễn Bỉnh Khiêm\"], [\"THCS Nguyễn Chí Thanh\"], [\"THCS Nguyễn Hồng Ánh\"], [\"THCS Nguyễn Khuyến\"], [\"THCS Nguyễn Lương Bằng\"], [\"THCS Nguyễn Văn Cừ\"], [\"THCS Nguyễn Văn Linh\"], [\"THCS Nguyễn Đình Chiểu\"], [\"THCS Ngô Thì Nhậm\"], [\"THCS Phan Bội Châu\"], [\"THCS Phan Đình Phùng\"], [\"THCS Sào Nam\"], [\"THCS Trưng Vương\"], [\"THCS Tây Sơn\"]]\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "print(school_avg.head())\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "                  Trường   Điểm\n0        THCS Chu Văn An  5.550\n1        THCS Hoàng Diệu  7.000\n2    THCS Huỳnh Bá Chánh  5.625\n3  THCS Huỳnh Thúc Kháng  6.250\n4          THCS Kim Đồng  5.750\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```python\nimport pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\n\n# Convert score column to numeric\ndf['Điểm'] = pd.to_numeric(df['Điểm'], errors='coerce')\n\n# Filter for students taking Math and who won a prize\ndf_math_prize = df[(df['Môn thi'] == 'Toán') & (df['Xếp giải'].notna()) & (df['Xếp giải'].str.strip() != '')]\n\n# Calculate mean score for these students by school\nmean_scores = df_math_prize.groupby('Trường')['Điểm'].mean().reset_index()\n\n# Filter for schools where the average score is greater than 6.0\ngood_schools = mean_scores[mean_scores['Điểm'] > 6.0]\n\n# Extract result and format as requested\nresult = good_schools[['Trường']].values.tolist()\n\nprint(json.dumps(result, ensure_ascii=False))\n```"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "model_version": "gemini-3-flash-preview",
+  "response_id": "yQoCaqPKJI3npt8Pxp7xuAs",
+  "usage_metadata": {
+    "prompt_token_count": 146555,
+    "candidates_token_count": 606,
+    "total_token_count": 147418,
+    "cached_content_token_count": 286545
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\n# Load the dataset\ndf = pd.read_csv('input_file_0.csv')\n\n# Preprocess numeric column\ndf['Điểm'] = pd.to_numeric(df['Điểm'], errors='coerce')\n\n# Filter for subject 'Toán'\nmath_df = df[df['Môn thi'] == 'Toán']\n\n# Group by school and calculate count and mean\nschool_stats = math_df.groupby('Trường')['Điểm'].agg(['mean', 'count']).reset_index()\n\n# Filter schools with more than one candidate and mean score > 6.0\nresult_df = school_stats[(school_stats['count'] > 1) & (school_stats['mean'] > 6.0)]\n\n# Select only the school names\nfinal_result = result_df[['Trường']].values.tolist()\n\nprint(json.dumps(final_result, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"THCS Huỳnh Thúc Kháng\"], [\"THCS Lê Lợi\"], [\"THCS Lê Độ\"], [\"THCS Lương Thế Vinh\"], [\"THCS Nguyễn Khuyến\"], [\"THCS Nguyễn Lương Bằng\"], [\"THCS Nguyễn Văn Linh\"], [\"THCS Phan Bội Châu\"], [\"THCS Phan Đình Phùng\"], [\"THCS Trưng Vương\"]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "[[\"THCS Huỳnh Thúc Kháng\"], [\"THCS Lê Lợi\"], [\"THCS Lê Độ\"], [\"THCS Lương Thế Vinh\"], [\"THCS Nguyễn Khuyến\"], [\"THCS Nguyễn Lương Bằng\"], [\"THCS Nguyễn Văn Linh\"], [\"THCS Phan Bội Châu\"], [\"THCS Phan Đình Phùng\"], [\"THCS Trưng Vương\"]]"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

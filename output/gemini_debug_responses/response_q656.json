@@ -1,0 +1,51 @@
+{
+  "model_version": "gemini-3.1-pro-preview",
+  "response_id": "TYICaonFKcK0pt8P8LHYoQQ",
+  "usage_metadata": {
+    "prompt_token_count": 26562,
+    "candidates_token_count": 570,
+    "total_token_count": 82893,
+    "cached_content_token_count": null
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\", sep=\",\", encoding=\"utf-8\")\ndf['MOTHER_AGE'] = pd.to_numeric(df['MOTHER_AGE'], errors='coerce')\n\nfiltered = df[df['RESIDENTIAL_AREA'].str.upper() == 'MOUNTAINOUS']\ngrouped = filtered.groupby('FATHER_JOB')['MOTHER_AGE'].mean().reset_index()\nresult = grouped[grouped['MOTHER_AGE'] > 35]['FATHER_JOB'].tolist()\n\nprint(json.dumps([[job] for job in result], ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"Driver\"], [\"Farmer\"], [\"Government Staff\"], [\"Military Personnel\"], [\"Passed away\"], [\"Small bussiness\"], [\"Teacher\"], [\"Wage earner\"], [\"Worker\"]]\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\", sep=\",\", encoding=\"utf-8\")\ndf['MOTHER_AGE'] = pd.to_numeric(df['MOTHER_AGE'], errors='coerce')\n\nfiltered_df = df[df['RESIDENTIAL_AREA'].str.upper() == 'MOUNTAINOUS']\ngrouped = filtered_df.groupby('FATHER_JOB')['MOTHER_AGE'].mean().reset_index()\nresult = grouped[grouped['MOTHER_AGE'] > 35][['FATHER_JOB']]\nprint(json.dumps(result.values.tolist(), ensure_ascii=False))",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"Driver\"], [\"Farmer\"], [\"Government Staff\"], [\"Military Personnel\"], [\"Passed away\"], [\"Small bussiness\"], [\"Teacher\"], [\"Wage earner\"], [\"Worker\"]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```python\nimport pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\", sep=\",\", encoding=\"utf-8\")\ndf['MOTHER_AGE'] = pd.to_numeric(df['MOTHER_AGE'], errors='coerce')\n\n# Filter for students in Mountainous areas\nfiltered_df = df[df['RESIDENTIAL_AREA'].str.upper() == 'MOUNTAINOUS']\n\n# Calculate the mean of MOTHER_AGE grouped by FATHER_JOB\ngrouped = filtered_df.groupby('FATHER_JOB')['MOTHER_AGE'].mean().reset_index()\n\n# Filter where the average mother age > 35 and select the FATHER_JOB column\nresult = grouped[grouped['MOTHER_AGE'] > 35][['FATHER_JOB']]\n\n# Print final JSON\nprint(json.dumps(result.values.tolist(), ensure_ascii=False))\n```"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

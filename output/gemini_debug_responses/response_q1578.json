@@ -1,0 +1,37 @@
+{
+  "model_version": "gemini-3.1-pro-preview",
+  "response_id": "u4QCarecKpSe5t0P142c-A4",
+  "usage_metadata": {
+    "prompt_token_count": 198287,
+    "candidates_token_count": 780,
+    "total_token_count": 199840,
+    "cached_content_token_count": 392897
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\n\n# Clean 'Returns Over Equity'\nif df[\"Returns Over Equity\"].dtype == 'object':\n    df[\"Returns Over Equity\"] = df[\"Returns Over Equity\"].str.replace(',', '.')\ndf[\"Returns Over Equity\"] = pd.to_numeric(df[\"Returns Over Equity\"], errors='coerce')\n\n# Filter years\ndf_filtered = df[df[\"Year\"].isin([2005, 2006])]\n\n# Group by Bank Code\ngrouped = df_filtered.groupby(\"Bank Code\")[\"Returns Over Equity\"].mean().reset_index()\n\n# Filter > 2.0\nresult = grouped[grouped[\"Returns Over Equity\"] > 2.0]\n\nprint(result[[\"Bank Code\"]].values.tolist())\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[['ABB'], ['ACB'], ['AGB'], ['BIDV'], ['CTG'], ['DAB'], ['EIB'], ['HBB'], ['HDB'], ['IVB'], ['KLB'], ['MB'], ['MDB'], ['MHB'], ['MSB'], ['NAB'], ['NCB'], ['OCB'], ['PNB'], ['SEAB'], ['SGB'], ['STB'], ['TCB'], ['VCB'], ['VCPB'], ['VIB'], ['VPB'], ['WEB']]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```python\nimport pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\n\n# Tiền xử lý dữ liệu: đổi dấu phẩy thành dấu chấm và chuyển sang kiểu số\nif df[\"Returns Over Equity\"].dtype == 'object':\n    df[\"Returns Over Equity\"] = df[\"Returns Over Equity\"].str.replace(',', '.')\ndf[\"Returns Over Equity\"] = pd.to_numeric(df[\"Returns Over Equity\"], errors='coerce')\n\n# Lọc dữ liệu trong giai đoạn 2005 - 2006\ndf_filtered = df[df[\"Year\"].isin([2005, 2006])]\n\n# Tính lợi nhuận trung bình trên vốn chủ sở hữu theo từng ngân hàng\navg_roe = df_filtered.groupby(\"Bank Code\")[\"Returns Over Equity\"].mean().reset_index()\n\n# Lọc các ngân hàng có giá trị trung bình lớn hơn 2.0\nresult = avg_roe[avg_roe[\"Returns Over Equity\"] > 2.0]\n\n# Trích xuất cột mã ngân hàng và in kết quả\nprint(json.dumps(result[[\"Bank Code\"]].values.tolist(), ensure_ascii=False))\n```"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

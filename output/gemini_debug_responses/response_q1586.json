@@ -1,0 +1,51 @@
+{
+  "model_version": "gemini-3-flash-preview",
+  "response_id": "ZQ4CapSnJreB0-kPhrGM2Ao",
+  "usage_metadata": {
+    "prompt_token_count": 198278,
+    "candidates_token_count": 2117,
+    "total_token_count": 207441,
+    "cached_content_token_count": 393812
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\n# Read the dataset\ndf = pd.read_csv('input_file_0.csv')\n\n# List of columns to convert to numeric as per instructions\ncols_to_numeric = [\n    \"Branches Ratio\", \"Core Cost\", \"Core Cost Ratio\", \"Cost-Income Ratios\",\n    \"Cumulative Gaps Over Total Assets\", \"Employees Ratio\", \"Equity Over Total Assets\",\n    \"Equity Over Total Deposits\", \"Interest Expenses\", \"Interest Incomes\",\n    \"Labour productivity\", \"Liquid Assets\", \"Liquid Assets Over Total Assets\",\n    \"Liquid Assets Over Total Deposits\", \"Loan Loss Provisions  \",\n    \"Loan Loss Provisions Ratio\", \"Net Interest Margin\", \"Network productivity\",\n    \"Non-Interest Expenses\", \"Non-Interest Income\", \"Non-performing Loans  \",\n    \"Non-performing Loans Ratio\", \"Number of Branches\", \"Number of Employees\",\n    \"Occupancy Expenses\", \"Off-balance Sheet Activities\", \"Other Expenses\",\n    \"Other Incomes\", \"Personnel Expenses\", \"Profits After Tax\",\n    \"Profits Before Tax\", \"Returns Over Assets\", \"Returns Over Equity\",\n    \"Total Assets\", \"Total Assets Ratio\", \"Total Cost\", \"Total Cost Ratio\",\n    \"Total Deposits\", \"Total Deposits Ratio\", \"Total Fixed Assets\",\n    \"Total Income\", \"Total Income Ratio\", \"Total Loans\", \"Total Loans Ratio\",\n    \"Total Operating Expenses\", \"Total Shareholder's Equity\", \"Year\"\n]\n\n# Note: CSV header column names may vary slightly in whitespace, let's normalize\ndf.columns = [col.strip() for col in df.columns]\n\n# Apply to_numeric to the specified columns after cleaning spaces in column names\nfor col in df.columns:\n    if col in [c.strip() for col in cols_to_numeric]:\n        df[col] = pd.to_numeric(df[col].astype(str).str.replace('.', '', regex=False).str.replace(',', '.', regex=False), errors='coerce')\n\n# Filter for the years 2005 and 2006\nperiod_df = df[(df['Year'] >= 2005) & (df['Year'] <= 2006)]\n\n# Group by Bank Code and calculate the average Profit After Tax\navg_profit = period_df.groupby('Bank Code')['Profits After Tax'].mean().reset_index()\n\n# Filter for average profit > 10,000\nresult = avg_profit[avg_profit['Profits After Tax'] > 10000]\n\n# Extract Bank Codes\nbank_codes = result[['Bank Code']].values.tolist()\n\nprint(json.dumps(bank_codes, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "\nTraceback (most recent call last):\n  File \"<string>\", line 31, in <module>\n  File \"<string>\", line 31, in <listcomp>\nNameError: name 'c' is not defined\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\n# Read the dataset\ndf = pd.read_csv('input_file_0.csv')\n\n# Standardize column names\ndf.columns = [col.strip() for col in df.columns]\n\n# Apply to_numeric as required by the instruction to 'Profits After Tax' and 'Year'\ndf['Profits After Tax'] = pd.to_numeric(df['Profits After Tax'], errors='coerce')\ndf['Year'] = pd.to_numeric(df['Year'], errors='coerce')\n\n# Filter for the years 2005 and 2006\nfiltered_df = df[(df['Year'] >= 2005) & (df['Year'] <= 2006)]\n\n# Group by Bank Code and calculate the average Profit After Tax\navg_profits = filtered_df.groupby('Bank Code')['Profits After Tax'].mean().reset_index()\n\n# Filter for average profit > 10,000\nfinal_banks = avg_profits[avg_profits['Profits After Tax'] > 10000]\n\n# Prepare result\nresult_list = final_banks[['Bank Code']].values.tolist()\n\nprint(json.dumps(result_list, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"ABB\"], [\"ACB\"], [\"AGB\"], [\"BIDV\"], [\"CTG\"], [\"DAB\"], [\"EIB\"], [\"HBB\"], [\"HDB\"], [\"IVB\"], [\"KLB\"], [\"MB\"], [\"MDB\"], [\"MHB\"], [\"MSB\"], [\"NAB\"], [\"NCB\"], [\"OCB\"], [\"PNB\"], [\"SEAB\"], [\"SGB\"], [\"STB\"], [\"TCB\"], [\"VAB\"], [\"VBSP\"], [\"VCB\"], [\"VCPB\"], [\"VIB\"], [\"VPB\"], [\"WEB\"]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "[[\"ABB\"], [\"ACB\"], [\"AGB\"], [\"BIDV\"], [\"CTG\"], [\"DAB\"], [\"EIB\"], [\"HBB\"], [\"HDB\"], [\"IVB\"], [\"KLB\"], [\"MB\"], [\"MDB\"], [\"MHB\"], [\"MSB\"], [\"NAB\"], [\"NCB\"], [\"OCB\"], [\"PNB\"], [\"SEAB\"], [\"SGB\"], [\"STB\"], [\"TCB\"], [\"VAB\"], [\"VBSP\"], [\"VCB\"], [\"VCPB\"], [\"VIB\"], [\"VPB\"], [\"WEB\"]]"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

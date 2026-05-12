@@ -1,0 +1,37 @@
+{
+  "model_version": "gemini-3.1-pro-preview",
+  "response_id": "fIMCapynOviy2roPk7mboAQ",
+  "usage_metadata": {
+    "prompt_token_count": 26579,
+    "candidates_token_count": 239,
+    "total_token_count": 54400,
+    "cached_content_token_count": null
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\ndf_filtered = df[df['RESIDENTIAL_AREA'] == 'Mountainous'].copy()\ndf_filtered['MATH'] = pd.to_numeric(df_filtered['MATH'].astype(str).str.replace(',', '.'), errors='coerce')\navg_math = df_filtered['MATH'].mean()\n\nprint(json.dumps([[round(avg_math, 2)]]))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[7.32]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```python\nimport pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\ndf_filtered = df[df['RESIDENTIAL_AREA'] == 'Mountainous'].copy()\ndf_filtered['MATH'] = pd.to_numeric(df_filtered['MATH'].astype(str).str.replace(',', '.'), errors='coerce')\navg_math = df_filtered['MATH'].mean()\n\nprint(json.dumps([[round(avg_math, 2)]], ensure_ascii=False))\n```"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

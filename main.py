@@ -56,6 +56,38 @@ _DEFAULT_MODELS: dict[str, str] = {
 }
 
 
+def _select_balanced(
+  questions: list,
+  n_db: int,
+  limit: int | None,
+) -> list:
+  """Pick questions evenly across the N smallest DBs (already sorted by CSV size)."""
+  from collections import defaultdict
+
+  # Collect the N smallest DBs (preserve order from sorted list)
+  db_order: list[str] = []
+  seen: set[str] = set()
+  for q in questions:
+    if q.db_id not in seen:
+      db_order.append(q.db_id)
+      seen.add(q.db_id)
+    if len(db_order) == n_db:
+      break
+
+  by_db: defaultdict[str, list] = defaultdict(list)
+  for q in questions:
+    if q.db_id in seen:
+      by_db[q.db_id].append(q)
+
+  per_db = (limit // n_db) if limit else None
+  result: list = []
+  for db_id in db_order:
+    bucket = by_db[db_id]
+    result.extend(bucket[:per_db] if per_db else bucket)
+
+  return result[:limit] if limit else result
+
+
 def parse_args() -> argparse.Namespace:
   p = argparse.ArgumentParser(description="CSV baseline evaluation")
   p.add_argument("--provider", choices=list(_RUNNER_REGISTRY), help="API provider")
@@ -63,6 +95,13 @@ def parse_args() -> argparse.Namespace:
   p.add_argument("--checkpoint", help="Output sub-directory name, e.g. run-01")
   p.add_argument("--questions", default=str(QUESTIONS_PATH), help="Path to questions.json")
   p.add_argument("--limit", type=int, default=None, help="Only process first N questions")
+  p.add_argument(
+    "--used-db",
+    type=int,
+    default=None,
+    metavar="N",
+    help="Distribute questions evenly across the N smallest DBs (requires --limit)",
+  )
   p.add_argument(
     "--estimate",
     action="store_true",
@@ -98,7 +137,9 @@ def main() -> None:
   # Load questions — sort by schema CSV size (smallest first) then apply limit
   questions = load_questions(questions_path)
   questions.sort(key=lambda q: get_csv_meta(q.db_id).size_bytes)
-  if args.limit:
+  if args.used_db:
+    questions = _select_balanced(questions, n_db=args.used_db, limit=args.limit)
+  elif args.limit:
     questions = questions[: args.limit]
 
   # ---- Export questions mode ----

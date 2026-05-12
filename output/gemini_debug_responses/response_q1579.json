@@ -1,0 +1,37 @@
+{
+  "model_version": "gemini-3.1-pro-preview",
+  "response_id": "coUCaoqXAdyLs8IPj9fj0AM",
+  "usage_metadata": {
+    "prompt_token_count": 198928,
+    "candidates_token_count": 269,
+    "total_token_count": 399041,
+    "cached_content_token_count": null
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv('input_file_0.csv', sep=',')\ndf['Profits After Tax'] = pd.to_numeric(df['Profits After Tax'], errors='coerce')\n\nabb_df = df[df['Bank Code'] == 'ABB']\navg_profit = abb_df['Profits After Tax'].mean()\n\nprint(json.dumps([[round(avg_profit, 2)]]))",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[476556.61]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```python\nimport pandas as pd\nimport json\n\n# Read the CSV file\ndf = pd.read_csv(\"input_file_0.csv\")\n\n# Convert the column to numeric as per the rules\ndf['Profits After Tax'] = pd.to_numeric(df['Profits After Tax'], errors='coerce')\n\n# Filter for Bank Code 'ABB' and calculate the mean of 'Profits After Tax'\navg_profit_abb = df[df['Bank Code'] == 'ABB']['Profits After Tax'].mean()\n\n# Output the result as a JSON array of arrays\nprint(json.dumps([[round(avg_profit_abb, 2)]], ensure_ascii=False))\n```"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

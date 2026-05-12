@@ -2,7 +2,10 @@
 .venv/
 __pycache__/
 *.pyc
-output/
+# output/
+input/csv/
+input/sqlite/
+input/sqlite
 .DS_Store
 *.egg-info/
 

@@ -1,0 +1,247 @@
+{
+  "model_version": "gemini-3.1-pro-preview",
+  "response_id": "bYECaqGYNeK22roP4r7LmAQ",
+  "usage_metadata": {
+    "prompt_token_count": 97852,
+    "candidates_token_count": 4851,
+    "total_token_count": 1738067,
+    "cached_content_token_count": null
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\", dtype=str)\n\n# Clean date\ndef extract_date(d):\n    if pd.isna(d):\n        return None\n    d = str(d).split('(')[0].strip()\n    d = d.replace('.', '')\n    return d\n\ndf['date_clean'] = df['ngày_công_bố'].apply(extract_date)\ndf['date_parsed'] = pd.to_datetime(df['date_clean'], dayfirst=True, errors='coerce')\n\n# Check the non-parsed ones\n# print(df[df['date_parsed'].isna()]['ngày_công_bố'].unique())\n\n# Filter 'công_bố_mới' == '1' or 'công_bố_lại' == '1'\ndf['công_bố_mới'] = df['công_bố_mới'].astype(str).str.strip()\ndf['công_bố_lại'] = df['công_bố_lại'].astype(str).str.strip()\n\ncond = (df['công_bố_mới'] == '1') | (df['công_bố_lại'] == '1')\ndf_filtered = df[cond].copy()\n\n# Sort by parsed date descending\ndf_sorted = df_filtered.sort_values('date_parsed', ascending=False).head(5)\n\nresult = df_sorted[['tên_cơ_sở']].values.tolist()\nprint(json.dumps(result, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"Trung tâm tiêm chủng Gióng Chi Đông - Công ty cổ phần GIONG Việt Nam\"], [\"Trung tâm Tiêm chủng vắc xin chất lượng cao Phú Cát - Công ty TNHH Vacxin Hà Nội\"], [\"Bệnh viện ĐK Quốc tế Bắc Hà\"], [\"Điểm trạm Y tế Nguyễn Du\"], [\"Trung tâm tiêm chủng Gióng Quốc Oai - Công ty cổ phần GIONG Việt Nam\"]]\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "df_sorted = df_filtered.sort_values('date_parsed', ascending=False).head(10)\nprint(df_sorted[['ngày_công_bố', 'date_parsed', 'tên_cơ_sở']])\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "     ngày_công_bố date_parsed                                                                                                   tên_cơ_sở\n1048   28/10/2025  2025-10-28                                        Trung tâm tiêm chủng Gióng Chi Đông - Công ty cổ phần GIONG Việt Nam\n1036   09/10/2025  2025-10-09                            Trung tâm Tiêm chủng vắc xin chất lượng cao Phú Cát - Công ty TNHH Vacxin Hà Nội\n1035   07/10/2025  2025-10-07                                                                                 Bệnh viện ĐK Quốc tế Bắc Hà\n1003   3/10/2025.  2025-10-03                                                                                    Điểm trạm Y tế Nguyễn Du\n1034   01/10/2025  2025-10-01                                        Trung tâm tiêm chủng Gióng Quốc Oai - Công ty cổ phần GIONG Việt Nam\n1033   01/10/2025  2025-10-01                                         Trung tâm tiêm chủng Gióng Mê Linh - Công ty cổ phần GIONG Việt Nam\n1032   30/09/2025  2025-09-30                                                                                 Bệnh viện đa khoa Chương Mỹ\n998    30/9/2025.  2025-09-30                                                                                  Điểm Trạm Y tế xã Hưng Đạo\n1007   29/9/2025.  2025-09-29  ĐỊA ĐIỂM KINH DOANH VNVC VẠN PHÚC - CÔNG TY CỔ PHẦN VACXIN VIỆT NAM (\"TRUNG TÂM TIÊM CHỦNG VNVC VẠN PHÚC\")\n1001   29/9/2025.  2025-09-29                                                                                          Điểm Y tế Canh Nậu\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "print(df.loc[520])\nprint(df.loc[520]['date_parsed'])\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "stt                                                                                199\nsố_văn_bản                                            29/TB-TYT của TYT phường Sơn Tây\nngày_công_bố                                                                21/7/2025.\ntên_cơ_sở                                                           Điểm y tế Viên Sơn\nđịa_chỉ                                Số 02, Phù Sa, phường Sơn Tây, thành phố Hà Nội\nngười_đứng_đầu_phụ_trách_chuyên_môn                                  Nguyễn Hùng Cường\nsố_điện_thoại                                                              985583883.0\ncông_bố_mới                                                                          1\ncông_bố_lại                                                                        nan\ndừng_hoạt_động                                                                     NaN\nghi_chú                                                                            NaN\ndate_clean                                                                   21/7/2025\ndate_parsed                                                        2025-07-21 00:00:00\nName: 520, dtype: object\n2025-07-21 00:00:00\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "import pandas as pd\ndf = pd.read_csv(\"input_file_0.csv\", dtype=str)\nmask = df['ngày_công_bố'].astype(str).str.contains('11-27|27/11', na=False)\nprint(df[mask])\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "      stt        số_văn_bản         ngày_công_bố                                                                                            tên_cơ_sở                                     địa_chỉ người_đứng_đầu_phụ_trách_chuyên_môn    số_điện_thoại công_bố_mới công_bố_lại dừng_hoạt_động ghi_chú\n1072  520  612/TB- PHARBACO  2025-11-27 00:00:00  PHÒNG KHÁM TƯ VẤN VÀ ĐIỀU TRỊ DỰ PHÒNG TRỰC THUỘC CÔNG TY CỔ PHẦN DƯỢC PHẨM TRUNG ƯƠNG I - PHARBACO  Số 160 phố Tôn Đức Thắng, phường Ô Chợ Dừa                          0965711494  Hoàng Ánh Quyết         NaN           1            NaN     NaN\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "d = \"2025-11-27 00:00:00\"\nd2 = d.split('(')[0].strip().replace('.', '')\nprint(d2)\nprint(pd.to_datetime(d2, dayfirst=True, errors='coerce'))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "2025-11-27 00:00:00\n2025-11-27 00:00:00\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "df = pd.read_csv(\"input_file_0.csv\", dtype=str)\nprint(repr(df.loc[1072, 'công_bố_lại']))\nprint(repr(df.loc[1072, 'công_bố_mới']))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "'1'\nnan\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "def extract_date(d):\n    if pd.isna(d):\n        return None\n    d = str(d).split('(')[0].strip()\n    d = d.replace('.', '')\n    return d\n\ndf['date_clean'] = df['ngày_công_bố'].apply(extract_date)\ndf['date_parsed'] = pd.to_datetime(df['date_clean'], dayfirst=True, errors='coerce')\n\ndf['công_bố_mới'] = df['công_bố_mới'].astype(str).str.strip()\ndf['công_bố_lại'] = df['công_bố_lại'].astype(str).str.strip()\n\ncond = (df['công_bố_mới'] == '1') | (df['công_bố_lại'] == '1')\ndf_filtered = df[cond].copy()\n\ndf_sorted = df_filtered.sort_values('date_parsed', ascending=False).head(10)\nprint(df_sorted[['ngày_công_bố', 'date_parsed', 'tên_cơ_sở']])\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "     ngày_công_bố date_parsed                                                                                                   tên_cơ_sở\n1048   28/10/2025  2025-10-28                                        Trung tâm tiêm chủng Gióng Chi Đông - Công ty cổ phần GIONG Việt Nam\n1036   09/10/2025  2025-10-09                            Trung tâm Tiêm chủng vắc xin chất lượng cao Phú Cát - Công ty TNHH Vacxin Hà Nội\n1035   07/10/2025  2025-10-07                                                                                 Bệnh viện ĐK Quốc tế Bắc Hà\n1003   3/10/2025.  2025-10-03                                                                                    Điểm trạm Y tế Nguyễn Du\n1034   01/10/2025  2025-10-01                                        Trung tâm tiêm chủng Gióng Quốc Oai - Công ty cổ phần GIONG Việt Nam\n1033   01/10/2025  2025-10-01                                         Trung tâm tiêm chủng Gióng Mê Linh - Công ty cổ phần GIONG Việt Nam\n1032   30/09/2025  2025-09-30                                                                                 Bệnh viện đa khoa Chương Mỹ\n998    30/9/2025.  2025-09-30                                                                                  Điểm Trạm Y tế xã Hưng Đạo\n1007   29/9/2025.  2025-09-29  ĐỊA ĐIỂM KINH DOANH VNVC VẠN PHÚC - CÔNG TY CỔ PHẦN VACXIN VIỆT NAM (\"TRUNG TÂM TIÊM CHỦNG VNVC VẠN PHÚC\")\n1001   29/9/2025.  2025-09-29                                                                                          Điểm Y tế Canh Nậu\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "print(\"cond 1072:\", cond[1072])\nprint(\"công_bố_mới 1072:\", df.loc[1072, 'công_bố_mới'])\nprint(\"công_bố_lại 1072:\", df.loc[1072, 'công_bố_lại'])\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "cond 1072: True\ncông_bố_mới 1072: nan\ncông_bố_lại 1072: 1\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "print(1072 in df_filtered.index)\nprint(df_filtered.loc[1072, ['ngày_công_bố', 'date_parsed', 'tên_cơ_sở']])\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "True\nngày_công_bố                                                                                    2025-11-27 00:00:00\ndate_parsed                                                                                                     NaT\ntên_cơ_sở       PHÒNG KHÁM TƯ VẤN VÀ ĐIỀU TRỊ DỰ PHÒNG TRỰC THUỘC CÔNG TY CỔ PHẦN DƯỢC PHẨM TRUNG ƯƠNG I - PHARBACO\nName: 1072, dtype: object\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "print(pd.to_datetime('2025-11-27 00:00:00', dayfirst=True, errors='coerce'))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "2025-11-27 00:00:00\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "d = df.loc[1072, 'date_clean']\nprint(repr(d))\nprint(pd.to_datetime(d, dayfirst=True, errors='coerce'))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "'2025-11-27 00:00:00'\n2025-11-27 00:00:00\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "df['date_parsed'] = pd.to_datetime(df['date_clean'], format='mixed', dayfirst=True, errors='coerce')\ndf_filtered = df[cond].copy()\ndf_sorted = df_filtered.sort_values('date_parsed', ascending=False).head(10)\nprint(df_sorted[['ngày_công_bố', 'date_parsed', 'tên_cơ_sở']])\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "             ngày_công_bố date_parsed                                                                                                       tên_cơ_sở\n1072  2025-11-27 00:00:00  2025-11-27             PHÒNG KHÁM TƯ VẤN VÀ ĐIỀU TRỊ DỰ PHÒNG TRỰC THUỘC CÔNG TY CỔ PHẦN DƯỢC PHẨM TRUNG ƯƠNG I - PHARBACO\n1073  2025-11-25 00:00:00  2025-11-25  PHÒNG TIÊM CHỦNG - PHÒNG KHÁM ĐA KHOA MEDLATEC SỐ 1 - TÂY HỒ, HÀ NỘI TRỰC THUỘC CÔNG TY TNHH MEDLATEC VIỆT NAM\n1076  2025-11-21 00:00:00  2025-11-21                                                                                     Bệnh viện đa khoa Bảo Sơn 2\n1074  2025-11-19 00:00:00  2025-11-19                                                                                    Bệnh viện Giao thông Vận tải\n1077  2025-11-18 00:00:00  2025-11-18                                                                                          Điểm Y tế Đan Phượng 1\n1078  2025-11-17 00:00:00  2025-11-17                                                               Phòng tư vấn và tiêm chủng vắc xin dịch vụ Bảo An\n1080  2025-11-14 00:00:00  2025-11-14                                                                        Trung tâm tiêm chủng vắc xin Nam Từ Liêm\n1079  2025-11-14 00:00:00  2025-11-14                                                       Trung tâm tiêm chủng vắc xin Nam Từ Liêm - Cơ sở Tam Hiệp\n1070  2025-11-14 00:00:00  2025-11-14                      Địa điểm kinhdoanh Công ty Cổphần dịch vụ tiêmchủng Hà Nội - Cơsở số 168 - VHN Care Ba Vì.\n1069  2025-11-13 00:00:00  2025-11-13                                Trung tâm tiêmchủng TCVN - Trực thuộc công ty cổ phần dịch vụ y tế HTP Việt Nam.\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "print(\"Total NaT:\", df_filtered['date_parsed'].isna().sum())\nprint(\"NaT examples:\", df_filtered[df_filtered['date_parsed'].isna()]['ngày_công_bố'].unique())\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "Total NaT: 4\nNaT examples: ['714/7/2025.' nan]\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "print(df_filtered['date_parsed'].max())\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "2025-11-27 00:00:00\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "print(df['công_bố_mới'].unique())\nprint(df['công_bố_lại'].unique())\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "['1' 'nan']\n['nan' '1']\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\", dtype=str)\n\ndef extract_date(d):\n    if pd.isna(d) or d == 'nan':\n        return None\n    d = str(d).split('(')[0].strip()\n    d = d.replace('.', '')\n    return d\n\ndf['date_clean'] = df['ngày_công_bố'].apply(extract_date)\ndf['date_parsed'] = pd.to_datetime(df['date_clean'], format='mixed', dayfirst=True, errors='coerce')\n\ndf['công_bố_mới'] = df['công_bố_mới'].astype(str).str.strip()\ndf['công_bố_lại'] = df['công_bố_lại'].astype(str).str.strip()\n\ncond = (df['công_bố_mới'] == '1') | (df['công_bố_lại'] == '1')\ndf_filtered = df[cond].copy()\n\ndf_sorted = df_filtered.sort_values('date_parsed', ascending=False).head(5)\n\nresult = df_sorted[['tên_cơ_sở']].values.tolist()\nprint(json.dumps(result, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"PHÒNG KHÁM TƯ VẤN VÀ ĐIỀU TRỊ DỰ PHÒNG TRỰC THUỘC CÔNG TY CỔ PHẦN DƯỢC PHẨM TRUNG ƯƠNG I - PHARBACO\"], [\"PHÒNG TIÊM CHỦNG - PHÒNG KHÁM ĐA KHOA MEDLATEC SỐ 1 - TÂY HỒ, HÀ NỘI TRỰC THUỘC CÔNG TY TNHH MEDLATEC VIỆT NAM\"], [\"Bệnh viện đa khoa Bảo Sơn 2\"], [\"Bệnh viện Giao thông Vận tải\"], [\"Điểm Y tế Đan Phượng 1\"]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```python\nimport pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\", dtype=str)\n\ndef extract_date(d):\n    if pd.isna(d) or str(d).strip().lower() == 'nan':\n        return None\n    d = str(d).split('(')[0].strip()\n    d = d.replace('.', '')\n    return d\n\ndf['date_clean'] = df['ngày_công_bố'].apply(extract_date)\ndf['date_parsed'] = pd.to_datetime(df['date_clean'], format='mixed', dayfirst=True, errors='coerce')\n\ndf['công_bố_mới'] = df['công_bố_mới'].astype(str).str.strip()\ndf['công_bố_lại'] = df['công_bố_lại'].astype(str).str.strip()\n\ncond = (df['công_bố_mới'] == '1') | (df['công_bố_lại'] == '1')\ndf_filtered = df[cond].copy()\n\ndf_sorted = df_filtered.sort_values('date_parsed', ascending=False).head(5)\n\nresult = df_sorted[['tên_cơ_sở']].values.tolist()\nprint(json.dumps(result, ensure_ascii=False))\n```\n\n[[\"PHÒNG KHÁM TƯ VẤN VÀ ĐIỀU TRỊ DỰ PHÒNG TRỰC THUỘC CÔNG TY CỔ PHẦN DƯỢC PHẨM TRUNG ƯƠNG I - PHARBACO\"], [\"PHÒNG TIÊM CHỦNG - PHÒNG KHÁM ĐA KHOA MEDLATEC SỐ 1 - TÂY HỒ, HÀ NỘI TRỰC THUỘC CÔNG TY TNHH MEDLATEC VIỆT NAM\"], [\"Bệnh viện đa khoa Bảo Sơn 2\"], [\"Bệnh viện Giao thông Vận tải\"], [\"Điểm Y tế Đan Phượng 1\"]]"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "model_version": "gemini-3-flash-preview",
+  "response_id": "igoCatPdEuTh1e8PkOzf6A0",
+  "usage_metadata": {
+    "prompt_token_count": 146564,
+    "candidates_token_count": 694,
+    "total_token_count": 148543,
+    "cached_content_token_count": 286588
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv('input_file_0.csv')\n\n# Preprocess columns\ndf['Điểm'] = pd.to_numeric(df['Điểm'], errors='coerce')\ndf = df[df['Trường'].notna() & (df['Trường'].str.strip() != \"\")]\ndf = df.dropna(subset=['Điểm'])\n\n# Group by Trường and calculate mean score\nschool_avg = df.groupby('Trường')['Điểm'].mean().reset_index()\n\n# Filter for average score > 6.0\nschool_avg = school_avg[school_avg['Điểm'] > 6.0]\n\n# Round to 2 decimal places\nschool_avg['Điểm'] = school_avg['Điểm'].round(2)\n\n# Convert to list and print as JSON\nresult = school_avg.values.tolist()\nprint(json.dumps(result, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"Quốc Tế Singapore\", 7.4], [\"THCS Huỳnh Bá Chánh\", 6.01], [\"THCS Kim Đồng\", 6.12], [\"THCS Lê Lợi\", 6.82], [\"THCS Lương Thế Vinh\", 7.01], [\"THCS Nguyễn Huệ\", 6.21], [\"THCS Nguyễn Khuyến\", 7.33], [\"THCS Trưng Vương\", 6.18], [\"THCS Tây Sơn\", 6.32]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "[[\"Quốc Tế Singapore\", 7.4], [\"THCS Huỳnh Bá Chánh\", 6.01], [\"THCS Kim Đồng\", 6.12], [\"THCS Lê Lợi\", 6.82], [\"THCS Lương Thế Vinh\", 7.01], [\"THCS Nguyễn Huệ\", 6.21], [\"THCS Nguyễn Khuyến\", 7.33], [\"THCS Trưng Vương\", 6.18], [\"THCS Tây Sơn\", 6.32]]"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

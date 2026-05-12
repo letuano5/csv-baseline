@@ -1,0 +1,37 @@
+{
+  "model_version": "gemini-3-flash-preview",
+  "response_id": "oAcCapiBH7eB0-kPhrGM2Ao",
+  "usage_metadata": {
+    "prompt_token_count": 15426,
+    "candidates_token_count": 587,
+    "total_token_count": 16464,
+    "cached_content_token_count": 24427
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv('input_file_0.csv')\n\ndf['capacity_mw'] = pd.to_numeric(df['capacity_mw'], errors='coerce')\ndf['commissioning_year'] = pd.to_numeric(df['commissioning_year'], errors='coerce')\n\n# Filter for plants from 2010 onwards\ndf_filtered = df[df['commissioning_year'] >= 2010]\n\n# Group by fuel type and calculate mean capacity\nfuel_stats = df_filtered.groupby('std_fuel')['capacity_mw'].mean().reset_index()\n\n# Filter for average capacity > 100 MW\nresult = fuel_stats[fuel_stats['capacity_mw'] > 100]\n\n# Round to 2 decimal places\nresult['capacity_mw'] = result['capacity_mw'].round(2)\n\nprint(json.dumps(result.values.tolist(), ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"Coal\", 646.94], [\"Gas\", 681.75], [\"Nuclear\", 1150.0], [\"Renewable\", 1549.33], [\"Solar\", 333.33]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```json\n[[\"Coal\", 646.94], [\"Gas\", 681.75], [\"Nuclear\", 1150.0], [\"Renewable\", 1549.33], [\"Solar\", 333.33]]\n```"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

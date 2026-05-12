@@ -1,0 +1,37 @@
+{
+  "model_version": "gemini-3-flash-preview",
+  "response_id": "pw0Carm-JI3npt8Pxp7xuAs",
+  "usage_metadata": {
+    "prompt_token_count": 26101,
+    "candidates_token_count": 926,
+    "total_token_count": 30066,
+    "cached_content_token_count": 49136
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv('input_file_0.csv')\n\n# Preprocessing grade columns to replace ',' with '.' before casting\ncols_to_fix = ['BIOLOGY', 'CHEMISTRY', 'ENGLISH', 'HISTORY', 'LITERATURE', 'MATH', 'PHYSICS']\nfor col in cols_to_fix:\n    if col in df.columns:\n        df[col] = df[col].astype(str).str.replace(',', '.')\n\n# Casting numeric columns as requested\nnum_cols = {\n    'biology': 'BIOLOGY',\n    'chemistry': 'CHEMISTRY',\n    'english': 'ENGLISH',\n    'father_age': 'FATHER_AGE',\n    'history': 'HISTORY',\n    'literature': 'LITERATURE',\n    'math': 'MATH',\n    'mother_age': 'MOTHER_AGE',\n    'physics': 'PHYSICS',\n    'student_id': 'STUDENT_ID'\n}\n\nfor key, col_name in num_cols.items():\n    if col_name in df.columns:\n        df[col_name] = pd.to_numeric(df[col_name], errors='coerce')\n\n# Filter for Mountainous area\nmountainous_df = df[df['RESIDENTIAL_AREA'] == 'Mountainous']\n\n# Group by FATHER_JOB and calculate mean FATHER_AGE\navg_father_age = mountainous_df.groupby('FATHER_JOB')['FATHER_AGE'].mean()\n\n# Filter jobs with average age > 40\njobs_over_40 = avg_father_age[avg_father_age > 40].index.tolist()\n\n# The question asks for the jobs.\nresult = [[job] for job in jobs_over_40]\nprint(json.dumps(result, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"Farmer\"], [\"Government Staff\"], [\"Military Personnel\"], [\"Passed away\"], [\"Small bussiness\"], [\"Teacher\"], [\"Wage earner\"], [\"Worker\"]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "[[\"Farmer\"], [\"Government Staff\"], [\"Military Personnel\"], [\"Passed away\"], [\"Small bussiness\"], [\"Teacher\"], [\"Wage earner\"], [\"Worker\"]]"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

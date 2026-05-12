@@ -1,0 +1,65 @@
+{
+  "model_version": "gemini-3.1-pro-preview",
+  "response_id": "boECaoDmGreB0-kPhrGM2Ao",
+  "usage_metadata": {
+    "prompt_token_count": 97901,
+    "candidates_token_count": 300,
+    "total_token_count": 393744,
+    "cached_content_token_count": null
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\n\ndf = pd.read_csv(\"input_file_0.csv\")\n# Handle null strings or numeric 1\ndf['công_bố_mới'] = pd.to_numeric(df['công_bố_mới'], errors='coerce')\ncount = df[df['công_bố_mới'] == 1].shape[0]\nprint(count)\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "705\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "import pandas as pd\ndf = pd.read_csv(\"input_file_0.csv\")\nprint(df.shape)\nprint(df['công_bố_mới'].unique())\ncount = df[pd.to_numeric(df['công_bố_mới'], errors='coerce') == 1].shape[0]\nprint(count)\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "(1081, 11)\n[ 1. nan]\n705\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "import json\nprint(json.dumps([[705]]))",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[705]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```python\nimport pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\ncount = df[pd.to_numeric(df['công_bố_mới'], errors='coerce') == 1].shape[0]\nprint(json.dumps([[count]]))\n```\n[[705]]"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

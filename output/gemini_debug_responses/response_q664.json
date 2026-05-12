@@ -1,0 +1,37 @@
+{
+  "model_version": "gemini-3-flash-preview",
+  "response_id": "pw0CavODJ8uxpt8Pqa7WuA8",
+  "usage_metadata": {
+    "prompt_token_count": 26116,
+    "candidates_token_count": 814,
+    "total_token_count": 29426,
+    "cached_content_token_count": 49083
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\n# Load dataset\ndf = pd.read_csv('input_file_0.csv')\n\n# Preprocess numeric columns as per rules, specifically handling the comma separator\nnumeric_cols = ['BIOLOGY', 'CHEMISTRY', 'ENGLISH', 'FATHER_AGE', 'HISTORY', 'LITERATURE', 'MATH', 'MOTHER_AGE', 'PHYSICS', 'STUDENT_ID']\nfor col in numeric_cols:\n    if col in df.columns:\n        df[col] = df[col].astype(str).str.replace(',', '.')\n        df[col] = pd.to_numeric(df[col], errors='coerce')\n\n# Filter for Grade 12 and Mountainous area\nfiltered_df = df[(df['GRADE'] == 12) & (df['RESIDENTIAL_AREA'] == 'Mountainous')]\n\n# Filter for Math > 8.0\nfiltered_df = filtered_df[filtered_df['MATH'] > 8.0]\n\nif filtered_df.empty:\n    print(json.dumps([]))\nelse:\n    # Find the maximum math score\n    max_math = filtered_df['MATH'].max()\n    # Find the IDs of students with the maximum math score\n    result_ids = filtered_df[filtered_df['MATH'] == max_math]['STUDENT_ID'].values.tolist()\n    # Convert to list of lists for JSON output\n    # Since STUDENT_ID was converted to float, convert back to int for the output if they are integers\n    result = [[int(rid)] for rid in result_ids]\n    print(json.dumps(result, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[47642666], [47643230]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "[[47642666], [47643230]]"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

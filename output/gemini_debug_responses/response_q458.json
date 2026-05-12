@@ -1,0 +1,37 @@
+{
+  "model_version": "gemini-3.1-pro-preview",
+  "response_id": "TYICaqSGJ8uxpt8Pqa7WuA8",
+  "usage_metadata": {
+    "prompt_token_count": 15441,
+    "candidates_token_count": 182,
+    "total_token_count": 31530,
+    "cached_content_token_count": null
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\ndf['capacity_mw'] = pd.to_numeric(df['capacity_mw'], errors='coerce')\navg_capacity = df['capacity_mw'].mean()\n\nprint(json.dumps([[round(avg_capacity, 2)]]))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[251.72]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```python\nimport pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\ndf['capacity_mw'] = pd.to_numeric(df['capacity_mw'], errors='coerce')\navg_capacity = df['capacity_mw'].mean()\n\nprint(json.dumps([[round(avg_capacity, 2)]]))\n```\n[[251.72]]"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

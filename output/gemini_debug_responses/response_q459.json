@@ -1,0 +1,19 @@
+{
+  "model_version": "gemini-3-flash-preview",
+  "response_id": "_gwCasS-Lt7cosUPnND82Ag",
+  "usage_metadata": {
+    "prompt_token_count": 15390,
+    "candidates_token_count": 163,
+    "total_token_count": 19482,
+    "cached_content_token_count": null
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [],
+      "finish_reason": "FinishReason.MAX_TOKENS",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "model_version": "gemini-3-flash-preview",
+  "response_id": "pw0Car-WJpz1pt8P1OG7qAw",
+  "usage_metadata": {
+    "prompt_token_count": 26188,
+    "candidates_token_count": 3114,
+    "total_token_count": 34293,
+    "cached_content_token_count": 50189
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport numpy as np\nimport json\n\ndf = pd.read_csv('input_file_0.csv')\n\n# Handle numeric conversion\n# The scores/ages in the CSV use commas as decimal separators.\ncols_to_fix = ['CHEMISTRY', 'HISTORY', 'LITERATURE', 'BIOLOGY', 'ENGLISH', 'MATH', 'PHYSICS', 'AGE', 'FATHER_AGE', 'MOTHER_AGE']\nfor col in cols_to_fix:\n    if col in df.columns:\n        df[col] = df[col].astype(str).str.replace(',', '.').pipe(pd.to_numeric, errors='coerce')\n\n# Filter for Mountainous area\nmountainous_df = df[df['RESIDENTIAL_AREA'] == 'Mountainous'].copy()\n\n# Extract Father's job and Mother's job data\nfathers = mountainous_df[['FATHER_JOB', 'FATHER_AGE', 'AGE']].rename(\n    columns={'FATHER_JOB': 'Job', 'FATHER_AGE': 'ParentAge', 'AGE': 'StudentAge'}\n)\nmothers = mountainous_df[['MOTHER_JOB', 'MOTHER_AGE', 'AGE']].rename(\n    columns={'MOTHER_JOB': 'Job', 'MOTHER_AGE': 'ParentAge', 'AGE': 'StudentAge'}\n)\n\n# Combine\nparents_data = pd.concat([fathers, mothers], ignore_index=True)\n\n# Drop rows with NaN Job if any\nparents_data = parents_data.dropna(subset=['Job'])\n\n# Group by Job to find popular ones (count >= 2)\n# To be safe with capitalization, but the prompt doesn't specify normalization.\n# Let's see the unique values first in my head.\n# I will use the raw strings but strip whitespace.\nparents_data['Job'] = parents_data['Job'].str.strip()\n\n# Filtering popular jobs (size >= 2)\njob_counts = parents_data.groupby('Job').size()\npopular_jobs = job_counts[job_counts >= 2].index\n\n# Filter data for these jobs\npopular_parents_df = parents_data[parents_data['Job'].isin(popular_jobs)]\n\n# Aggregate\nresult_df = popular_parents_df.groupby('Job').agg({\n    'ParentAge': 'mean',\n    'StudentAge': 'mean'\n}).reset_index()\n\n# Calculate square root of student age mean\nresult_df['SqrtStudentAge'] = np.sqrt(result_df['StudentAge'])\n\n# Prepare final result: job, avg_parent_age, sqrt_avg_student_age\nfinal_result = []\nfor idx, row in result_df.iterrows():\n    final_result.append([\n        row['Job'],\n        round(float(row['ParentAge']), 2),\n        round(float(row['SqrtStudentAge']), 2)\n    ])\n\nprint(json.dumps(final_result, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"Farmer\", 43.29, 4.0], [\"Government Officer\", 43.0, 4.12], [\"Small bussiness\", 46.0, 4.12], [\"Teacher\", 45.0, 3.97], [\"Worker\", 44.0, 4.12]]\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport numpy as np\nimport json\n\ndf = pd.read_csv('input_file_0.csv')\n\n# Handle numeric conversion\ncols_to_fix = ['CHEMISTRY', 'HISTORY', 'LITERATURE', 'BIOLOGY', 'ENGLISH', 'MATH', 'PHYSICS', 'AGE', 'FATHER_AGE', 'MOTHER_AGE']\nfor col in cols_to_fix:\n    if col in df.columns:\n        df[col] = df[col].astype(str).str.replace(',', '.').pipe(pd.to_numeric, errors='coerce')\n\n# Filter for Mountainous area\nm_df = df[df['RESIDENTIAL_AREA'] == 'Mountainous'].copy()\nm_df['FATHER_JOB'] = m_df['FATHER_JOB'].str.strip()\nm_df['MOTHER_JOB'] = m_df['MOTHER_JOB'].str.strip()\n\n# 1. Identify popular jobs based on student count\n# A job is popular if >= 2 students have at least one parent with that job.\njob_student_map = []\nfor idx, row in m_df.iterrows():\n    jobs = set()\n    if pd.notna(row['FATHER_JOB']): jobs.add(row['FATHER_JOB'])\n    if pd.notna(row['MOTHER_JOB']): jobs.add(row['MOTHER_JOB'])\n    for j in jobs:\n        job_student_map.append({'Job': j, 'STUDENT_ID': row['STUDENT_ID']})\n\njs_df = pd.DataFrame(job_student_map)\njob_student_counts = js_df.groupby('Job')['STUDENT_ID'].nunique()\npopular_jobs = job_student_counts[job_student_counts >= 2].index.tolist()\n\n# 2. For each popular job, calculate avg parent age and avg student age\nresults = []\nfor job in sorted(popular_jobs):\n    # Find all instances where a parent has this job (could be father, mother, or both)\n    # The question asks for \"tuổi trung bình của cha mẹ\" (average age of the parents who have this job)\n    # and \"căn bậc hai của tuổi trung bình các em học sinh đó\" (sqrt of avg age of students who have at least one parent with this job)\n\n    # All parents with this job\n    f_ages = m_df[m_df['FATHER_JOB'] == job]['FATHER_AGE'].tolist()\n    m_ages = m_df[m_df['MOTHER_JOB'] == job]['MOTHER_AGE'].tolist()\n    all_parent_ages = f_ages + m_ages\n    avg_parent_age = np.mean(all_parent_ages)\n\n    # All students with at least one parent in this job\n    relevant_students = m_df[(m_df['FATHER_JOB'] == job) | (m_df['MOTHER_JOB'] == job)]\n    avg_student_age = relevant_students['AGE'].mean()\n\n    results.append([\n        job,\n        round(float(avg_parent_age), 2),\n        round(float(np.sqrt(avg_student_age)), 2)\n    ])\n\nprint(json.dumps(results, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"Farmer\", 43.29, 4.0], [\"Government Officer\", 43.0, 4.12], [\"Small bussiness\", 46.0, 4.12], [\"Teacher\", 45.0, 3.98]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "[[\"Farmer\", 43.29, 4.0], [\"Government Officer\", 43.0, 4.12], [\"Small bussiness\", 46.0, 4.12], [\"Teacher\", 45.0, 3.98]]"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

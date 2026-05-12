@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:ai.google.dev)",
+      "WebFetch(domain:developers.openai.com)",
+      "Bash(python3)",
+      "Bash(awk '{print $9, \"\\(\" $5 \"\\)\"}')",
+      "Bash(python3 -c ':*)",
+      "WebFetch(domain:www.anthropic.com)",
+      "WebFetch(domain:openai.com)",
+      "WebFetch(domain:platform.openai.com)",
+      "WebFetch(domain:claude.com)",
+      "WebSearch",
+      "Bash(uv init:*)",
+      "Bash(uv add:*)",
+      "Bash(uv run:*)",
+      "Bash(sort -k5 -n)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Skill(claude-api)",
+      "Skill(claude-api:*)",
+      "WebFetch(domain:googleapis.github.io)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(python3 -c \"import anthropic; c = anthropic.Anthropic\\(api_key='x'\\); print\\(dir\\(c.beta.messages\\)\\)\")",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 -c \"import json; d=json.load\\(open\\('selected.json'\\)\\); print\\(f'{len\\(d\\)} questions in selected.json'\\)\")"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "model_version": "gemini-3.1-pro-preview",
+  "response_id": "bYECapGxNeK22roP4r7LmAQ",
+  "usage_metadata": {
+    "prompt_token_count": 146559,
+    "candidates_token_count": 527,
+    "total_token_count": 294275,
+    "cached_content_token_count": null
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\", dtype=str)\n\n# Convert \"Điểm\" to numeric\ndf['Điểm'] = pd.to_numeric(df['Điểm'], errors='coerce')\n\n# Calculate average score by subject\nresult = df.groupby('Môn thi')['Điểm'].mean().reset_index()\n\n# Sort descending\nresult = result.sort_values(by='Điểm', ascending=False)\n\n# Round to 2 decimal places\nresult['Điểm'] = result['Điểm'].round(2)\n\n# Convert to list of lists\noutput = result.values.tolist()\n\nprint(json.dumps(output, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"Tiếng Pháp\", 7.72], [\"Tiếng Nhật\", 6.81], [\"Địa lý\", 5.97], [\"Lịch sử\", 5.97], [\"Sinh học\", 5.88], [\"Tiếng Anh\", 5.47], [\"Ngữ văn\", 5.39], [\"Hóa học\", 5.01], [\"Toán\", 4.96], [\"Tin học\", 4.75], [\"Vật lý\", 4.23]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```python\nimport pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\ndf[\"Điểm\"] = pd.to_numeric(df[\"Điểm\"], errors=\"coerce\")\n\nresult = df.groupby(\"Môn thi\")[\"Điểm\"].mean().reset_index()\nresult = result.sort_values(by=\"Điểm\", ascending=False)\nresult[\"Điểm\"] = result[\"Điểm\"].round(2)\n\nprint(json.dumps(result.values.tolist(), ensure_ascii=False))\n```\n\n[[\"Tiếng Pháp\", 7.72], [\"Tiếng Nhật\", 6.81], [\"Địa lý\", 5.97], [\"Lịch sử\", 5.97], [\"Sinh học\", 5.88], [\"Tiếng Anh\", 5.47], [\"Ngữ văn\", 5.39], [\"Hóa học\", 5.01], [\"Toán\", 4.96], [\"Tin học\", 4.75], [\"Vật lý\", 4.23]]"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

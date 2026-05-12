@@ -1,0 +1,65 @@
+{
+  "model_version": "gemini-3-flash-preview",
+  "response_id": "3g4CarL-N4bSpt8PtJLQ-QQ",
+  "usage_metadata": {
+    "prompt_token_count": 198399,
+    "candidates_token_count": 3921,
+    "total_token_count": 210280,
+    "cached_content_token_count": 395065
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv('input_file_0.csv')\n\n# Filter rows where Bank Code contains 'ABB'\nsubset = df[df['Bank Code'].str.contains('ABB', na=False)].copy()\n\n# Identify numeric columns for the specific question\n# 'Number of Employees', 'Total Assets', 'Profits After Tax', 'Year'\ntarget_cols = ['Number of Employees', 'Total Assets', 'Profits After Tax', 'Year']\n\n# Function to clean and convert to numeric\ndef clean_numeric(val):\n    if pd.isna(val) or str(val).strip() == '':\n        return None\n    s = str(val).replace('.', '').replace(',', '.')\n    try:\n        return float(s)\n    except:\n        return None\n\nfor col in target_cols:\n    subset[col] = subset[col].apply(clean_numeric)\n\n# Sort by Year descending\nsubset = subset.sort_values(by='Year', ascending=False)\n\n# Re-cast Year to int for clean output (if not NaN)\nsubset['Year'] = subset['Year'].apply(lambda x: int(x) if pd.notnull(x) else x)\n\n# Select requested columns\n# mã ngân hàng, năm, số lượng nhân viên, tổng tài sản và lợi nhuận sau thuế\nfinal_df = subset[['Bank Code', 'Year', 'Number of Employees', 'Total Assets', 'Profits After Tax']]\n\n# Convert to list of lists\nresult = final_df.values.tolist()\n\n# Print as JSON\nprint(json.dumps(result, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"ABB\", 2022, 39240.0, 1301466450.0, 13567300.0], [\"ABB\", 2021, 42840.0, 1163669810.0, 15599780.0], [\"ABB\", 2020, 42910.0, 1163669810.0, 11176570.0], [\"ABB\", 2019, 43480.0, 1025569240.0, 10006750.0], [\"ABB\", 2018, 41750.0, 899978910.0, 7149070.0], [\"ABB\", 2017, 35860.0, 845030690.0, 4888360.0], [\"ABB\", 2016, 35330.0, 741715030.0, 2439140.0], [\"ABB\", 2015, 31100.0, 643746860.0, 912790.0], [\"ABB\", 2014, 27080.0, 674648500.0, 1169730.0], [\"ABB\", 2013, 25770.0, 576277100.0, 1405620.0], [\"ABB\", 2012, 27660.0, 460136860.0, 3992900.0], [\"ABB\", 2011, 26830.0, 415419590.0, 3070460.0], [\"ABB\", 2010, NaN, 380156890.0, 4961490.0], [\"ABB\", 2009, 17170.0, 265180840.0, 3116470.0], [\"ABB\", 2008, 13450.0, 134941250.0, 496960.0], [\"ABB\", 2007, 11230.0, 171741170.0, 1617760.0], [\"ABB\", 2006, 3090.0, 31138980.0, 126740.0], [\"ABB\", 2005, 940.0, 6797080.0, 82300.0]]\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "import pandas as pd\n# Let's inspect the raw types and values for ABB 2005\ndf = pd.read_csv('input_file_0.csv')\nabb_2005 = df[(df['Bank Code'] == 'ABB') & (df['Year'] == 2005)]\nprint(abb_2005[['Number of Employees', 'Total Assets', 'Profits After Tax']].to_dict('records'))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[{'Number of Employees': 94.0, 'Total Assets': 679708.0, 'Profits After Tax': 8230.0}]\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\nimport numpy as np\n\ndf = pd.read_csv('input_file_0.csv')\n\n# Filter\nsubset = df[df['Bank Code'].str.contains('ABB', na=False)].copy()\n\n# Required columns\ntarget_cols = ['Bank Code', 'Year', 'Number of Employees', 'Total Assets', 'Profits After Tax']\n\n# Cast numeric columns as per general instructions, but carefully\n# Columns to cast: year, number_of_employees, total_assets, profits_after_tax\nnumeric_to_cast = ['Year', 'Number of Employees', 'Total Assets', 'Profits After Tax']\n\nfor col in numeric_to_cast:\n    if subset[col].dtype == 'object':\n        # Apply string cleaning for Vietnamese numbers\n        subset[col] = subset[col].str.replace('.', '', regex=False).str.replace(',', '.', regex=False)\n    subset[col] = pd.to_numeric(subset[col], errors='coerce')\n\n# Sort\nsubset = subset.sort_values(by='Year', ascending=False)\n\n# Select and output\nfinal_df = subset[target_cols]\n\n# Optional: Convert values to clear types (int where applicable) for JSON\ndef format_row(row):\n    formatted = []\n    for i, val in enumerate(row):\n        if pd.isna(val):\n            formatted.append(None)\n        elif i == 0: # Bank Code\n            formatted.append(str(val))\n        elif i == 1: # Year\n            formatted.append(int(val))\n        else: # Numeric values\n            # If it's an integer value, return as int, otherwise float\n            if float(val).is_integer():\n                formatted.append(int(val))\n            else:\n                formatted.append(round(float(val), 2))\n    return formatted\n\nresult = [format_row(row) for row in final_df.values.tolist()]\n\nimport json\nprint(json.dumps(result, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"ABB\", 2022, 3924, 130146645, 1356730], [\"ABB\", 2021, 4284, 116366981, 1559978], [\"ABB\", 2020, 4291, 116366981, 1117657], [\"ABB\", 2019, 4348, 102556924, 1000675], [\"ABB\", 2018, 4175, 89997891, 714907], [\"ABB\", 2017, 3586, 84503069, 488836], [\"ABB\", 2016, 3533, 74171503, 243914], [\"ABB\", 2015, 3110, 64374686, 91279], [\"ABB\", 2014, 2708, 67464850, 116973], [\"ABB\", 2013, 2577, 57627710, 140562], [\"ABB\", 2012, 2766, 46013686, 399290], [\"ABB\", 2011, 2683, 41541959, 307046], [\"ABB\", 2010, null, 38015689, 496149], [\"ABB\", 2009, 1717, 26518084, 311647], [\"ABB\", 2008, 1345, 13494125, 49696], [\"ABB\", 2007, 1123, 17174117, 161776], [\"ABB\", 2006, 309, 3113898, 12674], [\"ABB\", 2005, 94, 679708, 8230]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```json\n[[\"ABB\", 2022, 3924, 130146645, 1356730], [\"ABB\", 2021, 4284, 116366981, 1559978], [\"ABB\", 2020, 4291, 116366981, 1117657], [\"ABB\", 2019, 4348, 102556924, 1000675], [\"ABB\", 2018, 4175, 89997891, 714907], [\"ABB\", 2017, 3586, 84503069, 488836], [\"ABB\", 2016, 3533, 74171503, 243914], [\"ABB\", 2015, 3110, 64374686, 91279], [\"ABB\", 2014, 2708, 67464850, 116973], [\"ABB\", 2013, 2577, 57627710, 140562], [\"ABB\", 2012, 2766, 46013686, 399290], [\"ABB\", 2011, 2683, 41541959, 307046], [\"ABB\", 2010, null, 38015689, 496149], [\"ABB\", 2009, 1717, 26518084, 311647], [\"ABB\", 2008, 1345, 13494125, 49696], [\"ABB\", 2007, 1123, 17174117, 161776], [\"ABB\", 2006, 309, 3113898, 12674], [\"ABB\", 2005, 94, 679708, 8230]]\n```"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

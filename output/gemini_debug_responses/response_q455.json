@@ -1,0 +1,51 @@
+{
+  "model_version": "gemini-3.1-pro-preview",
+  "response_id": "TYICapnzJ_ynpt8P4Y3uqAM",
+  "usage_metadata": {
+    "prompt_token_count": 15406,
+    "candidates_token_count": 596,
+    "total_token_count": 48860,
+    "cached_content_token_count": null
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\ndf = pd.read_csv('input_file_0.csv')\ndf['capacity_mw'] = pd.to_numeric(df['capacity_mw'], errors='coerce')\ndf['commissioning_year'] = pd.to_numeric(df['commissioning_year'], errors='coerce')\n\n# Filter for rows with recorded commissioning year\ndf_filtered = df.dropna(subset=['commissioning_year'])\n\n# Group by std_fuel and calculate average capacity\navg_capacity = df_filtered.groupby('std_fuel')['capacity_mw'].mean().reset_index()\n\n# Filter for average capacity > 100\nresult = avg_capacity[avg_capacity['capacity_mw'] > 100]\n\nprint(result[['std_fuel']].values.tolist())\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[['Coal'], ['Gas'], ['Nuclear'], ['Oil'], ['Renewable'], ['Solar']]\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv('input_file_0.csv')\ndf['capacity_mw'] = pd.to_numeric(df['capacity_mw'], errors='coerce')\ndf['commissioning_year'] = pd.to_numeric(df['commissioning_year'], errors='coerce')\n\ndf_filtered = df.dropna(subset=['commissioning_year'])\navg_cap = df_filtered.groupby('std_fuel')['capacity_mw'].mean().reset_index()\nresult = avg_cap[avg_cap['capacity_mw'] > 100][['std_fuel']]\n\nprint(json.dumps(result.values.tolist(), ensure_ascii=False))",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"Coal\"], [\"Gas\"], [\"Nuclear\"], [\"Oil\"], [\"Renewable\"], [\"Solar\"]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```python\nimport pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\ndf['capacity_mw'] = pd.to_numeric(df['capacity_mw'], errors='coerce')\ndf['commissioning_year'] = pd.to_numeric(df['commissioning_year'], errors='coerce')\n\n# Lọc các nhà máy có ghi nhận năm vận hành\ndf_filtered = df.dropna(subset=['commissioning_year'])\n\n# Tính công suất trung bình theo từng loại nhiên liệu\navg_capacity = df_filtered.groupby(\"std_fuel\")[\"capacity_mw\"].mean().reset_index()\n\n# Lọc những loại nhiên liệu có công suất trung bình > 100 MW\nresult = avg_capacity[avg_capacity[\"capacity_mw\"] > 100]\n\nprint(json.dumps(result[[\"std_fuel\"]].values.tolist(), ensure_ascii=False))\n```"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

@@ -46,6 +46,16 @@ PRICING: dict[str, ModelPricing] = {
     batch_discount=0.50,
     input_long=4.00, cache_read_long=0.40,
   ),
+  "gemini-3-flash-preview": ModelPricing(
+    input=0.50, output=3.00,
+    cache_write_mult=1.00, cache_read=0.05,
+    batch_discount=0.50,
+  ),
+  "gemini-3.1-flash-lite-preview": ModelPricing(
+    input=0.25, output=1.50,
+    cache_write_mult=1.00, cache_read=0.025,
+    batch_discount=0.50,
+  ),
   "gpt-5.4": ModelPricing(
     input=2.50, output=15.00,
     cache_write_mult=1.00, cache_read=0.25,

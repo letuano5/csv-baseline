@@ -1,0 +1,23 @@
+{
+  "model_version": "gemini-3-flash-preview",
+  "response_id": "pw0CauO_Jpz1pt8P1OG7qAw",
+  "usage_metadata": {
+    "prompt_token_count": 26174,
+    "candidates_token_count": 329,
+    "total_token_count": 27693,
+    "cached_content_token_count": null
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "text": "```python\nimport pandas as pd\nimport json\n\n# Load the dataset\ndf = pd.read_csv(\"input_file_0.csv\")\n\n# Convert relevant numeric columns to numeric types\ndf['AGE'] = pd.to_numeric(df['AGE'], errors='coerce')\ndf['GRADE'] = pd.to_numeric(df['GRADE'], errors='coerce')\ndf['FATHER_AGE'] = pd.to_numeric(df['FATHER_AGE'], errors='coerce')\n\n# Identify \"mature in age\" classes (grades where the average age of students > 16)\ngrade_avg_age = df.groupby('GRADE')['AGE'].mean()\nmature_grades = grade_avg_age[grade_avg_age > 16].index.tolist()\n\n# Filter for students in these \"mature\" grades AND living in \"Mountainous\" areas\nfiltered_df = df[\n    (df['GRADE'].isin(mature_grades)) & \n    (df['RESIDENTIAL_AREA'] == 'Mountainous')\n]\n\n# Find the maximum father's age in this subset\nmax_father_age = filtered_df['FATHER_AGE'].max()\n\n# Prepare and print the result as a JSON array of arrays\n# Ensure we handle potential NaN values if the subset is empty\nresult = [[int(max_father_age)]] if pd.notnull(max_father_age) else []\nprint(json.dumps(result, ensure_ascii=False))\n\n```"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

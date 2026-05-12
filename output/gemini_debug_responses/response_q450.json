@@ -1,0 +1,37 @@
+{
+  "model_version": "gemini-3.1-pro-preview",
+  "response_id": "P4MCavL-MeK22roP4r7LmAQ",
+  "usage_metadata": {
+    "prompt_token_count": 15393,
+    "candidates_token_count": 350,
+    "total_token_count": 32069,
+    "cached_content_token_count": null
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\ndf['capacity_mw'] = pd.to_numeric(df['capacity_mw'], errors='coerce')\n\ngrouped = df.groupby('std_fuel')['capacity_mw'].mean().reset_index()\nfiltered = grouped[grouped['capacity_mw'] > 100]\n\nresult = filtered['std_fuel'].str.upper().tolist()\nresult = [[x] for x in result]\n\nprint(json.dumps(result, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"COAL\"], [\"GAS\"], [\"NUCLEAR\"], [\"OIL\"], [\"RENEWABLE\"], [\"SOLAR\"]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```python\nimport pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\ndf['capacity_mw'] = pd.to_numeric(df['capacity_mw'], errors='coerce')\n\n# Tính công suất trung bình theo từng loại nhiên liệu tiêu chuẩn\ngrouped = df.groupby('std_fuel')['capacity_mw'].mean().reset_index()\n\n# Lọc ra các loại nhiên liệu có công suất trung bình > 100 MW\nfiltered = grouped[grouped['capacity_mw'] > 100].copy()\n\n# Chuyển tên nhiên liệu sang chữ hoa\nfiltered['std_fuel'] = filtered['std_fuel'].str.upper()\n\n# Tạo định dạng JSON array của arrays\nresult = filtered[['std_fuel']].values.tolist()\n\nprint(json.dumps(result, ensure_ascii=False))\n```"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

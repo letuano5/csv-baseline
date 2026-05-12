@@ -1,0 +1,37 @@
+{
+  "model_version": "gemini-3-flash-preview",
+  "response_id": "_gwCao-WM7Od1e8PmOuMmAs",
+  "usage_metadata": {
+    "prompt_token_count": 15544,
+    "candidates_token_count": 580,
+    "total_token_count": 16632,
+    "cached_content_token_count": 24428
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv('input_file_0.csv')\ndf['capacity_mw'] = pd.to_numeric(df['capacity_mw'], errors='coerce')\n\n# Group by fuel type and aggregate capacity mean and count\nresult = df.groupby('std_fuel')['capacity_mw'].agg(['mean', 'count']).reset_index()\n\n# Filter fuels with at least 2 plants\nfiltered_result = result[result['count'] >= 2]\n\n# Prepare final list: fuel name and mean capacity\nfinal_data = filtered_result[['std_fuel', 'mean']].copy()\nfinal_data['mean'] = final_data['mean'].round(2)\n\nprint(json.dumps(final_data.values.tolist(), ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"Biomass\", 28.0], [\"Coal\", 623.27], [\"Gas\", 681.83], [\"Hydro\", 69.99], [\"Nuclear\", 1150.0], [\"Oil\", 113.9], [\"Renewable\", 1549.33], [\"Solar\", 333.33], [\"Wind\", 62.42]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "[[\"Biomass\", 28.0], [\"Coal\", 623.27], [\"Gas\", 681.83], [\"Hydro\", 69.99], [\"Nuclear\", 1150.0], [\"Oil\", 113.9], [\"Renewable\", 1549.33], [\"Solar\", 333.33], [\"Wind\", 62.42]]"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

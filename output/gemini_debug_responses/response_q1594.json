@@ -1,0 +1,37 @@
+{
+  "model_version": "gemini-3-flash-preview",
+  "response_id": "ZQ4Car_PHunr2roPg-exoQQ",
+  "usage_metadata": {
+    "prompt_token_count": 198337,
+    "candidates_token_count": 759,
+    "total_token_count": 205229,
+    "cached_content_token_count": 393044
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\n# Read the CSV file\ndf = pd.read_csv('input_file_0.csv')\n\n# Define a helper function to clean and convert to numeric\ndef clean_numeric(series):\n    # Convert to string to handle any potential mixed types\n    series = series.astype(str)\n    # Remove dots (thousands separators)\n    series = series.str.replace('.', '', regex=False)\n    # Replace commas with dots (decimal separators)\n    series = series.str.replace(',', '.', regex=False)\n    # Convert to numeric\n    return pd.to_numeric(series, errors='coerce')\n\n# Apply cleaning to relevant columns\ndf['Profits After Tax'] = clean_numeric(df['Profits After Tax'])\ndf['Number of Employees'] = clean_numeric(df['Number of Employees'])\n\n# Calculate means\navg_profit = df['Profits After Tax'].mean()\navg_employees = df['Number of Employees'].mean()\n\n# Output the result as a JSON array of arrays\nresult = [[round(float(avg_profit), 2), round(float(avg_employees), 2)]]\nprint(json.dumps(result, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[19352378.48, 69326.65]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```python\nimport pandas as pd\nimport json\n\ndef solve():\n    # Read the dataset\n    # Using 'utf-8' encoding and ',' as delimiter as per specifications\n    df = pd.read_csv('input_file_0.csv', delimiter=',')\n\n    # Columns required: 'Profits After Tax' (Financial Situation) and 'Number of Employees' (Personnel Size)\n    # The external knowledge defines 'Tình hình tài chính' as the mean of 'Profits After Tax'\n    # and 'Quy mô nhân sự' as 'Number of Employees'.\n    \n    def clean_numeric(series):\n        # Convert to string to handle various formats\n        series = series.astype(str)\n        # In Vietnamese locale, '.' is"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

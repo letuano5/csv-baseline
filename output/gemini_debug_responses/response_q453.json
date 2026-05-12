@@ -1,0 +1,51 @@
+{
+  "model_version": "gemini-3.1-pro-preview",
+  "response_id": "xoICasq2J-nr2roPg-exoQQ",
+  "usage_metadata": {
+    "prompt_token_count": 15409,
+    "candidates_token_count": 885,
+    "total_token_count": 49664,
+    "cached_content_token_count": null
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\ndf['capacity_mw'] = pd.to_numeric(df['capacity_mw'], errors='coerce')\ndf['commissioning_year'] = pd.to_numeric(df['commissioning_year'], errors='coerce')\n\n# Filter for commissioning_year > 2010\nfiltered_df = df[df['commissioning_year'] > 2010]\n\n# Group by std_fuel\ngrouped = filtered_df.groupby('std_fuel').agg(\n    avg_capacity=('capacity_mw', 'mean'),\n    plant_count=('capacity_mw', 'size')\n).reset_index()\n\n# Filter avg_capacity > 100\nresult = grouped[grouped['avg_capacity'] > 100]\n\n# Round to 2 decimal places\nresult['avg_capacity'] = result['avg_capacity'].round(2)\n\nprint(result.values.tolist())\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[['Coal', 646.94, 90], ['Gas', 678.16, 19], ['Nuclear', 1150.0, 4], ['Renewable', 1549.33, 15], ['Solar', 333.33, 3]]\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\ndf['capacity_mw'] = pd.to_numeric(df['capacity_mw'], errors='coerce')\ndf['commissioning_year'] = pd.to_numeric(df['commissioning_year'], errors='coerce')\n\nfiltered_df = df[df['commissioning_year'] > 2010]\n\ngrouped = filtered_df.groupby('std_fuel').agg(\n    avg_capacity=('capacity_mw', 'mean'),\n    count_plants=('std_name', 'size')\n).reset_index()\n\nresult = grouped[grouped['avg_capacity'] > 100].copy()\nresult['avg_capacity'] = result['avg_capacity'].round(2)\n\nprint(json.dumps(result.values.tolist(), ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"Coal\", 646.94, 90], [\"Gas\", 678.16, 19], [\"Nuclear\", 1150.0, 4], [\"Renewable\", 1549.33, 15], [\"Solar\", 333.33, 3]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```python\nimport pandas as pd\nimport json\n\n# Đọc dữ liệu từ file CSV\ndf = pd.read_csv(\"input_file_0.csv\")\n\n# Chuyển đổi các cột sang dạng số\ndf['capacity_mw'] = pd.to_numeric(df['capacity_mw'], errors='coerce')\ndf['commissioning_year'] = pd.to_numeric(df['commissioning_year'], errors='coerce')\n\n# Lọc các nhà máy được đưa vào hoạt động sau năm 2010\ndf_filtered = df[df['commissioning_year'] > 2010]\n\n# Nhóm theo loại nhiên liệu, tính công suất trung bình và tổng số nhà máy\ngrouped = df_filtered.groupby('std_fuel').agg(\n    avg_capacity=('capacity_mw', 'mean'),\n    count_plants=('std_name', 'size')\n).reset_index()\n\n# Lọc những nhóm nhiên liệu có công suất trung bình trên 100 MW\nresult = grouped[grouped['avg_capacity'] > 100].copy()\n\n# Làm tròn công suất trung bình 2 chữ số thập phân\nresult['avg_capacity'] = result['avg_capacity'].round(2)\n\n# In kết quả dưới định dạng JSON\nprint(json.dumps(result.values.tolist(), ensure_ascii=False))\n```"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

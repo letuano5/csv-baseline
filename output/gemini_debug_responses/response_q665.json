@@ -1,0 +1,37 @@
+{
+  "model_version": "gemini-3-flash-preview",
+  "response_id": "pw0Car3OJI3npt8Pxp7xuAs",
+  "usage_metadata": {
+    "prompt_token_count": 26177,
+    "candidates_token_count": 720,
+    "total_token_count": 31736,
+    "cached_content_token_count": 49040
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv('input_file_0.csv')\n\n# Preprocessing: convert comma to dot and cast to numeric as per instructions\ncols_to_cast = ['BIOLOGY', 'CHEMISTRY', 'ENGLISH', 'FATHER_AGE', 'HISTORY', 'LITERATURE', 'MATH', 'MOTHER_AGE', 'PHYSICS', 'STUDENT_ID']\nfor col in cols_to_cast:\n    if col in df.columns:\n        if df[col].dtype == 'object':\n            df[col] = df[col].str.replace(',', '.')\n        df[col] = pd.to_numeric(df[col], errors='coerce')\n\n# Filter rows where father's job is 'Farmer'\ndf_farmers = df[df['FATHER_JOB'] == 'Farmer']\n\n# Group by RESIDENTIAL_AREA and calculate the mean FATHER_AGE\navg_age_by_area = df_farmers.groupby('RESIDENTIAL_AREA')['FATHER_AGE'].mean()\n\n# Filter areas where the mean FATHER_AGE is greater than 40\n# 'bước qua tuổi trung niên' được hiểu là có độ tuổi trung bình lớn hơn 40\nresult_areas = avg_age_by_area[avg_age_by_area > 40].index.tolist()\n\n# Prepare and print final result\noutput = [[area] for area in result_areas]\nprint(json.dumps(output, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"Mountainous\"], [\"Rural\"], [\"Urban\"]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "[[\"Mountainous\"], [\"Rural\"], [\"Urban\"]]"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

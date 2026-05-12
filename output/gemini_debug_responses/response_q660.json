@@ -1,0 +1,65 @@
+{
+  "model_version": "gemini-3.1-pro-preview",
+  "response_id": "A4MCavKPDo3npt8Pxp7xuAs",
+  "usage_metadata": {
+    "prompt_token_count": 26575,
+    "candidates_token_count": 1004,
+    "total_token_count": 111567,
+    "cached_content_token_count": null
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\", sep=\",\", encoding=\"utf-8\")\ndf['FATHER_AGE'] = pd.to_numeric(df['FATHER_AGE'], errors='coerce')\ndf['MOTHER_AGE'] = pd.to_numeric(df['MOTHER_AGE'], errors='coerce')\ndf['AGE'] = pd.to_numeric(df['AGE'], errors='coerce')\n\ndf['PARENT_AVG_AGE'] = (df['FATHER_AGE'] + df['MOTHER_AGE']) / 2.0\n\ngrouped = df.groupby('RESIDENTIAL_AREA').agg(\n    avg_student_age=('AGE', 'mean'),\n    avg_parent_age=('PARENT_AVG_AGE', 'mean')\n).reset_index()\n\nfiltered = grouped[grouped['avg_student_age'] >= 17]\nresult = filtered[['RESIDENTIAL_AREA', 'avg_parent_age']].values.tolist()\n\n# Apply formatting for float (2 decimal places) as per instructions or let Python handle it.\n# The instruction says \"For floating-point values, output with at most 2 decimal places unless the question explicitly requires a different precision.\"\nresult_formatted = []\nfor row in result:\n    result_formatted.append([row[0], round(row[1], 2)])\n\nprint(json.dumps(result_formatted, ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[]\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "import pandas as pd\ndf = pd.read_csv(\"input_file_0.csv\", sep=\",\", encoding=\"utf-8\")\ndf['AGE'] = pd.to_numeric(df['AGE'], errors='coerce')\ngrouped = df.groupby('RESIDENTIAL_AREA')['AGE'].mean()\nprint(grouped)\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "RESIDENTIAL_AREA\nMountainous    16.040000\nRural          15.981308\nUrban          15.980769\nName: AGE, dtype: float64\n",
+            "id": null
+          }
+        },
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\", sep=\",\", encoding=\"utf-8\")\nfor col in ['FATHER_AGE', 'MOTHER_AGE', 'AGE']:\n    df[col] = pd.to_numeric(df[col], errors='coerce')\n\ndf['parent_age'] = (df['FATHER_AGE'] + df['MOTHER_AGE']) / 2\n\ngrouped = df.groupby('RESIDENTIAL_AREA').agg(\n    avg_age=('AGE', 'mean'),\n    avg_parent_age=('parent_age', 'mean')\n).reset_index()\n\nfiltered = grouped[grouped['avg_age'] >= 17]\nresult = filtered[['RESIDENTIAL_AREA', 'avg_parent_age']]\nresult['avg_parent_age'] = result['avg_parent_age'].round(2)\nprint(json.dumps(result.values.tolist(), ensure_ascii=False))",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```python\nimport pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\", sep=\",\", encoding=\"utf-8\")\n\n# Convert specific columns to numeric\ndf['FATHER_AGE'] = pd.to_numeric(df['FATHER_AGE'], errors='coerce')\ndf['MOTHER_AGE'] = pd.to_numeric(df['MOTHER_AGE'], errors='coerce')\ndf['AGE'] = pd.to_numeric(df['AGE'], errors='coerce')\n\n# Calculate the average age of parents for each student\ndf['PARENT_AVG_AGE'] = (df['FATHER_AGE'] + df['MOTHER_AGE']) / 2\n\n# Group by residential area\ngrouped = df.groupby('RESIDENTIAL_AREA').agg(\n    student_age_mean=('AGE', 'mean'),\n    parent_age_mean=('PARENT_AVG_AGE', 'mean')\n).reset_index()\n\n# Filter areas where the average age of students is 17 or above\nfiltered = grouped[grouped['student_age_mean'] >= 17]\n\n# Format and select output columns\nif not filtered.empty:\n    filtered['parent_age_mean'] = filtered['parent_age_mean'].round(2)\n    result = filtered[['RESIDENTIAL_AREA', 'parent_age_mean']].values.tolist()\nelse:\n    result = []\n\nprint(json.dumps(result, ensure_ascii=False))\n```"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

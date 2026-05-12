@@ -1,0 +1,37 @@
+{
+  "model_version": "gemini-3.1-pro-preview",
+  "response_id": "bYECav32Lviy2roPk7mboAQ",
+  "usage_metadata": {
+    "prompt_token_count": 146563,
+    "candidates_token_count": 954,
+    "total_token_count": 295535,
+    "cached_content_token_count": null
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\ndf_math = df[df['Môn thi'] == 'Toán'].copy()\ndf_math['Điểm'] = pd.to_numeric(df_math['Điểm'], errors='coerce')\nresult = df_math.groupby('Trường')['Điểm'].mean().round(2).reset_index()\nprint(json.dumps(result.values.tolist(), ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"THCS Chu Văn An\", 5.04], [\"THCS Hoàng Diệu\", 4.56], [\"THCS Huỳnh Bá Chánh\", 5.62], [\"THCS Huỳnh Thúc Kháng\", 6.25], [\"THCS Kim Đồng\", 4.53], [\"THCS Lê Anh Xuân\", 4.0], [\"THCS Lê Hồng Phong\", 2.12], [\"THCS Lê Lợi\", 6.41], [\"THCS Lê Thánh Tôn\", 1.75], [\"THCS Lê Thị Hồng Gấm\", 2.83], [\"THCS Lê Độ\", 6.54], [\"THCS Lý Thường Kiệt\", 4.54], [\"THCS Lý Tự Trọng\", 5.25], [\"THCS Lương Thế Vinh\", 6.72], [\"THCS Nguyễn Bá Phát\", 2.5], [\"THCS Nguyễn Bỉnh Khiêm\", 4.94], [\"THCS Nguyễn Chí Thanh\", 5.34], [\"THCS Nguyễn Công Trứ\", 2.12], [\"THCS Nguyễn Duy Hiệu\", 1.5], [\"THCS Nguyễn Huệ\", 4.05], [\"THCS Nguyễn Hồng Ánh\", 3.15], [\"THCS Nguyễn Khuyến\", 7.02], [\"THCS Nguyễn Lương Bằng\", 6.12], [\"THCS Nguyễn Phú Hường\", 5.06], [\"THCS Nguyễn Thiện Thuật\", 1.75], [\"THCS Nguyễn Thái Bình\", 2.05], [\"THCS Nguyễn Thị Minh Khai\", 2.0], [\"THCS Nguyễn Thị Định\", 5.25], [\"THCS Nguyễn Tri Phương\", 4.25], [\"THCS Nguyễn Trãi\", 3.4], [\"THCS Nguyễn Văn Cừ\", 4.61], [\"THCS Nguyễn Văn Linh\", 6.25], [\"THCS Nguyễn Đình Chiểu\", 4.93], [\"THCS Ngô Thì Nhậm\", 4.29], [\"THCS Phan Bội Châu\", 7.38], [\"THCS Phan Đình Phùng\", 6.5], [\"THCS Phạm Ngọc Thạch\", 2.35], [\"THCS Phạm Văn Đồng\", 3.46], [\"THCS Sào Nam\", 4.19], [\"THCS Trưng Vương\", 6.02], [\"THCS Trần Quang Khải\", 3.28], [\"THCS Trần Quý Cáp\", 4.58], [\"THCS Trần Đại Nghĩa\", 2.12], [\"THCS Tây Sơn\", 4.68], [\"THCS Ông Ích Đường\", 1.75], [\"THCS Đàm Quang Trung\", 4.5], [\"THCS Đặng Thai Mai\", 3.94], [\"THCS Đỗ Thúc Tịnh\", 3.19], [\"THCS Đỗ Đăng Tuyển\", 1.25]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "```python\nimport pandas as pd\nimport json\n\ndf = pd.read_csv(\"input_file_0.csv\")\n\n# Lọc môn Toán và chuyển cột Điểm sang dạng số\ndf_math = df[df['Môn thi'] == 'Toán'].copy()\ndf_math['Điểm'] = pd.to_numeric(df_math['Điểm'], errors='coerce')\n\n# Tính điểm trung bình theo trường, làm tròn 2 chữ số thập phân\nresult = df_math.groupby('Trường')['Điểm'].mean().round(2).reset_index()\n\n# In kết quả theo định dạng JSON\nprint(json.dumps(result.values.tolist(), ensure_ascii=False))\n```"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

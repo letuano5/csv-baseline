@@ -1,0 +1,19 @@
+{
+  "model_version": "gemini-3-flash-preview",
+  "response_id": "FAwCauuFOvfAvr0P6JbbkAs",
+  "usage_metadata": {
+    "prompt_token_count": null,
+    "candidates_token_count": null,
+    "total_token_count": null,
+    "cached_content_token_count": null
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [],
+      "finish_reason": "FinishReason.MALFORMED_FUNCTION_CALL",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}

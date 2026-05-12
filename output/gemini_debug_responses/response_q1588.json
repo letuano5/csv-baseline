@@ -1,0 +1,37 @@
+{
+  "model_version": "gemini-3-flash-preview",
+  "response_id": "ZQ4CavSiHenr2roPg-exoQQ",
+  "usage_metadata": {
+    "prompt_token_count": 198256,
+    "candidates_token_count": 1266,
+    "total_token_count": 205579,
+    "cached_content_token_count": 393641
+  },
+  "candidates": [
+    {
+      "role": "model",
+      "parts": [
+        {
+          "executable_code": {
+            "code": "import pandas as pd\nimport json\n\ndf = pd.read_csv('input_file_0.csv')\n\n# Clean the numeric column based on observed data format (dots as thousands separator, commas as decimal separator)\ndef clean_and_convert(series):\n    series = series.astype(str).str.replace('.', '', regex=False).str.replace(',', '.', regex=False)\n    return pd.to_numeric(series, errors='coerce')\n\ndf['Profits After Tax'] = clean_and_convert(df['Profits After Tax'])\n\nresult = df.groupby('Bank Code')['Profits After Tax'].mean().reset_index()\nresult['Profits After Tax'] = result['Profits After Tax'].round(2)\n\nprint(json.dumps(result.values.tolist(), ensure_ascii=False))\n",
+            "language": "Language.PYTHON",
+            "id": null
+          }
+        },
+        {
+          "code_execution_result": {
+            "outcome": "Outcome.OUTCOME_OK",
+            "output": "[[\"ABB\", 4765566.11], [\"ACB\", 26908243.81], [\"AGB\", 50027193.81], [\"BAB\", 4741701.67], [\"BIDV\", 46152888.57], [\"BVB\", 901299.0], [\"CB\", 2814160.0], [\"CTG\", 53023874.76], [\"DAB\", 475252.14], [\"EIB\", 11767692.63], [\"FCB\", 1145553.33], [\"GAB\", 1688563.33], [\"GPB\", 3892375.0], [\"HBB\", 2393502.22], [\"HDB\", 20341473.16], [\"HSBC\", 31930232.86], [\"IVB\", 5376234.17], [\"KLB\", 2056453.68], [\"LVB\", 20944192.67], [\"MB\", 38288338.5], [\"MDB\", 994743.64], [\"MHB\", 5006272.73], [\"MSB\", 17651357.65], [\"NAB\", 4256069.44], [\"NCB\", 481226.25], [\"OB\", 3332825.0], [\"OCB\", 13746968.24], [\"PGB\", 2007343.75], [\"PNB\", 2508127.78], [\"PVB\", 8714206.0], [\"SCB\", 26696914.17], [\"SEAB\", 10300833.68], [\"SGB\", 2478585.5], [\"SHB\", 19592682.35], [\"STB\", 16568317.89], [\"TCB\", 48484250.0], [\"TNB\", 2659385.0], [\"TPB\", 15688856.0], [\"VAB\", 2362289.47], [\"VBSP\", 10899084.12], [\"VCB\", 94444018.1], [\"VCPB\", 2238616.84], [\"VIB\", 20580463.89], [\"VPB\", 39866834.44], [\"WEB\", 439094.55]]\n",
+            "id": null
+          }
+        },
+        {
+          "text": "[[\"ABB\", 4765566.11], [\"ACB\", 26908243.81], [\"AGB\", 50027193.81], [\"BAB\", 4741701.67], [\"BIDV\", 46152888.57], [\"BVB\", 901299.0], [\"CB\", 2814160.0], [\"CTG\", 53023874.76], [\"DAB\", 475252.14], [\"EIB\", 11767692.63], [\"FC"
+        }
+      ],
+      "finish_reason": "FinishReason.STOP",
+      "token_count": null,
+      "index": null
+    }
+  ]
+}
