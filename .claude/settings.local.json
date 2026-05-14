@@ -24,7 +24,8 @@
       "Bash(python3 -c \"import anthropic; c = anthropic.Anthropic\\(api_key='x'\\); print\\(dir\\(c.beta.messages\\)\\)\")",
       "Bash(python3 -c ' *)",
       "Bash(python3 -c \"import json; d=json.load\\(open\\('selected.json'\\)\\); print\\(f'{len\\(d\\)} questions in selected.json'\\)\")",
-      "Bash(python3 -)"
+      "Bash(python3 -)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d, indent=2, ensure_ascii=False\\)\\)\")"
     ]
   }
 }
