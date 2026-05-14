@@ -17,6 +17,7 @@ import json
 import math
 import re
 from dataclasses import dataclass
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -25,13 +26,79 @@ from executor import execute_sql
 
 SQLITE_DIR = ROOT / "input" / "sqlite"
 
-_ORDER_BY_RE = re.compile(r"\bORDER\s+BY\b", re.IGNORECASE)
 _TOLERANCE = 1e-2
 
 
 # ============================================================
-# Copied verbatim from csv-pipeline/src/evaluator.py
+# Kept in sync with csv-pipeline/src/evaluator.py
 # ============================================================
+
+# ---------------------------------------------------------------------------
+# Top-level ORDER BY detection (depth-counting, not simple regex)
+# ---------------------------------------------------------------------------
+
+def has_top_level_order_by(sql: str) -> bool:
+  """Return True only if there is an ORDER BY at parenthesis depth 0."""
+  depth = 0
+  tokens = re.split(r"(\(|\))", sql, flags=re.IGNORECASE)
+  for tok in tokens:
+    if tok == "(":
+      depth += 1
+    elif tok == ")":
+      depth -= 1
+    elif depth == 0 and re.search(r"\bORDER\s+BY\b", tok, re.IGNORECASE):
+      return True
+  return False
+
+
+# ---------------------------------------------------------------------------
+# Date normalisation helper
+# ---------------------------------------------------------------------------
+
+_DATE_PARSE_FORMATS = ["%d/%m/%Y", "%d-%m-%Y", "%Y/%m/%d", "%m/%d/%Y", "%d.%m.%Y"]
+
+
+def _try_date(x: Any) -> date | None:
+  """Try to parse x as a calendar date.  Returns a date object or None."""
+  if isinstance(x, datetime):
+    return x.date()
+  if isinstance(x, date):
+    return x
+  if not isinstance(x, str):
+    return None
+  s = x.strip()
+  try:
+    dt = datetime.fromisoformat(s)
+    return dt.date()
+  except ValueError:
+    pass
+  for fmt in _DATE_PARSE_FORMATS:
+    try:
+      return datetime.strptime(s, fmt).date()
+    except ValueError:
+      continue
+  return None
+
+
+# ---------------------------------------------------------------------------
+# Safe numeric-string equality
+# ---------------------------------------------------------------------------
+
+def _is_safe_numeric_string(s: str) -> bool:
+  """True if s may be safely compared as a number.
+
+  Rejects strings with leading zeros (e.g. '0001', '007') that carry
+  identifier semantics.  Allows '0', '0.xxx', '-0', '-0.xxx'.
+  """
+  t = s.strip()
+  if re.match(r"^-?0[0-9]", t):
+    return False
+  return True
+
+
+# ---------------------------------------------------------------------------
+# Scalar comparison
+# ---------------------------------------------------------------------------
 
 def _values_equal(a: Any, b: Any) -> bool:
   """Compare two scalar values with NULL and float tolerance."""
@@ -40,14 +107,44 @@ def _values_equal(a: Any, b: Any) -> bool:
     return True
   if a is None or b is None:
     return False
-  # Numeric tolerance
+
+  # Both numeric
   if isinstance(a, (int, float)) and isinstance(b, (int, float)):
     return math.isclose(float(a), float(b), abs_tol=_TOLERANCE, rel_tol=1e-9)
+
+  # Numeric ≈ String-of-numeric (safe: no leading zeros)
+  if isinstance(a, (int, float)) and isinstance(b, str):
+    if _is_safe_numeric_string(b):
+      try:
+        return math.isclose(float(a), float(b), abs_tol=_TOLERANCE, rel_tol=1e-9)
+      except ValueError:
+        pass
+  if isinstance(b, (int, float)) and isinstance(a, str):
+    if _is_safe_numeric_string(a):
+      try:
+        return math.isclose(float(b), float(a), abs_tol=_TOLERANCE, rel_tol=1e-9)
+      except ValueError:
+        pass
+
+  # Date normalisation: "2000-12-09" ↔ "2000-12-09 00:00:00" ↔ "09/12/2000"
+  da, db = _try_date(a), _try_date(b)
+  if da is not None and db is not None:
+    return da == db
+
   return a == b
 
 
+# ---------------------------------------------------------------------------
+# Vector comparison helpers
+# ---------------------------------------------------------------------------
+
 def _sort_key(x: Any):
   return (x is None, str(x) if x is not None else "", isinstance(x, (int, float)))
+
+
+def _normalize_nulls_to_end(v: list) -> list:
+  """Move None values to end while preserving the relative order of non-None values."""
+  return [x for x in v if x is not None] + [x for x in v if x is None]
 
 
 def _vectors_match(v1: list, v2: list, *, ignore_order: bool) -> bool:
@@ -56,6 +153,10 @@ def _vectors_match(v1: list, v2: list, *, ignore_order: bool) -> bool:
   if ignore_order:
     v1 = sorted(v1, key=_sort_key)
     v2 = sorted(v2, key=_sort_key)
+  else:
+    # ORDER BY is present: normalise NULL positions to end before row-by-row comparison
+    v1 = _normalize_nulls_to_end(v1)
+    v2 = _normalize_nulls_to_end(v2)
   return all(_values_equal(a, b) for a, b in zip(v1, v2))
 
 
@@ -69,7 +170,7 @@ def compare_results(
   """Compare predicted and gold result sets.
 
   Uses column-subset logic: every column in gold must match some column in pred.
-  If sql contains ORDER BY, ordering is respected (ignore_order=False).
+  If sql contains a *top-level* ORDER BY, ordering is respected (ignore_order=False).
 
   Args:
     pred_rows:    Predicted query results (list of rows).
@@ -80,8 +181,8 @@ def compare_results(
   Returns:
     True if results match, False otherwise.
   """
-  # Detect ORDER BY in SQL → preserve order
-  if sql and _ORDER_BY_RE.search(sql):
+  # Detect top-level ORDER BY (depth-counting avoids false positives in subqueries)
+  if sql and has_top_level_order_by(sql):
     ignore_order = False
 
   if not gold_rows and not pred_rows:
@@ -96,7 +197,8 @@ def compare_results(
   gold_cols = [[row[c] for row in gold_rows] for c in range(n_gold_cols)]
   pred_cols = [[row[c] for row in pred_rows] for c in range(n_pred_cols)]
 
-  # Gold columns must appear somewhere in pred; extra pred columns are accepted so SELECT * does not penalize correct answers
+  # Gold columns must appear somewhere in pred; extra pred columns are accepted
+  # so SELECT * does not penalize correct answers
   for gold_col in gold_cols:
     if not any(_vectors_match(gold_col, pred_col, ignore_order=ignore_order) for pred_col in pred_cols):
       return False
