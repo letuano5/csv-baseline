@@ -65,6 +65,20 @@ Output: [[17]]
 ---
 """
 
+# Appended for DeepSeek (tool-calling loop — no hosted code execution).
+DEEPSEEK_SYSTEM_SUFFIX = """\
+
+---
+TOOL INSTRUCTIONS (supersede the output-format rules above):
+- Use `run_python` to execute Python for exploration and computation. The CSV is at "data.csv".
+- You may call `run_python` as many times as needed. Prints inside run_python are for your own exploration — they do NOT need to be JSON.
+- When you have the definitive answer, call `submit_answer` with `result` as an array of arrays.
+- Do NOT embed the final answer in a print statement. Use `submit_answer` exclusively for submission.
+- Format for submit_answer: each inner array is one result row, e.g. [["Alice", 30], ["Bob", 25]].
+- Empty result: submit_answer(result=[])
+- Single scalar: submit_answer(result=[[42]])
+"""
+
 # Appended for OpenRouter (Chat Completions — no hosted code execution).
 OPENROUTER_SYSTEM_SUFFIX = """\
 
@@ -149,25 +163,46 @@ def _profile_guidelines(db_id: str) -> str:
   return "\nDATASET-AWARE RULES (must follow):\n" + "\n".join(lines) + "\n"
 
 
-def build_user_prompt(
-  question: str,
-  db_id: str,
-  external_knowledge: str,
-  meta: CsvMeta,
-) -> str:
+def build_static_context(db_id: str, meta: CsvMeta, max_rows: int | None = None) -> str:
+  """Dataset metadata that is identical for all questions on the same db_id.
+
+  Intended for providers that support prefix caching (e.g. DeepSeek): callers
+  can place this in the system prompt so the shared prefix gets a cache hit
+  across every question for the same CSV.
+  """
   columns_str = ", ".join(meta.columns)
   profile_section = _profile_guidelines(db_id)
-  knowledge_section = (
-    f"\nEXTERNAL KNOWLEDGE (important — use this to interpret the question correctly):\n"
-    f"{external_knowledge.strip()}\n"
-    if external_knowledge and external_knowledge.strip()
+  rows_note = (
+    f"NOTE: Only the first {max_rows} rows of this CSV are provided. "
+    f"The full dataset may contain more rows.\n"
+    if max_rows is not None
     else ""
   )
   return (
     f"DATASET: {db_id}\n"
     f"DELIMITER: {meta.delimiter!r}  |  ENCODING: {meta.encoding!r}\n"
     f"COLUMNS: {columns_str}\n"
+    f"{rows_note}"
     f"{profile_section}"
-    f"{knowledge_section}"
-    f"\nQUESTION: {question}"
   )
+
+
+def build_question_prompt(question: str, external_knowledge: str) -> str:
+  """Dynamic part of the user message: external knowledge + question."""
+  knowledge_section = (
+    f"EXTERNAL KNOWLEDGE (important — use this to interpret the question correctly):\n"
+    f"{external_knowledge.strip()}\n\n"
+    if external_knowledge and external_knowledge.strip()
+    else ""
+  )
+  return f"{knowledge_section}QUESTION: {question}"
+
+
+def build_user_prompt(
+  question: str,
+  db_id: str,
+  external_knowledge: str,
+  meta: CsvMeta,
+  max_rows: int | None = None,
+) -> str:
+  return build_static_context(db_id, meta, max_rows) + "\n" + build_question_prompt(question, external_knowledge)

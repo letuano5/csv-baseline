@@ -1,0 +1,161 @@
+{
+  "question_index": 1831,
+  "db_id": "danang_hsg_list",
+  "question": "Bạn có thể cho biết tên những trường nào có điểm trung bình môn Toán cao hơn điểm trung bình môn Toán của tất cả các thí sinh trong danh sách không?",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a data analyst. You are given a CSV dataset and a question written in Vietnamese.\n\nAnswer the question using the provided data and tools.\n\nOUTPUT FORMAT (required):\n- Your LAST print statement must output ONLY a valid JSON array of arrays.\n- Each inner array is one result row. No column headers.\n- Column order must exactly follow the order requested in the question (for example, if asked \"name then year\", output [name, year], not [year, name]).\n- Empty result: []\n- Single scalar: [[42]]\n- For floating-point values, output with at most 2 decimal places unless the question explicitly requires a different precision.\n- Do NOT print a pandas DataFrame directly — always convert: df.values.tolist()\n- Do NOT print anything before the final JSON result. No df.head(), no df.info(), no intermediate prints.\n- Your response must contain EXACTLY ONE print statement.\n- Use `import json` and print with `print(json.dumps(..., ensure_ascii=False))`.\n- The output must be pure JSON text only; any extra character before `[` or after `]` is invalid.\n\nBAD (do NOT do this):\n    df = pd.read_csv(\"data.csv\")\n    print(df.head())        # ← WRONG\n    result = df.groupby(\"category\")[\"revenue\"].mean().reset_index()\n    print(result.values.tolist())\n\nGOOD:\n    df = pd.read_csv(\"data.csv\")\n    result = df.groupby(\"category\")[\"revenue\"].mean().reset_index()\n    import json\n    print(json.dumps(result.values.tolist(), ensure_ascii=False))\n\n---\nEXAMPLE 1 — aggregation question:\nQuestion: \"Tính doanh thu trung bình theo từng danh mục sản phẩm\"\nCode:\n    import pandas as pd\n    df = pd.read_csv(\"data.csv\")\n    result = df.groupby(\"category\")[\"revenue\"].mean().reset_index()\n    print(result.values.tolist())\nOutput: [[\"Electronics\", 1250.5], [\"Clothing\", 430.0], [\"Food\", 89.75]]\n\nEXAMPLE 2 — filter + select question:\nQuestion: \"Liệt kê tên và tuổi của những nhân viên trên 30 tuổi\"\nCode:\n    import pandas as pd\n    df = pd.read_csv(\"data.csv\")\n    result = df[df[\"age\"] > 30][[\"name\", \"age\"]]\n    print(result.values.tolist())\nOutput: [[\"Alice\", 35], [\"Bob\", 42], [\"Carol\", 31]]\n\nEXAMPLE 3 — single count question:\nQuestion: \"Có bao nhiêu đơn hàng bị hủy?\"\nCode:\n    import pandas as pd\n    df = pd.read_csv(\"data.csv\")\n    count = df[df[\"status\"] == \"cancelled\"].shape[0]\n    print([[count]])\nOutput: [[17]]\n---\n\n---\nTOOL INSTRUCTIONS (supersede the output-format rules above):\n- Use `run_python` to execute Python for exploration and computation. The CSV is at \"data.csv\".\n- You may call `run_python` as many times as needed. Prints inside run_python are for your own exploration — they do NOT need to be JSON.\n- When you have the definitive answer, call `submit_answer` with `result` as an array of arrays.\n- Do NOT embed the final answer in a print statement. Use `submit_answer` exclusively for submission.\n- Format for submit_answer: each inner array is one result row, e.g. [[\"Alice\", 30], [\"Bob\", 25]].\n- Empty result: submit_answer(result=[])\n- Single scalar: submit_answer(result=[[42]])\n\n\n<csv filename=\"danang_hsg_list.csv\">\nSBD,Họ và tên,Ngày sinh,Nơi sinh,Lớp,Trường,Quận,Địa điểm thi,Môn thi,Phòng thi,Điểm,Xếp giải\n0001,Đặng Thị Phúc An,09/12/2000,\"Đà Nẵng\",\"9/1\",THCS Nguyễn Hồng Ánh,Hòa Vang,THPT Trần Phú,Toán,1,8.00,Nhất\n0002,Nguyễn Trường An,19/09/2000,\"Đà Nẵng\",\"9/3\",THCS Nguyễn Khuyến,,THPT Trần Phú,Toán,1,5.00,K.Khích\n0003,Nguyễn Bảo Anh,10/08/2000,\"Đà Nẵng\",\"9/6\",THCS Phạm Văn Đồng,Hòa Vang,THPT Trần Phú,Toán,1,0.75,\"\"\n0004,Lê Phạm Kim Anh,05/12/2000,\"Đà Nẵng\",\"9/1\",THCS Lê Anh Xuân,Liên Chiểu,THPT Trần Phú,Toán,1,1.75,\"\"\n0005,Đặng Minh Anh,09/02/2000,\"Đà Nẵng\",\"9/8\",THCS Nguyễn Khuyến,,THPT Trần Phú,Toán,1,9.25,Nhất\n0006,Phan Minh Anh,21/09/2000,\"Đà Nẵng\",\"9/11\",THCS Trưng Vương,Hải Châu,THPT Trần Phú,Toán,1,2.00,\"\"\n0007,Trần Thị Phương Anh,04/04/2000,\"Đà Nẵng\",\"9/1\",THCS Lương Thế Vinh,Liên Chiểu,THPT Trần Phú,Toán,1,7.75,Nhì\n0008,Trần Thị Quỳnh Anh,11/06/2000,\"Đà Nẵng\",\"9/8\",THCS Trưng Vương,Hải Châu,THPT Trần Phú,Toán,1,6.75,Ba\n0009,Võ Nguyễn Việt Anh,10/01/2000,\"Đà Nẵng\",\"9/3\",THCS Nguyễn Phú Hường,Hòa Vang,THPT Trần Phú,Toán,1,5.25,K.Khích\n0012,Nguyễn Thị Ngọc Ánh,11/07/2000,\"Đà Nẵng\",\"9/4\",THCS Lê Thị Hồng Gấm,Thanh Khê,THPT Trần Phú,Toán,1,5.50,K.Khích\n0013,Trần Hoàng Nhật Ánh,01/12/2000,\"Thừa Thiên - Huế\",\"9/7\",THCS Nguyễn Đình Chiểu,Thanh Khê,THPT Trần Phú,Toán,1,2.50,\"\"\n0014,Nguyễn Nhật Ánh,22/10/2000,\"Đà Nẵng\",\"9/9\",THCS Trưng Vương,Hải Châu,THPT Trần Phú,Toán,1,5.25,K.Khích\n0015,Đặng Hoàng Thiên Ân,27/10/2000,\"Đà Nẵng\",\"9/7\",THCS Nguyễn Văn Cừ,Sơn Trà,THPT Trần Phú,Toán,1,5.75,K.Khích\n0016,Phạm Công Bách,08/11/2000,\"Đà Nẵng\",\"9/7\",THCS Nguyễn Khuyến,,THPT Trần Phú,Toán,1,9.00,Nhất\n0017,Nguyễn Tường Duy Bảo,20/03/2000,\"Đà Nẵng\",\"9/6\",THCS Nguyễn Khuyến,,THPT Trần Phú,Toán,1,8.25,Nhất\n0018,Ngô Việt Hoài Bảo,11/02/2000,\"Đà Nẵng\",\"9/4\",THCS Nguyễn Huệ,Hải Châu,THPT Trần Phú,Toán,1,2.50,\"\"\n0019,Nguyễn Công Hoàng Bảo,22/01/2000,\"Thừa Thiên - Huế\",\"9/2\",THCS Nguyễn Văn Linh,Cẩm Lệ,THPT Trần Phú,Toán,1,6.25,Ba\n0020,Huỳnh Văn Bảo,27/05/2000,\"Đà Nẵng\",\"9/9\",THCS Tây Sơn,Hải Châu,THPT Trần Phú,Toán,1,6.00,Ba\n0021,Nguyễn Lê Lý Bằng,18/03/2000,\"Đà Nẵng\",\"9/1\",THCS Phan Bội Châu,Sơn Trà,THPT Trần Phú,Toán,1,7.50,Nhì\n0022,Võ Tiểu Cầm,23/10/2000,\"Đồng Nai\",\"9/3\",THCS Nguyễn Phú Hường,Hòa Vang,THPT Trần Phú,Toán,1,2.50,\"\"\n0023,Đinh Lê Chân,25/07/2000,\"Đà Nẵng\",\"9/6\",THCS Phạm Văn Đồng,Hòa Vang,THPT Trần Phú,Toán,1,2.25,\"\"\n0024,Đoàn Ngọc Bảo Châu,27/06/2000,\"Đà Nẵng\",\"9/1\",THCS Trưng Vương,Hải Châu,THPT Trần Phú,Toán,1,5.00,K.Khích\n0025,Lê Hoàng Châu,20/09/2000,\"Đà Nẵng\",\"9/1\",THCS Nguyễn Văn Linh,Cẩm Lệ,THPT Trần Phú,Toán,2,6.50,Ba\n0026,Trần Thị Quế Châu,03/08/2000,\"Đà Nẵng\",\"9/4\",THCS Kim Đồng,Hải Châu,THPT Trần Phú,Toán,2,5.50,K.Khích\n0027,Đặng Văn Chính,08/04/2000,\"Đà Nẵng\",\"9/5\",THCS Nguyễn Khuyến,,THPT Trần Phú,Toán,2,5.25,K.Khích\n0028,Trần Văn Thành Công,17/08/2000,\"Đà Nẵng\",\"9/11\",THCS Trưng Vương,Hải Châu,THPT Trần Phú,Toán,2,7.00,Nhì\n0030,Hồ Văn Cường,08/02/2000,\"Thừa Thiên - Huế\",\"9/4\",THCS Phạm Ngọc Thạch,Sơn Trà,THPT Trần Phú,Toán,2,2.50,\"\"\n0031,Nguyễn Thanh Diễm,05/12/2000,\"Đà Nẵng\",\"9/2\",THCS Lương Thế Vinh,Liên Chiểu,THPT Trần Phú,Toán,2,8.00,Nhất\n0032,Nguyễn Thị Thu Diễm,13/08/2000,\"Đà Nẵng\",\"9/5\",THCS Nguyễn Bỉnh Khiêm,Ngũ Hành Sơn,THPT Trần Phú,Toán,2,6.00,Ba\n0033,Nguyễn Thị Thùy Dung,05/10/2000,\"Đà Nẵng\",\"9/3\",THCS Đặng Thai Mai,Cẩm Lệ,THPT Trần Phú,Toán,2,2.75,\"\"\n0034,Lê Xuân Anh Dũng,27/01/2000,\"Đà Nẵng\",\"9/1\",THCS Phan Bội Châu,Sơn Trà,THPT Trần Phú,Toán,2,6.00,Ba\n0035,Nguyễn Thế Dũng,12/08/2000,\"Nam Định\",\"9/2\",THCS Nguyễn Khuyến,,THPT Trần Phú,Toán,2,5.25,K.Khích\n0036,Huỳnh Tiến Dũng,07/05/2000,\"Đà Nẵng\",\"9/1\",THCS Đỗ Thúc Tịnh,Hòa Vang,THPT Trần Phú,Toán,2,2.25,\"\"\n0037,Nguyễn Trí Dũng,10/06/2000,\"Đà Nẵng\",\"9/3\",THCS Huỳnh Thúc Kháng,Thanh Khê,THPT Trần Phú,Toán,2,5.00,K.Khích\n0038,Dương Việt Dũng,29/12/2000,\"Đà Nẵng\",\"9/6\",THCS Nguyễn Lương Bằng,Liên Chiểu,THPT Trần Phú,Toán,2,7.25,Nhì\n0039,Trần Anh Duy,07/01/2000,\"Đà Nẵng\",\"9/1\",THCS Trần Quang Khải,Hòa Vang,THPT Trần Phú,Toán,2,6.25,Ba\n0040,Mai Đình Duy,12/12/2000,\"Đà Nẵng\",\"9/6\",THCS Nguyễn Trãi,Thanh Khê,THPT Trần Phú,Toán,2,2.50,\"\"\n0041,Phạm Nguyễn Lộc Duy,29/09/2000,\"Đà Nẵng\",\"9/6\",THCS Trưng Vương,Hải Châu,THPT Trần Phú,Toán,2,8.00,Nhất\n0042,Đặng Thị Mỹ Duyên,07/09/2000,\"Đà Nẵng\",\"9/2\",THCS Nguyễn Bá Phát,Hòa Vang,THPT Trần Phú,Toán,2,0.75,\"\"\n0043,Hồ Thị Thanh Duyên,14/03/2000,\"Đà Nẵng\",\"9/1\",THCS Lương Thế Vinh,Liên Chiểu,THPT Trần Phú,Toán,2,8.25,Nhất\n0044,Nguyễn Thảo Duyên,12/12/2000,\"Đà Nẵng\",\"9/2\",THCS Lê Anh Xuân,Liên Chiểu,THPT Trần Phú,Toán,2,7.50,Nhì\n0045,Trương Công Đạt,07/08/2000,\"Đà Nẵng\",\"9/4\",THCS Kim Đồng,Hải Châu,THPT Trần Phú,Toán,2,6.50,Ba\n0046,Đỗ Hữu Đạt,03/05/2000,\"Đà Nẵng\",\"9/6\",THCS Nguyễn Khuyến,,THPT Trần Phú,Toán,2,8.75,Nhất\n0047,Đào Ngọc Đạt,02/01/2000,\"Đà Nẵng\",\"9/6\",THCS Phan Đình Phùng,Thanh Khê,THPT Trần Phú,Toán,2,5.25,K.Khích\n0048,Huỳnh Tấn Đạt,07/07/2000,\"Đà Nẵng\",\"9/2\",THCS Lê Độ,Sơn Trà,THPT Trần Phú,Toán,2,5.75,K.Khích\n0049,Võ Văn Tấn Đạt,31/05/2000,\"Quảng Nam\",\"9/10\",THCS Tây Sơn,Hải Châu,THPT Trần Phú,Toán,3,1.75,\"\"\n0050,Nguyễn Tiến Đạt,06/12/2000,\"Đà Nẵng\",\"9/1\",THCS Lê Lợi,Ngũ Hành Sơn,THPT Trần Phú,Toán,3,6.75,Ba\n0051,Lê Đặng Trường Đạt,02/11/2000,\"Đà Nẵng\",\"9/7\",THCS Huỳnh Thúc Kháng,Thanh Khê,THPT Trần Phú,Toán,3,8.25,Nhất\n0052,Trương Quang Đông,14/01/2000,\"Đà Nẵng\",\"9/3\",THCS Lê Lợi,Ngũ Hành Sơn,THPT Trần Phú,Toán,3,5.50,K.Khích\n0053,Lê Hồng Đức,08/11/2000,\"Đà Nẵng\",\"9/4\",THCS Nguyễn Khuyến,,THPT Trần Phú,Toán,3,7.50,Nhì\n0054,Võ Minh Đức,17/12/2000,\"Quảng Nam\",\"9/3\",THCS Lý Thường Kiệt,Hải Châu,THPT Trần Phú,Toán,3,1.50,\"\"\n0055,Nguyễn Thanh Đức,02/02/2000,\"Đà Nẵng\",\"9/1\",THCS Kim Đồng,Hải Châu,THPT Trần Phú,Toán,3,5.50,K.Khích\n0056,Ngô Thị Hà Giang,31/01/2000,\"Đà Nẵng\",\"9/3\",THCS Nguyễn Bá Phát,Hòa Vang,THPT Trần Phú,Toán,3,5.75,K.Khích\n0057,Hồ Thị Trà Giang,06/06/2000,\"Thừa Thiên - Huế\",\"9/2\",THCS Lương Thế Vinh,Liên Chiểu,THPT Trần Phú,Toán,3,5.50,K.Khích\n0058,Bùi Văn Thanh Hà,01/03/2000,\"Đà Nẵng\",\"9/1\",THCS Đặng Thai Mai,Cẩm Lệ,THPT Trần Phú,Toán,3,2.75,\"\"\n0059,Lê Văn Hoàng Hải,18/04/2000,\"Đà Nẵng\",\"9/5\",THCS Trần Quý Cáp,Cẩm Lệ,THPT Trần Phú,Toán,3,5.00,K.Khích\n0060,Lê Khả Hải,13/11/2000,\"Đà Nẵng\",\"9/5\",THCS Nguyễn Khuyến,,THPT Trần Phú,Toán,3,7.25,Nhì\n0061,Võ Ngọc Hải,26/06/2000,\"Đà Nẵng\",\"9/2\",THCS Hoàng Diệu,Thanh Khê,THPT Trần Phú,Toán,3,7.25,Nhì\n0062,Phạm Quốc Hải,10/02/2000,\"Đà Nẵng\",\"9/1\",THCS Đỗ Đăng Tuyển,Thanh Khê,THPT Trần Phú,Toán,3,0.25,\"\"\n0063,Đỗ Minh Tâm Hải,24/09/2000,\"Đà Nẵng\",\"9/6\",THCS Nguyễn Huệ,Hải Châu,THPT Trần Phú,Toán,3,1.75,\"\"\n0064,Nguyễn Thanh Hải,23/08/2000,\"Đà Nẵng\",\"9/2\",THCS Nguyễn Thị Định,Cẩm Lệ,THPT Trần Phú,Toán,3,5.25,K.Khích\n0065,Trần Thế Hải,01/09/2000,\"Quảng Nam\",\"9/1\",THCS Phan Bội Châu,Sơn Trà,THPT Trần Phú,Toán,3,8.25,Nhất\n0066,Phạm Triệu Hải,30/05/2000,\"Đà Nẵng\",\"9/1\",THCS Phạm Văn Đồng,Hòa Vang,THPT Trần Phú,Toán,3,5.50,K.Khích\n0067,Đinh Thị Ngọc Hảo,27/09/2000,\"Đà Nẵng\",\"9/2\",THCS Lý Tự Trọng,Sơn Trà,THPT Trần Phú,Toán,3,5.25,K.Khích\n0068,Nguyễn Đặng Ngọc Hân,10/11/2000,\"Đà Nẵng\",\"9/1\",THCS Đỗ Thúc Tịnh,Hòa Vang,THPT Trần Phú,Toán,3,2.50,\"\"\n0069,Trương Công Hậu,19/05/2000,\"Đà Nẵng\",\"9/2\",THCS Nguyễn Thị Định,Cẩm Lệ,THPT Trần Phú,Toán,3,5.25,K.Khích\n0070,Lương Thị Thanh Hiền,28/11/2000,\"TP. Hồ Chí Minh\",\"9/2\",THCS Huỳnh Bá Chánh,Ngũ Hành Sơn,THPT Trần Phú,Toán,3,6.00,Ba\n0071,Lê Thị Lưu Hiếu,08/07/2000,\"Đà Nẵng\",\"9/1\",THCS Lý Tự Trọng,Sơn Trà,THPT Trần Phú,Toán,3,6.25,Ba\n0072,Nguyễn Đức Minh Hiếu,13/11/2000,\"Đà Nẵng\",\"9/2\",THCS Nguyễn Văn Linh,Hòa Vang,THPT Trần Phú,Toán,3,6.75,Ba\n0073,Nguyễn Trần Minh Hiếu,26/05/2000,\"Đà Nẵng\",\"9/5\",THCS Nguyễn Thái Bình,Liên Chiểu,THPT Trần Phú,Toán,4,2.00,\"\"\n0074,Phạm Trọng Hiếu,24/03/2000,\"Đà Nẵng\",\"9/1\",THCS Lê Độ,Sơn Trà,THPT Trần Phú,Toán,4,9.00,Nhất\n0075,Đỗ Trung Hiếu,02/05/2000,\"Bình Định\",\"9/2\",THCS Lương Thế Vinh,Liên Chiểu,THPT Trần Phú,Toán,4,6.00,Ba\n0076,Huỳnh Trần Trung Hiếu,26/09/2000,\"Đà Nẵng\",\"9/2\",THCS Huỳnh Bá Chánh,Ngũ Hành Sơn,THPT Trần Phú,Toán,4,5.00,K.Khích\n0077,Phạm Văn Hiếu,23/01/2000,\"Đà Nẵng\",\"9/1\",THCS Nguyễn Văn Cừ,Sơn Trà,THPT Trần Phú,Toán,4,7.00,Nhì\n0078,Võ Huy Hoàng,05/01/2000,\"Đà Nẵng\",\"9/1\",THCS Lý Tự Trọng,Sơn Trà,THPT Trần Phú,Toán,4,2.25,\"\"\n0079,Trần Hữu Hoàng,22/05/2000,\"Đà Nẵng\",\"9/3\",THCS Lê Thị Hồng Gấm,Thanh Khê,THPT Trần Phú,Toán,4,1.25,\"\"\n0080,Lê Hoàng,02/08/2000,\"Đà Nẵng\",\"9/6\",THCS Nguyễn Huệ,Hải Châu,THPT Trần Phú,Toán,4,5.25,K.Khích\n0081,Hồ Như Hoàng,07/01/2000,\"Đà Nẵng\",\"9/1\",THCS Nguyễn Khuyến,,THPT Trần Phú,Toán,4,9.75,Nhất\n0082,Nguyễn Xuân Hoàng,01/06/2000,\"Đà Nẵng\",\"9/2\",THCS Nguyễn Khuyến,,THPT Trần Phú,Toán,4,6.75,Ba\n0083,Nguyễn Trần Huy Hùng,13/12/2000,\"Đà Nẵng\",\"9/3\",THCS Nguyễn Duy Hiệu,Thanh Khê,THPT Trần Phú,Toán,4,1.25,\"\"\n0085,Trương Bá Huy,26/11/2000,\"Đà Nẵng\",\"9/1\",THCS Nguyễn Trãi,Thanh Khê,THPT Trần Phú,Toán,4,2.00,\"\"\n0086,Nguyễn Dương Huy,23/01/2000,\"Đà Nẵng\",\"9/2\",THCS Nguyễn Tri Phương,Hòa Vang,THPT Trần Phú,Toán,4,5.25,K.Khích\n0087,Nguyễn Đắc Minh Huy,19/01/2000,\"Đà Nẵng\",\"9/7\",THCS Trưng Vương,Hải Châu,THPT Trần Phú,Toán,4,6.00,Ba\n0088,Huỳnh Minh Huy,02/02/2000,\"Đà Nẵng\",\"9/1\",THCS Kim Đồng,Hải Châu,THPT Trần Phú,Toán,4,2.50,\"\"\n0089,Ngô Đình Nhật Huy,30/09/2000,\"Đà Nẵng\",\"9/1\",THCS Nguyễn Văn Cừ,Sơn Trà,THPT Trần Phú,Toán,4,2.50,\"\"\n0090,Huỳnh Nhật Huy,23/08/2000,\"Đà Nẵng\",\"9/1\",THCS Trần Quang Khải,Hòa Vang,THPT Trần Phú,Toán,4,2.50,\"\"\n0091,Lê Quốc Huy,14/01/2000,\"Đà Nẵng\",\"9/4\",THCS Nguyễn Lương Bằng,Liên Chiểu,THPT Trần Phú,Toán,4,5.75,K.Khích\n0092,Phạm Nguyễn Quốc Huy,28/05/2000,\"Đà Nẵng\",\"9/7\",THCS Nguyễn Khuyến,,THPT Trần Phú,Toán,4,8.50,Nhất\n0093,Phạm Quốc Huy,17/07/2000,\"Đà Nẵng\",\"9/4\",THCS Sào Nam,Hải Châu,THPT Trần Phú,Toán,4,1.00,\"\"\n0095,Nguyễn Hữu Hưng,14/04/2000,\"Đà Nẵng\",\"9/1\",THCS Lê Lợi,Ngũ Hành Sơn,THPT Trần Phú,Toán,4,6.00,Ba\n0096,Vũ Đình Nghĩa Hưng,24/11/2000,\"Quảng Nam\",\"9/2\",THCS Lê Độ,Sơn Trà,THPT Trần Phú,Toán,4,6.75,Ba\n0097,Phạm Duy Kha,05/11/2000,\"Đà Nẵng\",\"9/3\",THCS Lý Thường Kiệt,Hải Châu,THPT Trần Phú,Toán,5,1.75,\"\"\n0098,Nguyễn Văn Vĩ Kha,21/02/2000,\"Đà Nẵng\",\"9/3\",THCS Nguyễn Văn Linh,Hòa Vang,THPT Trần Phú,Toán,5,6.75,Ba\n0099,Nguyễn Hữu Khải,19/04/2000,\"Đà Nẵng\",\"9/2\",THCS Lý Thường Kiệt,Hải Châu,THPT Trần Phú,Toán,5,8.00,Nhất\n0100,Đỗ Oanh Khải,08/10/2000,\"Đà Nẵng\",\"9/3\",THCS Nguyễn Khuyến,,THPT Trần Phú,Toán,5,5.25,K.Khích\n0101,Lê An Khang,01/01/2000,\"Đà Nẵng\",\"9/2\",THCS Lê Hồng Phong,Hải Châu,THPT Trần Phú,Toán,5,2.25,\"\"\n0102,Nguyễn Lương Khang,19/02/2000,\"Thừa Thiên - Huế\",\"9/4\",THCS Phạm Ngọc Thạch,Sơn Trà,THPT Trần Phú,Toán,5,2.75,\"\"\n0103,Phạm Minh Khang,16/02/2000,\"Đà Nẵng\",\"9/1\",THCS Nguyễn Khuyến,,THPT Trần Phú,Toán,5,6.50,Ba\n0104,Trần Nguyên Khang,20/06/2000,\"Đà Nẵng\",\"9/2\",THCS Lê Hồng Phong,Hải Châu,THPT Trần Phú,Toán,5,2.00,\"\"\n0105,Lê Nguyễn Phúc Khang,19/06/2000,\"Đà Nẵng\",\"9/3\",THCS Nguyễn Khuyến,,THPT Trần Phú,Toán,5,7.25,Nhì\n\n</csv>\n\nDATASET: danang_hsg_list\nDELIMITER: ','  |  ENCODING: 'utf-8'\nCOLUMNS: SBD, Họ và tên, Ngày sinh, Nơi sinh, Lớp, Trường, Quận, Địa điểm thi, Môn thi, Phòng thi, Điểm, Xếp giải\nNOTE: Only the first 100 rows of this CSV are provided. The full dataset may contain more rows.\n\nDATASET-AWARE RULES (must follow):\n- Parse date columns before filtering/sorting: ngay_sinh.\n- Cast numeric columns with pd.to_numeric(errors='coerce'): diem, phong_thi, sbd.\n- High-missing columns: xep_giai. Handle null/empty explicitly.\n"
+    },
+    {
+      "role": "user",
+      "content": "QUESTION: Bạn có thể cho biết tên những trường nào có điểm trung bình môn Toán cao hơn điểm trung bình môn Toán của tất cả các thí sinh trong danh sách không?"
+    },
+    {
+      "reasoning_content": "Let me understand the question: We need to find schools (Trường) whose average Math score (Điểm) is higher than the overall average Math score of all students in the list.\n\nLet me analyze the data step by step.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_00_gIymIz2z6BKkdFeixw4b0961",
+          "function": {
+            "arguments": "{\"code\": \"import pandas as pd\\nimport json\\n\\ndf = pd.read_csv(\\\"data.csv\\\")\\nprint(df.columns.tolist())\\nprint(df.shape)\\nprint(df.head())\\n\"}",
+            "name": "run_python"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "content": ""
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_00_gIymIz2z6BKkdFeixw4b0961",
+      "content": "['SBD', 'Họ và tên', 'Ngày sinh', 'Nơi sinh', 'Lớp', 'Trường', 'Quận', 'Địa điểm thi', 'Môn thi', 'Phòng thi', 'Điểm', 'Xếp giải']\n(2282, 12)\n    SBD         Họ và tên   Ngày sinh  ... Phòng thi  Điểm Xếp giải\n0  0001  Đặng Thị Phúc An  09/12/2000  ...         1  8.00     Nhất\n1  0002  Nguyễn Trường An  19/09/2000  ...         1  5.00  K.Khích\n2  0003    Nguyễn Bảo Anh  10/08/2000  ...         1  0.75      NaN\n3  0004   Lê Phạm Kim Anh  05/12/2000  ...         1  1.75      NaN\n4  0005     Đặng Minh Anh  09/02/2000  ...         1  9.25     Nhất\n\n[5 rows x 12 columns]"
+    },
+    {
+      "reasoning_content": "The dataset has 2282 rows. Let me now compute:\n1. The overall average Math score (Điểm) across all students.\n2. The average Math score per school (Trường).\n3. Find schools where the average is higher than the overall average.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_00_wv9CNE6T02jI1kG781Vf2356",
+          "function": {
+            "arguments": "{\"code\": \"import pandas as pd\\n\\ndf = pd.read_csv(\\\"data.csv\\\")\\n\\n# Convert Điểm to numeric\\ndf['Điểm'] = pd.to_numeric(df['Điểm'], errors='coerce')\\n\\n# Overall average Math score\\noverall_avg = df['Điểm'].mean()\\nprint(f\\\"Overall average: {overall_avg}\\\")\\n\\n# Average per school\\nschool_avg = df.groupby('Trường')['Điểm'].mean().reset_index()\\nschool_avg.columns = ['Trường', 'Điểm trung bình']\\nschool_avg = school_avg.sort_values('Điểm trung bình', ascending=False)\\n\\nprint(\\\"\\\\nSchools with avg > overall avg:\\\")\\nfiltered = school_avg[school_avg['Điểm trung bình'] > overall_avg]\\nprint(filtered)\\nprint(f\\\"\\\\nNumber of schools: {len(filtered)}\\\")\\n\"}",
+            "name": "run_python"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "content": ""
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_00_wv9CNE6T02jI1kG781Vf2356",
+      "content": "Overall average: 5.354478662560493\n\nSchools with avg > overall avg:\n                    Trường  Điểm trung bình\n0        Quốc Tế Singapore         7.400000\n23      THCS Nguyễn Khuyến         7.334309\n15     THCS Lương Thế Vinh         7.009091\n9              THCS Lê Lợi         6.816000\n46            THCS Tây Sơn         6.321667\n21         THCS Nguyễn Huệ         6.207333\n42        THCS Trưng Vương         6.184043\n6            THCS Kim Đồng         6.116000\n4      THCS Huỳnh Bá Chánh         6.005278\n13     THCS Lý Thường Kiệt         5.964821\n12              THCS Lê Độ         5.905789\n25   THCS Nguyễn Phú Hường         5.678947\n50       THCS Đỗ Thúc Tịnh         5.646667\n2          THCS Chu Văn An         5.634348\n17  THCS Nguyễn Bỉnh Khiêm         5.535775\n34    THCS Nguyễn Văn Linh         5.370864\n\nNumber of schools: 16"
+    },
+    {
+      "reasoning_content": "The question asks for \"tên những trường\" - the names of schools. Let me format the result as a list of school names only.\n\nBut wait, let me re-read the question: \"Bạn có thể cho biết tên những trường nào có điểm trung bình môn Toán cao hơn điểm trung bình môn Toán của tất cả các thí sinh trong danh sách không?\"\n\nSo they want the names of schools whose average Math score is higher than the overall average Math score of all students.\n\nThe output should be a list of school names. Let me format it properly.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_00_gYJGggtzEY2HDtbg6CtQ3496",
+          "function": {
+            "arguments": "{\"code\": \"import pandas as pd\\n\\ndf = pd.read_csv(\\\"data.csv\\\")\\ndf['Điểm'] = pd.to_numeric(df['Điểm'], errors='coerce')\\n\\noverall_avg = df['Điểm'].mean()\\nschool_avg = df.groupby('Trường')['Điểm'].mean().reset_index()\\nfiltered = school_avg[school_avg['Điểm'] > overall_avg][['Trường']]\\nfiltered = filtered.sort_values('Trường')\\n\\nimport json\\nprint(json.dumps(filtered.values.tolist(), ensure_ascii=False))\\n\"}",
+            "name": "run_python"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "content": ""
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_00_gYJGggtzEY2HDtbg6CtQ3496",
+      "content": "[[\"Quốc Tế Singapore\"], [\"THCS Chu Văn An\"], [\"THCS Huỳnh Bá Chánh\"], [\"THCS Kim Đồng\"], [\"THCS Lê Lợi\"], [\"THCS Lê Độ\"], [\"THCS Lý Thường Kiệt\"], [\"THCS Lương Thế Vinh\"], [\"THCS Nguyễn Bỉnh Khiêm\"], [\"THCS Nguyễn Huệ\"], [\"THCS Nguyễn Khuyến\"], [\"THCS Nguyễn Phú Hường\"], [\"THCS Nguyễn Văn Linh\"], [\"THCS Trưng Vương\"], [\"THCS Tây Sơn\"], [\"THCS Đỗ Thúc Tịnh\"]]"
+    },
+    {
+      "reasoning_content": "Let me sort by school name alphabetically. The result looks good. Let me submit it.",
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_00_gQnwzIlevRWdoLoqH3Th5501",
+          "function": {
+            "arguments": "{\"result\": [[\"Quốc Tế Singapore\"], [\"THCS Chu Văn An\"], [\"THCS Huỳnh Bá Chánh\"], [\"THCS Kim Đồng\"], [\"THCS Lê Lợi\"], [\"THCS Lê Độ\"], [\"THCS Lý Thường Kiệt\"], [\"THCS Lương Thế Vinh\"], [\"THCS Nguyễn Bỉnh Khiêm\"], [\"THCS Nguyễn Huệ\"], [\"THCS Nguyễn Khuyến\"], [\"THCS Nguyễn Phú Hường\"], [\"THCS Nguyễn Văn Linh\"], [\"THCS Trưng Vương\"], [\"THCS Tây Sơn\"], [\"THCS Đỗ Thúc Tịnh\"]]}",
+            "name": "submit_answer"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "content": ""
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_00_gQnwzIlevRWdoLoqH3Th5501",
+      "content": "Answer submitted."
+    }
+  ],
+  "code_parts": [
+    "import pandas as pd\nimport json\n\ndf = pd.read_csv(\"data.csv\")\nprint(df.columns.tolist())\nprint(df.shape)\nprint(df.head())\n",
+    "import pandas as pd\n\ndf = pd.read_csv(\"data.csv\")\n\n# Convert Điểm to numeric\ndf['Điểm'] = pd.to_numeric(df['Điểm'], errors='coerce')\n\n# Overall average Math score\noverall_avg = df['Điểm'].mean()\nprint(f\"Overall average: {overall_avg}\")\n\n# Average per school\nschool_avg = df.groupby('Trường')['Điểm'].mean().reset_index()\nschool_avg.columns = ['Trường', 'Điểm trung bình']\nschool_avg = school_avg.sort_values('Điểm trung bình', ascending=False)\n\nprint(\"\\nSchools with avg > overall avg:\")\nfiltered = school_avg[school_avg['Điểm trung bình'] > overall_avg]\nprint(filtered)\nprint(f\"\\nNumber of schools: {len(filtered)}\")\n",
+    "import pandas as pd\n\ndf = pd.read_csv(\"data.csv\")\ndf['Điểm'] = pd.to_numeric(df['Điểm'], errors='coerce')\n\noverall_avg = df['Điểm'].mean()\nschool_avg = df.groupby('Trường')['Điểm'].mean().reset_index()\nfiltered = school_avg[school_avg['Điểm'] > overall_avg][['Trường']]\nfiltered = filtered.sort_values('Trường')\n\nimport json\nprint(json.dumps(filtered.values.tolist(), ensure_ascii=False))\n"
+  ],
+  "exec_outputs": [
+    "['SBD', 'Họ và tên', 'Ngày sinh', 'Nơi sinh', 'Lớp', 'Trường', 'Quận', 'Địa điểm thi', 'Môn thi', 'Phòng thi', 'Điểm', 'Xếp giải']\n(2282, 12)\n    SBD         Họ và tên   Ngày sinh  ... Phòng thi  Điểm Xếp giải\n0  0001  Đặng Thị Phúc An  09/12/2000  ...         1  8.00     Nhất\n1  0002  Nguyễn Trường An  19/09/2000  ...         1  5.00  K.Khích\n2  0003    Nguyễn Bảo Anh  10/08/2000  ...         1  0.75      NaN\n3  0004   Lê Phạm Kim Anh  05/12/2000  ...         1  1.75      NaN\n4  0005     Đặng Minh Anh  09/02/2000  ...         1  9.25     Nhất\n\n[5 rows x 12 columns]",
+    "Overall average: 5.354478662560493\n\nSchools with avg > overall avg:\n                    Trường  Điểm trung bình\n0        Quốc Tế Singapore         7.400000\n23      THCS Nguyễn Khuyến         7.334309\n15     THCS Lương Thế Vinh         7.009091\n9              THCS Lê Lợi         6.816000\n46            THCS Tây Sơn         6.321667\n21         THCS Nguyễn Huệ         6.207333\n42        THCS Trưng Vương         6.184043\n6            THCS Kim Đồng         6.116000\n4      THCS Huỳnh Bá Chánh         6.005278\n13     THCS Lý Thường Kiệt         5.964821\n12              THCS Lê Độ         5.905789\n25   THCS Nguyễn Phú Hường         5.678947\n50       THCS Đỗ Thúc Tịnh         5.646667\n2          THCS Chu Văn An         5.634348\n17  THCS Nguyễn Bỉnh Khiêm         5.535775\n34    THCS Nguyễn Văn Linh         5.370864\n\nNumber of schools: 16",
+    "[[\"Quốc Tế Singapore\"], [\"THCS Chu Văn An\"], [\"THCS Huỳnh Bá Chánh\"], [\"THCS Kim Đồng\"], [\"THCS Lê Lợi\"], [\"THCS Lê Độ\"], [\"THCS Lý Thường Kiệt\"], [\"THCS Lương Thế Vinh\"], [\"THCS Nguyễn Bỉnh Khiêm\"], [\"THCS Nguyễn Huệ\"], [\"THCS Nguyễn Khuyến\"], [\"THCS Nguyễn Phú Hường\"], [\"THCS Nguyễn Văn Linh\"], [\"THCS Trưng Vương\"], [\"THCS Tây Sơn\"], [\"THCS Đỗ Thúc Tịnh\"]]"
+  ],
+  "final_text": "",
+  "submitted_answer": [
+    [
+      "Quốc Tế Singapore"
+    ],
+    [
+      "THCS Chu Văn An"
+    ],
+    [
+      "THCS Huỳnh Bá Chánh"
+    ],
+    [
+      "THCS Kim Đồng"
+    ],
+    [
+      "THCS Lê Lợi"
+    ],
+    [
+      "THCS Lê Độ"
+    ],
+    [
+      "THCS Lý Thường Kiệt"
+    ],
+    [
+      "THCS Lương Thế Vinh"
+    ],
+    [
+      "THCS Nguyễn Bỉnh Khiêm"
+    ],
+    [
+      "THCS Nguyễn Huệ"
+    ],
+    [
+      "THCS Nguyễn Khuyến"
+    ],
+    [
+      "THCS Nguyễn Phú Hường"
+    ],
+    [
+      "THCS Nguyễn Văn Linh"
+    ],
+    [
+      "THCS Trưng Vương"
+    ],
+    [
+      "THCS Tây Sơn"
+    ],
+    [
+      "THCS Đỗ Thúc Tịnh"
+    ]
+  ],
+  "tool_limit_exceeded": false
+}

@@ -36,6 +36,7 @@ from estimator import estimate, PRICING
 from evaluator import evaluate_results, print_eval_report, save_eval_report
 from runners.base import load_questions
 from runners.claude_runner import ClaudeRunner
+from runners.deepseek_runner import DeepSeekRunner
 from runners.gemini_runner import GeminiRunner
 from runners.openai_runner import OpenAIRunner
 from runners.openrouter_runner import OpenRouterRunner
@@ -45,6 +46,7 @@ _RUNNER_REGISTRY = {
   "gemini": GeminiRunner,
   "openai": OpenAIRunner,
   "openrouter": OpenRouterRunner,
+  "deepseek": DeepSeekRunner,
 }
 
 # Default model for each provider (used by --estimate without --model-id)
@@ -53,6 +55,7 @@ _DEFAULT_MODELS: dict[str, str] = {
   "gemini": "gemini-3.1-pro-preview",
   "openai": "gpt-5.4",
   "openrouter": "google/gemma-4-26b-a4b-it",
+  "deepseek": "deepseek-v4-flash",
 }
 
 
@@ -111,6 +114,13 @@ def parse_args() -> argparse.Namespace:
     "--export-questions",
     metavar="OUTPUT_PATH",
     help="Export selected questions (after sort + limit) to a JSON file and exit",
+  )
+  p.add_argument(
+    "--max-rows",
+    type=int,
+    default=None,
+    metavar="N",
+    help="Trim each CSV to the first N data rows before sending to the model (header always kept)",
   )
   p.add_argument(
     "--retry-errors",
@@ -180,11 +190,12 @@ def main() -> None:
     sys.exit(1)
 
   runner_cls = _RUNNER_REGISTRY[args.provider]
-  runner = runner_cls(model_id=model_id, checkpoint_name=args.checkpoint)
+  runner = runner_cls(model_id=model_id, checkpoint_name=args.checkpoint, max_rows=args.max_rows)
 
   print(f"Provider : {args.provider}")
   print(f"Model    : {model_id}")
   print(f"Questions: {len(questions)} (from {questions_path})")
+  print(f"Max rows : {args.max_rows if args.max_rows is not None else 'unlimited'}")
   print(f"Output   : output/{args.checkpoint}/{model_id}.json")
   print()
 

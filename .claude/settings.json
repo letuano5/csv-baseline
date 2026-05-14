@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/lto5/Code/vitext2sql/csv-baseline status --short)",
+      "Bash(awk '{print $2}')",
+      "Bash(git -C /Users/lto5/Code/vitext2sql/csv-baseline status --short | grep \"gemini_debug\" | awk '{print $2}' | sed 's/.*response_q//' | sed 's/\\\\.json//' | sort -n > /tmp/debug_indices.txt && cat /tmp/debug_indices.txt | wc -l && echo \"Indices:\" && cat /tmp/debug_indices.txt | tr '\\\\n' ' ')",
+      "Read(//tmp/**)",
+      "WebFetch(domain:api-docs.deepseek.com)",
+      "Bash(python3 -c ' *)"
+    ]
+  }
+}

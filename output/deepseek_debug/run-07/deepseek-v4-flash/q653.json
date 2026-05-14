@@ -1,0 +1,93 @@
+{
+  "question_index": 653,
+  "db_id": "student_performance",
+  "question": "Bạn có thể cho biết độ tuổi trung bình của các bà mẹ có con sống ở khu vực miền núi là bao nhiêu không?",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a data analyst. You are given a CSV dataset and a question written in Vietnamese.\n\nAnswer the question using the provided data and tools.\n\nOUTPUT FORMAT (required):\n- Your LAST print statement must output ONLY a valid JSON array of arrays.\n- Each inner array is one result row. No column headers.\n- Column order must exactly follow the order requested in the question (for example, if asked \"name then year\", output [name, year], not [year, name]).\n- Empty result: []\n- Single scalar: [[42]]\n- For floating-point values, output with at most 2 decimal places unless the question explicitly requires a different precision.\n- Do NOT print a pandas DataFrame directly — always convert: df.values.tolist()\n- Do NOT print anything before the final JSON result. No df.head(), no df.info(), no intermediate prints.\n- Your response must contain EXACTLY ONE print statement.\n- Use `import json` and print with `print(json.dumps(..., ensure_ascii=False))`.\n- The output must be pure JSON text only; any extra character before `[` or after `]` is invalid.\n\nBAD (do NOT do this):\n    df = pd.read_csv(\"data.csv\")\n    print(df.head())        # ← WRONG\n    result = df.groupby(\"category\")[\"revenue\"].mean().reset_index()\n    print(result.values.tolist())\n\nGOOD:\n    df = pd.read_csv(\"data.csv\")\n    result = df.groupby(\"category\")[\"revenue\"].mean().reset_index()\n    import json\n    print(json.dumps(result.values.tolist(), ensure_ascii=False))\n\n---\nEXAMPLE 1 — aggregation question:\nQuestion: \"Tính doanh thu trung bình theo từng danh mục sản phẩm\"\nCode:\n    import pandas as pd\n    df = pd.read_csv(\"data.csv\")\n    result = df.groupby(\"category\")[\"revenue\"].mean().reset_index()\n    print(result.values.tolist())\nOutput: [[\"Electronics\", 1250.5], [\"Clothing\", 430.0], [\"Food\", 89.75]]\n\nEXAMPLE 2 — filter + select question:\nQuestion: \"Liệt kê tên và tuổi của những nhân viên trên 30 tuổi\"\nCode:\n    import pandas as pd\n    df = pd.read_csv(\"data.csv\")\n    result = df[df[\"age\"] > 30][[\"name\", \"age\"]]\n    print(result.values.tolist())\nOutput: [[\"Alice\", 35], [\"Bob\", 42], [\"Carol\", 31]]\n\nEXAMPLE 3 — single count question:\nQuestion: \"Có bao nhiêu đơn hàng bị hủy?\"\nCode:\n    import pandas as pd\n    df = pd.read_csv(\"data.csv\")\n    count = df[df[\"status\"] == \"cancelled\"].shape[0]\n    print([[count]])\nOutput: [[17]]\n---\n\n---\nTOOL INSTRUCTIONS (supersede the output-format rules above):\n- Use `run_python` to execute Python for exploration and computation. The CSV is at \"data.csv\".\n- You may call `run_python` as many times as needed. Prints inside run_python are for your own exploration — they do NOT need to be JSON.\n- When you have the definitive answer, call `submit_answer` with `result` as an array of arrays.\n- Do NOT embed the final answer in a print statement. Use `submit_answer` exclusively for submission.\n- Format for submit_answer: each inner array is one result row, e.g. [[\"Alice\", 30], [\"Bob\", 25]].\n- Empty result: submit_answer(result=[])\n- Single scalar: submit_answer(result=[[42]])\n\n\n<csv filename=\"student_performance.csv\">\nSTUDENT_ID,AGE,GRADE,GENDER,RESIDENTIAL_AREA,FATHER_AGE,FATHER_JOB,MOTHER_AGE,MOTHER_JOB,CHEMISTRY,HISTORY,LITERATURE,BIOLOGY,ENGLISH,MATH,PHYSICS\n47642659,17,12,F,Mountainous,42,Farmer,37,Farmer,\"8,8\",8,7,\"8,8\",\"8,1\",\"8,9\",8\n47642660,17,12,F,Mountainous,44,Farmer,39,Farmer,\"9,3\",\"8,1\",\"7,7\",9,\"7,7\",\"9,5\",\"9,2\"\n47642663,17,12,F,Mountainous,44,Farmer,41,Farmer,\"9,6\",\"8,9\",\"8,1\",\"8,9\",\"9,3\",\"9,5\",\"9,7\"\n47642664,17,12,F,Mountainous,47,Farmer,37,Farmer,\"9,7\",8,\"7,3\",\"8,5\",\"8,2\",\"9,5\",8\n47642665,17,12,F,Mountainous,42,Farmer,40,Farmer,9,\"6,7\",7,\"7,8\",\"6,3\",\"8,3\",\"6,9\"\n47642666,17,12,M,Mountainous,48,Military Personnel,41,Government Officer,\"9,6\",\"9,1\",\"7,6\",\"8,5\",\"9,1\",\"9,8\",\"9,8\"\n47642669,17,12,M,Mountainous,46,Farmer,42,Small Business,\"8,3\",\"8,6\",7,\"8,1\",\"8,8\",\"9,2\",\"9,3\"\n47642672,17,12,M,Mountainous,42,Farmer,37,Farmer,\"9,3\",8,\"7,8\",\"8,9\",\"8,6\",\"9,6\",\"9,8\"\n47642673,17,12,M,Mountainous,49,Farmer,45,Government Officer,\"8,6\",\"8,1\",\"6,9\",\"8,3\",\"6,9\",\"7,4\",\"9,4\"\n47642696,17,12,F,Mountainous,48,Farmer,49,Farmer,\"8,3\",\"6,9\",\"5,9\",\"6,6\",\"6,9\",\"8,2\",\"7,3\"\n\n</csv>\n\nDATASET: student_performance\nDELIMITER: ','  |  ENCODING: 'utf-8'\nCOLUMNS: STUDENT_ID, AGE, GRADE, GENDER, RESIDENTIAL_AREA, FATHER_AGE, FATHER_JOB, MOTHER_AGE, MOTHER_JOB, CHEMISTRY, HISTORY, LITERATURE, BIOLOGY, ENGLISH, MATH, PHYSICS\nNOTE: Only the first 10 rows of this CSV are provided. The full dataset may contain more rows.\n\nDATASET-AWARE RULES (must follow):\n- Cast numeric columns with pd.to_numeric(errors='coerce'): biology, chemistry, english, father_age, history, literature, math, mother_age, physics, student_id.\n"
+    },
+    {
+      "role": "user",
+      "content": "QUESTION: Bạn có thể cho biết độ tuổi trung bình của các bà mẹ có con sống ở khu vực miền núi là bao nhiêu không?"
+    },
+    {
+      "tool_calls": [
+        {
+          "id": "call_00_OumSkfjJKFZz2wuEePaJ6220",
+          "function": {
+            "arguments": "{\"code\": \"import pandas as pd\\n\\ndf = pd.read_csv(\\\"data.csv\\\")\\n\\n# Clean numeric columns\\ndf['MOTHER_AGE'] = pd.to_numeric(df['MOTHER_AGE'], errors='coerce')\\n\\n# Filter for Mountainous area\\nmountainous = df[df['RESIDENTIAL_AREA'] == 'Mountainous']\\n\\n# Calculate average mother age\\navg_mother_age = mountainous['MOTHER_AGE'].mean()\\n\\nimport json\\nprint(json.dumps([[round(avg_mother_age, 2)]], ensure_ascii=False))\\n\"}",
+            "name": "run_python"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "content": "",
+      "role": "assistant",
+      "reasoning_content": "The question asks for the average age of mothers (MOTHER_AGE) whose children live in the mountainous area (RESIDENTIAL_AREA == \"Mountainous\").\n\nLet me read the data and compute this."
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_00_OumSkfjJKFZz2wuEePaJ6220",
+      "content": "[[41.88]]"
+    },
+    {
+      "tool_calls": [
+        {
+          "id": "call_00_kownqWEV7jMwXSI98ue63542",
+          "function": {
+            "arguments": "{\"code\": \"import pandas as pd\\n\\ndf = pd.read_csv(\\\"data.csv\\\")\\ndf['MOTHER_AGE'] = pd.to_numeric(df['MOTHER_AGE'], errors='coerce')\\n\\n# Check all rows with Mountainous area\\nmountainous = df[df['RESIDENTIAL_AREA'] == 'Mountainous']\\nprint(\\\"Count:\\\", len(mountainous))\\nprint(mountainous[['STUDENT_ID', 'MOTHER_AGE']].to_string())\\nprint(\\\"Mean:\\\", mountainous['MOTHER_AGE'].mean())\\n\"}",
+            "name": "run_python"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "content": "",
+      "role": "assistant",
+      "reasoning_content": "The average age of mothers with children living in mountainous areas is 41.88. Let me verify this by checking the data more thoroughly."
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_00_kownqWEV7jMwXSI98ue63542",
+      "content": "Count: 125\n     STUDENT_ID  MOTHER_AGE\n0      47642659          37\n1      47642660          39\n2      47642663          41\n3      47642664          37\n4      47642665          40\n5      47642666          41\n6      47642669          42\n7      47642672          37\n8      47642673          45\n9      47642696          49\n10     47642697          41\n11     47642703          43\n12     47642704          42\n13     47642715          44\n14     47642720          39\n15     47642724          53\n16     47642725          42\n17     47642729          37\n18     47642731          42\n19     47642734          46\n20     47642735          44\n21     47642736          51\n22     47642738          38\n23     47642740          43\n24     47642749          44\n25     47642763          50\n26     47642764          41\n27     47642767          41\n28     47642768          41\n29     47642769          41\n30     47642770          41\n31     47643230          39\n32     47643252          39\n33     47643262          32\n34     47643332          47\n36     47657701          33\n37     47657702          51\n38     47658173          42\n170    51206012          42\n171    51206013          40\n172    51206014          47\n173    51206015          45\n174    51206016          39\n175    51206017          43\n176    51206018          42\n177    51206019          53\n178    51206020          37\n179    51206021          48\n180    51206024          44\n181    51206025          40\n182    51206026          36\n183    51206028          37\n184    51206029          41\n185    51206030          51\n186    51206031          40\n187    51206032          34\n188    51206034          40\n189    51206035          35\n190    51206036          41\n191    51206037          40\n192    51206039          38\n193    51206040          47\n194    51206042          40\n195    51206043          46\n196    51206044          43\n197    51206045          50\n198    51206046          38\n199    51206047          41\n200    51206048          41\n201    51206049          40\n202    51206050          47\n203    51206051          39\n204    51206052          45\n205    51206053          39\n206    51206054          46\n207    51206055          44\n208    51206057          37\n209    51206058          38\n210    51206059          33\n211    51206061          51\n212    51206063          49\n213    51206064          41\n214    51206065          34\n215    51206104          41\n290    52971994          41\n327    54223077          39\n328    54223078          44\n329    54223079          38\n330    54223081          46\n331    54223083          38\n332    54223084          47\n333    54223085          38\n334    54223086          58\n335    54223087          45\n336    54223089          49\n337    54223090          47\n338    54223091          41\n339    54223094          37\n340    54223096          35\n341    54223097          44\n342    54223098          36\n343    54223100          32\n344    54223101          36\n345    54223102          38\n346    54223103          36\n347    54223104          38\n348    54223108          38\n349    54223110          52\n350    54223111          47\n351    54223114          39\n352    54223115          43\n353    54223116          45\n354    54223117          38\n355    54223119          38\n356    54223120          46\n357    54223123          47\n358    54223124          38\n359    54223125          40\n360    54223128          39\n361    54223200          39\n362    54223202          56\n363    54223229          36\n364    54223242          49\n365    54223310          47\n366    54223311          37\nMean: 41.88"
+    },
+    {
+      "tool_calls": [
+        {
+          "id": "call_00_Vk2QEmjg53YXSYKEIbrI7026",
+          "function": {
+            "arguments": "{\"result\": [[41.88]]}",
+            "name": "submit_answer"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "content": "",
+      "role": "assistant",
+      "reasoning_content": "The mean is exactly 41.88. Let me submit the answer."
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_00_Vk2QEmjg53YXSYKEIbrI7026",
+      "content": "Answer submitted."
+    }
+  ],
+  "code_parts": [
+    "import pandas as pd\n\ndf = pd.read_csv(\"data.csv\")\n\n# Clean numeric columns\ndf['MOTHER_AGE'] = pd.to_numeric(df['MOTHER_AGE'], errors='coerce')\n\n# Filter for Mountainous area\nmountainous = df[df['RESIDENTIAL_AREA'] == 'Mountainous']\n\n# Calculate average mother age\navg_mother_age = mountainous['MOTHER_AGE'].mean()\n\nimport json\nprint(json.dumps([[round(avg_mother_age, 2)]], ensure_ascii=False))\n",
+    "import pandas as pd\n\ndf = pd.read_csv(\"data.csv\")\ndf['MOTHER_AGE'] = pd.to_numeric(df['MOTHER_AGE'], errors='coerce')\n\n# Check all rows with Mountainous area\nmountainous = df[df['RESIDENTIAL_AREA'] == 'Mountainous']\nprint(\"Count:\", len(mountainous))\nprint(mountainous[['STUDENT_ID', 'MOTHER_AGE']].to_string())\nprint(\"Mean:\", mountainous['MOTHER_AGE'].mean())\n"
+  ],
+  "exec_outputs": [
+    "[[41.88]]",
+    "Count: 125\n     STUDENT_ID  MOTHER_AGE\n0      47642659          37\n1      47642660          39\n2      47642663          41\n3      47642664          37\n4      47642665          40\n5      47642666          41\n6      47642669          42\n7      47642672          37\n8      47642673          45\n9      47642696          49\n10     47642697          41\n11     47642703          43\n12     47642704          42\n13     47642715          44\n14     47642720          39\n15     47642724          53\n16     47642725          42\n17     47642729          37\n18     47642731          42\n19     47642734          46\n20     47642735          44\n21     47642736          51\n22     47642738          38\n23     47642740          43\n24     47642749          44\n25     47642763          50\n26     47642764          41\n27     47642767          41\n28     47642768          41\n29     47642769          41\n30     47642770          41\n31     47643230          39\n32     47643252          39\n33     47643262          32\n34     47643332          47\n36     47657701          33\n37     47657702          51\n38     47658173          42\n170    51206012          42\n171    51206013          40\n172    51206014          47\n173    51206015          45\n174    51206016          39\n175    51206017          43\n176    51206018          42\n177    51206019          53\n178    51206020          37\n179    51206021          48\n180    51206024          44\n181    51206025          40\n182    51206026          36\n183    51206028          37\n184    51206029          41\n185    51206030          51\n186    51206031          40\n187    51206032          34\n188    51206034          40\n189    51206035          35\n190    51206036          41\n191    51206037          40\n192    51206039          38\n193    51206040          47\n194    51206042          40\n195    51206043          46\n196    51206044          43\n197    51206045          50\n198    51206046          38\n199    51206047          41\n200    51206048          41\n201    51206049          40\n202    51206050          47\n203    51206051          39\n204    51206052          45\n205    51206053          39\n206    51206054          46\n207    51206055          44\n208    51206057          37\n209    51206058          38\n210    51206059          33\n211    51206061          51\n212    51206063          49\n213    51206064          41\n214    51206065          34\n215    51206104          41\n290    52971994          41\n327    54223077          39\n328    54223078          44\n329    54223079          38\n330    54223081          46\n331    54223083          38\n332    54223084          47\n333    54223085          38\n334    54223086          58\n335    54223087          45\n336    54223089          49\n337    54223090          47\n338    54223091          41\n339    54223094          37\n340    54223096          35\n341    54223097          44\n342    54223098          36\n343    54223100          32\n344    54223101          36\n345    54223102          38\n346    54223103          36\n347    54223104          38\n348    54223108          38\n349    54223110          52\n350    54223111          47\n351    54223114          39\n352    54223115          43\n353    54223116          45\n354    54223117          38\n355    54223119          38\n356    54223120          46\n357    54223123          47\n358    54223124          38\n359    54223125          40\n360    54223128          39\n361    54223200          39\n362    54223202          56\n363    54223229          36\n364    54223242          49\n365    54223310          47\n366    54223311          37\nMean: 41.88"
+  ],
+  "final_text": "",
+  "submitted_answer": [
+    [
+      41.88
+    ]
+  ],
+  "tool_limit_exceeded": false
+}

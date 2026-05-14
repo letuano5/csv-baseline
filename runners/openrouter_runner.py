@@ -43,10 +43,11 @@ _PY_CODE_FENCE_RE = re.compile(r"```(?:python)?\s*([\s\S]*?)```", re.IGNORECASE)
 class OpenRouterRunner(BaseRunner):
   provider = "openrouter"
 
-  def __init__(self, model_id: str, checkpoint_name: str):
-    super().__init__(model_id, checkpoint_name)
+  def __init__(self, model_id: str, checkpoint_name: str, max_rows: int | None = None):
+    super().__init__(model_id, checkpoint_name, max_rows)
     self._pool = ApiKeyPool("openrouter")
-    self._csv_cache: dict[str, str] = {}  # db_id -> full csv text
+    self._csv_cache: dict[str, str] = {}
+    self._csv_cache_full: dict[str, str] = {}
 
   def _batch_size(self) -> int:
     # Keep mini-batch aligned with concurrency so progress/checkpoint happens
@@ -76,12 +77,25 @@ class OpenRouterRunner(BaseRunner):
     )
 
   def _csv_text(self, db_id: str) -> str:
+    """Trimmed CSV for embedding in the prompt (saves tokens)."""
     cached = self._csv_cache.get(db_id)
     if cached is not None:
       return cached
     meta = CSV_REGISTRY[db_id]
     text = meta.path.read_text(encoding=meta.encoding, errors="replace")
+    if self.max_rows is not None:
+      text = self._trim_csv(text, self.max_rows)
     self._csv_cache[db_id] = text
+    return text
+
+  def _csv_text_full(self, db_id: str) -> str:
+    """Full CSV for local execution — always untruncated."""
+    cached = self._csv_cache_full.get(db_id)
+    if cached is not None:
+      return cached
+    meta = CSV_REGISTRY[db_id]
+    text = meta.path.read_text(encoding=meta.encoding, errors="replace")
+    self._csv_cache_full[db_id] = text
     return text
 
   def _build_messages(self, q: Question) -> list[dict[str, str]]:
@@ -90,7 +104,7 @@ class OpenRouterRunner(BaseRunner):
     system_text = SYSTEM_PROMPT + OPENROUTER_SYSTEM_SUFFIX
     user_text = (
       f"<csv filename=\"{meta.filename}\">\n{csv_text}\n</csv>\n\n"
-      + build_user_prompt(q.question, q.db_id, q.external_knowledge, meta)
+      + build_user_prompt(q.question, q.db_id, q.external_knowledge, meta, self.max_rows)
     )
     return [
       {"role": "system", "content": system_text},
@@ -113,7 +127,7 @@ class OpenRouterRunner(BaseRunner):
 
   def _execute_python_code(self, code: str, q: Question) -> str | None:
     meta = CSV_REGISTRY[q.db_id]
-    csv_text = self._csv_text(q.db_id)
+    csv_text = self._csv_text_full(q.db_id)
     with tempfile.TemporaryDirectory(prefix="openrouter_exec_") as tmpdir:
       tmp = tempfile.gettempdir()
       _ = tmp  # keep linter quiet on some environments

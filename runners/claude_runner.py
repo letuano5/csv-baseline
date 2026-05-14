@@ -41,12 +41,13 @@ _FILE_ID_CACHE_PATH: Path = OUTPUT_DIR / ".file_id_cache.json"
 class ClaudeRunner(BaseRunner):
   provider = "claude"
 
-  def __init__(self, model_id: str, checkpoint_name: str):
-    super().__init__(model_id, checkpoint_name)
+  def __init__(self, model_id: str, checkpoint_name: str, max_rows: int | None = None):
+    super().__init__(model_id, checkpoint_name, max_rows)
     self._pool = ApiKeyPool("anthropic")
     self._file_id_cache: dict[str, str] = self._load_file_id_cache()
-    self._files_api_available: bool | None = None  # None = not yet probed
-    self._csv_cache: dict[str, str] = {}          # db_id → raw CSV text (inline fallback)
+    # When max_rows is set we can't use the Files API (it would upload the full CSV).
+    self._files_api_available: bool | None = False if max_rows is not None else None
+    self._csv_cache: dict[str, str] = {}
     # Batch API saves 50% on cost but has up to 24 h turnaround; disabled by default
     # so interactive runs use the faster async path. Set True to opt in.
     self._use_batch = False
@@ -137,7 +138,10 @@ class ClaudeRunner(BaseRunner):
   def _get_csv_content(self, db_id: str) -> str:
     if db_id not in self._csv_cache:
       meta = CSV_REGISTRY[db_id]
-      self._csv_cache[db_id] = meta.path.read_text(encoding=meta.encoding)
+      text = meta.path.read_text(encoding=meta.encoding)
+      if self.max_rows is not None:
+        text = self._trim_csv(text, self.max_rows)
+      self._csv_cache[db_id] = text
     return self._csv_cache[db_id]
 
   def _build_messages(self, q: Question) -> list[dict]:
@@ -166,10 +170,17 @@ class ClaudeRunner(BaseRunner):
       # Inline fallback: embed full CSV in the message with cache_control so that
       # questions sharing the same db_id get prompt-cache hits.
       columns_str = ", ".join(meta.columns)
+      rows_note = (
+        f"NOTE: Only the first {self.max_rows} rows of this CSV are provided. "
+        f"The full dataset may contain more rows.\n"
+        if self.max_rows is not None
+        else ""
+      )
       csv_context = (
         f"DATASET: {q.db_id}\n"
         f"DELIMITER: {meta.delimiter!r}  |  ENCODING: {meta.encoding!r}\n"
         f"COLUMNS: {columns_str}\n"
+        f"{rows_note}"
         f"\nCSV DATA:\n{self._get_csv_content(q.db_id)}"
       )
       knowledge_section = (

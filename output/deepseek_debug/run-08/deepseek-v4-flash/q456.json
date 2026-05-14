@@ -1,0 +1,1417 @@
+{
+  "question_index": 456,
+  "db_id": "power_plants_vn",
+  "question": "**User**: Tôi muốn xem thông tin về các nhà máy điện.\n**Assistant**: Bạn muốn biết thông tin cụ thể nào về các nhà máy điện đó?\n**User**: Tôi muốn biết tên các nhà máy và năm chúng bắt đầu vận hành.\n**Assistant**: Bạn có muốn lọc danh sách này theo loại nhiên liệu sử dụng không?\n**User**: Có, hãy chỉ cho tôi các nhà máy thủy điện (Hydro).\n**Assistant**: Bạn có muốn sắp xếp danh sách các nhà máy này theo thứ tự nào không, ví dụ như theo thời gian?\n**User**: Hãy sắp xếp theo thứ tự năm vận hành tăng dần.\n**Assistant**: Được rồi, tôi sẽ giúp bạn truy xuất danh sách tên các nhà máy thủy điện và năm vận hành của chúng, được sắp xếp từ cũ đến mới.",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a data analyst. You are given a CSV dataset and a question written in Vietnamese.\n\nAnswer the question using the provided data and tools.\n\nOUTPUT FORMAT (required):\n- Your LAST print statement must output ONLY a valid JSON array of arrays.\n- Each inner array is one result row. No column headers.\n- Column order must exactly follow the order requested in the question (for example, if asked \"name then year\", output [name, year], not [year, name]).\n- Empty result: []\n- Single scalar: [[42]]\n- For floating-point values, output with at most 2 decimal places unless the question explicitly requires a different precision.\n- Do NOT print a pandas DataFrame directly — always convert: df.values.tolist()\n- Do NOT print anything before the final JSON result. No df.head(), no df.info(), no intermediate prints.\n- Your response must contain EXACTLY ONE print statement.\n- Use `import json` and print with `print(json.dumps(..., ensure_ascii=False))`.\n- The output must be pure JSON text only; any extra character before `[` or after `]` is invalid.\n\nBAD (do NOT do this):\n    df = pd.read_csv(\"data.csv\")\n    print(df.head())        # ← WRONG\n    result = df.groupby(\"category\")[\"revenue\"].mean().reset_index()\n    print(result.values.tolist())\n\nGOOD:\n    df = pd.read_csv(\"data.csv\")\n    result = df.groupby(\"category\")[\"revenue\"].mean().reset_index()\n    import json\n    print(json.dumps(result.values.tolist(), ensure_ascii=False))\n\n---\nEXAMPLE 1 — aggregation question:\nQuestion: \"Tính doanh thu trung bình theo từng danh mục sản phẩm\"\nCode:\n    import pandas as pd\n    df = pd.read_csv(\"data.csv\")\n    result = df.groupby(\"category\")[\"revenue\"].mean().reset_index()\n    print(result.values.tolist())\nOutput: [[\"Electronics\", 1250.5], [\"Clothing\", 430.0], [\"Food\", 89.75]]\n\nEXAMPLE 2 — filter + select question:\nQuestion: \"Liệt kê tên và tuổi của những nhân viên trên 30 tuổi\"\nCode:\n    import pandas as pd\n    df = pd.read_csv(\"data.csv\")\n    result = df[df[\"age\"] > 30][[\"name\", \"age\"]]\n    print(result.values.tolist())\nOutput: [[\"Alice\", 35], [\"Bob\", 42], [\"Carol\", 31]]\n\nEXAMPLE 3 — single count question:\nQuestion: \"Có bao nhiêu đơn hàng bị hủy?\"\nCode:\n    import pandas as pd\n    df = pd.read_csv(\"data.csv\")\n    count = df[df[\"status\"] == \"cancelled\"].shape[0]\n    print([[count]])\nOutput: [[17]]\n---\n\n---\nTOOL INSTRUCTIONS (supersede the output-format rules above):\n- Use `run_python` to execute Python for exploration and computation. The CSV is at \"data.csv\".\n- You may call `run_python` as many times as needed. Prints inside run_python are for your own exploration — they do NOT need to be JSON.\n- When you have the definitive answer, call `submit_answer` with `result` as an array of arrays.\n- Do NOT embed the final answer in a print statement. Use `submit_answer` exclusively for submission.\n- Format for submit_answer: each inner array is one result row, e.g. [[\"Alice\", 30], [\"Bob\", 25]].\n- Empty result: submit_answer(result=[])\n- Single scalar: submit_answer(result=[[42]])\n\n\n<csv filename=\"power_plants_vn.csv\">\nstd_name,capacity_mw,latitude,longitude,std_fuel,commissioning_year\nA Lin,62,,,Hydro,2018\nA Luoi,170,16.2839,107.3589,Hydro,2012\nA Roang,7.2,16.12,107.38,Hydro,2013\nA Vuong,210,15.7998,107.6171,Hydro,2008\nAlin B1,42,16.4042,107.1914,Hydro,2019\nAlternative energy sources,520,,,Renewable,2018\nAlternative energy sources,3530,,,Renewable,2030\nAlternative energy sources,3350,,,Renewable,2029\nAlternative energy sources,3240,,,Renewable,2028\nAlternative energy sources,2910,,,Renewable,2027\nAlternative energy sources,2160,,,Renewable,2026\nAlternative energy sources,1800,,,Renewable,2025\nAlternative energy sources,1200,,,Renewable,2022\nAlternative energy sources,1200,,,Renewable,2024\nAlternative energy sources,1000,,,Renewable,2023\nAlternative energy sources,790,,,Renewable,2021\nAlternative energy sources,450,,,Renewable,2019\nAlternative energy sources,470,,,Renewable,2020\nAlternative energy sources,360,,,Renewable,2017\nAlternative energy sources,260,,,Renewable,2016\nAmata,13,10.9471,106.9,Oil,\nAn Diem 2,15.6,19.1995,108.083,Hydro,2010\nAn Khanh,120,21.5969,105.767,Coal,2015\nAn Khe,160,14.0148,108.6796,Hydro,2009\nAyun Ha,3,13.5809,108.2592,Hydro,\nAyun Pa Sugar-Cane,20,13.4259,108.4242,Biomass,2010\nAyun Thuong 1A,12,13.9181,108.2333,Hydro,2012\nBa Ria,389,10.4891,107.17,Gas,1993\nBa Thuoc 1,60,20.3122,105.1619,Hydro,2013\nBa Thuoc 2,80,20.3222,105.3217,Hydro,2012\nBac Ai,600,,,Hydro,2023\nBac Ai,600,,,Hydro,2025\nBac Binh,34,11.3711,108.33,Hydro,2009\nBac Ha,90,22.3024,104.1142,Hydro,2011\nBac Lieu,99.2,9.1207,105.4445,Wind,2012\nBac Lieu 1,600,,,Coal,2029\nBac Lieu 1,600,,,Coal,2030\nBac Me,45.5,22.7369,105.3844,Hydro,2014\nBan Chat,220,21.8612,103.8286,Hydro,2013\nBan Coc,18,19.5894,104.8749,Hydro,2009\nBan Mong (Song Hieu),60,,,Hydro,2022\nBan Nhung Small,11,22.0028,106.5875,Hydro,2013\nBan Ra,18,22.8439,106.6917,Hydro,2012\nBan Ve,320,19.3404,104.4873,Hydro,2010\nBao Lam 3,46,23.0047,105.2912,Hydro,2019\nBao Nhai,14,22.4435,104.2517,Hydro,2012\nBau Can,0.215,,,Hydro,\nBauxit Aluminum Factory,30,,,Oil,\nBien Ho,0.225,,,Hydro,\nBinh Dien,44,16.3172,107.5028,Hydro,2009\nBinh Thuan,30,11.12,108.4,Wind,2009\nBourbon,24,10.613,106.49,Oil,1997\nBu Ca Mau,4,11.8713,106.9768,Hydro,2009\nBuon Kuop,280,12.5305,107.9243,Hydro,2011\nBuonTua Srah,86,12.2852,108.0383,Hydro,2009\nCa Du,2.6,15.2714,108.5186,Hydro,2005\nCa Mau 1,750,9.242,105.06,Gas,2008\nCa Mau 2,750,9.242,105.06,Gas,2008\nCai Lan,39,20.9861,107.03,Oil,2007\nCam Pha,670,21.0063,107.36,Coal,2011\nCam Pha 3,440,,,Coal,2020\nCam Ranh Baggasse,11,12.0335,109.1788,Biomass,1999\nCam Son,4.5,21.5438,106.5105,Hydro,1973\nCan Don,78,11.9689,106.8435,Hydro,2004\nCan Tho,185,10.1,105.72,Oil,1993\nCao Ngan,115,21.613,105.82,Coal,2006\nChau Thon,18,19.36,104.47,Hydro,2011\nChi Khe,41,19.083,104.8,Hydro,2014\nChiem Hoa,48,22.2056,105.3294,Hydro,2012\nChieng Cong 1,4,21.4707,104.1852,Hydro,\nChieng Cong 2,8,21.4572,104.2104,Hydro,\nChieng Ngam Thuong,10,21.475,103.7778,Hydro,2013\nChu Linh And Coc San,40.7,22.4119,103.8974,Hydro,2016\nCoc Dam,7.5,22.4431,104.3175,Hydro,2010\nCoc Ly,90,22.2985,103.1613,Hydro,2012\nCoc San,30,22.4144,103.9066,Hydro,2016\nCong Thanh,600,,,Coal,2020\nCua Dat,97,19.8782,105.2731,Hydro,2010\nDa Dang 2,34,11.6952,108.2442,Hydro,2010\nDa Dang-Dachomo,23,11.5809,108.3311,Hydro,2014\nDa Den,9,12.9183,109.1453,Hydro,2011\nDa Kai,6,12.0838,108.5953,Hydro,\nDa Mi,175,11.336,107.935,Hydro,2001\nDa Nhim,160,11.8529,108.6058,Hydro,1964\nDa Nhim Extension,45,11.5013,108.4052,Hydro,2017\nDa Nhim Thuong 2,7.5,12.1161,108.5852,Hydro,2010\nDac Me,5,12.1333,108.313,Hydro,2011\nDai Nga,10,11.4219,107.8754,Hydro,2015\nDai Ninh,300,11.6499,108.3202,Hydro,2008\nDak Doa,14,14.1958,108.105,Hydro,2010\nDak Glun,18,12.0225,107.1783,Hydro,2011\nDak Glun 2 And 3,11,12.0925,107.3464,Hydro,2012\nDak Gret,3.6,,,Hydro,2015\nDak Hnol,2.1,13.9375,108.2139,Hydro,2011\nDak Lay,3.2,14.7979,108.0074,Hydro,2015\nDak Lo,22,14.7306,108.3319,Hydro,2016\nDak Me 1,4,12.1375,108.3222,Hydro,2012\nDak Mek 3,7.5,15.091,107.5328,Hydro,2012\nDak Mi 1,54,15.215,107.8192,Hydro,2018\nDak Mi 2,98,15.2961,107.8161,Hydro,2016\n\n</csv>\n\nDATASET: power_plants_vn\nDELIMITER: ','  |  ENCODING: 'utf-8'\nCOLUMNS: std_name, capacity_mw, latitude, longitude, std_fuel, commissioning_year\nNOTE: Only the first 100 rows of this CSV are provided. The full dataset may contain more rows.\n\nDATASET-AWARE RULES (must follow):\n- Cast numeric columns with pd.to_numeric(errors='coerce'): capacity_mw, commissioning_year, latitude, longitude.\n"
+    },
+    {
+      "role": "user",
+      "content": "QUESTION: **User**: Tôi muốn xem thông tin về các nhà máy điện.\n**Assistant**: Bạn muốn biết thông tin cụ thể nào về các nhà máy điện đó?\n**User**: Tôi muốn biết tên các nhà máy và năm chúng bắt đầu vận hành.\n**Assistant**: Bạn có muốn lọc danh sách này theo loại nhiên liệu sử dụng không?\n**User**: Có, hãy chỉ cho tôi các nhà máy thủy điện (Hydro).\n**Assistant**: Bạn có muốn sắp xếp danh sách các nhà máy này theo thứ tự nào không, ví dụ như theo thời gian?\n**User**: Hãy sắp xếp theo thứ tự năm vận hành tăng dần.\n**Assistant**: Được rồi, tôi sẽ giúp bạn truy xuất danh sách tên các nhà máy thủy điện và năm vận hành của chúng, được sắp xếp từ cũ đến mới."
+    },
+    {
+      "tool_calls": [
+        {
+          "id": "call_00_ByFWMYlWuP85YnS5lqu60837",
+          "function": {
+            "arguments": "{\"code\": \"import pandas as pd\\n\\ndf = pd.read_csv(\\\"data.csv\\\")\\n\\n# Cast numeric columns\\ndf[\\\"capacity_mw\\\"] = pd.to_numeric(df[\\\"capacity_mw\\\"], errors=\\\"coerce\\\")\\ndf[\\\"commissioning_year\\\"] = pd.to_numeric(df[\\\"commissioning_year\\\"], errors=\\\"coerce\\\")\\ndf[\\\"latitude\\\"] = pd.to_numeric(df[\\\"latitude\\\"], errors=\\\"coerce\\\")\\ndf[\\\"longitude\\\"] = pd.to_numeric(df[\\\"longitude\\\"], errors=\\\"coerce\\\")\\n\\n# Filter for Hydro\\nhydro = df[df[\\\"std_fuel\\\"] == \\\"Hydro\\\"].copy()\\n\\n# Select name and commissioning_year, sort by year ascending\\nhydro = hydro[[\\\"std_name\\\", \\\"commissioning_year\\\"]].sort_values(\\\"commissioning_year\\\")\\n\\n# Convert to list of lists, handling NaN\\nresult = hydro.where(pd.notna(hydro), None).values.tolist()\\n\\nimport json\\nprint(json.dumps(result, ensure_ascii=False))\\n\"}",
+            "name": "run_python"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "role": "assistant",
+      "content": ""
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_00_ByFWMYlWuP85YnS5lqu60837",
+      "content": "[[\"Suoi Vang (Ankroet)\", 1945.0], [\"Da Nhim\", 1964.0], [\"Thac Ba\", 1971.0], [\"Cam Son\", 1973.0], [\"Kon Dao\", 1984.0], [\"Ke Go\", 1988.0], [\"Hoa Binh\", 1988.0], [\"Dray H'Linh 1\", 1990.0], [\"Tri An\", 1991.0], [\"Thac Mo\", 1995.0], [\"Song Pha\", 1995.0], [\"Vinh Son\", 2001.0], [\"Song Hinh\", 2001.0], [\"Da Mi\", 2001.0], [\"Ham Thuan\", 2001.0], [\"Nam Si Luong\", 2002.0], [\"Ialy\", 2002.0], [\"Quang Hiep\", 2002.0], [\"Na Loi\", 2003.0], [\"Can Don\", 2004.0], [\"Nam Mu\", 2004.0], [\"Krong Hin\", 2005.0], [\"Ca Du\", 2005.0], [\"Thac Trang\", 2006.0], [\"Srok Phu Mieng\", 2006.0], [\"Se San 3\", 2006.0], [\"H'Chan\", 2006.0], [\"Na Loa\", 2006.0], [\"Se San 3A\", 2007.0], [\"Dak Ro Sa\", 2007.0], [\"Dray H'Linh 2\", 2007.0], [\"Ia Grai 3\", 2007.0], [\"Ea Krong Rou\", 2007.0], [\"Krong Kmar\", 2008.0], [\"Dai Ninh\", 2008.0], [\"Dinh Binh\", 2008.0], [\"Tuyen Quang\", 2008.0], [\"Dak Ru\", 2008.0], [\"Song Ba Ha\", 2008.0], [\"Kanak\", 2008.0], [\"Song Muc\", 2008.0], [\"Thuong An\", 2008.0], [\"A Vuong\", 2008.0], [\"Dak Po Ne 2\", 2008.0], [\"Ea Drang\", 2009.0], [\"Dak Po Ne\", 2009.0], [\"Srepok 3\", 2009.0], [\"Nam Pung\", 2009.0], [\"Ho Nui Coc\", 2009.0], [\"Suoi Tan\", 2009.0], [\"Nam Pia\", 2009.0], [\"Phu Mau\", 2009.0], [\"BuonTua Srah\", 2009.0], [\"Bac Binh\", 2009.0], [\"Ban Coc\", 2009.0], [\"Pleikrong\", 2009.0], [\"Muong Sang\", 2009.0], [\"Quang Tin\", 2009.0], [\"Binh Dien\", 2009.0], [\"Bu Ca Mau\", 2009.0], [\"Quang Tri\", 2009.0], [\"Song Con 2\", 2009.0], [\"Nam Chien 2\", 2009.0], [\"Dak U\", 2009.0], [\"So Lo\", 2009.0], [\"An Khe\", 2009.0], [\"Se San 4\", 2009.0], [\"Nam Mo 3\", 2009.0], [\"Khe Ron\", 2009.0], [\"Ea Mdoal 2\", 2010.0], [\"Srepok 4\", 2010.0], [\"Pa Khoang\", 2010.0], [\"Song Tranh 2\", 2010.0], [\"Muong Kim\", 2010.0], [\"Ho Ho\", 2010.0], [\"Krong H'nang\", 2010.0], [\"Ea Drang 2\", 2010.0], [\"Ha Rao Quan\", 2010.0], [\"Sao Va\", 2010.0], [\"Group Of Nam Tha\", 2010.0], [\"Ea Mdoal 3\", 2010.0], [\"Huong Dien\", 2010.0], [\"Nam Ngan\", 2010.0], [\"Coc Dam\", 2010.0], [\"An Diem 2\", 2010.0], [\"Dak Psi 4\", 2010.0], [\"Tra Linh 3\", 2010.0], [\"Dak Srong\", 2010.0], [\"Dak Doa\", 2010.0], [\"Cua Dat\", 2010.0], [\"Da Nhim Thuong 2\", 2010.0], [\"Dak Ne\", 2010.0], [\"Dak Srong 2\", 2010.0], [\"Ban Ve\", 2010.0], [\"Thai An\", 2010.0], [\"Dak Rung 1\", 2010.0], [\"Da Dang 2\", 2010.0], [\"Dak Rung\", 2010.0], [\"Dak Srong 2A\", 2011.0], [\"Thanh Thuy\", 2011.0], [\"Dac Me\", 2011.0], [\"Dak Glun\", 2011.0], [\"Song Chung\", 2011.0], [\"Se San 4A\", 2011.0], [\"Da Den\", 2011.0], [\"Lao Cai - Lai Chau - Kontum Bundled\", 2011.0], [\"Buon Kuop\", 2011.0], [\"Dak Hnol\", 2011.0], [\"Muong Hum\", 2011.0], [\"Bac Ha\", 2011.0], [\"Nam Chanh\", 2011.0], [\"Ngoi Xan\", 2011.0], [\"Ngoi Hut 1\", 2011.0], [\"Nam Gion\", 2011.0], [\"Nam Tang And Na Hau\", 2011.0], [\"Nam Hong\", 2011.0], [\"Nam Soi & Nam Cong\", 2011.0], [\"Nam Khoa 3\", 2011.0], [\"Nam Khot\", 2011.0], [\"Nam La\", 2011.0], [\"Chau Thon\", 2011.0], [\"Ta Vi\", 2011.0], [\"Ia Puch 3\", 2011.0], [\"Song Ong\", 2011.0], [\"Dak N'Teng\", 2011.0], [\"Song Quang\", 2011.0], [\"Dasiat\", 2011.0], [\"Ea Kar\", 2011.0], [\"H'Mun\", 2011.0], [\"Dak Pone\", 2011.0], [\"Suoi Sap 3\", 2011.0], [\"Dak Psi 3 And 4\", 2011.0], [\"Ha Nang\", 2011.0], [\"Doc Cay\", 2011.0], [\"Su Pan 2\", 2011.0], [\"Dong Nai 3\", 2011.0], [\"Dakr'tih\", 2011.0], [\"Ba Thuoc 2\", 2012.0], [\"Trung Ho & Van Ho\", 2012.0], [\"Muong Sang  Thu Cuc  Tat Ngoang\", 2012.0], [\"Ban Ra\", 2012.0], [\"Minh Luong\", 2012.0], [\"Dong Nai 4\", 2012.0], [\"Van Chan\", 2012.0], [\"Bao Nhai\", 2012.0], [\"Lao Cai-Yen Bai Bundled\", 2012.0], [\"Song Mien 5\", 2012.0], [\"Nam Chim\", 2012.0], [\"Nuoc Trong\", 2012.0], [\"Nam Phang\", 2012.0], [\"A Luoi\", 2012.0], [\"Nam Mu and Khuoi Luong\", 2012.0], [\"Yan Tann Sien\", 2012.0], [\"Xoong Con\", 2012.0], [\"Ayun Thuong 1A\", 2012.0], [\"Nam Cat\", 2012.0], [\"Dak Srong 3B\", 2012.0], [\"Dakrong 3\", 2012.0], [\"Nam Tha 3\", 2012.0], [\"Nam Trai 4\", 2012.0], [\"Dam'Bri\", 2012.0], [\"Nam Xay Noi 2\", 2012.0], [\"Nho Que 3\", 2012.0], [\"Nam Khanh\", 2012.0], [\"Lang Bang\", 2012.0], [\"Suoi Trang\", 2012.0], [\"Za Hung\", 2012.0], [\"Song Bung 6\", 2012.0], [\"Ta Loi 3\", 2012.0], [\"Song Bung 4A\", 2012.0], [\"Huong Son\", 2012.0], [\"Song Rieng\", 2012.0], [\"Dak Mi 4\", 2012.0], [\"Ia Grai 1\", 2012.0], [\"Son La\", 2012.0], [\"Song Nhiem 3\", 2012.0], [\"Eatul 4\", 2012.0], [\"Dak Glun 2 And 3\", 2012.0], [\"Dak Me 1\", 2012.0], [\"Ho Bon\", 2012.0], [\"La La\", 2012.0], [\"Hang Dong A1\", 2012.0], [\"Chiem Hoa\", 2012.0], [\"Dak Pia\", 2012.0], [\"Nam Nua\", 2012.0], [\"Song Chay 5\", 2012.0], [\"Dak Mek 3\", 2012.0], [\"Khe Giong\", 2012.0], [\"Dak Psi 3\", 2012.0], [\"Coc Ly\", 2012.0], [\"Song Luy\", 2013.0], [\"Nam Si Luong 4\", 2013.0], [\"Sung Vui\", 2013.0], [\"Nam Si Luong 3\", 2013.0], [\"Ta Trach\", 2013.0], [\"Suoi Choang\", 2013.0], [\"Ta Thang\", 2013.0], [\"Song Bung 5\", 2013.0], [\"Song Bac\", 2013.0], [\"Xim Vang 2\", 2013.0], [\"Ta Co\", 2013.0], [\"Pa Chien\", 2013.0], [\"Thac Xang\", 2013.0], [\"Seo Chong Ho\", 2013.0], [\"Tra Xom\", 2013.0], [\"Song Tranh 3\", 2013.0], [\"Thoong Cot 2\", 2013.0], [\"To Buong\", 2013.0], [\"Sap Viet\", 2013.0], [\"Suoi Lum 1\", 2013.0], [\"Srepok 4A\", 2013.0], [\"Lao Chai\", 2013.0], [\"Ban Chat\", 2013.0], [\"Hoa Tham\", 2013.0], [\"Hoi Xuan\", 2013.0], [\"Hua Na\", 2013.0], [\"Chieng Ngam Thuong\", 2013.0], [\"Ia H'Rung And Chu Prong\", 2013.0], [\"Ban Nhung Small\", 2013.0], [\"Khanh Khe\", 2013.0], [\"Dong Chum 2\", 2013.0], [\"Khe Bo\", 2013.0], [\"Dakrong 2\", 2013.0], [\"Dak Rong 4\", 2013.0], [\"Nam Chien 1\", 2013.0], [\"Nam Cong 3\", 2013.0], [\"Nam Dong 4\", 2013.0], [\"Ha Song Pha 1\", 2013.0], [\"Nam Luc\", 2013.0], [\"Nam Hoa 2\", 2013.0], [\"Nam Mo\", 2013.0], [\"Ba Thuoc 1\", 2013.0], [\"A Roang\", 2013.0], [\"Nam He\", 2013.0], [\"Nam Khoa 1&2\", 2013.0], [\"Song Cho 2\", 2014.0], [\"Hat Liu\", 2014.0], [\"Nam Non\", 2014.0], [\"Song Tranh 4\", 2014.0], [\"Tram Tau\", 2014.0], [\"Vinh Son 5\", 2014.0], [\"Tien Thuan\", 2014.0], [\"Hoa Phu\", 2014.0], [\"Ia Grai 2\", 2014.0], [\"Song Bung 2\", 2014.0], [\"Nam Pong\", 2014.0], [\"Nam Xa\", 2014.0], [\"Nam Muc\", 2014.0], [\"Song Giang 2\", 2014.0], [\"Chi Khe\", 2014.0], [\"Son Tay\", 2014.0], [\"Thuong KonTum\", 2014.0], [\"Vinh Son 3\", 2014.0], [\"Dakdrinh\", 2014.0], [\"Ngoi Hut 2\", 2014.0], [\"Ngoi Phat\", 2014.0], [\"Ta Niet\", 2014.0], [\"Nhan Hac And Sao Va\", 2014.0], [\"Ta Loi 2\", 2014.0], [\"Dak Psi 5\", 2014.0], [\"Nam Toong\", 2014.0], [\"Nam Cau 1,2\", 2014.0], [\"Dam'Bri 1\", 2014.0], [\"Bac Me\", 2014.0], [\"Nam Can 2\", 2014.0], [\"Na Táº©U\", 2014.0], [\"Ha Tay\", 2014.0], [\"Dak Srong 3A\", 2014.0], [\"Da Dang-Dachomo\", 2014.0], [\"Dong Ngai\", 2015.0], [\"Dong Nai 5\", 2015.0], [\"Dai Nga\", 2015.0], [\"Dak Gret\", 2015.0], [\"Dak Sin 1\", 2015.0], [\"Dong Nai 2\", 2015.0], [\"Dak Lay\", 2015.0], [\"Dak Ter 1\", 2015.0], [\"Thien Nam\", 2015.0], [\"Nam Na 3\", 2015.0], [\"Huoi Quang\", 2015.0], [\"Nam Na 2\", 2015.0], [\"Nam Hoa 1\", 2015.0], [\"Van Phong\", 2015.0], [\"Nho Que 1\", 2015.0], [\"Pao Cu Sang\", 2015.0], [\"Ha Song Pha 2\", 2015.0], [\"Lai Chau\", 2015.0], [\"La Ngau\", 2015.0], [\"La Hieng 2\", 2015.0], [\"Huy Mang\", 2015.0], [\"Khau Chu\", 2015.0], [\"Song Bung 4\", 2015.0], [\"Chu Linh And Coc San\", 2016.0], [\"Dak Lo\", 2016.0], [\"Coc San\", 2016.0], [\"Dak Mi 2\", 2016.0], [\"Nhan Hac\", 2016.0], [\"Krong No 3\", 2016.0], [\"Dak Mi 3\", 2016.0], [\"Nho Que 2\", 2016.0], [\"Sekaman 1\", 2016.0], [\"Dak Nong 2\", 2016.0], [\"Da Nhim Extension\", 2017.0], [\"Dak Pring\", 2017.0], [\"Sekaman Xanxay\", 2017.0], [\"Long Tao\", 2017.0], [\"Tra Khuc 1\", 2017.0], [\"Thuan Hoa\", 2017.0], [\"Thac Mo Extension\", 2017.0], [\"Yen Son\", 2017.0], [\"Trung Son\", 2017.0], [\"Song Lo 6\", 2018.0], [\"A Lin\", 2018.0], [\"Sekaman 4\", 2018.0], [\"Dak Mi 1\", 2018.0], [\"Alin B1\", 2019.0], [\"Nam Cum 1, 4, 5\", 2019.0], [\"Pac Ma\", 2019.0], [\"Bao Lam 3\", 2019.0], [\"Nam Pha 5\", 2020.0], [\"Nam Mo New\", 2020.0], [\"Nam Cum 2, 3, 6\", 2020.0], [\"Ialy Extenstion\", 2020.0], [\"Hoa Binh Extension\", 2021.0], [\"My Ly\", 2021.0], [\"Dak Re\", 2022.0], [\"Hoa Binh Extension\", 2022.0], [\"Ban Mong (Song Hieu)\", 2022.0], [\"Phu Tho\", 2023.0], [\"Bac Ai\", 2023.0], [\"Bac Ai\", 2025.0], [\"Tri An Extension\", 2025.0], [\"Nam Mo New\", 2026.0], [\"Dong Phu Yen\", 2028.0], [\"Dong Phu Yen\", 2029.0], [\"Huoi Tao\", 2030.0], [\"Dong Phu Yen\", 2030.0], [\"Don Duong\", 2030.0], [\"Ayun Ha\", NaN], [\"Bau Can\", NaN], [\"Bien Ho\", NaN], [\"Chieng Cong 1\", NaN], [\"Chieng Cong 2\", NaN], [\"Da Kai\", NaN], [\"Dak Nong 1\", NaN], [\"Dak Pi Hao 4\", NaN], [\"Dakrosa2\", NaN], [\"E40\", NaN], [\"Ia Drang 1\", NaN], [\"Ia Drang 2\", NaN], [\"Ia Drang 3\", NaN], [\"Ia H'Rung\", NaN], [\"Ia Krel\", NaN], [\"Ia Lop\", NaN], [\"Ia Mo 3\", NaN], [\"Ia Rung\", NaN], [\"Kenh Bac\", NaN], [\"Nam An\", NaN], [\"Nam Ho\", NaN], [\"Ry Ninh\", NaN], [\"Ry Ninh 2\", NaN], [\"Yang Trung\", NaN]]"
+    },
+    {
+      "tool_calls": [
+        {
+          "id": "call_00_peUqKsKaMDoBiiPz0Nfu4934",
+          "function": {
+            "arguments": "{\"result\": [[\"Suoi Vang (Ankroet)\", 1945.0], [\"Da Nhim\", 1964.0], [\"Thac Ba\", 1971.0], [\"Cam Son\", 1973.0], [\"Kon Dao\", 1984.0], [\"Ke Go\", 1988.0], [\"Hoa Binh\", 1988.0], [\"Dray H'Linh 1\", 1990.0], [\"Tri An\", 1991.0], [\"Thac Mo\", 1995.0], [\"Song Pha\", 1995.0], [\"Vinh Son\", 2001.0], [\"Song Hinh\", 2001.0], [\"Da Mi\", 2001.0], [\"Ham Thuan\", 2001.0], [\"Nam Si Luong\", 2002.0], [\"Ialy\", 2002.0], [\"Quang Hiep\", 2002.0], [\"Na Loi\", 2003.0], [\"Can Don\", 2004.0], [\"Nam Mu\", 2004.0], [\"Krong Hin\", 2005.0], [\"Ca Du\", 2005.0], [\"Thac Trang\", 2006.0], [\"Srok Phu Mieng\", 2006.0], [\"Se San 3\", 2006.0], [\"H'Chan\", 2006.0], [\"Na Loa\", 2006.0], [\"Se San 3A\", 2007.0], [\"Dak Ro Sa\", 2007.0], [\"Dray H'Linh 2\", 2007.0], [\"Ia Grai 3\", 2007.0], [\"Ea Krong Rou\", 2007.0], [\"Krong Kmar\", 2008.0], [\"Dai Ninh\", 2008.0], [\"Dinh Binh\", 2008.0], [\"Tuyen Quang\", 2008.0], [\"Dak Ru\", 2008.0], [\"Song Ba Ha\", 2008.0], [\"Kanak\", 2008.0], [\"Song Muc\", 2008.0], [\"Thuong An\", 2008.0], [\"A Vuong\", 2008.0], [\"Dak Po Ne 2\", 2008.0], [\"Ea Drang\", 2009.0], [\"Dak Po Ne\", 2009.0], [\"Srepok 3\", 2009.0], [\"Nam Pung\", 2009.0], [\"Ho Nui Coc\", 2009.0], [\"Suoi Tan\", 2009.0], [\"Nam Pia\", 2009.0], [\"Phu Mau\", 2009.0], [\"BuonTua Srah\", 2009.0], [\"Bac Binh\", 2009.0], [\"Ban Coc\", 2009.0], [\"Pleikrong\", 2009.0], [\"Muong Sang\", 2009.0], [\"Quang Tin\", 2009.0], [\"Binh Dien\", 2009.0], [\"Bu Ca Mau\", 2009.0], [\"Quang Tri\", 2009.0], [\"Song Con 2\", 2009.0], [\"Nam Chien 2\", 2009.0], [\"Dak U\", 2009.0], [\"So Lo\", 2009.0], [\"An Khe\", 2009.0], [\"Se San 4\", 2009.0], [\"Nam Mo 3\", 2009.0], [\"Khe Ron\", 2009.0], [\"Ea Mdoal 2\", 2010.0], [\"Srepok 4\", 2010.0], [\"Pa Khoang\", 2010.0], [\"Song Tranh 2\", 2010.0], [\"Muong Kim\", 2010.0], [\"Ho Ho\", 2010.0], [\"Krong H'nang\", 2010.0], [\"Ea Drang 2\", 2010.0], [\"Ha Rao Quan\", 2010.0], [\"Sao Va\", 2010.0], [\"Group Of Nam Tha\", 2010.0], [\"Ea Mdoal 3\", 2010.0], [\"Huong Dien\", 2010.0], [\"Nam Ngan\", 2010.0], [\"Coc Dam\", 2010.0], [\"An Diem 2\", 2010.0], [\"Dak Psi 4\", 2010.0], [\"Tra Linh 3\", 2010.0], [\"Dak Srong\", 2010.0], [\"Dak Doa\", 2010.0], [\"Cua Dat\", 2010.0], [\"Da Nhim Thuong 2\", 2010.0], [\"Dak Ne\", 2010.0], [\"Dak Srong 2\", 2010.0], [\"Ban Ve\", 2010.0], [\"Thai An\", 2010.0], [\"Dak Rung 1\", 2010.0], [\"Da Dang 2\", 2010.0], [\"Dak Rung\", 2010.0], [\"Dak Srong 2A\", 2011.0], [\"Thanh Thuy\", 2011.0], [\"Dac Me\", 2011.0], [\"Dak Glun\", 2011.0], [\"Song Chung\", 2011.0], [\"Se San 4A\", 2011.0], [\"Da Den\", 2011.0], [\"Lao Cai - Lai Chau - Kontum Bundled\", 2011.0], [\"Buon Kuop\", 2011.0], [\"Dak Hnol\", 2011.0], [\"Muong Hum\", 2011.0], [\"Bac Ha\", 2011.0], [\"Nam Chanh\", 2011.0], [\"Ngoi Xan\", 2011.0], [\"Ngoi Hut 1\", 2011.0], [\"Nam Gion\", 2011.0], [\"Nam Tang And Na Hau\", 2011.0], [\"Nam Hong\", 2011.0], [\"Nam Soi & Nam Cong\", 2011.0], [\"Nam Khoa 3\", 2011.0], [\"Nam Khot\", 2011.0], [\"Nam La\", 2011.0], [\"Chau Thon\", 2011.0], [\"Ta Vi\", 2011.0], [\"Ia Puch 3\", 2011.0], [\"Song Ong\", 2011.0], [\"Dak N'Teng\", 2011.0], [\"Song Quang\", 2011.0], [\"Dasiat\", 2011.0], [\"Ea Kar\", 2011.0], [\"H'Mun\", 2011.0], [\"Dak Pone\", 2011.0], [\"Suoi Sap 3\", 2011.0], [\"Dak Psi 3 And 4\", 2011.0], [\"Ha Nang\", 2011.0], [\"Doc Cay\", 2011.0], [\"Su Pan 2\", 2011.0], [\"Dong Nai 3\", 2011.0], [\"Dakr'tih\", 2011.0], [\"Ba Thuoc 2\", 2012.0], [\"Trung Ho & Van Ho\", 2012.0], [\"Muong Sang  Thu Cuc  Tat Ngoang\", 2012.0], [\"Ban Ra\", 2012.0], [\"Minh Luong\", 2012.0], [\"Dong Nai 4\", 2012.0], [\"Van Chan\", 2012.0], [\"Bao Nhai\", 2012.0], [\"Lao Cai-Yen Bai Bundled\", 2012.0], [\"Song Mien 5\", 2012.0], [\"Nam Chim\", 2012.0], [\"Nuoc Trong\", 2012.0], [\"Nam Phang\", 2012.0], [\"A Luoi\", 2012.0], [\"Nam Mu and Khuoi Luong\", 2012.0], [\"Yan Tann Sien\", 2012.0], [\"Xoong Con\", 2012.0], [\"Ayun Thuong 1A\", 2012.0], [\"Nam Cat\", 2012.0], [\"Dak Srong 3B\", 2012.0], [\"Dakrong 3\", 2012.0], [\"Nam Tha 3\", 2012.0], [\"Nam Trai 4\", 2012.0], [\"Dam'Bri\", 2012.0], [\"Nam Xay Noi 2\", 2012.0], [\"Nho Que 3\", 2012.0], [\"Nam Khanh\", 2012.0], [\"Lang Bang\", 2012.0], [\"Suoi Trang\", 2012.0], [\"Za Hung\", 2012.0], [\"Song Bung 6\", 2012.0], [\"Ta Loi 3\", 2012.0], [\"Song Bung 4A\", 2012.0], [\"Huong Son\", 2012.0], [\"Song Rieng\", 2012.0], [\"Dak Mi 4\", 2012.0], [\"Ia Grai 1\", 2012.0], [\"Son La\", 2012.0], [\"Song Nhiem 3\", 2012.0], [\"Eatul 4\", 2012.0], [\"Dak Glun 2 And 3\", 2012.0], [\"Dak Me 1\", 2012.0], [\"Ho Bon\", 2012.0], [\"La La\", 2012.0], [\"Hang Dong A1\", 2012.0], [\"Chiem Hoa\", 2012.0], [\"Dak Pia\", 2012.0], [\"Nam Nua\", 2012.0], [\"Song Chay 5\", 2012.0], [\"Dak Mek 3\", 2012.0], [\"Khe Giong\", 2012.0], [\"Dak Psi 3\", 2012.0], [\"Coc Ly\", 2012.0], [\"Song Luy\", 2013.0], [\"Nam Si Luong 4\", 2013.0], [\"Sung Vui\", 2013.0], [\"Nam Si Luong 3\", 2013.0], [\"Ta Trach\", 2013.0], [\"Suoi Choang\", 2013.0], [\"Ta Thang\", 2013.0], [\"Song Bung 5\", 2013.0], [\"Song Bac\", 2013.0], [\"Xim Vang 2\", 2013.0], [\"Ta Co\", 2013.0], [\"Pa Chien\", 2013.0], [\"Thac Xang\", 2013.0], [\"Seo Chong Ho\", 2013.0], [\"Tra Xom\", 2013.0], [\"Song Tranh 3\", 2013.0], [\"Thoong Cot 2\", 2013.0], [\"To Buong\", 2013.0], [\"Sap Viet\", 2013.0], [\"Suoi Lum 1\", 2013.0], [\"Srepok 4A\", 2013.0], [\"Lao Chai\", 2013.0], [\"Ban Chat\", 2013.0], [\"Hoa Tham\", 2013.0], [\"Hoi Xuan\", 2013.0], [\"Hua Na\", 2013.0], [\"Chieng Ngam Thuong\", 2013.0], [\"Ia H'Rung And Chu Prong\", 2013.0], [\"Ban Nhung Small\", 2013.0], [\"Khanh Khe\", 2013.0], [\"Dong Chum 2\", 2013.0], [\"Khe Bo\", 2013.0], [\"Dakrong 2\", 2013.0], [\"Dak Rong 4\", 2013.0], [\"Nam Chien 1\", 2013.0], [\"Nam Cong 3\", 2013.0], [\"Nam Dong 4\", 2013.0], [\"Ha Song Pha 1\", 2013.0], [\"Nam Luc\", 2013.0], [\"Nam Hoa 2\", 2013.0], [\"Nam Mo\", 2013.0], [\"Ba Thuoc 1\", 2013.0], [\"A Roang\", 2013.0], [\"Nam He\", 2013.0], [\"Nam Khoa 1&2\", 2013.0], [\"Song Cho 2\", 2014.0], [\"Hat Liu\", 2014.0], [\"Nam Non\", 2014.0], [\"Song Tranh 4\", 2014.0], [\"Tram Tau\", 2014.0], [\"Vinh Son 5\", 2014.0], [\"Tien Thuan\", 2014.0], [\"Hoa Phu\", 2014.0], [\"Ia Grai 2\", 2014.0], [\"Song Bung 2\", 2014.0], [\"Nam Pong\", 2014.0], [\"Nam Xa\", 2014.0], [\"Nam Muc\", 2014.0], [\"Song Giang 2\", 2014.0], [\"Chi Khe\", 2014.0], [\"Son Tay\", 2014.0], [\"Thuong KonTum\", 2014.0], [\"Vinh Son 3\", 2014.0], [\"Dakdrinh\", 2014.0], [\"Ngoi Hut 2\", 2014.0], [\"Ngoi Phat\", 2014.0], [\"Ta Niet\", 2014.0], [\"Nhan Hac And Sao Va\", 2014.0], [\"Ta Loi 2\", 2014.0], [\"Dak Psi 5\", 2014.0], [\"Nam Toong\", 2014.0], [\"Nam Cau 1,2\", 2014.0], [\"Dam'Bri 1\", 2014.0], [\"Bac Me\", 2014.0], [\"Nam Can 2\", 2014.0], [\"Na Táº©U\", 2014.0], [\"Ha Tay\", 2014.0], [\"Dak Srong 3A\", 2014.0], [\"Da Dang-Dachomo\", 2014.0], [\"Dong Ngai\", 2015.0], [\"Dong Nai 5\", 2015.0], [\"Dai Nga\", 2015.0], [\"Dak Gret\", 2015.0], [\"Dak Sin 1\", 2015.0], [\"Dong Nai 2\", 2015.0], [\"Dak Lay\", 2015.0], [\"Dak Ter 1\", 2015.0], [\"Thien Nam\", 2015.0], [\"Nam Na 3\", 2015.0], [\"Huoi Quang\", 2015.0], [\"Nam Na 2\", 2015.0], [\"Nam Hoa 1\", 2015.0], [\"Van Phong\", 2015.0], [\"Nho Que 1\", 2015.0], [\"Pao Cu Sang\", 2015.0], [\"Ha Song Pha 2\", 2015.0], [\"Lai Chau\", 2015.0], [\"La Ngau\", 2015.0], [\"La Hieng 2\", 2015.0], [\"Huy Mang\", 2015.0], [\"Khau Chu\", 2015.0], [\"Song Bung 4\", 2015.0], [\"Chu Linh And Coc San\", 2016.0], [\"Dak Lo\", 2016.0], [\"Coc San\", 2016.0], [\"Dak Mi 2\", 2016.0], [\"Nhan Hac\", 2016.0], [\"Krong No 3\", 2016.0], [\"Dak Mi 3\", 2016.0], [\"Nho Que 2\", 2016.0], [\"Sekaman 1\", 2016.0], [\"Dak Nong 2\", 2016.0], [\"Da Nhim Extension\", 2017.0], [\"Dak Pring\", 2017.0], [\"Sekaman Xanxay\", 2017.0], [\"Long Tao\", 2017.0], [\"Tra Khuc 1\", 2017.0], [\"Thuan Hoa\", 2017.0], [\"Thac Mo Extension\", 2017.0], [\"Yen Son\", 2017.0], [\"Trung Son\", 2017.0], [\"Song Lo 6\", 2018.0], [\"A Lin\", 2018.0], [\"Sekaman 4\", 2018.0], [\"Dak Mi 1\", 2018.0], [\"Alin B1\", 2019.0], [\"Nam Cum 1, 4, 5\", 2019.0], [\"Pac Ma\", 2019.0], [\"Bao Lam 3\", 2019.0], [\"Nam Pha 5\", 2020.0], [\"Nam Mo New\", 2020.0], [\"Nam Cum 2, 3, 6\", 2020.0], [\"Ialy Extenstion\", 2020.0], [\"Hoa Binh Extension\", 2021.0], [\"My Ly\", 2021.0], [\"Dak Re\", 2022.0], [\"Hoa Binh Extension\", 2022.0], [\"Ban Mong (Song Hieu)\", 2022.0], [\"Phu Tho\", 2023.0], [\"Bac Ai\", 2023.0], [\"Bac Ai\", 2025.0], [\"Tri An Extension\", 2025.0], [\"Nam Mo New\", 2026.0], [\"Dong Phu Yen\", 2028.0], [\"Dong Phu Yen\", 2029.0], [\"Huoi Tao\", 2030.0], [\"Dong Phu Yen\", 2030.0], [\"Don Duong\", 2030.0]]}",
+            "name": "submit_answer"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "role": "assistant",
+      "content": "The data is quite extensive. Let me present the results properly."
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_00_peUqKsKaMDoBiiPz0Nfu4934",
+      "content": "Answer submitted."
+    }
+  ],
+  "code_parts": [
+    "import pandas as pd\n\ndf = pd.read_csv(\"data.csv\")\n\n# Cast numeric columns\ndf[\"capacity_mw\"] = pd.to_numeric(df[\"capacity_mw\"], errors=\"coerce\")\ndf[\"commissioning_year\"] = pd.to_numeric(df[\"commissioning_year\"], errors=\"coerce\")\ndf[\"latitude\"] = pd.to_numeric(df[\"latitude\"], errors=\"coerce\")\ndf[\"longitude\"] = pd.to_numeric(df[\"longitude\"], errors=\"coerce\")\n\n# Filter for Hydro\nhydro = df[df[\"std_fuel\"] == \"Hydro\"].copy()\n\n# Select name and commissioning_year, sort by year ascending\nhydro = hydro[[\"std_name\", \"commissioning_year\"]].sort_values(\"commissioning_year\")\n\n# Convert to list of lists, handling NaN\nresult = hydro.where(pd.notna(hydro), None).values.tolist()\n\nimport json\nprint(json.dumps(result, ensure_ascii=False))\n"
+  ],
+  "exec_outputs": [
+    "[[\"Suoi Vang (Ankroet)\", 1945.0], [\"Da Nhim\", 1964.0], [\"Thac Ba\", 1971.0], [\"Cam Son\", 1973.0], [\"Kon Dao\", 1984.0], [\"Ke Go\", 1988.0], [\"Hoa Binh\", 1988.0], [\"Dray H'Linh 1\", 1990.0], [\"Tri An\", 1991.0], [\"Thac Mo\", 1995.0], [\"Song Pha\", 1995.0], [\"Vinh Son\", 2001.0], [\"Song Hinh\", 2001.0], [\"Da Mi\", 2001.0], [\"Ham Thuan\", 2001.0], [\"Nam Si Luong\", 2002.0], [\"Ialy\", 2002.0], [\"Quang Hiep\", 2002.0], [\"Na Loi\", 2003.0], [\"Can Don\", 2004.0], [\"Nam Mu\", 2004.0], [\"Krong Hin\", 2005.0], [\"Ca Du\", 2005.0], [\"Thac Trang\", 2006.0], [\"Srok Phu Mieng\", 2006.0], [\"Se San 3\", 2006.0], [\"H'Chan\", 2006.0], [\"Na Loa\", 2006.0], [\"Se San 3A\", 2007.0], [\"Dak Ro Sa\", 2007.0], [\"Dray H'Linh 2\", 2007.0], [\"Ia Grai 3\", 2007.0], [\"Ea Krong Rou\", 2007.0], [\"Krong Kmar\", 2008.0], [\"Dai Ninh\", 2008.0], [\"Dinh Binh\", 2008.0], [\"Tuyen Quang\", 2008.0], [\"Dak Ru\", 2008.0], [\"Song Ba Ha\", 2008.0], [\"Kanak\", 2008.0], [\"Song Muc\", 2008.0], [\"Thuong An\", 2008.0], [\"A Vuong\", 2008.0], [\"Dak Po Ne 2\", 2008.0], [\"Ea Drang\", 2009.0], [\"Dak Po Ne\", 2009.0], [\"Srepok 3\", 2009.0], [\"Nam Pung\", 2009.0], [\"Ho Nui Coc\", 2009.0], [\"Suoi Tan\", 2009.0], [\"Nam Pia\", 2009.0], [\"Phu Mau\", 2009.0], [\"BuonTua Srah\", 2009.0], [\"Bac Binh\", 2009.0], [\"Ban Coc\", 2009.0], [\"Pleikrong\", 2009.0], [\"Muong Sang\", 2009.0], [\"Quang Tin\", 2009.0], [\"Binh Dien\", 2009.0], [\"Bu Ca Mau\", 2009.0], [\"Quang Tri\", 2009.0], [\"Song Con 2\", 2009.0], [\"Nam Chien 2\", 2009.0], [\"Dak U\", 2009.0], [\"So Lo\", 2009.0], [\"An Khe\", 2009.0], [\"Se San 4\", 2009.0], [\"Nam Mo 3\", 2009.0], [\"Khe Ron\", 2009.0], [\"Ea Mdoal 2\", 2010.0], [\"Srepok 4\", 2010.0], [\"Pa Khoang\", 2010.0], [\"Song Tranh 2\", 2010.0], [\"Muong Kim\", 2010.0], [\"Ho Ho\", 2010.0], [\"Krong H'nang\", 2010.0], [\"Ea Drang 2\", 2010.0], [\"Ha Rao Quan\", 2010.0], [\"Sao Va\", 2010.0], [\"Group Of Nam Tha\", 2010.0], [\"Ea Mdoal 3\", 2010.0], [\"Huong Dien\", 2010.0], [\"Nam Ngan\", 2010.0], [\"Coc Dam\", 2010.0], [\"An Diem 2\", 2010.0], [\"Dak Psi 4\", 2010.0], [\"Tra Linh 3\", 2010.0], [\"Dak Srong\", 2010.0], [\"Dak Doa\", 2010.0], [\"Cua Dat\", 2010.0], [\"Da Nhim Thuong 2\", 2010.0], [\"Dak Ne\", 2010.0], [\"Dak Srong 2\", 2010.0], [\"Ban Ve\", 2010.0], [\"Thai An\", 2010.0], [\"Dak Rung 1\", 2010.0], [\"Da Dang 2\", 2010.0], [\"Dak Rung\", 2010.0], [\"Dak Srong 2A\", 2011.0], [\"Thanh Thuy\", 2011.0], [\"Dac Me\", 2011.0], [\"Dak Glun\", 2011.0], [\"Song Chung\", 2011.0], [\"Se San 4A\", 2011.0], [\"Da Den\", 2011.0], [\"Lao Cai - Lai Chau - Kontum Bundled\", 2011.0], [\"Buon Kuop\", 2011.0], [\"Dak Hnol\", 2011.0], [\"Muong Hum\", 2011.0], [\"Bac Ha\", 2011.0], [\"Nam Chanh\", 2011.0], [\"Ngoi Xan\", 2011.0], [\"Ngoi Hut 1\", 2011.0], [\"Nam Gion\", 2011.0], [\"Nam Tang And Na Hau\", 2011.0], [\"Nam Hong\", 2011.0], [\"Nam Soi & Nam Cong\", 2011.0], [\"Nam Khoa 3\", 2011.0], [\"Nam Khot\", 2011.0], [\"Nam La\", 2011.0], [\"Chau Thon\", 2011.0], [\"Ta Vi\", 2011.0], [\"Ia Puch 3\", 2011.0], [\"Song Ong\", 2011.0], [\"Dak N'Teng\", 2011.0], [\"Song Quang\", 2011.0], [\"Dasiat\", 2011.0], [\"Ea Kar\", 2011.0], [\"H'Mun\", 2011.0], [\"Dak Pone\", 2011.0], [\"Suoi Sap 3\", 2011.0], [\"Dak Psi 3 And 4\", 2011.0], [\"Ha Nang\", 2011.0], [\"Doc Cay\", 2011.0], [\"Su Pan 2\", 2011.0], [\"Dong Nai 3\", 2011.0], [\"Dakr'tih\", 2011.0], [\"Ba Thuoc 2\", 2012.0], [\"Trung Ho & Van Ho\", 2012.0], [\"Muong Sang  Thu Cuc  Tat Ngoang\", 2012.0], [\"Ban Ra\", 2012.0], [\"Minh Luong\", 2012.0], [\"Dong Nai 4\", 2012.0], [\"Van Chan\", 2012.0], [\"Bao Nhai\", 2012.0], [\"Lao Cai-Yen Bai Bundled\", 2012.0], [\"Song Mien 5\", 2012.0], [\"Nam Chim\", 2012.0], [\"Nuoc Trong\", 2012.0], [\"Nam Phang\", 2012.0], [\"A Luoi\", 2012.0], [\"Nam Mu and Khuoi Luong\", 2012.0], [\"Yan Tann Sien\", 2012.0], [\"Xoong Con\", 2012.0], [\"Ayun Thuong 1A\", 2012.0], [\"Nam Cat\", 2012.0], [\"Dak Srong 3B\", 2012.0], [\"Dakrong 3\", 2012.0], [\"Nam Tha 3\", 2012.0], [\"Nam Trai 4\", 2012.0], [\"Dam'Bri\", 2012.0], [\"Nam Xay Noi 2\", 2012.0], [\"Nho Que 3\", 2012.0], [\"Nam Khanh\", 2012.0], [\"Lang Bang\", 2012.0], [\"Suoi Trang\", 2012.0], [\"Za Hung\", 2012.0], [\"Song Bung 6\", 2012.0], [\"Ta Loi 3\", 2012.0], [\"Song Bung 4A\", 2012.0], [\"Huong Son\", 2012.0], [\"Song Rieng\", 2012.0], [\"Dak Mi 4\", 2012.0], [\"Ia Grai 1\", 2012.0], [\"Son La\", 2012.0], [\"Song Nhiem 3\", 2012.0], [\"Eatul 4\", 2012.0], [\"Dak Glun 2 And 3\", 2012.0], [\"Dak Me 1\", 2012.0], [\"Ho Bon\", 2012.0], [\"La La\", 2012.0], [\"Hang Dong A1\", 2012.0], [\"Chiem Hoa\", 2012.0], [\"Dak Pia\", 2012.0], [\"Nam Nua\", 2012.0], [\"Song Chay 5\", 2012.0], [\"Dak Mek 3\", 2012.0], [\"Khe Giong\", 2012.0], [\"Dak Psi 3\", 2012.0], [\"Coc Ly\", 2012.0], [\"Song Luy\", 2013.0], [\"Nam Si Luong 4\", 2013.0], [\"Sung Vui\", 2013.0], [\"Nam Si Luong 3\", 2013.0], [\"Ta Trach\", 2013.0], [\"Suoi Choang\", 2013.0], [\"Ta Thang\", 2013.0], [\"Song Bung 5\", 2013.0], [\"Song Bac\", 2013.0], [\"Xim Vang 2\", 2013.0], [\"Ta Co\", 2013.0], [\"Pa Chien\", 2013.0], [\"Thac Xang\", 2013.0], [\"Seo Chong Ho\", 2013.0], [\"Tra Xom\", 2013.0], [\"Song Tranh 3\", 2013.0], [\"Thoong Cot 2\", 2013.0], [\"To Buong\", 2013.0], [\"Sap Viet\", 2013.0], [\"Suoi Lum 1\", 2013.0], [\"Srepok 4A\", 2013.0], [\"Lao Chai\", 2013.0], [\"Ban Chat\", 2013.0], [\"Hoa Tham\", 2013.0], [\"Hoi Xuan\", 2013.0], [\"Hua Na\", 2013.0], [\"Chieng Ngam Thuong\", 2013.0], [\"Ia H'Rung And Chu Prong\", 2013.0], [\"Ban Nhung Small\", 2013.0], [\"Khanh Khe\", 2013.0], [\"Dong Chum 2\", 2013.0], [\"Khe Bo\", 2013.0], [\"Dakrong 2\", 2013.0], [\"Dak Rong 4\", 2013.0], [\"Nam Chien 1\", 2013.0], [\"Nam Cong 3\", 2013.0], [\"Nam Dong 4\", 2013.0], [\"Ha Song Pha 1\", 2013.0], [\"Nam Luc\", 2013.0], [\"Nam Hoa 2\", 2013.0], [\"Nam Mo\", 2013.0], [\"Ba Thuoc 1\", 2013.0], [\"A Roang\", 2013.0], [\"Nam He\", 2013.0], [\"Nam Khoa 1&2\", 2013.0], [\"Song Cho 2\", 2014.0], [\"Hat Liu\", 2014.0], [\"Nam Non\", 2014.0], [\"Song Tranh 4\", 2014.0], [\"Tram Tau\", 2014.0], [\"Vinh Son 5\", 2014.0], [\"Tien Thuan\", 2014.0], [\"Hoa Phu\", 2014.0], [\"Ia Grai 2\", 2014.0], [\"Song Bung 2\", 2014.0], [\"Nam Pong\", 2014.0], [\"Nam Xa\", 2014.0], [\"Nam Muc\", 2014.0], [\"Song Giang 2\", 2014.0], [\"Chi Khe\", 2014.0], [\"Son Tay\", 2014.0], [\"Thuong KonTum\", 2014.0], [\"Vinh Son 3\", 2014.0], [\"Dakdrinh\", 2014.0], [\"Ngoi Hut 2\", 2014.0], [\"Ngoi Phat\", 2014.0], [\"Ta Niet\", 2014.0], [\"Nhan Hac And Sao Va\", 2014.0], [\"Ta Loi 2\", 2014.0], [\"Dak Psi 5\", 2014.0], [\"Nam Toong\", 2014.0], [\"Nam Cau 1,2\", 2014.0], [\"Dam'Bri 1\", 2014.0], [\"Bac Me\", 2014.0], [\"Nam Can 2\", 2014.0], [\"Na Táº©U\", 2014.0], [\"Ha Tay\", 2014.0], [\"Dak Srong 3A\", 2014.0], [\"Da Dang-Dachomo\", 2014.0], [\"Dong Ngai\", 2015.0], [\"Dong Nai 5\", 2015.0], [\"Dai Nga\", 2015.0], [\"Dak Gret\", 2015.0], [\"Dak Sin 1\", 2015.0], [\"Dong Nai 2\", 2015.0], [\"Dak Lay\", 2015.0], [\"Dak Ter 1\", 2015.0], [\"Thien Nam\", 2015.0], [\"Nam Na 3\", 2015.0], [\"Huoi Quang\", 2015.0], [\"Nam Na 2\", 2015.0], [\"Nam Hoa 1\", 2015.0], [\"Van Phong\", 2015.0], [\"Nho Que 1\", 2015.0], [\"Pao Cu Sang\", 2015.0], [\"Ha Song Pha 2\", 2015.0], [\"Lai Chau\", 2015.0], [\"La Ngau\", 2015.0], [\"La Hieng 2\", 2015.0], [\"Huy Mang\", 2015.0], [\"Khau Chu\", 2015.0], [\"Song Bung 4\", 2015.0], [\"Chu Linh And Coc San\", 2016.0], [\"Dak Lo\", 2016.0], [\"Coc San\", 2016.0], [\"Dak Mi 2\", 2016.0], [\"Nhan Hac\", 2016.0], [\"Krong No 3\", 2016.0], [\"Dak Mi 3\", 2016.0], [\"Nho Que 2\", 2016.0], [\"Sekaman 1\", 2016.0], [\"Dak Nong 2\", 2016.0], [\"Da Nhim Extension\", 2017.0], [\"Dak Pring\", 2017.0], [\"Sekaman Xanxay\", 2017.0], [\"Long Tao\", 2017.0], [\"Tra Khuc 1\", 2017.0], [\"Thuan Hoa\", 2017.0], [\"Thac Mo Extension\", 2017.0], [\"Yen Son\", 2017.0], [\"Trung Son\", 2017.0], [\"Song Lo 6\", 2018.0], [\"A Lin\", 2018.0], [\"Sekaman 4\", 2018.0], [\"Dak Mi 1\", 2018.0], [\"Alin B1\", 2019.0], [\"Nam Cum 1, 4, 5\", 2019.0], [\"Pac Ma\", 2019.0], [\"Bao Lam 3\", 2019.0], [\"Nam Pha 5\", 2020.0], [\"Nam Mo New\", 2020.0], [\"Nam Cum 2, 3, 6\", 2020.0], [\"Ialy Extenstion\", 2020.0], [\"Hoa Binh Extension\", 2021.0], [\"My Ly\", 2021.0], [\"Dak Re\", 2022.0], [\"Hoa Binh Extension\", 2022.0], [\"Ban Mong (Song Hieu)\", 2022.0], [\"Phu Tho\", 2023.0], [\"Bac Ai\", 2023.0], [\"Bac Ai\", 2025.0], [\"Tri An Extension\", 2025.0], [\"Nam Mo New\", 2026.0], [\"Dong Phu Yen\", 2028.0], [\"Dong Phu Yen\", 2029.0], [\"Huoi Tao\", 2030.0], [\"Dong Phu Yen\", 2030.0], [\"Don Duong\", 2030.0], [\"Ayun Ha\", NaN], [\"Bau Can\", NaN], [\"Bien Ho\", NaN], [\"Chieng Cong 1\", NaN], [\"Chieng Cong 2\", NaN], [\"Da Kai\", NaN], [\"Dak Nong 1\", NaN], [\"Dak Pi Hao 4\", NaN], [\"Dakrosa2\", NaN], [\"E40\", NaN], [\"Ia Drang 1\", NaN], [\"Ia Drang 2\", NaN], [\"Ia Drang 3\", NaN], [\"Ia H'Rung\", NaN], [\"Ia Krel\", NaN], [\"Ia Lop\", NaN], [\"Ia Mo 3\", NaN], [\"Ia Rung\", NaN], [\"Kenh Bac\", NaN], [\"Nam An\", NaN], [\"Nam Ho\", NaN], [\"Ry Ninh\", NaN], [\"Ry Ninh 2\", NaN], [\"Yang Trung\", NaN]]"
+  ],
+  "final_text": "",
+  "submitted_answer": [
+    [
+      "Suoi Vang (Ankroet)",
+      1945.0
+    ],
+    [
+      "Da Nhim",
+      1964.0
+    ],
+    [
+      "Thac Ba",
+      1971.0
+    ],
+    [
+      "Cam Son",
+      1973.0
+    ],
+    [
+      "Kon Dao",
+      1984.0
+    ],
+    [
+      "Ke Go",
+      1988.0
+    ],
+    [
+      "Hoa Binh",
+      1988.0
+    ],
+    [
+      "Dray H'Linh 1",
+      1990.0
+    ],
+    [
+      "Tri An",
+      1991.0
+    ],
+    [
+      "Thac Mo",
+      1995.0
+    ],
+    [
+      "Song Pha",
+      1995.0
+    ],
+    [
+      "Vinh Son",
+      2001.0
+    ],
+    [
+      "Song Hinh",
+      2001.0
+    ],
+    [
+      "Da Mi",
+      2001.0
+    ],
+    [
+      "Ham Thuan",
+      2001.0
+    ],
+    [
+      "Nam Si Luong",
+      2002.0
+    ],
+    [
+      "Ialy",
+      2002.0
+    ],
+    [
+      "Quang Hiep",
+      2002.0
+    ],
+    [
+      "Na Loi",
+      2003.0
+    ],
+    [
+      "Can Don",
+      2004.0
+    ],
+    [
+      "Nam Mu",
+      2004.0
+    ],
+    [
+      "Krong Hin",
+      2005.0
+    ],
+    [
+      "Ca Du",
+      2005.0
+    ],
+    [
+      "Thac Trang",
+      2006.0
+    ],
+    [
+      "Srok Phu Mieng",
+      2006.0
+    ],
+    [
+      "Se San 3",
+      2006.0
+    ],
+    [
+      "H'Chan",
+      2006.0
+    ],
+    [
+      "Na Loa",
+      2006.0
+    ],
+    [
+      "Se San 3A",
+      2007.0
+    ],
+    [
+      "Dak Ro Sa",
+      2007.0
+    ],
+    [
+      "Dray H'Linh 2",
+      2007.0
+    ],
+    [
+      "Ia Grai 3",
+      2007.0
+    ],
+    [
+      "Ea Krong Rou",
+      2007.0
+    ],
+    [
+      "Krong Kmar",
+      2008.0
+    ],
+    [
+      "Dai Ninh",
+      2008.0
+    ],
+    [
+      "Dinh Binh",
+      2008.0
+    ],
+    [
+      "Tuyen Quang",
+      2008.0
+    ],
+    [
+      "Dak Ru",
+      2008.0
+    ],
+    [
+      "Song Ba Ha",
+      2008.0
+    ],
+    [
+      "Kanak",
+      2008.0
+    ],
+    [
+      "Song Muc",
+      2008.0
+    ],
+    [
+      "Thuong An",
+      2008.0
+    ],
+    [
+      "A Vuong",
+      2008.0
+    ],
+    [
+      "Dak Po Ne 2",
+      2008.0
+    ],
+    [
+      "Ea Drang",
+      2009.0
+    ],
+    [
+      "Dak Po Ne",
+      2009.0
+    ],
+    [
+      "Srepok 3",
+      2009.0
+    ],
+    [
+      "Nam Pung",
+      2009.0
+    ],
+    [
+      "Ho Nui Coc",
+      2009.0
+    ],
+    [
+      "Suoi Tan",
+      2009.0
+    ],
+    [
+      "Nam Pia",
+      2009.0
+    ],
+    [
+      "Phu Mau",
+      2009.0
+    ],
+    [
+      "BuonTua Srah",
+      2009.0
+    ],
+    [
+      "Bac Binh",
+      2009.0
+    ],
+    [
+      "Ban Coc",
+      2009.0
+    ],
+    [
+      "Pleikrong",
+      2009.0
+    ],
+    [
+      "Muong Sang",
+      2009.0
+    ],
+    [
+      "Quang Tin",
+      2009.0
+    ],
+    [
+      "Binh Dien",
+      2009.0
+    ],
+    [
+      "Bu Ca Mau",
+      2009.0
+    ],
+    [
+      "Quang Tri",
+      2009.0
+    ],
+    [
+      "Song Con 2",
+      2009.0
+    ],
+    [
+      "Nam Chien 2",
+      2009.0
+    ],
+    [
+      "Dak U",
+      2009.0
+    ],
+    [
+      "So Lo",
+      2009.0
+    ],
+    [
+      "An Khe",
+      2009.0
+    ],
+    [
+      "Se San 4",
+      2009.0
+    ],
+    [
+      "Nam Mo 3",
+      2009.0
+    ],
+    [
+      "Khe Ron",
+      2009.0
+    ],
+    [
+      "Ea Mdoal 2",
+      2010.0
+    ],
+    [
+      "Srepok 4",
+      2010.0
+    ],
+    [
+      "Pa Khoang",
+      2010.0
+    ],
+    [
+      "Song Tranh 2",
+      2010.0
+    ],
+    [
+      "Muong Kim",
+      2010.0
+    ],
+    [
+      "Ho Ho",
+      2010.0
+    ],
+    [
+      "Krong H'nang",
+      2010.0
+    ],
+    [
+      "Ea Drang 2",
+      2010.0
+    ],
+    [
+      "Ha Rao Quan",
+      2010.0
+    ],
+    [
+      "Sao Va",
+      2010.0
+    ],
+    [
+      "Group Of Nam Tha",
+      2010.0
+    ],
+    [
+      "Ea Mdoal 3",
+      2010.0
+    ],
+    [
+      "Huong Dien",
+      2010.0
+    ],
+    [
+      "Nam Ngan",
+      2010.0
+    ],
+    [
+      "Coc Dam",
+      2010.0
+    ],
+    [
+      "An Diem 2",
+      2010.0
+    ],
+    [
+      "Dak Psi 4",
+      2010.0
+    ],
+    [
+      "Tra Linh 3",
+      2010.0
+    ],
+    [
+      "Dak Srong",
+      2010.0
+    ],
+    [
+      "Dak Doa",
+      2010.0
+    ],
+    [
+      "Cua Dat",
+      2010.0
+    ],
+    [
+      "Da Nhim Thuong 2",
+      2010.0
+    ],
+    [
+      "Dak Ne",
+      2010.0
+    ],
+    [
+      "Dak Srong 2",
+      2010.0
+    ],
+    [
+      "Ban Ve",
+      2010.0
+    ],
+    [
+      "Thai An",
+      2010.0
+    ],
+    [
+      "Dak Rung 1",
+      2010.0
+    ],
+    [
+      "Da Dang 2",
+      2010.0
+    ],
+    [
+      "Dak Rung",
+      2010.0
+    ],
+    [
+      "Dak Srong 2A",
+      2011.0
+    ],
+    [
+      "Thanh Thuy",
+      2011.0
+    ],
+    [
+      "Dac Me",
+      2011.0
+    ],
+    [
+      "Dak Glun",
+      2011.0
+    ],
+    [
+      "Song Chung",
+      2011.0
+    ],
+    [
+      "Se San 4A",
+      2011.0
+    ],
+    [
+      "Da Den",
+      2011.0
+    ],
+    [
+      "Lao Cai - Lai Chau - Kontum Bundled",
+      2011.0
+    ],
+    [
+      "Buon Kuop",
+      2011.0
+    ],
+    [
+      "Dak Hnol",
+      2011.0
+    ],
+    [
+      "Muong Hum",
+      2011.0
+    ],
+    [
+      "Bac Ha",
+      2011.0
+    ],
+    [
+      "Nam Chanh",
+      2011.0
+    ],
+    [
+      "Ngoi Xan",
+      2011.0
+    ],
+    [
+      "Ngoi Hut 1",
+      2011.0
+    ],
+    [
+      "Nam Gion",
+      2011.0
+    ],
+    [
+      "Nam Tang And Na Hau",
+      2011.0
+    ],
+    [
+      "Nam Hong",
+      2011.0
+    ],
+    [
+      "Nam Soi & Nam Cong",
+      2011.0
+    ],
+    [
+      "Nam Khoa 3",
+      2011.0
+    ],
+    [
+      "Nam Khot",
+      2011.0
+    ],
+    [
+      "Nam La",
+      2011.0
+    ],
+    [
+      "Chau Thon",
+      2011.0
+    ],
+    [
+      "Ta Vi",
+      2011.0
+    ],
+    [
+      "Ia Puch 3",
+      2011.0
+    ],
+    [
+      "Song Ong",
+      2011.0
+    ],
+    [
+      "Dak N'Teng",
+      2011.0
+    ],
+    [
+      "Song Quang",
+      2011.0
+    ],
+    [
+      "Dasiat",
+      2011.0
+    ],
+    [
+      "Ea Kar",
+      2011.0
+    ],
+    [
+      "H'Mun",
+      2011.0
+    ],
+    [
+      "Dak Pone",
+      2011.0
+    ],
+    [
+      "Suoi Sap 3",
+      2011.0
+    ],
+    [
+      "Dak Psi 3 And 4",
+      2011.0
+    ],
+    [
+      "Ha Nang",
+      2011.0
+    ],
+    [
+      "Doc Cay",
+      2011.0
+    ],
+    [
+      "Su Pan 2",
+      2011.0
+    ],
+    [
+      "Dong Nai 3",
+      2011.0
+    ],
+    [
+      "Dakr'tih",
+      2011.0
+    ],
+    [
+      "Ba Thuoc 2",
+      2012.0
+    ],
+    [
+      "Trung Ho & Van Ho",
+      2012.0
+    ],
+    [
+      "Muong Sang  Thu Cuc  Tat Ngoang",
+      2012.0
+    ],
+    [
+      "Ban Ra",
+      2012.0
+    ],
+    [
+      "Minh Luong",
+      2012.0
+    ],
+    [
+      "Dong Nai 4",
+      2012.0
+    ],
+    [
+      "Van Chan",
+      2012.0
+    ],
+    [
+      "Bao Nhai",
+      2012.0
+    ],
+    [
+      "Lao Cai-Yen Bai Bundled",
+      2012.0
+    ],
+    [
+      "Song Mien 5",
+      2012.0
+    ],
+    [
+      "Nam Chim",
+      2012.0
+    ],
+    [
+      "Nuoc Trong",
+      2012.0
+    ],
+    [
+      "Nam Phang",
+      2012.0
+    ],
+    [
+      "A Luoi",
+      2012.0
+    ],
+    [
+      "Nam Mu and Khuoi Luong",
+      2012.0
+    ],
+    [
+      "Yan Tann Sien",
+      2012.0
+    ],
+    [
+      "Xoong Con",
+      2012.0
+    ],
+    [
+      "Ayun Thuong 1A",
+      2012.0
+    ],
+    [
+      "Nam Cat",
+      2012.0
+    ],
+    [
+      "Dak Srong 3B",
+      2012.0
+    ],
+    [
+      "Dakrong 3",
+      2012.0
+    ],
+    [
+      "Nam Tha 3",
+      2012.0
+    ],
+    [
+      "Nam Trai 4",
+      2012.0
+    ],
+    [
+      "Dam'Bri",
+      2012.0
+    ],
+    [
+      "Nam Xay Noi 2",
+      2012.0
+    ],
+    [
+      "Nho Que 3",
+      2012.0
+    ],
+    [
+      "Nam Khanh",
+      2012.0
+    ],
+    [
+      "Lang Bang",
+      2012.0
+    ],
+    [
+      "Suoi Trang",
+      2012.0
+    ],
+    [
+      "Za Hung",
+      2012.0
+    ],
+    [
+      "Song Bung 6",
+      2012.0
+    ],
+    [
+      "Ta Loi 3",
+      2012.0
+    ],
+    [
+      "Song Bung 4A",
+      2012.0
+    ],
+    [
+      "Huong Son",
+      2012.0
+    ],
+    [
+      "Song Rieng",
+      2012.0
+    ],
+    [
+      "Dak Mi 4",
+      2012.0
+    ],
+    [
+      "Ia Grai 1",
+      2012.0
+    ],
+    [
+      "Son La",
+      2012.0
+    ],
+    [
+      "Song Nhiem 3",
+      2012.0
+    ],
+    [
+      "Eatul 4",
+      2012.0
+    ],
+    [
+      "Dak Glun 2 And 3",
+      2012.0
+    ],
+    [
+      "Dak Me 1",
+      2012.0
+    ],
+    [
+      "Ho Bon",
+      2012.0
+    ],
+    [
+      "La La",
+      2012.0
+    ],
+    [
+      "Hang Dong A1",
+      2012.0
+    ],
+    [
+      "Chiem Hoa",
+      2012.0
+    ],
+    [
+      "Dak Pia",
+      2012.0
+    ],
+    [
+      "Nam Nua",
+      2012.0
+    ],
+    [
+      "Song Chay 5",
+      2012.0
+    ],
+    [
+      "Dak Mek 3",
+      2012.0
+    ],
+    [
+      "Khe Giong",
+      2012.0
+    ],
+    [
+      "Dak Psi 3",
+      2012.0
+    ],
+    [
+      "Coc Ly",
+      2012.0
+    ],
+    [
+      "Song Luy",
+      2013.0
+    ],
+    [
+      "Nam Si Luong 4",
+      2013.0
+    ],
+    [
+      "Sung Vui",
+      2013.0
+    ],
+    [
+      "Nam Si Luong 3",
+      2013.0
+    ],
+    [
+      "Ta Trach",
+      2013.0
+    ],
+    [
+      "Suoi Choang",
+      2013.0
+    ],
+    [
+      "Ta Thang",
+      2013.0
+    ],
+    [
+      "Song Bung 5",
+      2013.0
+    ],
+    [
+      "Song Bac",
+      2013.0
+    ],
+    [
+      "Xim Vang 2",
+      2013.0
+    ],
+    [
+      "Ta Co",
+      2013.0
+    ],
+    [
+      "Pa Chien",
+      2013.0
+    ],
+    [
+      "Thac Xang",
+      2013.0
+    ],
+    [
+      "Seo Chong Ho",
+      2013.0
+    ],
+    [
+      "Tra Xom",
+      2013.0
+    ],
+    [
+      "Song Tranh 3",
+      2013.0
+    ],
+    [
+      "Thoong Cot 2",
+      2013.0
+    ],
+    [
+      "To Buong",
+      2013.0
+    ],
+    [
+      "Sap Viet",
+      2013.0
+    ],
+    [
+      "Suoi Lum 1",
+      2013.0
+    ],
+    [
+      "Srepok 4A",
+      2013.0
+    ],
+    [
+      "Lao Chai",
+      2013.0
+    ],
+    [
+      "Ban Chat",
+      2013.0
+    ],
+    [
+      "Hoa Tham",
+      2013.0
+    ],
+    [
+      "Hoi Xuan",
+      2013.0
+    ],
+    [
+      "Hua Na",
+      2013.0
+    ],
+    [
+      "Chieng Ngam Thuong",
+      2013.0
+    ],
+    [
+      "Ia H'Rung And Chu Prong",
+      2013.0
+    ],
+    [
+      "Ban Nhung Small",
+      2013.0
+    ],
+    [
+      "Khanh Khe",
+      2013.0
+    ],
+    [
+      "Dong Chum 2",
+      2013.0
+    ],
+    [
+      "Khe Bo",
+      2013.0
+    ],
+    [
+      "Dakrong 2",
+      2013.0
+    ],
+    [
+      "Dak Rong 4",
+      2013.0
+    ],
+    [
+      "Nam Chien 1",
+      2013.0
+    ],
+    [
+      "Nam Cong 3",
+      2013.0
+    ],
+    [
+      "Nam Dong 4",
+      2013.0
+    ],
+    [
+      "Ha Song Pha 1",
+      2013.0
+    ],
+    [
+      "Nam Luc",
+      2013.0
+    ],
+    [
+      "Nam Hoa 2",
+      2013.0
+    ],
+    [
+      "Nam Mo",
+      2013.0
+    ],
+    [
+      "Ba Thuoc 1",
+      2013.0
+    ],
+    [
+      "A Roang",
+      2013.0
+    ],
+    [
+      "Nam He",
+      2013.0
+    ],
+    [
+      "Nam Khoa 1&2",
+      2013.0
+    ],
+    [
+      "Song Cho 2",
+      2014.0
+    ],
+    [
+      "Hat Liu",
+      2014.0
+    ],
+    [
+      "Nam Non",
+      2014.0
+    ],
+    [
+      "Song Tranh 4",
+      2014.0
+    ],
+    [
+      "Tram Tau",
+      2014.0
+    ],
+    [
+      "Vinh Son 5",
+      2014.0
+    ],
+    [
+      "Tien Thuan",
+      2014.0
+    ],
+    [
+      "Hoa Phu",
+      2014.0
+    ],
+    [
+      "Ia Grai 2",
+      2014.0
+    ],
+    [
+      "Song Bung 2",
+      2014.0
+    ],
+    [
+      "Nam Pong",
+      2014.0
+    ],
+    [
+      "Nam Xa",
+      2014.0
+    ],
+    [
+      "Nam Muc",
+      2014.0
+    ],
+    [
+      "Song Giang 2",
+      2014.0
+    ],
+    [
+      "Chi Khe",
+      2014.0
+    ],
+    [
+      "Son Tay",
+      2014.0
+    ],
+    [
+      "Thuong KonTum",
+      2014.0
+    ],
+    [
+      "Vinh Son 3",
+      2014.0
+    ],
+    [
+      "Dakdrinh",
+      2014.0
+    ],
+    [
+      "Ngoi Hut 2",
+      2014.0
+    ],
+    [
+      "Ngoi Phat",
+      2014.0
+    ],
+    [
+      "Ta Niet",
+      2014.0
+    ],
+    [
+      "Nhan Hac And Sao Va",
+      2014.0
+    ],
+    [
+      "Ta Loi 2",
+      2014.0
+    ],
+    [
+      "Dak Psi 5",
+      2014.0
+    ],
+    [
+      "Nam Toong",
+      2014.0
+    ],
+    [
+      "Nam Cau 1,2",
+      2014.0
+    ],
+    [
+      "Dam'Bri 1",
+      2014.0
+    ],
+    [
+      "Bac Me",
+      2014.0
+    ],
+    [
+      "Nam Can 2",
+      2014.0
+    ],
+    [
+      "Na Táº©U",
+      2014.0
+    ],
+    [
+      "Ha Tay",
+      2014.0
+    ],
+    [
+      "Dak Srong 3A",
+      2014.0
+    ],
+    [
+      "Da Dang-Dachomo",
+      2014.0
+    ],
+    [
+      "Dong Ngai",
+      2015.0
+    ],
+    [
+      "Dong Nai 5",
+      2015.0
+    ],
+    [
+      "Dai Nga",
+      2015.0
+    ],
+    [
+      "Dak Gret",
+      2015.0
+    ],
+    [
+      "Dak Sin 1",
+      2015.0
+    ],
+    [
+      "Dong Nai 2",
+      2015.0
+    ],
+    [
+      "Dak Lay",
+      2015.0
+    ],
+    [
+      "Dak Ter 1",
+      2015.0
+    ],
+    [
+      "Thien Nam",
+      2015.0
+    ],
+    [
+      "Nam Na 3",
+      2015.0
+    ],
+    [
+      "Huoi Quang",
+      2015.0
+    ],
+    [
+      "Nam Na 2",
+      2015.0
+    ],
+    [
+      "Nam Hoa 1",
+      2015.0
+    ],
+    [
+      "Van Phong",
+      2015.0
+    ],
+    [
+      "Nho Que 1",
+      2015.0
+    ],
+    [
+      "Pao Cu Sang",
+      2015.0
+    ],
+    [
+      "Ha Song Pha 2",
+      2015.0
+    ],
+    [
+      "Lai Chau",
+      2015.0
+    ],
+    [
+      "La Ngau",
+      2015.0
+    ],
+    [
+      "La Hieng 2",
+      2015.0
+    ],
+    [
+      "Huy Mang",
+      2015.0
+    ],
+    [
+      "Khau Chu",
+      2015.0
+    ],
+    [
+      "Song Bung 4",
+      2015.0
+    ],
+    [
+      "Chu Linh And Coc San",
+      2016.0
+    ],
+    [
+      "Dak Lo",
+      2016.0
+    ],
+    [
+      "Coc San",
+      2016.0
+    ],
+    [
+      "Dak Mi 2",
+      2016.0
+    ],
+    [
+      "Nhan Hac",
+      2016.0
+    ],
+    [
+      "Krong No 3",
+      2016.0
+    ],
+    [
+      "Dak Mi 3",
+      2016.0
+    ],
+    [
+      "Nho Que 2",
+      2016.0
+    ],
+    [
+      "Sekaman 1",
+      2016.0
+    ],
+    [
+      "Dak Nong 2",
+      2016.0
+    ],
+    [
+      "Da Nhim Extension",
+      2017.0
+    ],
+    [
+      "Dak Pring",
+      2017.0
+    ],
+    [
+      "Sekaman Xanxay",
+      2017.0
+    ],
+    [
+      "Long Tao",
+      2017.0
+    ],
+    [
+      "Tra Khuc 1",
+      2017.0
+    ],
+    [
+      "Thuan Hoa",
+      2017.0
+    ],
+    [
+      "Thac Mo Extension",
+      2017.0
+    ],
+    [
+      "Yen Son",
+      2017.0
+    ],
+    [
+      "Trung Son",
+      2017.0
+    ],
+    [
+      "Song Lo 6",
+      2018.0
+    ],
+    [
+      "A Lin",
+      2018.0
+    ],
+    [
+      "Sekaman 4",
+      2018.0
+    ],
+    [
+      "Dak Mi 1",
+      2018.0
+    ],
+    [
+      "Alin B1",
+      2019.0
+    ],
+    [
+      "Nam Cum 1, 4, 5",
+      2019.0
+    ],
+    [
+      "Pac Ma",
+      2019.0
+    ],
+    [
+      "Bao Lam 3",
+      2019.0
+    ],
+    [
+      "Nam Pha 5",
+      2020.0
+    ],
+    [
+      "Nam Mo New",
+      2020.0
+    ],
+    [
+      "Nam Cum 2, 3, 6",
+      2020.0
+    ],
+    [
+      "Ialy Extenstion",
+      2020.0
+    ],
+    [
+      "Hoa Binh Extension",
+      2021.0
+    ],
+    [
+      "My Ly",
+      2021.0
+    ],
+    [
+      "Dak Re",
+      2022.0
+    ],
+    [
+      "Hoa Binh Extension",
+      2022.0
+    ],
+    [
+      "Ban Mong (Song Hieu)",
+      2022.0
+    ],
+    [
+      "Phu Tho",
+      2023.0
+    ],
+    [
+      "Bac Ai",
+      2023.0
+    ],
+    [
+      "Bac Ai",
+      2025.0
+    ],
+    [
+      "Tri An Extension",
+      2025.0
+    ],
+    [
+      "Nam Mo New",
+      2026.0
+    ],
+    [
+      "Dong Phu Yen",
+      2028.0
+    ],
+    [
+      "Dong Phu Yen",
+      2029.0
+    ],
+    [
+      "Huoi Tao",
+      2030.0
+    ],
+    [
+      "Dong Phu Yen",
+      2030.0
+    ],
+    [
+      "Don Duong",
+      2030.0
+    ]
+  ],
+  "tool_limit_exceeded": false
+}

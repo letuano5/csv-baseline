@@ -28,6 +28,7 @@ _ENV_PREFIXES: dict[str, str] = {
   "openai": "OPENAI_API_KEY",
   "gemini": "GOOGLE_API_KEY",
   "openrouter": "OPENROUTER_API_KEY",
+  "deepseek": "DEEPSEEK_API_KEY",
 }
 
 _SLEEP_ALL_EXHAUSTED = 360  # 6 minutes when every key is blocked

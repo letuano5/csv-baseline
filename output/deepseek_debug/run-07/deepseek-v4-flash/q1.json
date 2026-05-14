@@ -1,0 +1,2282 @@
+{
+  "question_index": 1,
+  "db_id": "facility_announcements_2025",
+  "question": "Hãy liệt kê những nhân sự chủ chốt đã có đóng góp thực tế trong các công bố chuyên môn là ai?",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a data analyst. You are given a CSV dataset and a question written in Vietnamese.\n\nAnswer the question using the provided data and tools.\n\nOUTPUT FORMAT (required):\n- Your LAST print statement must output ONLY a valid JSON array of arrays.\n- Each inner array is one result row. No column headers.\n- Column order must exactly follow the order requested in the question (for example, if asked \"name then year\", output [name, year], not [year, name]).\n- Empty result: []\n- Single scalar: [[42]]\n- For floating-point values, output with at most 2 decimal places unless the question explicitly requires a different precision.\n- Do NOT print a pandas DataFrame directly — always convert: df.values.tolist()\n- Do NOT print anything before the final JSON result. No df.head(), no df.info(), no intermediate prints.\n- Your response must contain EXACTLY ONE print statement.\n- Use `import json` and print with `print(json.dumps(..., ensure_ascii=False))`.\n- The output must be pure JSON text only; any extra character before `[` or after `]` is invalid.\n\nBAD (do NOT do this):\n    df = pd.read_csv(\"data.csv\")\n    print(df.head())        # ← WRONG\n    result = df.groupby(\"category\")[\"revenue\"].mean().reset_index()\n    print(result.values.tolist())\n\nGOOD:\n    df = pd.read_csv(\"data.csv\")\n    result = df.groupby(\"category\")[\"revenue\"].mean().reset_index()\n    import json\n    print(json.dumps(result.values.tolist(), ensure_ascii=False))\n\n---\nEXAMPLE 1 — aggregation question:\nQuestion: \"Tính doanh thu trung bình theo từng danh mục sản phẩm\"\nCode:\n    import pandas as pd\n    df = pd.read_csv(\"data.csv\")\n    result = df.groupby(\"category\")[\"revenue\"].mean().reset_index()\n    print(result.values.tolist())\nOutput: [[\"Electronics\", 1250.5], [\"Clothing\", 430.0], [\"Food\", 89.75]]\n\nEXAMPLE 2 — filter + select question:\nQuestion: \"Liệt kê tên và tuổi của những nhân viên trên 30 tuổi\"\nCode:\n    import pandas as pd\n    df = pd.read_csv(\"data.csv\")\n    result = df[df[\"age\"] > 30][[\"name\", \"age\"]]\n    print(result.values.tolist())\nOutput: [[\"Alice\", 35], [\"Bob\", 42], [\"Carol\", 31]]\n\nEXAMPLE 3 — single count question:\nQuestion: \"Có bao nhiêu đơn hàng bị hủy?\"\nCode:\n    import pandas as pd\n    df = pd.read_csv(\"data.csv\")\n    count = df[df[\"status\"] == \"cancelled\"].shape[0]\n    print([[count]])\nOutput: [[17]]\n---\n\n---\nTOOL INSTRUCTIONS (supersede the output-format rules above):\n- Use `run_python` to execute Python for exploration and computation. The CSV is at \"data.csv\".\n- You may call `run_python` as many times as needed. Prints inside run_python are for your own exploration — they do NOT need to be JSON.\n- When you have the definitive answer, call `submit_answer` with `result` as an array of arrays.\n- Do NOT embed the final answer in a print statement. Use `submit_answer` exclusively for submission.\n- Format for submit_answer: each inner array is one result row, e.g. [[\"Alice\", 30], [\"Bob\", 25]].\n- Empty result: submit_answer(result=[])\n- Single scalar: submit_answer(result=[[42]])\n\n\n<csv filename=\"facility_announcements_2025.csv\">\n\"stt\",\"số_văn_bản\",\"ngày_công_bố\",\"tên_cơ_sở\",\"địa_chỉ\",\"người_đứng_đầu_phụ_trách_chuyên_môn\",\"số_điện_thoại\",\"công_bố_mới\",\"công_bố_lại\",\"dừng_hoạt_động\",\"ghi_chú\"\n\"1\",\"2502/TB-FLC\",\"13/1/2025.\",\"Công ty cổ phần dược phẩm FPT Long Châu - Địa điểm kinh doanh Trung tâm tiêm chủng Long Châu 156\",\"Số 1 Hùng Nguyên, thị trấn Thường Tín, Thường Tín\",\"Nguyễn Thị Thủy\",\"18006928 0789154255\",\"1\",\"null\",\"null\",\"null\"\n\"2\",\"01/TB-HTP-TCVN\",\"20/1/2025.\",\"Trung tâm tiêm chủng vaccine TCVN - Trực thuộc công ty cổ phần dịch vụ y tế HTP Việt Nam\",\"Số 183 - phố Chùa Thông, phường Sơn Lộc, Sơn Tây\",\"Vi Thị Soan\",\"986808612.0\",\"null\",\"1\",\"null\",\"null\"\n\"3\",\"02/TB-HTP-TCVN\",\"20/1/2025.\",\"Trung tâm tiêm chủng vaccine TCVN - Trực thuộc công ty cổ phần dịch vụ y tế HTP Việt Nam\",\"Số 123 - tiểu khu Phú Mỹ, thị trấn Phú Xuyên, Phú Xuyên\",\"Nguyễn Thị Thu\",\"968518115.0\",\"null\",\"1\",\"null\",\"null\"\n\"4\",\"2504/TB-FLC\",\"04/2/2025.\",\"Công ty cổ phần dược phẩm FPT Long Châu - Địa điểm kinh doanh Trung tâm tiêm chủng Long Châu 168\",\"Số 07-09-11 Bắc Sơn, thị trấn Chúc Sơn, Chương Mỹ\",\"Nguyễn Văn Đạt\",\"18006928 0789154255\",\"1\",\"null\",\"null\",\"null\"\n\"5\",\"3419/TB-TTYT\",\"6/12/2024 (SYT nhận 9/1/2025)\",\"Trạm y tế phường Phú Đô\",\"Tổ dân phố 6, phường Phú Đô, Nam Từ Liêm\",\"Trần Linh Trang\",\"855676898.0\",\"null\",\"1\",\"null\",\"null\"\n\"6\",\"3418/TB-TTYT\",\"6/12/2024 (SYT nhận 8/1/2025)\",\"Trạm y tế phường Mỹ Đình 2\",\"Tổ dân phố 3, phường Mỹ Đình 2, Nam Từ Liêm\",\"Lý Thị Ánh Nguyệt\",\"987676333.0\",\"null\",\"1\",\"null\",\"null\"\n\"7\",\"03/TB-BVHN\",\"2025-10-02 00:00:00\",\"Phòng tiêm chủng trực thuộc Chi nhánh Công ty Cổ phần Bệnh viện Hữu nghị quốc tế Hà Nội-Bệnh viện Hữu nghị quốc tế Hà Nội\",\"68-72 đường Tây Mỗ, TDP Phượng, phường Tây Mỗ, NTL\",\"Đỗ Văn Dũng\",\"976062938.0\",\"null\",\"1\",\"null\",\"null\"\n\"8\",\"01/TB-FUFUVAC\",\"2025-11-02 00:00:00\",\"Trung tâm tiêm chủng chất lượng cao FUFU VAC\",\"513 Hà Huy Tập, xã Yên Viên, Gia Lâm\",\"Nguyễn Hà Phương\",\"838039966.0\",\"null\",\"1\",\"null\",\"null\"\n\"9\",\"2508/TB-FLC\",\"11/2/2025.\",\"Công ty cổ phần dược phẩm FPT Long Châu - Địa điểm kinh doanh Trung tâm tiêm chủng Long Châu 161\",\"Số 39 đường Tây cao tốc, thôn Bầu, xã Kim Chung, Đông Anh\",\"Phạm Đức Giang\",\"18006928 0789154255\",\"1\",\"null\",\"null\",\"null\"\n\"10\",\"02/TB/SV-2025\",\"03/1/2025.\",\"Trung tâm tiêm chủng vắc xin dịch vụ VIETCARE\",\"Lô TT56-TT57 khu đấu giá Ngũ Hiệp, xã Tứ Hiệp, Thanh Trì\",\"Nguyễn Quang Nam\",\"934489899.0\",\"null\",\"1\",\"null\",\"null\"\n\n</csv>\n\nDATASET: facility_announcements_2025\nDELIMITER: ','  |  ENCODING: 'utf-8'\nCOLUMNS: stt, số_văn_bản, ngày_công_bố, tên_cơ_sở, địa_chỉ, người_đứng_đầu_phụ_trách_chuyên_môn, số_điện_thoại, công_bố_mới, công_bố_lại, dừng_hoạt_động, ghi_chú\nNOTE: Only the first 10 rows of this CSV are provided. The full dataset may contain more rows.\n\nDATASET-AWARE RULES (must follow):\n- Parse date columns before filtering/sorting: ngay_cong_bo.\n- Cast numeric columns with pd.to_numeric(errors='coerce'): stt.\n- Treat these as boolean-like flags (0/1): cong_bo_lai, cong_bo_moi, dung_hoat_dong.\n- These may look numeric but are text in many rows; convert carefully only when needed: so_dien_thoai.\n- High-missing columns: cong_bo_lai, cong_bo_moi, dung_hoat_dong, ghi_chu, ghi_chu_ngay_cong_bo, ngay_syt_nhan. Handle null/empty explicitly.\n"
+    },
+    {
+      "role": "user",
+      "content": "EXTERNAL KNOWLEDGE (important — use this to interpret the question correctly):\n'Nhân sự chủ chốt' trong ngữ cảnh này được hiểu là 'người đứng đầu phụ trách chuyên môn'; 'đóng góp thực tế' được định nghĩa là có tổng số lượng công bố mới và công bố lại từ 1 trở lên.\n\nQUESTION: Hãy liệt kê những nhân sự chủ chốt đã có đóng góp thực tế trong các công bố chuyên môn là ai?"
+    },
+    {
+      "tool_calls": [
+        {
+          "id": "call_00_6XHkfA2ZCAqCMb5zcpIY3736",
+          "function": {
+            "arguments": "{\"code\": \"import pandas as pd\\ndf = pd.read_csv(\\\"data.csv\\\")\\nprint(df.columns.tolist())\\nprint(df.shape)\\nprint(df.head(20))\\nprint(\\\"---\\\")\\nprint(df.dtypes)\\n\"}",
+            "name": "run_python"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "content": "",
+      "role": "assistant",
+      "reasoning_content": "Let me understand the question:\n\n- \"Nhân sự chủ chốt\" = \"người đứng đầu phụ trách chuyên môn\" (column: người_đứng_đầu_phụ_trách_chuyên_môn)\n- \"đóng góp thực tế\" = có tổng số lượng công bố mới (công_bố_mới) và công_bố_lại từ 1 trở lên.\n- Essentially, I need to find people whose total of (công_bố_mới + công_bố_lại) >= 1.\n\nLet me explore the data first."
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_00_6XHkfA2ZCAqCMb5zcpIY3736",
+      "content": "['stt', 'số_văn_bản', 'ngày_công_bố', 'tên_cơ_sở', 'địa_chỉ', 'người_đứng_đầu_phụ_trách_chuyên_môn', 'số_điện_thoại', 'công_bố_mới', 'công_bố_lại', 'dừng_hoạt_động', 'ghi_chú']\n(1081, 11)\n    stt      số_văn_bản  ... dừng_hoạt_động ghi_chú\n0     1     2502/TB-FLC  ...            NaN     NaN\n1     2  01/TB-HTP-TCVN  ...            NaN     NaN\n2     3  02/TB-HTP-TCVN  ...            NaN     NaN\n3     4     2504/TB-FLC  ...            NaN     NaN\n4     5    3419/TB-TTYT  ...            NaN     NaN\n5     6    3418/TB-TTYT  ...            NaN     NaN\n6     7      03/TB-BVHN  ...            NaN     NaN\n7     8   01/TB-FUFUVAC  ...            NaN     NaN\n8     9     2508/TB-FLC  ...            NaN     NaN\n9    10   02/TB/SV-2025  ...            NaN     NaN\n10   11      01/TB-TTTC  ...            NaN     NaN\n11   12        24/CV-BV  ...            NaN     NaN\n12   13     2520/TB-FLC  ...            NaN     NaN\n13   14   001/TTTC103QO  ...            NaN     NaN\n14   15     79/TB-BVNHN  ...            NaN     NaN\n15   16       01/TB-GSP  ...            NaN     NaN\n16   17       84/CV-GVN  ...            NaN     NaN\n17   18       86/CV-GVN  ...            NaN     NaN\n18   19    15/CTCPYTNTL  ...            NaN     NaN\n19   20    16/CTCPYTNTL  ...            NaN     NaN\n\n[20 rows x 11 columns]\n---\nstt                                      int64\nsố_văn_bản                                 str\nngày_công_bố                               str\ntên_cơ_sở                                  str\nđịa_chỉ                                    str\nngười_đứng_đầu_phụ_trách_chuyên_môn        str\nsố_điện_thoại                              str\ncông_bố_mới                            float64\ncông_bố_lại                            float64\ndừng_hoạt_động                         float64\nghi_chú                                    str\ndtype: object"
+    },
+    {
+      "tool_calls": [
+        {
+          "id": "call_00_gzsuOMWAPtVCbNq4p7uw4131",
+          "function": {
+            "arguments": "{\"code\": \"import pandas as pd\\ndf = pd.read_csv(\\\"data.csv\\\")\\nprint(\\\"công_bố_mới unique values:\\\", df['công_bố_mới'].unique())\\nprint(\\\"công_bố_lại unique values:\\\", df['công_bố_lại'].unique())\\nprint(\\\"---\\\")\\nprint(df['công_bố_mới'].value_counts().head(20))\\nprint(\\\"---\\\")\\nprint(df['công_bố_lại'].value_counts().head(20))\\nprint(\\\"---\\\")\\n# Check the condition: those with either công_bố_mới == 1 or công_bố_lại == 1\\n# \\\"đóng góp thực tế\\\" = có tổng số lượng công bố mới và công bố lại từ 1 trở lên\\n# So: công_bố_mới + công_bố_lại >= 1\\ndf['total_contrib'] = df['công_bố_mới'].fillna(0) + df['công_bố_lại'].fillna(0)\\nqualified = df[df['total_contrib'] >= 1]\\nprint(\\\"Qualified rows:\\\", len(qualified))\\nprint(qualified[['người_đứng_đầu_phụ_trách_chuyên_môn', 'công_bố_mới', 'công_bố_lại', 'total_contrib']].head(20))\\nprint(\\\"---\\\")\\n# List unique qualified people\\nprint(\\\"Unique qualified people:\\\", qualified['người_đứng_đầu_phụ_trách_chuyên_môn'].unique().tolist())\\nprint(\\\"Count:\\\", qualified['người_đứng_đầu_phụ_trách_chuyên_môn'].nunique())\\n\"}",
+            "name": "run_python"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "content": "",
+      "role": "assistant",
+      "reasoning_content": "Let me look at the columns công_bố_mới and công_bố_lại to understand their values."
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_00_gzsuOMWAPtVCbNq4p7uw4131",
+      "content": "công_bố_mới unique values: [ 1. nan]\ncông_bố_lại unique values: [nan  1.]\n---\ncông_bố_mới\n1.0    705\nName: count, dtype: int64\n---\ncông_bố_lại\n1.0    362\nName: count, dtype: int64\n---\nQualified rows: 1067\n   người_đứng_đầu_phụ_trách_chuyên_môn  công_bố_mới  công_bố_lại  total_contrib\n0                      Nguyễn Thị Thủy          1.0          NaN            1.0\n1                          Vi Thị Soan          NaN          1.0            1.0\n2                       Nguyễn Thị Thu          NaN          1.0            1.0\n3                       Nguyễn Văn Đạt          1.0          NaN            1.0\n4                      Trần Linh Trang          NaN          1.0            1.0\n5                    Lý Thị Ánh Nguyệt          NaN          1.0            1.0\n6                          Đỗ Văn Dũng          NaN          1.0            1.0\n7                     Nguyễn Hà Phương          NaN          1.0            1.0\n8                       Phạm Đức Giang          1.0          NaN            1.0\n9                     Nguyễn Quang Nam          NaN          1.0            1.0\n10                      Đào Hồng Chinh          NaN          1.0            1.0\n11                   Nguyễn Phương Mai          NaN          1.0            1.0\n12                 Hoàng Thị Diệu Linh          1.0          NaN            1.0\n13                      Phạm Xuân Hiền          NaN          1.0            1.0\n14                      Ngô Quang Hùng          1.0          NaN            1.0\n15                     Nguyễn Hữu Thủy          1.0          NaN            1.0\n16                    Nguyễn Hoàng Lan          1.0          NaN            1.0\n17                   Trần Thị Liên Hoa          NaN          1.0            1.0\n18                        Trần Thị Yến          NaN          1.0            1.0\n19                         Đỗ Thị Loan          NaN          1.0            1.0\n---\nUnique qualified people: ['Nguyễn Thị Thủy', 'Vi Thị Soan', 'Nguyễn Thị Thu', 'Nguyễn Văn Đạt', 'Trần Linh Trang', 'Lý Thị Ánh Nguyệt', 'Đỗ Văn Dũng', 'Nguyễn Hà Phương', 'Phạm Đức Giang', 'Nguyễn Quang Nam', 'Đào Hồng Chinh', 'Nguyễn Phương Mai', 'Hoàng Thị Diệu Linh', 'Phạm Xuân Hiền', 'Ngô Quang Hùng', 'Nguyễn Hữu Thủy', 'Nguyễn Hoàng Lan', 'Trần Thị Liên Hoa', 'Trần Thị Yến', 'Đỗ Thị Loan', 'Nguyễn Phương Trung', 'Lê Thị Mười', 'Nguyễn Thu Trang', 'Nguyễn Văn Thường', 'Vũ Quang Sơn', 'Hà Duy Dương', 'Vũ Quang Hiển', 'Nguyễn Thanh Khoa Vy', 'Lê Thị Dung', 'Nguyễn Bạch Điệp', 'Nguyễn Duy Ánh', 'Vũ Ngọc Trung', 'Đào Xuân Cơ', 'Đinh Thị Uyên', 'Nguyễn Đức Tú', 'Đặng Hữu Bá', 'Đặng Thanh Nhàn', 'Lê Đức Toàn', 'Nguyễn Thuỳ Nga', 'Nguyễn Thị Nga', 'Nguyễn Thị Riên', 'Nguyễn Văn Sang', 'Lưu Thị Dung', 'Đỗ Thị Phượng', 'Vũ Mạnh Cường', 'Nguyễn Phong Lưu', 'Tạ Thị Lý', 'Hà Thị Tú', 'Nguyễn Minh Tạo', 'Vương Thị Hợi', 'Nguyễn Thị Yên', 'Trần Đình Thân', 'Nguyễn Văn Khoản', 'Tô Xuân Sinh', 'Ngô Thị Kim Tuyến', 'Dương Thế Vinh', 'Hoàng Thị Mai Dung', 'Trần Văn Đại', 'Khuất Thị Thu Nguyệt', 'Vương Trung Kiên', 'lê Thị Phương Anh', 'Đinh Thị Yến', 'Dương Chí Chung', 'Lường Công Thức', 'Bùi Thanh Hải', 'Nguyễn Thị Phượng', 'Nguyễn Thế Anh', 'Nguyễn Quang Huy', 'Đào Thị Hiền', 'Nguyễn Tiến Đạt', 'Nguyễn Văn Tiến', 'Lê Thị Kim Thanh', 'Nguyễn Viết Mạnh', 'Nguyễn Danh Phương', 'Nguyễn Văn Khương', 'Nguyễn Thị Phương Lâm', 'Hoàng Thị Tuyền', 'Đỗ Phương Đông', 'Phạm Thị Minh', 'Đinh Thị Hồng Hoa', 'Đào Văn Thưởng', 'Nguyễn Hải Đăng', 'Phạm Thị Minh Phương', 'Vũ Danh Tài', 'Nguyễn Thị Phương Hiền', 'Kiều Doãn Nghĩa', 'Nguyễn Quang Vinh', 'Đinh Thị Thanh', 'Trương Thị Hằng', 'Đồng Đạo Khánh', 'Lưu Đức Hướng', 'Nguyễn Thị Phương Lan', 'Hoàng Thị Minh Huệ', 'Nguyễn Thị Minh Tâm', 'Trịnh Thị Kiện', 'Nguyễn Văn Chung', 'Nguyễn Thị Hòa', 'Nguyễn Thị Vân', 'Vũ Tiến Hải', 'Vũ Thị Phước', 'Nguyễn Anh Thành', 'Vũ Thị Thanh Hương', 'Phùng Xuân Thạch', 'Trần Thị Phượng', 'Nghiêm Thị Thanh Xuân', 'Phạm Thị Kim Thoa', 'Đặng Thị Nhâm', 'Trịnh Tuấn Hưng', 'Dương Văn Khương', 'Phạm Thị Yến', 'Phạm Thị Luyến', 'Trần Thị Minh Lý', 'Vũ Thị Thu Thuỷ', 'Phạm Quang Vi', 'Đồng Thị Thuỷ', 'Trần Thị Mai', 'Nguyễn Linh Trang', 'Phạm Thị Hải Yến', 'Nguyễn Thanh Sơn', 'Kiều Thị Bích Thúy', 'Hoàng Văn Tự', 'Nguyễn Huy Đại', 'Trần Thị Kim Ngân', 'Nguyễn Hoàng Hiệp', 'Vũ Hoàng Hải', 'Phạm Văn Phán', 'Vũ Thị Thùy', 'Ngô Văn Thuân', 'Nguyễn Đức Tiến', 'Phạm Thị Hiền', 'Phùng Thế Tài', 'Hoàng Lệ Thi', 'Nguyễn Thị Tuyết Nhung', 'Nguyễn Phương Trường', 'Trần Đình Thư', 'Đinh Thị Lũy', 'BS. Lê Trung Tiên', 'BS. Cao Văn Giao', 'BS. Nguyễn Văn Tuyển', 'BS. Phạm Văn Dũng', 'BS. Ngô Thanh Hào', 'Hoàng Hữu Huy', 'Phan Thị Thu Hà', 'Phạm Thị Anh Đào', 'Nguyễn Thị Thuý', 'YS Nguyễn Thị Thanh Thảo', 'BS Nguyễn Thị An Khang', 'YS Trương Thị Minh Thư', 'Nguyễn Thị Huệ', 'Nguyễn Thị Thắng', 'Nguyễn Thị Tâm', 'Đỗ Thị Thu Hương', 'Lê Văn Thiện', 'Nguyễn Tiến Ánh', 'Nguyễn Văn Khanh', 'Vũ Anh Phương', 'Nguyễn Thị Ngà', 'Nguyễn Thị Huyền', 'Bác sỹ Nguyễn Xuân Tính', 'Nguyễn Văn Thanh', 'Nguyễn Hoàng Văn', 'Nguyễn Đức Trại', 'Nguyễn Văn Mạnh', 'Nguyễn Thị Mai', 'Nguyễn Hải Phong', 'Lưu Thị Loan', 'Nguyễn Thị Mai Hương', 'Phạm Thị Ít Lan', 'Nguyễn Thắng Sơn', 'Nguyễn Đức Anh', 'Thạc sỹ.Bs Phạm Đăng Quân', 'Bác sỹ Nguyễn Thị Huyền Trang', 'Bác sỹ Phạm Văn Hữu', 'Khánh Thị Việt Hà', 'Đỗ Song An', 'Nguyễn Thị Chuyên', 'Nguyễn Thị Liên', 'Đỗ Duy Dương', 'Nguyễn Huyền Trang', 'Đỗ Duy Toàn', 'Bùi Tiến Phương', 'Nguyễn Thu Hương', 'Phạm Thị Xuân Hoài', 'Phạm Quỳnh Trang', 'Lê Thị Hạnh', 'Trần Thị Mai Hương', 'Nguyễn Thị Vượng', 'Nguyễn Thị Diệu Hợp', 'Nguyễn Thị Lan Anh', 'Nguyễn Quang Hải', 'Nguyễn Thị Ánh', 'Ngô Thị Thu Hiền', 'Nguyễn Văn Thắng', 'Nguyễn Thị Thắm', 'Bùi Thị Ánh Tuyết', 'Ngô Văn Nguyên', 'Đinh Khánh Ly', 'Nguyễn Gia Phúc', 'Đặng Thành Luân', 'Nguyễn Trung Hậu', 'Nguyễn Thị Thu Thủy', 'Phạm Thị Thư', 'Đặng Thị Thuận', 'Trần Văn Toanh', 'Nguyễn Văn Năm', 'Y sỹ Mai Thị Nguyệt', 'Bác sỹ Đinh Tiến Diện', 'Y sỹ Nguyễn Thị Kiều Oanh', 'Bác sỹ Nguyễn Xuân Bình', 'Y sỹ Nguyễn Thị Lý', 'Lê Thành Văn', 'Đặng Đình Sáng', 'Nguyễn Văn Ánh', 'Nguyễn Văn Sơn', 'Nguyễn Đăng Minh', 'Dương Văn Công', 'Vũ Văn Hiển', 'Cao Thị Mỹ Nga', 'Đào Văn Vinh', 'Lê Thị Huyền', 'Nguyễn Văn Oánh', 'Bs Hoàng Bích Thuỷ', 'Bs Hoàng Xuân Tùng', 'Bs Vũ Thị Hải', 'Ngô Bá Phương', 'Lê Thị Chuốt', 'Đoàn Thanh Thủy', 'Nguyễn Thị Bích Hòa', 'Phạm Thị Mừng', 'Phùng Xuân Diễn', 'Lê Hải Ninh', 'Nguyễn Thị Ánh Nguyệt', 'Ngô Thị Mỳ', 'Phạm Thị Quyên', 'Chu Thị Thanh', 'Nguyễn Thuỳ Linh', 'Nguyễn Thị Hải', 'Lưu Xuân Thắng', 'Nguyễn Thị Quyên', 'Phạm Quang Hải', 'Nguyễn Mạnh Trâm', 'Nguyễn Thị Kim Ngân', 'Tô Thị Lan', 'Phạm Thị Hoài Anh', 'Nguyễn Thị Minh Cảnh', 'Trần Văn Lâm', 'Bác sỹ Đỗ Anh Tuấn', 'Y sỹ Lương Thị Ngọc', 'Hoàng Lưu Sa', 'Trần Sỹ Quảng', 'Phù Xuân Đương', 'Nguyễn Thị Tuyết Hải', 'Nguyễn Văn Hoà', 'Nguyễn Trọng Bính', 'Phùng Văn Việt', 'Nguyễn Văn Thiệu', 'Quách Gia Định', 'Phùng Thị Liên', 'Đỗ Văn Vân', 'Ngô Tiến Thịnh', 'Phạm Thị Lan', 'Bùi Thanh Tịnh', 'Nguyễn Thu Thủy', 'Nguyễn Văn Nội', 'Nguyễn Thị Thanh Thuỷ', 'Lê Ngọc Ánh', 'Lê Thị Lộc', 'Hoàng Thị Thanh', 'Nguyễn Mạnh Tưởng', 'Nguyễn Mạnh Liên', 'Nguyễn Thành Minh', 'Vương Thị Kim Lan', 'Bùi Văn Thanh', 'Trần Thị Hường', 'Nguyễn Thị Biên', 'Nguyễn Thị Khánh Huyền', 'Nguyễn Thị Hậu', 'Đỗ Thu Thuỷ', 'Mai Thị Tuyết Vân', 'Nguyễn Tuấn Quang', 'Nguyễn Văn Tuấn', 'Phùng Văn Hưởng', 'Nguyễn Xuân Lộc', 'Khuất Quang Tuyển', 'Khuất Duy Tuân', 'Nguyễn Hữu Tuệ', 'BS. Lê Đức Tuyên', 'BS. Đỗ Văn Thảo', 'BS. Trần Trọng Thắng', 'BS. Đàm Thị Mai Hoa', 'Ys. Nguyễn Ngọc Quý', 'BS. Nguyễn Thị Bản', 'Ys. Dương Thị Lịch', 'Nguyễn Quang Cần', 'Phí Thị Hằng', 'Nguyễn Thị Hồng Hạnh', 'Nguyễn Quang Hưng', 'Nguyễn Thị Luận', 'Chu Văn Tuấn', 'Dương Văn Huân', 'Kiều Thị Giang', 'Vương Thị Thủy', 'Nguyễn Minh Phúc', 'Phan Thị Minh Anh', 'Cao Nam Thắng', 'Hoàng Văn Tuyến', 'Nguyễn Xuân Hương', 'BSCKI. Phan Thị Long Hoa/ BSYHCT. Nguyễn Trà My', 'Nguyễn Đình Túc', 'Bùi Văn Linh', 'Đinh Công Toàn', 'Phan Thị Bẩy', 'Phạm Thị Thu Huyền', 'Lê Xuân Hùng', 'Nguyễn Thị Hồng', 'Nguyễn Anh Tuấn', 'Lê Thị Lâm', 'Hoàng Yến', 'Cấn Thị Vân', 'Hoàng Thị Thu Màn', 'Phạm Thị Quỳnh Thư', 'Phùng Thị Khánh', 'Nguyễn Thanh Nhàn', 'Nguyễn Thế Hanh', 'Lê Văn Thành', 'Y sỹ Phạm Minh Tiến', 'Bác sỹ Nguyễn Công Đạt', 'Bác sỹ Nguyễn Thị Nhâm', 'Nguyễn Thị Thơ', 'Lê Thanh Nhã', 'Nguyễn Thị Ngọc Lan', 'Nguyễn Hữu Giáp', 'Mai Thị Hồng Diệp', 'Nguyễn Mạnh Hùng', 'Nguyễn Văn Bao', 'Nguyễn Thị Loan', 'Nguyễn Thị Mỹ Hạnh', 'Nguyễn Tuấn Hạnh', 'Nguyễn Văn Việt', 'Đặng Văn Thanh', 'Nguyễn Thị Giang', 'Phùng Thị Nguyên', 'Nguyễn Thị Dung', 'Nguyễn Thị Nguyệt', 'BSCK II Trần Quang Tuấn', 'BS Nguyễn Thị Thanh Huyền', 'BS Vương Trí Hồng', 'BS Nguyễn Đình Lịch', 'BS Nguyễn Quố Quân', 'Bs Nguyễn Văn Hảo', 'Lê Văn Đáp', 'Nguyễn Thị Thuấn', 'Nguyễn Thanh Tâm', 'Nguyễn Thị Luyến', 'Lê Thị Yến', 'Nguyễn Mạnh Cường', 'Chu Bá Sỹ', 'Dương Thị Thu Trang', 'Trần Xuân Đông', 'Nguyễn Văn Khâm', 'Lương Quốc Chung', 'Lê Thị Hải Hương', 'Nguyễn Kiên Cường', 'Nguyễn Đức Trung', 'Kiều Xuân Tiệp', 'Phan Thị Bích Liên', 'Nguyễn Thị Lan', 'Lê Thanh Hà', 'Chu Thị Hương', 'Đồng Thị Lan', 'Phạm Hà Giang', 'BSCKII Nguyễn Văn Tý', 'BS Nguyễn Hồng Nhung', 'Trần Thị Ngân', 'Nguyễn Xuân Hải', 'Phùng Thị Bích Niên', 'Đinh Thị Hoan', 'Phùng Văn Dực', 'Nguyễn Thi Hào', 'Dương Thị Hồng Nhung', 'Hoàng Văn Bằng', 'Nguyễn Thị Mỹ Hòa', 'Nguyễn Giáp Oán', 'Vũ Văn Hiên', 'Hoàng Thị Giang', 'Đặng Đình Thực', 'BS Trương Vũ Linh', 'Bác sỹ Nguyễn Thị Mỹ', 'Bác sỹ. Phí Mạnh Dũng', 'Bác sỹ Lê Xuân Đức', 'Nguyễn Tiến Dũng', 'Đỗ Văn Chiến', 'Vũ Thị Hảo', 'Dương Văn Huệ', 'Nguyễn Xuân Thát', 'Vũ Thị Thuỷ', 'Loan Thị Hồng Mai', 'Quách Mạnh Khánh', 'Nguyễn Hùng Cường', 'Nguyễn Thị Lan Hương', 'Phạm Thanh Hải', 'Lê Minh Đức', 'Nguyễn Thị Thu Hà', 'Nguyễn Kiều Hương', 'Ngô Thị Hải', 'Nguyễn Thị Hằng', 'Lương Minh Hồng', 'Nguyễn Thị Khang', 'Nguyễn Tùng Sơn', 'Lương Thị Thanh Phong', 'Đặng Thị Thanh Hà', 'Nguyễn Thị Hằng Thúy', 'Nguyễn Thị Hồng Sâm', 'Đỗ Thị Nam', 'Hy Việt Anh', 'Ngô Thanh Thủy', 'ThS Bác sỹ. Lưu Văn Báu', 'Bs Lê Quang Trung', 'BS Trần Văn Dân', 'Lê Chí Đệ', 'Nguyễn Văn Sửu', 'Dương Ngọc Huân', 'Cao Văn Huyên', 'Phùng Xuân Thịnh', 'Bác sĩ Phù Vĩnh Thắng', 'Nguyễn Thị Thu Phương', 'Trần Công Năng', 'Lê Doãn Mạnh', 'Trần Thị Nga', 'Nguyễn Trung Dũng', 'Nguyễn Thị Uyên', 'Trần Ngọc Nghĩa', 'Nguyễn Thị Hoa', 'Tô Thị Tuyết', 'Tạ Văn Chính', 'Dương Thị Chỉnh', 'Nguyễn Minh Sơn', 'Dương Mạnh Hùng', 'Nguyễn Đình Quân', 'Nguyễn Xuân Hùng', 'Trịnh Duy Đà', 'Trần Văn Khôi', 'Ngô Trung Quyết', 'Tống Văn Hùng', 'Phùng Thị Luyến', 'Nguyễn Việt Phương', 'Hoàng Ánh Hồng', 'Nguyễn Thu Huyền', 'Nguyễn Thu Hà', 'Nguyễn Văn Hiếu', 'Bác sĩ Đào Bá Tuệ', 'Đỗ Thị Ngọc', 'Cao Thành Đạt', 'Phạm Thị Mai Hoa', 'Đinh Thị Mai Hoa', 'Nguyễn Đức Dương', 'Vũ Thị Sơn', 'Tiêu Ngọc Chiến', 'Lại Ngọc Long', 'Bùi Như Hồng', 'Trần Thị Chi', 'Nguyễn Quỳnh Trang', 'Lê Thị Lan', 'Nguyễn Phương Thúy', 'Nguyễn Tường Phượng', 'Nguyễn Đăng Xuân', 'Đặng Thị Kim Oanh', 'Nguyễn Thị Thúy', 'Ân Thành Đặt', 'Vũ Thị Thu Hòa', 'Nguyễn Thanh Nga', 'Ngô Tuyết Thanh', 'Đinh Ngọc Phát', 'Ngô Thị Vịnh', 'Phạm Thị Sáu', 'Đoàn Thị Thúy Liên', 'Đỗ Thùy Dung', 'Trần Phương Mỹ', 'Nguyễn Xuân Đồng', 'Trần Thị Nhinh', 'Hoàng Trọng Luân', 'Nguyễn Ngọc Chiến', 'Trần Văn Huyên', 'Nguyễn Thị Mai Hoa', 'Nguyễn Thị Nhung', 'Nguyễn Văn Nhâm', 'Quách Thị Hảo', 'BSCK II Trương Kỳ Phong', 'CN Nguyễn Tiến Chương', 'BS Vũ Mạnh Cường', 'BS Nguyễn Thị Nga', 'Y sỹ Trần Đình Thân', 'BS Nguyễn Thị Riên', 'BS Lưu Thị Dung', 'BS Nguyễn Văn Sang', 'BS Đỗ Thị Phượng', 'Bùi Thị Hoa', 'Nguyễn Thị Lưỡng', 'Vũ Văn Thủy', 'Lê Phú Trùy', 'Nguyễn Sĩ Mạnh', 'Trần Xuân Nam', 'Vũ Thị Huệ', 'Vũ Thị Hoà', 'Trần Quyết Chiến', 'Nguyễn Thị Hồng Hà', 'Nguyễn Quang Trung', 'Nguyễn Thị Sáu', 'Vũ Xuân Tình', 'Cao Văn Nghị', 'Nguyễn Thị Thanh Loan', 'Trần Thị Thanh Huyền', 'Trần Thị Hiển', 'Trần Thị Ngọc Anh', 'Lê Thị Luyến', 'Nguyễn Thị Hà', 'Phạm Văn Quang', 'Nguyễn Văn Quang', 'Nguyễn Danh Đông', 'Nguyễn Thị Thành', 'Nguyễn Hoàng Huyên', 'Nguyễn Văn Bằng', 'Đinh Ngọc Lương', 'Ngô Xuân Tú', 'Bác sỹ Đỗ Văn Siêng', 'Y sỹ Dương Thế Vinh', 'Y sỹ Hoàng Mai Ngạn', 'Cử nhân YTCC Ngô Thị Kim Tuyến', 'Bác sỹ Nguyễn Thị Nga', 'Bác sỹ dự phòng Lê Hữu Thắng', 'Y sỹ Doãn Thị Xuyến', 'Phùng Văn Hai', 'Y sỹ Dương Thị Liên', 'Y sỹ Nguyễn Thanh Lịch', 'Y sỹ Nguyễn Thị Hồng Hạnh', 'Bác sỹ Trịnh Đắc Chung', 'Bác sỹ Trần Xuân Bang', 'Đỗ Thị Hiền', 'Khuất Thị Hồng Nhung', 'Hà Thị Thùy Ngân', 'Hoàng Thị Hạnh', 'Vũ Tuấn Anh', 'Lương Ngọc Ánh', 'Tô Tiến Quang', 'Lê Thị Thoa', 'Dương Thị Bích', 'Nguyễn Thị Hoài', 'Nghiêm Thị Dịu', 'Nguyễn Chí Thành', 'Trần Huy Long', 'Trần Thị The', 'Nguyễn Thị Thanh Hương', 'Nguyễn Thị Minh Phương', 'Nguyễn Việt Duy', 'Nguyễn Mai Lan', 'Cao Hải Yến', 'Đỗ Đăng Sơn', 'Bùi Trí Thuật', 'Bác sỹ: Nguyễn Thị Hòa', 'Bác sỹ: Ngô Thị Hoàn', 'Nguyễn Tiến Trọng', 'Lê Văn Thuỳ', 'Đặng Hữu Hoằng', 'Lương Thị Hường', 'Đặng Huy Định', 'Trần Văn Hay', 'Lương Văn Phú', 'Nguyễn Văn Thơ', 'Phạm Thị Ngọc Bảo', 'Bs. Trần Phạm Thái', 'Bs. Trần Thị Hoa', 'Nguyễn Hải Kiên', 'Bùi Mạnh Kiên', 'Nguyễn Thị Thu Hiền', 'Trần Thị Hương', 'Đỗ Thị Nhàn', 'Trần Ngọc Luân', 'Nguyễn Thị Hoa Hiên', 'Trần Thị Vân Khánh', 'Lê Văn Thắng', 'Nguyễn Thị Hương Giang', 'Nguyễn Văn Xít', 'Lê Thị Mai Hương', 'Nguyễn Đăng Hiếu', 'Nguyễn Thị Thuý Hà', 'Vũ Thị Tuệ', 'Vũ Thị Hương Giang', 'Lê Thị Hiển', 'Đặng Hồng Châu', 'Nguyễn Văn Dũng', 'Nguyễn Thị Lệ Thúy', 'Bùi Thị Hồng Phượng', 'Đặng Thị Nhung', 'Ngô Văn Chuẩn', 'Nguyễn Văn Đô', 'Trần Thị Hoa', 'Hoàng Gia Vinh', 'Nguyễn Viết Phương', 'Trương Thúy Quỳnh', 'Đỗ Thị Vân', 'Dương Văn Minh', 'Phí Ngọc Yến Nhi', 'Lương Thị Thuý Tình', 'Hà Thị Phượng', 'Đỗ Xuân Tùng', 'Phương Thị Mai Hương', 'Nguyễn Quốc Thưởng', 'Lê Thị Kim Ngân', 'Trần Mạnh Thắng', 'Đỗ Xuân Thành', 'Nguyễn Thị Thảo', 'Trần Quang Trịnh/ Tạ Ngọc Phương', 'Trần Quang Trịnh/ Phạm Thị Lan Anh', 'GS.TS. Nguyễn Viết Tiến', 'Dương Ngọc Bích', 'Vương Thị Phương', 'Phan Văn Chuyên', 'Nguyễn Thị Hạnh', 'Hoàng Hữu Tính', 'Nguyễn Thị Lý', 'Nguyễn Thị Thanh Huyền', 'Phan Ngọc Lan', 'Trần Ngọc Anh', 'Nguyễn Hoàng Loan', 'Đỗ Như Chinh', 'Nguyễn Thị Thòa', 'Nguyễn Thị Thúy Hằng', 'Nguyễn Thị Ngọc', 'Phạm Hồng Phong', 'Nguyễn Thị Tố Chinh', 'Nguyễn Thị Kiều Loan', 'Nguyễn Trung Hiếu', 'Mattias EriK Larsson', 'Trần Minh Tân', 'Hoàng Thị Mai Phương', 'Đào Hồng Chỉnh', 'Vương Thị Thu Hường', 'Nguyễn Tiến Cương', 'Cao Thị Hà Ngân', 'Lê Thị Kim Hoa', 'Lê Thị Kim Hoa/Đinh Thị Toàn', 'Lê Thị Kim Hoa/Chu Thị Hoa', 'Ngô Phi Phương', 'Nguyễn Văn Nguyên', 'Nguyễn Đăng Hiển/Nguyễn Thị Dương Hiền', 'Nguyễn Đăng Hiển/Nguyễn Đình Kim', 'Đặng Trung Kiên', 'Hoàng Thảo Ly', 'Lê Thị Thư', 'Nguyễn Hồng Khải', 'Hoàng Tiến Tuyên', 'Phạm Phú Đạo/Trần Thị Hậu', 'Nguyễn Minh Tuấn', 'Trần Thị Tuyết Hậu', 'Nguyễn Tiến Trung', 'Lại Vân Anh', 'Kiều Xuân Sang', 'Trần Hùng Mạnh', 'Lê Kiến Ngãi', 'Đỗ Hồng Quang', 'Nguyễn Trung Chính', 'Erwan Daniel guillaume debuc', 'Khuất Đình Lư', 'Lê Thanh Cường', 'Trinh Duy Ưng', 'Đặng Thị Ngọc Hà', 'Lê Hữu Song/Trần Thanh Hương', 'Vũ Thị Bích Huyền', 'Bùi Thị Bích Thảo', 'Nguyễn Thị Như Quỳnh', 'Lê Thị Ngọc Anh', 'Nguyễn Thị Thoi', 'Nguyễn Văn Quảng', 'Nguyễn Quang Thắng', 'Lê Thị Thanh Xuân', 'Bùi Thị Oanh', 'TS.BS. Nguyễn Đức Hoan', 'TS.BS. Nguyễn Phạm Ý Nhi', 'Trần Văn Nhất', 'BSCKII Tạ Văn Sứng', 'Bùi Ánh Ngọc', 'Lê Thị Chín', 'Phí Thị Phượng', 'Lương Hồng Nhị', 'Nguyễn Việt Hùng', 'Phạm Hữu Thường', 'Đậu Thu Huyền', 'Phạm Thị Ánh Nguyệt', 'PGS.TS.BS. Hoàng Gia Du', 'TS.BS. Bùi Ngọc Minh', 'Nguyễn Văn Cường', 'Phùng Thị Huề', 'Nguyễn Thị Đông', 'Đào Thị Thuỷ', 'Nguyễn Quang Toản', 'Trịnh Thị Thảo', 'Đỗ Thị Bích Hạnh', 'Tạ Thị Dung', 'Cấn Hoàng Kim', 'Nguyễn Thùy Chinh', '024.668.92595 0359022909', '02871026595 0972087658', '02438824666 0903163335', '0913167722', '0974.167.895', '0243.8272075', '0919569955', '0987.669.578', '0985789236', '0964727766', '0986436783', '0967.858.929', '0906.035.999', '0989.384.858', '0356.316.354', '0936.109.235', '0977.783.975', '0399614673', '0344551621', '0906508818', '0971398142', '0972471682', '0974825172', '0977962711', '0912440355', '0971683866', '024.3975.3556', '02871026595', '02466896595', '02433991555', '02438824666', '024.7301.6595', '0902151998', '02462504455', '0983355491', '0979111418', '0988920115', '0974167895', '0977918666', '0913018575', '0912621898', '0974982297', '0974.660.951', '0328.887.388', '0373.597.222', '0984.388.997', '0986.674.464', '0976.195.157', '0915.502.807', '0982.780.745', '0983121115', '0982.171.111', '0912.611.100', '0904.341.219', '0966.229.368', '0983.832.802', '024.383.43537', '0971.841.116', '034.8885335', '0243.8360468', '0243.9717710', '0978.360285', \"02473008866'\", '0973.644733', '0987.405675', '0982.441977', '0978.986785', '0769.008547', '0983.814837', '0976.915591', '0963.990699', '0287.1026595', '0243.9714363', '0246.2914595/ 0862853418', '0978020040', '0902267486', '0981186877', '0974707997', '0962547222', '0974299288', '0382312212', '0978167260', '0976497173', '0978841379', '0986544115', '0989204169', '0398739286', '0388929862', '0828349486', '0989424223', '0973862386', '0972153668', '0985371660', '0976903190', '0984698246', '0901799662', '0912976662', '02433866224', '0986261665', '0867953890', '02437655599', '02439275568', '02437161239', '0977555568', '0944032008', '0901602411', '02438373747', '0936818922', '0936454669', '0912367839', '0817600105', '0248832727', '0906228835', '0913007127', '0369780468', '0979084793', '0904472674', '0366250347', '0972118659', '1900252560', '0912092659', '0789154255', '0986808612', '0989891321', '0965711494', '0392487984', '0243.7664751', '0967.811.616', '1900599858', '0904.773.897/ 0948.388.226', '0968553223', '0984159923', '0932455437']\nCount: 833"
+    },
+    {
+      "tool_calls": [
+        {
+          "id": "call_00_yPFkX9cAqT3RHmIHqE4b5289",
+          "function": {
+            "arguments": "{\"code\": \"import pandas as pd\\nimport re\\n\\ndf = pd.read_csv(\\\"data.csv\\\")\\ndf['total_contrib'] = df['công_bố_mới'].fillna(0) + df['công_bố_lại'].fillna(0)\\nqualified = df[df['total_contrib'] >= 1]\\n\\n# Get unique people\\npeople = qualified['người_đứng_đầu_phụ_trách_chuyên_môn'].unique()\\nprint(\\\"Total unique values:\\\", len(people))\\n\\n# Let's identify which look like phone numbers\\n# Phone numbers typically: start with 0, contain digits, dots, spaces, dashes\\ndef looks_like_phone(val):\\n    val = str(val).strip()\\n    # Remove common phone characters\\n    cleaned = val.replace('.', '').replace(' ', '').replace('/', '').replace('-', '')\\n    # If mostly digits and starts with 0, likely a phone\\n    if cleaned.isdigit() and len(cleaned) >= 7 and val.strip().startswith('0'):\\n        return True\\n    return False\\n\\nphone_like = [p for p in people if looks_like_phone(p)]\\nname_like = [p for p in people if not looks_like_phone(p)]\\nprint(\\\"Phone-like entries:\\\", len(phone_like))\\nprint(phone_like)\\nprint(\\\"---\\\")\\nprint(\\\"Name-like entries:\\\", len(name_like))\\nprint(sorted(name_like))\\n\"}",
+            "name": "run_python"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "content": "",
+      "role": "assistant",
+      "reasoning_content": "Now I need to find the unique people who have \"đóng góp thực tế\" - meaning their total (công_bố_mới + công_bố_lại) >= 1.\n\nLet me get the unique list of qualified people. Some of the values in 'người_đứng_đầu_phụ_trách_chuyên_môn' look like phone numbers (e.g., '024.668.92595 0359022909'), which are clearly not names. Let me check the data more carefully.\n\nWait, looking at the output, the unique values include phone numbers. Those are likely data entry errors. But the question asks for \"nhân sự chủ chốt\" which specifically maps to \"người đứng đầu phụ trách chuyên môn\". So I should only include actual names, not phone numbers.\n\nActually, let me re-read the question: \"Hãy liệt kê những nhân sự chủ chốt đã có đóng góp thực tế trong các công bố chuyên môn là ai?\"\n\nThe question asks for the names of the key personnel who have actual contributions. So I need to list the distinct names from the 'người_đứng_đầu_phụ_trách_chuyên_môn' column where total_contrib >= 1.\n\nLet me filter out the phone number entries. Actually, the user might expect all values from that column. Let me look at the data more carefully to separate names from phone numbers.\n\nActually, let me look at what values look like phone numbers vs names."
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_00_yPFkX9cAqT3RHmIHqE4b5289",
+      "content": "Total unique values: 833\nPhone-like entries: 130\n['024.668.92595 0359022909', '02871026595 0972087658', '02438824666 0903163335', '0913167722', '0974.167.895', '0243.8272075', '0919569955', '0987.669.578', '0985789236', '0964727766', '0986436783', '0967.858.929', '0906.035.999', '0989.384.858', '0356.316.354', '0936.109.235', '0977.783.975', '0399614673', '0344551621', '0906508818', '0971398142', '0972471682', '0974825172', '0977962711', '0912440355', '0971683866', '024.3975.3556', '02871026595', '02466896595', '02433991555', '02438824666', '024.7301.6595', '0902151998', '02462504455', '0983355491', '0979111418', '0988920115', '0974167895', '0977918666', '0913018575', '0912621898', '0974982297', '0974.660.951', '0328.887.388', '0373.597.222', '0984.388.997', '0986.674.464', '0976.195.157', '0915.502.807', '0982.780.745', '0983121115', '0982.171.111', '0912.611.100', '0904.341.219', '0966.229.368', '0983.832.802', '024.383.43537', '0971.841.116', '034.8885335', '0243.8360468', '0243.9717710', '0978.360285', '0973.644733', '0987.405675', '0982.441977', '0978.986785', '0769.008547', '0983.814837', '0976.915591', '0963.990699', '0287.1026595', '0243.9714363', '0246.2914595/ 0862853418', '0978020040', '0902267486', '0981186877', '0974707997', '0962547222', '0974299288', '0382312212', '0978167260', '0976497173', '0978841379', '0986544115', '0989204169', '0398739286', '0388929862', '0828349486', '0989424223', '0973862386', '0972153668', '0985371660', '0976903190', '0984698246', '0901799662', '0912976662', '02433866224', '0986261665', '0867953890', '02437655599', '02439275568', '02437161239', '0977555568', '0944032008', '0901602411', '02438373747', '0936818922', '0936454669', '0912367839', '0817600105', '0248832727', '0906228835', '0913007127', '0369780468', '0979084793', '0904472674', '0366250347', '0972118659', '0912092659', '0789154255', '0986808612', '0989891321', '0965711494', '0392487984', '0243.7664751', '0967.811.616', '0904.773.897/ 0948.388.226', '0968553223', '0984159923', '0932455437']\n---\nName-like entries: 703\n[\"02473008866'\", '1900252560', '1900599858', 'BS Lưu Thị Dung', 'BS Nguyễn Hồng Nhung', 'BS Nguyễn Quố Quân', 'BS Nguyễn Thị An Khang', 'BS Nguyễn Thị Nga', 'BS Nguyễn Thị Riên', 'BS Nguyễn Thị Thanh Huyền', 'BS Nguyễn Văn Sang', 'BS Nguyễn Đình Lịch', 'BS Trương Vũ Linh', 'BS Trần Văn Dân', 'BS Vũ Mạnh Cường', 'BS Vương Trí Hồng', 'BS Đỗ Thị Phượng', 'BS. Cao Văn Giao', 'BS. Lê Trung Tiên', 'BS. Lê Đức Tuyên', 'BS. Nguyễn Thị Bản', 'BS. Nguyễn Văn Tuyển', 'BS. Ngô Thanh Hào', 'BS. Phạm Văn Dũng', 'BS. Trần Trọng Thắng', 'BS. Đàm Thị Mai Hoa', 'BS. Đỗ Văn Thảo', 'BSCK II Trương Kỳ Phong', 'BSCK II Trần Quang Tuấn', 'BSCKI. Phan Thị Long Hoa/ BSYHCT. Nguyễn Trà My', 'BSCKII Nguyễn Văn Tý', 'BSCKII Tạ Văn Sứng', 'Bs Hoàng Bích Thuỷ', 'Bs Hoàng Xuân Tùng', 'Bs Lê Quang Trung', 'Bs Nguyễn Văn Hảo', 'Bs Vũ Thị Hải', 'Bs. Trần Phạm Thái', 'Bs. Trần Thị Hoa', 'Bác sĩ Phù Vĩnh Thắng', 'Bác sĩ Đào Bá Tuệ', 'Bác sỹ Lê Xuân Đức', 'Bác sỹ Nguyễn Công Đạt', 'Bác sỹ Nguyễn Thị Huyền Trang', 'Bác sỹ Nguyễn Thị Mỹ', 'Bác sỹ Nguyễn Thị Nga', 'Bác sỹ Nguyễn Thị Nhâm', 'Bác sỹ Nguyễn Xuân Bình', 'Bác sỹ Nguyễn Xuân Tính', 'Bác sỹ Phạm Văn Hữu', 'Bác sỹ Trần Xuân Bang', 'Bác sỹ Trịnh Đắc Chung', 'Bác sỹ dự phòng Lê Hữu Thắng', 'Bác sỹ Đinh Tiến Diện', 'Bác sỹ Đỗ Anh Tuấn', 'Bác sỹ Đỗ Văn Siêng', 'Bác sỹ. Phí Mạnh Dũng', 'Bác sỹ: Nguyễn Thị Hòa', 'Bác sỹ: Ngô Thị Hoàn', 'Bùi Mạnh Kiên', 'Bùi Như Hồng', 'Bùi Thanh Hải', 'Bùi Thanh Tịnh', 'Bùi Thị Bích Thảo', 'Bùi Thị Hoa', 'Bùi Thị Hồng Phượng', 'Bùi Thị Oanh', 'Bùi Thị Ánh Tuyết', 'Bùi Tiến Phương', 'Bùi Trí Thuật', 'Bùi Văn Linh', 'Bùi Văn Thanh', 'Bùi Ánh Ngọc', 'CN Nguyễn Tiến Chương', 'Cao Hải Yến', 'Cao Nam Thắng', 'Cao Thành Đạt', 'Cao Thị Hà Ngân', 'Cao Thị Mỹ Nga', 'Cao Văn Huyên', 'Cao Văn Nghị', 'Chu Bá Sỹ', 'Chu Thị Hương', 'Chu Thị Thanh', 'Chu Văn Tuấn', 'Cấn Hoàng Kim', 'Cấn Thị Vân', 'Cử nhân YTCC Ngô Thị Kim Tuyến', 'Dương Chí Chung', 'Dương Mạnh Hùng', 'Dương Ngọc Bích', 'Dương Ngọc Huân', 'Dương Thế Vinh', 'Dương Thị Bích', 'Dương Thị Chỉnh', 'Dương Thị Hồng Nhung', 'Dương Thị Thu Trang', 'Dương Văn Công', 'Dương Văn Huân', 'Dương Văn Huệ', 'Dương Văn Khương', 'Dương Văn Minh', 'Erwan Daniel guillaume debuc', 'GS.TS. Nguyễn Viết Tiến', 'Hoàng Gia Vinh', 'Hoàng Hữu Huy', 'Hoàng Hữu Tính', 'Hoàng Lưu Sa', 'Hoàng Lệ Thi', 'Hoàng Thảo Ly', 'Hoàng Thị Diệu Linh', 'Hoàng Thị Giang', 'Hoàng Thị Hạnh', 'Hoàng Thị Mai Dung', 'Hoàng Thị Mai Phương', 'Hoàng Thị Minh Huệ', 'Hoàng Thị Thanh', 'Hoàng Thị Thu Màn', 'Hoàng Thị Tuyền', 'Hoàng Tiến Tuyên', 'Hoàng Trọng Luân', 'Hoàng Văn Bằng', 'Hoàng Văn Tuyến', 'Hoàng Văn Tự', 'Hoàng Yến', 'Hoàng Ánh Hồng', 'Hy Việt Anh', 'Hà Duy Dương', 'Hà Thị Phượng', 'Hà Thị Thùy Ngân', 'Hà Thị Tú', 'Khuất Duy Tuân', 'Khuất Quang Tuyển', 'Khuất Thị Hồng Nhung', 'Khuất Thị Thu Nguyệt', 'Khuất Đình Lư', 'Khánh Thị Việt Hà', 'Kiều Doãn Nghĩa', 'Kiều Thị Bích Thúy', 'Kiều Thị Giang', 'Kiều Xuân Sang', 'Kiều Xuân Tiệp', 'Loan Thị Hồng Mai', 'Lê Chí Đệ', 'Lê Doãn Mạnh', 'Lê Hải Ninh', 'Lê Hữu Song/Trần Thanh Hương', 'Lê Kiến Ngãi', 'Lê Minh Đức', 'Lê Ngọc Ánh', 'Lê Phú Trùy', 'Lê Thanh Cường', 'Lê Thanh Hà', 'Lê Thanh Nhã', 'Lê Thành Văn', 'Lê Thị Chuốt', 'Lê Thị Chín', 'Lê Thị Dung', 'Lê Thị Hiển', 'Lê Thị Huyền', 'Lê Thị Hạnh', 'Lê Thị Hải Hương', 'Lê Thị Kim Hoa', 'Lê Thị Kim Hoa/Chu Thị Hoa', 'Lê Thị Kim Hoa/Đinh Thị Toàn', 'Lê Thị Kim Ngân', 'Lê Thị Kim Thanh', 'Lê Thị Lan', 'Lê Thị Luyến', 'Lê Thị Lâm', 'Lê Thị Lộc', 'Lê Thị Mai Hương', 'Lê Thị Mười', 'Lê Thị Ngọc Anh', 'Lê Thị Thanh Xuân', 'Lê Thị Thoa', 'Lê Thị Thư', 'Lê Thị Yến', 'Lê Văn Thiện', 'Lê Văn Thuỳ', 'Lê Văn Thành', 'Lê Văn Thắng', 'Lê Văn Đáp', 'Lê Xuân Hùng', 'Lê Đức Toàn', 'Lý Thị Ánh Nguyệt', 'Lưu Thị Dung', 'Lưu Thị Loan', 'Lưu Xuân Thắng', 'Lưu Đức Hướng', 'Lương Hồng Nhị', 'Lương Minh Hồng', 'Lương Ngọc Ánh', 'Lương Quốc Chung', 'Lương Thị Hường', 'Lương Thị Thanh Phong', 'Lương Thị Thuý Tình', 'Lương Văn Phú', 'Lường Công Thức', 'Lại Ngọc Long', 'Lại Vân Anh', 'Mai Thị Hồng Diệp', 'Mai Thị Tuyết Vân', 'Mattias EriK Larsson', 'Nghiêm Thị Dịu', 'Nghiêm Thị Thanh Xuân', 'Nguyễn Anh Thành', 'Nguyễn Anh Tuấn', 'Nguyễn Bạch Điệp', 'Nguyễn Chí Thành', 'Nguyễn Danh Phương', 'Nguyễn Danh Đông', 'Nguyễn Duy Ánh', 'Nguyễn Gia Phúc', 'Nguyễn Giáp Oán', 'Nguyễn Hoàng Hiệp', 'Nguyễn Hoàng Huyên', 'Nguyễn Hoàng Lan', 'Nguyễn Hoàng Loan', 'Nguyễn Hoàng Văn', 'Nguyễn Huy Đại', 'Nguyễn Huyền Trang', 'Nguyễn Hà Phương', 'Nguyễn Hùng Cường', 'Nguyễn Hải Kiên', 'Nguyễn Hải Phong', 'Nguyễn Hải Đăng', 'Nguyễn Hồng Khải', 'Nguyễn Hữu Giáp', 'Nguyễn Hữu Thủy', 'Nguyễn Hữu Tuệ', 'Nguyễn Kiên Cường', 'Nguyễn Kiều Hương', 'Nguyễn Linh Trang', 'Nguyễn Mai Lan', 'Nguyễn Minh Phúc', 'Nguyễn Minh Sơn', 'Nguyễn Minh Tuấn', 'Nguyễn Minh Tạo', 'Nguyễn Mạnh Cường', 'Nguyễn Mạnh Hùng', 'Nguyễn Mạnh Liên', 'Nguyễn Mạnh Trâm', 'Nguyễn Mạnh Tưởng', 'Nguyễn Ngọc Chiến', 'Nguyễn Phong Lưu', 'Nguyễn Phương Mai', 'Nguyễn Phương Thúy', 'Nguyễn Phương Trung', 'Nguyễn Phương Trường', 'Nguyễn Quang Cần', 'Nguyễn Quang Huy', 'Nguyễn Quang Hưng', 'Nguyễn Quang Hải', 'Nguyễn Quang Nam', 'Nguyễn Quang Thắng', 'Nguyễn Quang Toản', 'Nguyễn Quang Trung', 'Nguyễn Quang Vinh', 'Nguyễn Quốc Thưởng', 'Nguyễn Quỳnh Trang', 'Nguyễn Sĩ Mạnh', 'Nguyễn Thanh Khoa Vy', 'Nguyễn Thanh Nga', 'Nguyễn Thanh Nhàn', 'Nguyễn Thanh Sơn', 'Nguyễn Thanh Tâm', 'Nguyễn Thi Hào', 'Nguyễn Thu Huyền', 'Nguyễn Thu Hà', 'Nguyễn Thu Hương', 'Nguyễn Thu Thủy', 'Nguyễn Thu Trang', 'Nguyễn Thuỳ Linh', 'Nguyễn Thuỳ Nga', 'Nguyễn Thành Minh', 'Nguyễn Thùy Chinh', 'Nguyễn Thắng Sơn', 'Nguyễn Thế Anh', 'Nguyễn Thế Hanh', 'Nguyễn Thị Biên', 'Nguyễn Thị Bích Hòa', 'Nguyễn Thị Chuyên', 'Nguyễn Thị Diệu Hợp', 'Nguyễn Thị Dung', 'Nguyễn Thị Giang', 'Nguyễn Thị Hoa', 'Nguyễn Thị Hoa Hiên', 'Nguyễn Thị Hoài', 'Nguyễn Thị Huyền', 'Nguyễn Thị Huệ', 'Nguyễn Thị Hà', 'Nguyễn Thị Hòa', 'Nguyễn Thị Hương Giang', 'Nguyễn Thị Hạnh', 'Nguyễn Thị Hải', 'Nguyễn Thị Hậu', 'Nguyễn Thị Hằng', 'Nguyễn Thị Hằng Thúy', 'Nguyễn Thị Hồng', 'Nguyễn Thị Hồng Hà', 'Nguyễn Thị Hồng Hạnh', 'Nguyễn Thị Hồng Sâm', 'Nguyễn Thị Khang', 'Nguyễn Thị Khánh Huyền', 'Nguyễn Thị Kim Ngân', 'Nguyễn Thị Kiều Loan', 'Nguyễn Thị Lan', 'Nguyễn Thị Lan Anh', 'Nguyễn Thị Lan Hương', 'Nguyễn Thị Liên', 'Nguyễn Thị Loan', 'Nguyễn Thị Luyến', 'Nguyễn Thị Luận', 'Nguyễn Thị Lý', 'Nguyễn Thị Lưỡng', 'Nguyễn Thị Lệ Thúy', 'Nguyễn Thị Mai', 'Nguyễn Thị Mai Hoa', 'Nguyễn Thị Mai Hương', 'Nguyễn Thị Minh Cảnh', 'Nguyễn Thị Minh Phương', 'Nguyễn Thị Minh Tâm', 'Nguyễn Thị Mỹ Hòa', 'Nguyễn Thị Mỹ Hạnh', 'Nguyễn Thị Nga', 'Nguyễn Thị Nguyệt', 'Nguyễn Thị Ngà', 'Nguyễn Thị Ngọc', 'Nguyễn Thị Ngọc Lan', 'Nguyễn Thị Nhung', 'Nguyễn Thị Như Quỳnh', 'Nguyễn Thị Phương Hiền', 'Nguyễn Thị Phương Lan', 'Nguyễn Thị Phương Lâm', 'Nguyễn Thị Phượng', 'Nguyễn Thị Quyên', 'Nguyễn Thị Riên', 'Nguyễn Thị Sáu', 'Nguyễn Thị Thanh Huyền', 'Nguyễn Thị Thanh Hương', 'Nguyễn Thị Thanh Loan', 'Nguyễn Thị Thanh Thuỷ', 'Nguyễn Thị Thoi', 'Nguyễn Thị Thu', 'Nguyễn Thị Thu Hiền', 'Nguyễn Thị Thu Hà', 'Nguyễn Thị Thu Phương', 'Nguyễn Thị Thu Thủy', 'Nguyễn Thị Thuý', 'Nguyễn Thị Thuý Hà', 'Nguyễn Thị Thuấn', 'Nguyễn Thị Thành', 'Nguyễn Thị Thòa', 'Nguyễn Thị Thúy', 'Nguyễn Thị Thúy Hằng', 'Nguyễn Thị Thơ', 'Nguyễn Thị Thảo', 'Nguyễn Thị Thắm', 'Nguyễn Thị Thắng', 'Nguyễn Thị Thủy', 'Nguyễn Thị Tuyết Hải', 'Nguyễn Thị Tuyết Nhung', 'Nguyễn Thị Tâm', 'Nguyễn Thị Tố Chinh', 'Nguyễn Thị Uyên', 'Nguyễn Thị Vân', 'Nguyễn Thị Vượng', 'Nguyễn Thị Yên', 'Nguyễn Thị Ánh', 'Nguyễn Thị Ánh Nguyệt', 'Nguyễn Thị Đông', 'Nguyễn Tiến Cương', 'Nguyễn Tiến Dũng', 'Nguyễn Tiến Trung', 'Nguyễn Tiến Trọng', 'Nguyễn Tiến Ánh', 'Nguyễn Tiến Đạt', 'Nguyễn Trung Chính', 'Nguyễn Trung Dũng', 'Nguyễn Trung Hiếu', 'Nguyễn Trung Hậu', 'Nguyễn Trọng Bính', 'Nguyễn Tuấn Hạnh', 'Nguyễn Tuấn Quang', 'Nguyễn Tùng Sơn', 'Nguyễn Tường Phượng', 'Nguyễn Viết Mạnh', 'Nguyễn Viết Phương', 'Nguyễn Việt Duy', 'Nguyễn Việt Hùng', 'Nguyễn Việt Phương', 'Nguyễn Văn Bao', 'Nguyễn Văn Bằng', 'Nguyễn Văn Chung', 'Nguyễn Văn Cường', 'Nguyễn Văn Dũng', 'Nguyễn Văn Hiếu', 'Nguyễn Văn Hoà', 'Nguyễn Văn Khanh', 'Nguyễn Văn Khoản', 'Nguyễn Văn Khâm', 'Nguyễn Văn Khương', 'Nguyễn Văn Mạnh', 'Nguyễn Văn Nguyên', 'Nguyễn Văn Nhâm', 'Nguyễn Văn Năm', 'Nguyễn Văn Nội', 'Nguyễn Văn Oánh', 'Nguyễn Văn Quang', 'Nguyễn Văn Quảng', 'Nguyễn Văn Sang', 'Nguyễn Văn Sơn', 'Nguyễn Văn Sửu', 'Nguyễn Văn Thanh', 'Nguyễn Văn Thiệu', 'Nguyễn Văn Thơ', 'Nguyễn Văn Thường', 'Nguyễn Văn Thắng', 'Nguyễn Văn Tiến', 'Nguyễn Văn Tuấn', 'Nguyễn Văn Việt', 'Nguyễn Văn Xít', 'Nguyễn Văn Ánh', 'Nguyễn Văn Đô', 'Nguyễn Văn Đạt', 'Nguyễn Xuân Hùng', 'Nguyễn Xuân Hương', 'Nguyễn Xuân Hải', 'Nguyễn Xuân Lộc', 'Nguyễn Xuân Thát', 'Nguyễn Xuân Đồng', 'Nguyễn Đình Quân', 'Nguyễn Đình Túc', 'Nguyễn Đăng Hiếu', 'Nguyễn Đăng Hiển/Nguyễn Thị Dương Hiền', 'Nguyễn Đăng Hiển/Nguyễn Đình Kim', 'Nguyễn Đăng Minh', 'Nguyễn Đăng Xuân', 'Nguyễn Đức Anh', 'Nguyễn Đức Dương', 'Nguyễn Đức Tiến', 'Nguyễn Đức Trung', 'Nguyễn Đức Trại', 'Nguyễn Đức Tú', 'Ngô Bá Phương', 'Ngô Phi Phương', 'Ngô Quang Hùng', 'Ngô Thanh Thủy', 'Ngô Thị Hải', 'Ngô Thị Kim Tuyến', 'Ngô Thị Mỳ', 'Ngô Thị Thu Hiền', 'Ngô Thị Vịnh', 'Ngô Tiến Thịnh', 'Ngô Trung Quyết', 'Ngô Tuyết Thanh', 'Ngô Văn Chuẩn', 'Ngô Văn Nguyên', 'Ngô Văn Thuân', 'Ngô Xuân Tú', 'PGS.TS.BS. Hoàng Gia Du', 'Phan Ngọc Lan', 'Phan Thị Bích Liên', 'Phan Thị Bẩy', 'Phan Thị Minh Anh', 'Phan Thị Thu Hà', 'Phan Văn Chuyên', 'Phí Ngọc Yến Nhi', 'Phí Thị Hằng', 'Phí Thị Phượng', 'Phù Xuân Đương', 'Phùng Thế Tài', 'Phùng Thị Bích Niên', 'Phùng Thị Huề', 'Phùng Thị Khánh', 'Phùng Thị Liên', 'Phùng Thị Luyến', 'Phùng Thị Nguyên', 'Phùng Văn Dực', 'Phùng Văn Hai', 'Phùng Văn Hưởng', 'Phùng Văn Việt', 'Phùng Xuân Diễn', 'Phùng Xuân Thạch', 'Phùng Xuân Thịnh', 'Phương Thị Mai Hương', 'Phạm Hà Giang', 'Phạm Hồng Phong', 'Phạm Hữu Thường', 'Phạm Phú Đạo/Trần Thị Hậu', 'Phạm Quang Hải', 'Phạm Quang Vi', 'Phạm Quỳnh Trang', 'Phạm Thanh Hải', 'Phạm Thị Anh Đào', 'Phạm Thị Hiền', 'Phạm Thị Hoài Anh', 'Phạm Thị Hải Yến', 'Phạm Thị Kim Thoa', 'Phạm Thị Lan', 'Phạm Thị Luyến', 'Phạm Thị Mai Hoa', 'Phạm Thị Minh', 'Phạm Thị Minh Phương', 'Phạm Thị Mừng', 'Phạm Thị Ngọc Bảo', 'Phạm Thị Quyên', 'Phạm Thị Quỳnh Thư', 'Phạm Thị Sáu', 'Phạm Thị Thu Huyền', 'Phạm Thị Thư', 'Phạm Thị Xuân Hoài', 'Phạm Thị Yến', 'Phạm Thị Ánh Nguyệt', 'Phạm Thị Ít Lan', 'Phạm Văn Phán', 'Phạm Văn Quang', 'Phạm Xuân Hiền', 'Phạm Đức Giang', 'Quách Gia Định', 'Quách Mạnh Khánh', 'Quách Thị Hảo', 'TS.BS. Bùi Ngọc Minh', 'TS.BS. Nguyễn Phạm Ý Nhi', 'TS.BS. Nguyễn Đức Hoan', 'ThS Bác sỹ. Lưu Văn Báu', 'Thạc sỹ.Bs Phạm Đăng Quân', 'Tiêu Ngọc Chiến', 'Trinh Duy Ưng', 'Trương Thúy Quỳnh', 'Trương Thị Hằng', 'Trần Công Năng', 'Trần Huy Long', 'Trần Hùng Mạnh', 'Trần Linh Trang', 'Trần Minh Tân', 'Trần Mạnh Thắng', 'Trần Ngọc Anh', 'Trần Ngọc Luân', 'Trần Ngọc Nghĩa', 'Trần Phương Mỹ', 'Trần Quang Trịnh/ Phạm Thị Lan Anh', 'Trần Quang Trịnh/ Tạ Ngọc Phương', 'Trần Quyết Chiến', 'Trần Sỹ Quảng', 'Trần Thị Chi', 'Trần Thị Hiển', 'Trần Thị Hoa', 'Trần Thị Hương', 'Trần Thị Hường', 'Trần Thị Kim Ngân', 'Trần Thị Liên Hoa', 'Trần Thị Mai', 'Trần Thị Mai Hương', 'Trần Thị Minh Lý', 'Trần Thị Nga', 'Trần Thị Ngân', 'Trần Thị Ngọc Anh', 'Trần Thị Nhinh', 'Trần Thị Phượng', 'Trần Thị Thanh Huyền', 'Trần Thị The', 'Trần Thị Tuyết Hậu', 'Trần Thị Vân Khánh', 'Trần Thị Yến', 'Trần Văn Hay', 'Trần Văn Huyên', 'Trần Văn Khôi', 'Trần Văn Lâm', 'Trần Văn Nhất', 'Trần Văn Toanh', 'Trần Văn Đại', 'Trần Xuân Nam', 'Trần Xuân Đông', 'Trần Đình Thân', 'Trần Đình Thư', 'Trịnh Duy Đà', 'Trịnh Thị Kiện', 'Trịnh Thị Thảo', 'Trịnh Tuấn Hưng', 'Tô Thị Lan', 'Tô Thị Tuyết', 'Tô Tiến Quang', 'Tô Xuân Sinh', 'Tạ Thị Dung', 'Tạ Thị Lý', 'Tạ Văn Chính', 'Tống Văn Hùng', 'Vi Thị Soan', 'Vũ Anh Phương', 'Vũ Danh Tài', 'Vũ Hoàng Hải', 'Vũ Mạnh Cường', 'Vũ Ngọc Trung', 'Vũ Quang Hiển', 'Vũ Quang Sơn', 'Vũ Thị Bích Huyền', 'Vũ Thị Hoà', 'Vũ Thị Huệ', 'Vũ Thị Hương Giang', 'Vũ Thị Hảo', 'Vũ Thị Phước', 'Vũ Thị Sơn', 'Vũ Thị Thanh Hương', 'Vũ Thị Thu Hòa', 'Vũ Thị Thu Thuỷ', 'Vũ Thị Thuỷ', 'Vũ Thị Thùy', 'Vũ Thị Tuệ', 'Vũ Tiến Hải', 'Vũ Tuấn Anh', 'Vũ Văn Hiên', 'Vũ Văn Hiển', 'Vũ Văn Thủy', 'Vũ Xuân Tình', 'Vương Thị Hợi', 'Vương Thị Kim Lan', 'Vương Thị Phương', 'Vương Thị Thu Hường', 'Vương Thị Thủy', 'Vương Trung Kiên', 'Y sỹ Doãn Thị Xuyến', 'Y sỹ Dương Thế Vinh', 'Y sỹ Dương Thị Liên', 'Y sỹ Hoàng Mai Ngạn', 'Y sỹ Lương Thị Ngọc', 'Y sỹ Mai Thị Nguyệt', 'Y sỹ Nguyễn Thanh Lịch', 'Y sỹ Nguyễn Thị Hồng Hạnh', 'Y sỹ Nguyễn Thị Kiều Oanh', 'Y sỹ Nguyễn Thị Lý', 'Y sỹ Phạm Minh Tiến', 'Y sỹ Trần Đình Thân', 'YS Nguyễn Thị Thanh Thảo', 'YS Trương Thị Minh Thư', 'Ys. Dương Thị Lịch', 'Ys. Nguyễn Ngọc Quý', 'lê Thị Phương Anh', 'Ân Thành Đặt', 'Đinh Công Toàn', 'Đinh Khánh Ly', 'Đinh Ngọc Lương', 'Đinh Ngọc Phát', 'Đinh Thị Hoan', 'Đinh Thị Hồng Hoa', 'Đinh Thị Lũy', 'Đinh Thị Mai Hoa', 'Đinh Thị Thanh', 'Đinh Thị Uyên', 'Đinh Thị Yến', 'Đoàn Thanh Thủy', 'Đoàn Thị Thúy Liên', 'Đào Hồng Chinh', 'Đào Hồng Chỉnh', 'Đào Thị Hiền', 'Đào Thị Thuỷ', 'Đào Văn Thưởng', 'Đào Văn Vinh', 'Đào Xuân Cơ', 'Đậu Thu Huyền', 'Đặng Huy Định', 'Đặng Hồng Châu', 'Đặng Hữu Bá', 'Đặng Hữu Hoằng', 'Đặng Thanh Nhàn', 'Đặng Thành Luân', 'Đặng Thị Kim Oanh', 'Đặng Thị Ngọc Hà', 'Đặng Thị Nhung', 'Đặng Thị Nhâm', 'Đặng Thị Thanh Hà', 'Đặng Thị Thuận', 'Đặng Trung Kiên', 'Đặng Văn Thanh', 'Đặng Đình Sáng', 'Đặng Đình Thực', 'Đồng Thị Lan', 'Đồng Thị Thuỷ', 'Đồng Đạo Khánh', 'Đỗ Duy Dương', 'Đỗ Duy Toàn', 'Đỗ Hồng Quang', 'Đỗ Như Chinh', 'Đỗ Phương Đông', 'Đỗ Song An', 'Đỗ Thu Thuỷ', 'Đỗ Thùy Dung', 'Đỗ Thị Bích Hạnh', 'Đỗ Thị Hiền', 'Đỗ Thị Loan', 'Đỗ Thị Nam', 'Đỗ Thị Ngọc', 'Đỗ Thị Nhàn', 'Đỗ Thị Phượng', 'Đỗ Thị Thu Hương', 'Đỗ Thị Vân', 'Đỗ Văn Chiến', 'Đỗ Văn Dũng', 'Đỗ Văn Vân', 'Đỗ Xuân Thành', 'Đỗ Xuân Tùng', 'Đỗ Đăng Sơn']"
+    },
+    {
+      "tool_calls": [
+        {
+          "id": "call_00_ac2XZZOtDTFBjj9GL0Ia7253",
+          "function": {
+            "arguments": "{\"code\": \"import pandas as pd\\nimport re\\n\\ndf = pd.read_csv(\\\"data.csv\\\")\\ndf['total_contrib'] = df['công_bố_mới'].fillna(0) + df['công_bố_lại'].fillna(0)\\nqualified = df[df['total_contrib'] >= 1]\\n\\npeople = qualified['người_đứng_đầu_phụ_trách_chuyên_môn'].unique()\\n\\n# Let me check those specific ones\\nprint(\\\"1900252560\\\" in people)\\nprint(\\\"1900599858\\\" in people)\\nprint(\\\"02473008866'\\\" in people)\\n\\n# Let me look at rows where these appear\\nfor val in ['1900252560', '1900599858', \\\"02473008866'\\\"]:\\n    rows = df[df['người_đứng_đầu_phụ_trách_chuyên_môn'] == val]\\n    print(f\\\"--- {val} ---\\\")\\n    print(rows[['stt', 'tên_cơ_sở', 'người_đứng_đầu_phụ_trách_chuyên_môn', 'công_bố_mới', 'công_bố_lại']].to_string())\\n\"}",
+            "name": "run_python"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "content": "",
+      "role": "assistant",
+      "reasoning_content": "The name-like list still contains a few entries like '02473008866'', '1900252560', '1900599858' which are phone numbers (start with 0 or 1 and are all digits). Let me refine my filtering.\n\nActually, looking more carefully, there are some entries like '1900252560' and '1900599858' which look like phone numbers in the name-like list. Let me check if they're in the qualified set.\n\nWait, I need to present the answer. The question asks to list the \"nhân sự chủ chốt\" who have \"đóng góp thực tế\". Let me be careful about what constitutes a name vs a phone number.\n\nLet me check those entries more carefully."
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_00_ac2XZZOtDTFBjj9GL0Ia7253",
+      "content": "True\nTrue\nTrue\n--- 1900252560 ---\n      stt                                                                                           tên_cơ_sở người_đứng_đầu_phụ_trách_chuyên_môn  công_bố_mới  công_bố_lại\n1064  512  Trung tâm tiêm chủng vắc xin Thường Tín cơ sở 1 Địa điểm kinh doanh Công ty cổ phần dịch vụ Y Viên                          1900252560          NaN          1.0\n1065  513                                                                       Trung tâm tiêm chủng Y Viên 4                          1900252560          NaN          1.0\n--- 1900599858 ---\n      stt                    tên_cơ_sở người_đứng_đầu_phụ_trách_chuyên_môn  công_bố_mới  công_bố_lại\n1076  524  Bệnh viện đa khoa Bảo Sơn 2                          1900599858          NaN          1.0\n--- 02473008866' ---\n     stt                                     tên_cơ_sở người_đứng_đầu_phụ_trách_chuyên_môn  công_bố_mới  công_bố_lại\n995  447  Bệnh viện Đa khoa Hồng Ngọc Phúc Trường Minh                        02473008866'          NaN          1.0"
+    },
+    {
+      "tool_calls": [
+        {
+          "id": "call_00_S0fmpuqUqoaTfavAfJBl3638",
+          "function": {
+            "arguments": "{\"code\": \"import pandas as pd\\nimport re\\n\\ndf = pd.read_csv(\\\"data.csv\\\")\\ndf['total_contrib'] = df['công_bố_mới'].fillna(0) + df['công_bố_lại'].fillna(0)\\nqualified = df[df['total_contrib'] >= 1]\\n\\n# Filter out phone number entries - keep only real names\\n# A real name typically contains Vietnamese characters (letters)\\ndef is_name(val):\\n    val_str = str(val).strip()\\n    # If it's purely numeric (with optional punctuation), it's a phone\\n    cleaned = re.sub(r'[0-9\\\\s\\\\.\\\\-\\\\/\\\\(\\\\)\\\\+]', '', val_str)\\n    if len(cleaned) == 0:\\n        return False\\n    # Also check if it contains any letter (Vietnamese or English)\\n    if re.search(r'[a-zA-Zàáâãèéêìíòóôõùúýăđĩũơưạảấầẩẫậắằẳẵặẹẻẽềềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]', val_str, re.IGNORECASE):\\n        return True\\n    return False\\n\\nnames = qualified['người_đứng_đầu_phụ_trách_chuyên_môn'].unique()\\nreal_names = sorted([n for n in names if is_name(n)])\\nprint(f\\\"Total names: {len(real_names)}\\\")\\nprint(\\\"First 20:\\\", real_names[:20])\\nprint(\\\"Last 20:\\\", real_names[-20:])\\n\"}",
+            "name": "run_python"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "content": "",
+      "role": "assistant",
+      "reasoning_content": "OK so these are clearly phone numbers that ended up in the \"người_đứng_đầu_phụ_trách_chuyên_môn\" column instead of names. I should exclude these phone number entries.\n\nLet me filter properly - names of people should not be just phone numbers."
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_00_S0fmpuqUqoaTfavAfJBl3638",
+      "content": "Total names: 700\nFirst 20: ['BS Lưu Thị Dung', 'BS Nguyễn Hồng Nhung', 'BS Nguyễn Quố Quân', 'BS Nguyễn Thị An Khang', 'BS Nguyễn Thị Nga', 'BS Nguyễn Thị Riên', 'BS Nguyễn Thị Thanh Huyền', 'BS Nguyễn Văn Sang', 'BS Nguyễn Đình Lịch', 'BS Trương Vũ Linh', 'BS Trần Văn Dân', 'BS Vũ Mạnh Cường', 'BS Vương Trí Hồng', 'BS Đỗ Thị Phượng', 'BS. Cao Văn Giao', 'BS. Lê Trung Tiên', 'BS. Lê Đức Tuyên', 'BS. Nguyễn Thị Bản', 'BS. Nguyễn Văn Tuyển', 'BS. Ngô Thanh Hào']\nLast 20: ['Đỗ Như Chinh', 'Đỗ Phương Đông', 'Đỗ Song An', 'Đỗ Thu Thuỷ', 'Đỗ Thùy Dung', 'Đỗ Thị Bích Hạnh', 'Đỗ Thị Hiền', 'Đỗ Thị Loan', 'Đỗ Thị Nam', 'Đỗ Thị Ngọc', 'Đỗ Thị Nhàn', 'Đỗ Thị Phượng', 'Đỗ Thị Thu Hương', 'Đỗ Thị Vân', 'Đỗ Văn Chiến', 'Đỗ Văn Dũng', 'Đỗ Văn Vân', 'Đỗ Xuân Thành', 'Đỗ Xuân Tùng', 'Đỗ Đăng Sơn']"
+    },
+    {
+      "tool_calls": [
+        {
+          "id": "call_00_9EVVTI8mtrdiHPBzz8ma4528",
+          "function": {
+            "arguments": "{\"code\": \"import pandas as pd\\nimport re\\nimport json\\n\\ndf = pd.read_csv(\\\"data.csv\\\")\\ndf['total_contrib'] = df['công_bố_mới'].fillna(0) + df['công_bố_lại'].fillna(0)\\nqualified = df[df['total_contrib'] >= 1]\\n\\ndef is_name(val):\\n    val_str = str(val).strip()\\n    cleaned = re.sub(r'[0-9\\\\s\\\\.\\\\-\\\\/\\\\(\\\\)\\\\+]', '', val_str)\\n    if len(cleaned) == 0:\\n        return False\\n    if re.search(r'[a-zA-Zàáâãèéêìíòóôõùúýăđĩũơưạảấầẩẫậắằẳẵặẹẻẽềềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]', val_str, re.IGNORECASE):\\n        return True\\n    return False\\n\\nnames = qualified['người_đứng_đầu_phụ_trách_chuyên_môn'].unique()\\nreal_names = sorted([n for n in names if is_name(n)])\\n\\n# Output as array of arrays\\nresult = [[name] for name in real_names]\\nprint(json.dumps(result, ensure_ascii=False))\\n\"}",
+            "name": "run_python"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "content": "",
+      "role": "assistant",
+      "reasoning_content": "Now I have 700 unique names of \"nhân sự chủ chốt\" (key personnel) who have contributed (total_contrib >= 1). The question asks \"Hãy liệt kê những nhân sự chủ chốt đã có đóng góp thực tế trong các công bố chuyên môn là ai?\" - List the key personnel who have made actual contributions.\n\nThe answer should be a list of their names. Let me output them as JSON array of arrays."
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_00_9EVVTI8mtrdiHPBzz8ma4528",
+      "content": "[[\"BS Lưu Thị Dung\"], [\"BS Nguyễn Hồng Nhung\"], [\"BS Nguyễn Quố Quân\"], [\"BS Nguyễn Thị An Khang\"], [\"BS Nguyễn Thị Nga\"], [\"BS Nguyễn Thị Riên\"], [\"BS Nguyễn Thị Thanh Huyền\"], [\"BS Nguyễn Văn Sang\"], [\"BS Nguyễn Đình Lịch\"], [\"BS Trương Vũ Linh\"], [\"BS Trần Văn Dân\"], [\"BS Vũ Mạnh Cường\"], [\"BS Vương Trí Hồng\"], [\"BS Đỗ Thị Phượng\"], [\"BS. Cao Văn Giao\"], [\"BS. Lê Trung Tiên\"], [\"BS. Lê Đức Tuyên\"], [\"BS. Nguyễn Thị Bản\"], [\"BS. Nguyễn Văn Tuyển\"], [\"BS. Ngô Thanh Hào\"], [\"BS. Phạm Văn Dũng\"], [\"BS. Trần Trọng Thắng\"], [\"BS. Đàm Thị Mai Hoa\"], [\"BS. Đỗ Văn Thảo\"], [\"BSCK II Trương Kỳ Phong\"], [\"BSCK II Trần Quang Tuấn\"], [\"BSCKI. Phan Thị Long Hoa/ BSYHCT. Nguyễn Trà My\"], [\"BSCKII Nguyễn Văn Tý\"], [\"BSCKII Tạ Văn Sứng\"], [\"Bs Hoàng Bích Thuỷ\"], [\"Bs Hoàng Xuân Tùng\"], [\"Bs Lê Quang Trung\"], [\"Bs Nguyễn Văn Hảo\"], [\"Bs Vũ Thị Hải\"], [\"Bs. Trần Phạm Thái\"], [\"Bs. Trần Thị Hoa\"], [\"Bác sĩ Phù Vĩnh Thắng\"], [\"Bác sĩ Đào Bá Tuệ\"], [\"Bác sỹ Lê Xuân Đức\"], [\"Bác sỹ Nguyễn Công Đạt\"], [\"Bác sỹ Nguyễn Thị Huyền Trang\"], [\"Bác sỹ Nguyễn Thị Mỹ\"], [\"Bác sỹ Nguyễn Thị Nga\"], [\"Bác sỹ Nguyễn Thị Nhâm\"], [\"Bác sỹ Nguyễn Xuân Bình\"], [\"Bác sỹ Nguyễn Xuân Tính\"], [\"Bác sỹ Phạm Văn Hữu\"], [\"Bác sỹ Trần Xuân Bang\"], [\"Bác sỹ Trịnh Đắc Chung\"], [\"Bác sỹ dự phòng Lê Hữu Thắng\"], [\"Bác sỹ Đinh Tiến Diện\"], [\"Bác sỹ Đỗ Anh Tuấn\"], [\"Bác sỹ Đỗ Văn Siêng\"], [\"Bác sỹ. Phí Mạnh Dũng\"], [\"Bác sỹ: Nguyễn Thị Hòa\"], [\"Bác sỹ: Ngô Thị Hoàn\"], [\"Bùi Mạnh Kiên\"], [\"Bùi Như Hồng\"], [\"Bùi Thanh Hải\"], [\"Bùi Thanh Tịnh\"], [\"Bùi Thị Bích Thảo\"], [\"Bùi Thị Hoa\"], [\"Bùi Thị Hồng Phượng\"], [\"Bùi Thị Oanh\"], [\"Bùi Thị Ánh Tuyết\"], [\"Bùi Tiến Phương\"], [\"Bùi Trí Thuật\"], [\"Bùi Văn Linh\"], [\"Bùi Văn Thanh\"], [\"Bùi Ánh Ngọc\"], [\"CN Nguyễn Tiến Chương\"], [\"Cao Hải Yến\"], [\"Cao Nam Thắng\"], [\"Cao Thành Đạt\"], [\"Cao Thị Hà Ngân\"], [\"Cao Thị Mỹ Nga\"], [\"Cao Văn Huyên\"], [\"Cao Văn Nghị\"], [\"Chu Bá Sỹ\"], [\"Chu Thị Hương\"], [\"Chu Thị Thanh\"], [\"Chu Văn Tuấn\"], [\"Cấn Hoàng Kim\"], [\"Cấn Thị Vân\"], [\"Cử nhân YTCC Ngô Thị Kim Tuyến\"], [\"Dương Chí Chung\"], [\"Dương Mạnh Hùng\"], [\"Dương Ngọc Bích\"], [\"Dương Ngọc Huân\"], [\"Dương Thế Vinh\"], [\"Dương Thị Bích\"], [\"Dương Thị Chỉnh\"], [\"Dương Thị Hồng Nhung\"], [\"Dương Thị Thu Trang\"], [\"Dương Văn Công\"], [\"Dương Văn Huân\"], [\"Dương Văn Huệ\"], [\"Dương Văn Khương\"], [\"Dương Văn Minh\"], [\"Erwan Daniel guillaume debuc\"], [\"GS.TS. Nguyễn Viết Tiến\"], [\"Hoàng Gia Vinh\"], [\"Hoàng Hữu Huy\"], [\"Hoàng Hữu Tính\"], [\"Hoàng Lưu Sa\"], [\"Hoàng Lệ Thi\"], [\"Hoàng Thảo Ly\"], [\"Hoàng Thị Diệu Linh\"], [\"Hoàng Thị Giang\"], [\"Hoàng Thị Hạnh\"], [\"Hoàng Thị Mai Dung\"], [\"Hoàng Thị Mai Phương\"], [\"Hoàng Thị Minh Huệ\"], [\"Hoàng Thị Thanh\"], [\"Hoàng Thị Thu Màn\"], [\"Hoàng Thị Tuyền\"], [\"Hoàng Tiến Tuyên\"], [\"Hoàng Trọng Luân\"], [\"Hoàng Văn Bằng\"], [\"Hoàng Văn Tuyến\"], [\"Hoàng Văn Tự\"], [\"Hoàng Yến\"], [\"Hoàng Ánh Hồng\"], [\"Hy Việt Anh\"], [\"Hà Duy Dương\"], [\"Hà Thị Phượng\"], [\"Hà Thị Thùy Ngân\"], [\"Hà Thị Tú\"], [\"Khuất Duy Tuân\"], [\"Khuất Quang Tuyển\"], [\"Khuất Thị Hồng Nhung\"], [\"Khuất Thị Thu Nguyệt\"], [\"Khuất Đình Lư\"], [\"Khánh Thị Việt Hà\"], [\"Kiều Doãn Nghĩa\"], [\"Kiều Thị Bích Thúy\"], [\"Kiều Thị Giang\"], [\"Kiều Xuân Sang\"], [\"Kiều Xuân Tiệp\"], [\"Loan Thị Hồng Mai\"], [\"Lê Chí Đệ\"], [\"Lê Doãn Mạnh\"], [\"Lê Hải Ninh\"], [\"Lê Hữu Song/Trần Thanh Hương\"], [\"Lê Kiến Ngãi\"], [\"Lê Minh Đức\"], [\"Lê Ngọc Ánh\"], [\"Lê Phú Trùy\"], [\"Lê Thanh Cường\"], [\"Lê Thanh Hà\"], [\"Lê Thanh Nhã\"], [\"Lê Thành Văn\"], [\"Lê Thị Chuốt\"], [\"Lê Thị Chín\"], [\"Lê Thị Dung\"], [\"Lê Thị Hiển\"], [\"Lê Thị Huyền\"], [\"Lê Thị Hạnh\"], [\"Lê Thị Hải Hương\"], [\"Lê Thị Kim Hoa\"], [\"Lê Thị Kim Hoa/Chu Thị Hoa\"], [\"Lê Thị Kim Hoa/Đinh Thị Toàn\"], [\"Lê Thị Kim Ngân\"], [\"Lê Thị Kim Thanh\"], [\"Lê Thị Lan\"], [\"Lê Thị Luyến\"], [\"Lê Thị Lâm\"], [\"Lê Thị Lộc\"], [\"Lê Thị Mai Hương\"], [\"Lê Thị Mười\"], [\"Lê Thị Ngọc Anh\"], [\"Lê Thị Thanh Xuân\"], [\"Lê Thị Thoa\"], [\"Lê Thị Thư\"], [\"Lê Thị Yến\"], [\"Lê Văn Thiện\"], [\"Lê Văn Thuỳ\"], [\"Lê Văn Thành\"], [\"Lê Văn Thắng\"], [\"Lê Văn Đáp\"], [\"Lê Xuân Hùng\"], [\"Lê Đức Toàn\"], [\"Lý Thị Ánh Nguyệt\"], [\"Lưu Thị Dung\"], [\"Lưu Thị Loan\"], [\"Lưu Xuân Thắng\"], [\"Lưu Đức Hướng\"], [\"Lương Hồng Nhị\"], [\"Lương Minh Hồng\"], [\"Lương Ngọc Ánh\"], [\"Lương Quốc Chung\"], [\"Lương Thị Hường\"], [\"Lương Thị Thanh Phong\"], [\"Lương Thị Thuý Tình\"], [\"Lương Văn Phú\"], [\"Lường Công Thức\"], [\"Lại Ngọc Long\"], [\"Lại Vân Anh\"], [\"Mai Thị Hồng Diệp\"], [\"Mai Thị Tuyết Vân\"], [\"Mattias EriK Larsson\"], [\"Nghiêm Thị Dịu\"], [\"Nghiêm Thị Thanh Xuân\"], [\"Nguyễn Anh Thành\"], [\"Nguyễn Anh Tuấn\"], [\"Nguyễn Bạch Điệp\"], [\"Nguyễn Chí Thành\"], [\"Nguyễn Danh Phương\"], [\"Nguyễn Danh Đông\"], [\"Nguyễn Duy Ánh\"], [\"Nguyễn Gia Phúc\"], [\"Nguyễn Giáp Oán\"], [\"Nguyễn Hoàng Hiệp\"], [\"Nguyễn Hoàng Huyên\"], [\"Nguyễn Hoàng Lan\"], [\"Nguyễn Hoàng Loan\"], [\"Nguyễn Hoàng Văn\"], [\"Nguyễn Huy Đại\"], [\"Nguyễn Huyền Trang\"], [\"Nguyễn Hà Phương\"], [\"Nguyễn Hùng Cường\"], [\"Nguyễn Hải Kiên\"], [\"Nguyễn Hải Phong\"], [\"Nguyễn Hải Đăng\"], [\"Nguyễn Hồng Khải\"], [\"Nguyễn Hữu Giáp\"], [\"Nguyễn Hữu Thủy\"], [\"Nguyễn Hữu Tuệ\"], [\"Nguyễn Kiên Cường\"], [\"Nguyễn Kiều Hương\"], [\"Nguyễn Linh Trang\"], [\"Nguyễn Mai Lan\"], [\"Nguyễn Minh Phúc\"], [\"Nguyễn Minh Sơn\"], [\"Nguyễn Minh Tuấn\"], [\"Nguyễn Minh Tạo\"], [\"Nguyễn Mạnh Cường\"], [\"Nguyễn Mạnh Hùng\"], [\"Nguyễn Mạnh Liên\"], [\"Nguyễn Mạnh Trâm\"], [\"Nguyễn Mạnh Tưởng\"], [\"Nguyễn Ngọc Chiến\"], [\"Nguyễn Phong Lưu\"], [\"Nguyễn Phương Mai\"], [\"Nguyễn Phương Thúy\"], [\"Nguyễn Phương Trung\"], [\"Nguyễn Phương Trường\"], [\"Nguyễn Quang Cần\"], [\"Nguyễn Quang Huy\"], [\"Nguyễn Quang Hưng\"], [\"Nguyễn Quang Hải\"], [\"Nguyễn Quang Nam\"], [\"Nguyễn Quang Thắng\"], [\"Nguyễn Quang Toản\"], [\"Nguyễn Quang Trung\"], [\"Nguyễn Quang Vinh\"], [\"Nguyễn Quốc Thưởng\"], [\"Nguyễn Quỳnh Trang\"], [\"Nguyễn Sĩ Mạnh\"], [\"Nguyễn Thanh Khoa Vy\"], [\"Nguyễn Thanh Nga\"], [\"Nguyễn Thanh Nhàn\"], [\"Nguyễn Thanh Sơn\"], [\"Nguyễn Thanh Tâm\"], [\"Nguyễn Thi Hào\"], [\"Nguyễn Thu Huyền\"], [\"Nguyễn Thu Hà\"], [\"Nguyễn Thu Hương\"], [\"Nguyễn Thu Thủy\"], [\"Nguyễn Thu Trang\"], [\"Nguyễn Thuỳ Linh\"], [\"Nguyễn Thuỳ Nga\"], [\"Nguyễn Thành Minh\"], [\"Nguyễn Thùy Chinh\"], [\"Nguyễn Thắng Sơn\"], [\"Nguyễn Thế Anh\"], [\"Nguyễn Thế Hanh\"], [\"Nguyễn Thị Biên\"], [\"Nguyễn Thị Bích Hòa\"], [\"Nguyễn Thị Chuyên\"], [\"Nguyễn Thị Diệu Hợp\"], [\"Nguyễn Thị Dung\"], [\"Nguyễn Thị Giang\"], [\"Nguyễn Thị Hoa\"], [\"Nguyễn Thị Hoa Hiên\"], [\"Nguyễn Thị Hoài\"], [\"Nguyễn Thị Huyền\"], [\"Nguyễn Thị Huệ\"], [\"Nguyễn Thị Hà\"], [\"Nguyễn Thị Hòa\"], [\"Nguyễn Thị Hương Giang\"], [\"Nguyễn Thị Hạnh\"], [\"Nguyễn Thị Hải\"], [\"Nguyễn Thị Hậu\"], [\"Nguyễn Thị Hằng\"], [\"Nguyễn Thị Hằng Thúy\"], [\"Nguyễn Thị Hồng\"], [\"Nguyễn Thị Hồng Hà\"], [\"Nguyễn Thị Hồng Hạnh\"], [\"Nguyễn Thị Hồng Sâm\"], [\"Nguyễn Thị Khang\"], [\"Nguyễn Thị Khánh Huyền\"], [\"Nguyễn Thị Kim Ngân\"], [\"Nguyễn Thị Kiều Loan\"], [\"Nguyễn Thị Lan\"], [\"Nguyễn Thị Lan Anh\"], [\"Nguyễn Thị Lan Hương\"], [\"Nguyễn Thị Liên\"], [\"Nguyễn Thị Loan\"], [\"Nguyễn Thị Luyến\"], [\"Nguyễn Thị Luận\"], [\"Nguyễn Thị Lý\"], [\"Nguyễn Thị Lưỡng\"], [\"Nguyễn Thị Lệ Thúy\"], [\"Nguyễn Thị Mai\"], [\"Nguyễn Thị Mai Hoa\"], [\"Nguyễn Thị Mai Hương\"], [\"Nguyễn Thị Minh Cảnh\"], [\"Nguyễn Thị Minh Phương\"], [\"Nguyễn Thị Minh Tâm\"], [\"Nguyễn Thị Mỹ Hòa\"], [\"Nguyễn Thị Mỹ Hạnh\"], [\"Nguyễn Thị Nga\"], [\"Nguyễn Thị Nguyệt\"], [\"Nguyễn Thị Ngà\"], [\"Nguyễn Thị Ngọc\"], [\"Nguyễn Thị Ngọc Lan\"], [\"Nguyễn Thị Nhung\"], [\"Nguyễn Thị Như Quỳnh\"], [\"Nguyễn Thị Phương Hiền\"], [\"Nguyễn Thị Phương Lan\"], [\"Nguyễn Thị Phương Lâm\"], [\"Nguyễn Thị Phượng\"], [\"Nguyễn Thị Quyên\"], [\"Nguyễn Thị Riên\"], [\"Nguyễn Thị Sáu\"], [\"Nguyễn Thị Thanh Huyền\"], [\"Nguyễn Thị Thanh Hương\"], [\"Nguyễn Thị Thanh Loan\"], [\"Nguyễn Thị Thanh Thuỷ\"], [\"Nguyễn Thị Thoi\"], [\"Nguyễn Thị Thu\"], [\"Nguyễn Thị Thu Hiền\"], [\"Nguyễn Thị Thu Hà\"], [\"Nguyễn Thị Thu Phương\"], [\"Nguyễn Thị Thu Thủy\"], [\"Nguyễn Thị Thuý\"], [\"Nguyễn Thị Thuý Hà\"], [\"Nguyễn Thị Thuấn\"], [\"Nguyễn Thị Thành\"], [\"Nguyễn Thị Thòa\"], [\"Nguyễn Thị Thúy\"], [\"Nguyễn Thị Thúy Hằng\"], [\"Nguyễn Thị Thơ\"], [\"Nguyễn Thị Thảo\"], [\"Nguyễn Thị Thắm\"], [\"Nguyễn Thị Thắng\"], [\"Nguyễn Thị Thủy\"], [\"Nguyễn Thị Tuyết Hải\"], [\"Nguyễn Thị Tuyết Nhung\"], [\"Nguyễn Thị Tâm\"], [\"Nguyễn Thị Tố Chinh\"], [\"Nguyễn Thị Uyên\"], [\"Nguyễn Thị Vân\"], [\"Nguyễn Thị Vượng\"], [\"Nguyễn Thị Yên\"], [\"Nguyễn Thị Ánh\"], [\"Nguyễn Thị Ánh Nguyệt\"], [\"Nguyễn Thị Đông\"], [\"Nguyễn Tiến Cương\"], [\"Nguyễn Tiến Dũng\"], [\"Nguyễn Tiến Trung\"], [\"Nguyễn Tiến Trọng\"], [\"Nguyễn Tiến Ánh\"], [\"Nguyễn Tiến Đạt\"], [\"Nguyễn Trung Chính\"], [\"Nguyễn Trung Dũng\"], [\"Nguyễn Trung Hiếu\"], [\"Nguyễn Trung Hậu\"], [\"Nguyễn Trọng Bính\"], [\"Nguyễn Tuấn Hạnh\"], [\"Nguyễn Tuấn Quang\"], [\"Nguyễn Tùng Sơn\"], [\"Nguyễn Tường Phượng\"], [\"Nguyễn Viết Mạnh\"], [\"Nguyễn Viết Phương\"], [\"Nguyễn Việt Duy\"], [\"Nguyễn Việt Hùng\"], [\"Nguyễn Việt Phương\"], [\"Nguyễn Văn Bao\"], [\"Nguyễn Văn Bằng\"], [\"Nguyễn Văn Chung\"], [\"Nguyễn Văn Cường\"], [\"Nguyễn Văn Dũng\"], [\"Nguyễn Văn Hiếu\"], [\"Nguyễn Văn Hoà\"], [\"Nguyễn Văn Khanh\"], [\"Nguyễn Văn Khoản\"], [\"Nguyễn Văn Khâm\"], [\"Nguyễn Văn Khương\"], [\"Nguyễn Văn Mạnh\"], [\"Nguyễn Văn Nguyên\"], [\"Nguyễn Văn Nhâm\"], [\"Nguyễn Văn Năm\"], [\"Nguyễn Văn Nội\"], [\"Nguyễn Văn Oánh\"], [\"Nguyễn Văn Quang\"], [\"Nguyễn Văn Quảng\"], [\"Nguyễn Văn Sang\"], [\"Nguyễn Văn Sơn\"], [\"Nguyễn Văn Sửu\"], [\"Nguyễn Văn Thanh\"], [\"Nguyễn Văn Thiệu\"], [\"Nguyễn Văn Thơ\"], [\"Nguyễn Văn Thường\"], [\"Nguyễn Văn Thắng\"], [\"Nguyễn Văn Tiến\"], [\"Nguyễn Văn Tuấn\"], [\"Nguyễn Văn Việt\"], [\"Nguyễn Văn Xít\"], [\"Nguyễn Văn Ánh\"], [\"Nguyễn Văn Đô\"], [\"Nguyễn Văn Đạt\"], [\"Nguyễn Xuân Hùng\"], [\"Nguyễn Xuân Hương\"], [\"Nguyễn Xuân Hải\"], [\"Nguyễn Xuân Lộc\"], [\"Nguyễn Xuân Thát\"], [\"Nguyễn Xuân Đồng\"], [\"Nguyễn Đình Quân\"], [\"Nguyễn Đình Túc\"], [\"Nguyễn Đăng Hiếu\"], [\"Nguyễn Đăng Hiển/Nguyễn Thị Dương Hiền\"], [\"Nguyễn Đăng Hiển/Nguyễn Đình Kim\"], [\"Nguyễn Đăng Minh\"], [\"Nguyễn Đăng Xuân\"], [\"Nguyễn Đức Anh\"], [\"Nguyễn Đức Dương\"], [\"Nguyễn Đức Tiến\"], [\"Nguyễn Đức Trung\"], [\"Nguyễn Đức Trại\"], [\"Nguyễn Đức Tú\"], [\"Ngô Bá Phương\"], [\"Ngô Phi Phương\"], [\"Ngô Quang Hùng\"], [\"Ngô Thanh Thủy\"], [\"Ngô Thị Hải\"], [\"Ngô Thị Kim Tuyến\"], [\"Ngô Thị Mỳ\"], [\"Ngô Thị Thu Hiền\"], [\"Ngô Thị Vịnh\"], [\"Ngô Tiến Thịnh\"], [\"Ngô Trung Quyết\"], [\"Ngô Tuyết Thanh\"], [\"Ngô Văn Chuẩn\"], [\"Ngô Văn Nguyên\"], [\"Ngô Văn Thuân\"], [\"Ngô Xuân Tú\"], [\"PGS.TS.BS. Hoàng Gia Du\"], [\"Phan Ngọc Lan\"], [\"Phan Thị Bích Liên\"], [\"Phan Thị Bẩy\"], [\"Phan Thị Minh Anh\"], [\"Phan Thị Thu Hà\"], [\"Phan Văn Chuyên\"], [\"Phí Ngọc Yến Nhi\"], [\"Phí Thị Hằng\"], [\"Phí Thị Phượng\"], [\"Phù Xuân Đương\"], [\"Phùng Thế Tài\"], [\"Phùng Thị Bích Niên\"], [\"Phùng Thị Huề\"], [\"Phùng Thị Khánh\"], [\"Phùng Thị Liên\"], [\"Phùng Thị Luyến\"], [\"Phùng Thị Nguyên\"], [\"Phùng Văn Dực\"], [\"Phùng Văn Hai\"], [\"Phùng Văn Hưởng\"], [\"Phùng Văn Việt\"], [\"Phùng Xuân Diễn\"], [\"Phùng Xuân Thạch\"], [\"Phùng Xuân Thịnh\"], [\"Phương Thị Mai Hương\"], [\"Phạm Hà Giang\"], [\"Phạm Hồng Phong\"], [\"Phạm Hữu Thường\"], [\"Phạm Phú Đạo/Trần Thị Hậu\"], [\"Phạm Quang Hải\"], [\"Phạm Quang Vi\"], [\"Phạm Quỳnh Trang\"], [\"Phạm Thanh Hải\"], [\"Phạm Thị Anh Đào\"], [\"Phạm Thị Hiền\"], [\"Phạm Thị Hoài Anh\"], [\"Phạm Thị Hải Yến\"], [\"Phạm Thị Kim Thoa\"], [\"Phạm Thị Lan\"], [\"Phạm Thị Luyến\"], [\"Phạm Thị Mai Hoa\"], [\"Phạm Thị Minh\"], [\"Phạm Thị Minh Phương\"], [\"Phạm Thị Mừng\"], [\"Phạm Thị Ngọc Bảo\"], [\"Phạm Thị Quyên\"], [\"Phạm Thị Quỳnh Thư\"], [\"Phạm Thị Sáu\"], [\"Phạm Thị Thu Huyền\"], [\"Phạm Thị Thư\"], [\"Phạm Thị Xuân Hoài\"], [\"Phạm Thị Yến\"], [\"Phạm Thị Ánh Nguyệt\"], [\"Phạm Thị Ít Lan\"], [\"Phạm Văn Phán\"], [\"Phạm Văn Quang\"], [\"Phạm Xuân Hiền\"], [\"Phạm Đức Giang\"], [\"Quách Gia Định\"], [\"Quách Mạnh Khánh\"], [\"Quách Thị Hảo\"], [\"TS.BS. Bùi Ngọc Minh\"], [\"TS.BS. Nguyễn Phạm Ý Nhi\"], [\"TS.BS. Nguyễn Đức Hoan\"], [\"ThS Bác sỹ. Lưu Văn Báu\"], [\"Thạc sỹ.Bs Phạm Đăng Quân\"], [\"Tiêu Ngọc Chiến\"], [\"Trinh Duy Ưng\"], [\"Trương Thúy Quỳnh\"], [\"Trương Thị Hằng\"], [\"Trần Công Năng\"], [\"Trần Huy Long\"], [\"Trần Hùng Mạnh\"], [\"Trần Linh Trang\"], [\"Trần Minh Tân\"], [\"Trần Mạnh Thắng\"], [\"Trần Ngọc Anh\"], [\"Trần Ngọc Luân\"], [\"Trần Ngọc Nghĩa\"], [\"Trần Phương Mỹ\"], [\"Trần Quang Trịnh/ Phạm Thị Lan Anh\"], [\"Trần Quang Trịnh/ Tạ Ngọc Phương\"], [\"Trần Quyết Chiến\"], [\"Trần Sỹ Quảng\"], [\"Trần Thị Chi\"], [\"Trần Thị Hiển\"], [\"Trần Thị Hoa\"], [\"Trần Thị Hương\"], [\"Trần Thị Hường\"], [\"Trần Thị Kim Ngân\"], [\"Trần Thị Liên Hoa\"], [\"Trần Thị Mai\"], [\"Trần Thị Mai Hương\"], [\"Trần Thị Minh Lý\"], [\"Trần Thị Nga\"], [\"Trần Thị Ngân\"], [\"Trần Thị Ngọc Anh\"], [\"Trần Thị Nhinh\"], [\"Trần Thị Phượng\"], [\"Trần Thị Thanh Huyền\"], [\"Trần Thị The\"], [\"Trần Thị Tuyết Hậu\"], [\"Trần Thị Vân Khánh\"], [\"Trần Thị Yến\"], [\"Trần Văn Hay\"], [\"Trần Văn Huyên\"], [\"Trần Văn Khôi\"], [\"Trần Văn Lâm\"], [\"Trần Văn Nhất\"], [\"Trần Văn Toanh\"], [\"Trần Văn Đại\"], [\"Trần Xuân Nam\"], [\"Trần Xuân Đông\"], [\"Trần Đình Thân\"], [\"Trần Đình Thư\"], [\"Trịnh Duy Đà\"], [\"Trịnh Thị Kiện\"], [\"Trịnh Thị Thảo\"], [\"Trịnh Tuấn Hưng\"], [\"Tô Thị Lan\"], [\"Tô Thị Tuyết\"], [\"Tô Tiến Quang\"], [\"Tô Xuân Sinh\"], [\"Tạ Thị Dung\"], [\"Tạ Thị Lý\"], [\"Tạ Văn Chính\"], [\"Tống Văn Hùng\"], [\"Vi Thị Soan\"], [\"Vũ Anh Phương\"], [\"Vũ Danh Tài\"], [\"Vũ Hoàng Hải\"], [\"Vũ Mạnh Cường\"], [\"Vũ Ngọc Trung\"], [\"Vũ Quang Hiển\"], [\"Vũ Quang Sơn\"], [\"Vũ Thị Bích Huyền\"], [\"Vũ Thị Hoà\"], [\"Vũ Thị Huệ\"], [\"Vũ Thị Hương Giang\"], [\"Vũ Thị Hảo\"], [\"Vũ Thị Phước\"], [\"Vũ Thị Sơn\"], [\"Vũ Thị Thanh Hương\"], [\"Vũ Thị Thu Hòa\"], [\"Vũ Thị Thu Thuỷ\"], [\"Vũ Thị Thuỷ\"], [\"Vũ Thị Thùy\"], [\"Vũ Thị Tuệ\"], [\"Vũ Tiến Hải\"], [\"Vũ Tuấn Anh\"], [\"Vũ Văn Hiên\"], [\"Vũ Văn Hiển\"], [\"Vũ Văn Thủy\"], [\"Vũ Xuân Tình\"], [\"Vương Thị Hợi\"], [\"Vương Thị Kim Lan\"], [\"Vương Thị Phương\"], [\"Vương Thị Thu Hường\"], [\"Vương Thị Thủy\"], [\"Vương Trung Kiên\"], [\"Y sỹ Doãn Thị Xuyến\"], [\"Y sỹ Dương Thế Vinh\"], [\"Y sỹ Dương Thị Liên\"], [\"Y sỹ Hoàng Mai Ngạn\"], [\"Y sỹ Lương Thị Ngọc\"], [\"Y sỹ Mai Thị Nguyệt\"], [\"Y sỹ Nguyễn Thanh Lịch\"], [\"Y sỹ Nguyễn Thị Hồng Hạnh\"], [\"Y sỹ Nguyễn Thị Kiều Oanh\"], [\"Y sỹ Nguyễn Thị Lý\"], [\"Y sỹ Phạm Minh Tiến\"], [\"Y sỹ Trần Đình Thân\"], [\"YS Nguyễn Thị Thanh Thảo\"], [\"YS Trương Thị Minh Thư\"], [\"Ys. Dương Thị Lịch\"], [\"Ys. Nguyễn Ngọc Quý\"], [\"lê Thị Phương Anh\"], [\"Ân Thành Đặt\"], [\"Đinh Công Toàn\"], [\"Đinh Khánh Ly\"], [\"Đinh Ngọc Lương\"], [\"Đinh Ngọc Phát\"], [\"Đinh Thị Hoan\"], [\"Đinh Thị Hồng Hoa\"], [\"Đinh Thị Lũy\"], [\"Đinh Thị Mai Hoa\"], [\"Đinh Thị Thanh\"], [\"Đinh Thị Uyên\"], [\"Đinh Thị Yến\"], [\"Đoàn Thanh Thủy\"], [\"Đoàn Thị Thúy Liên\"], [\"Đào Hồng Chinh\"], [\"Đào Hồng Chỉnh\"], [\"Đào Thị Hiền\"], [\"Đào Thị Thuỷ\"], [\"Đào Văn Thưởng\"], [\"Đào Văn Vinh\"], [\"Đào Xuân Cơ\"], [\"Đậu Thu Huyền\"], [\"Đặng Huy Định\"], [\"Đặng Hồng Châu\"], [\"Đặng Hữu Bá\"], [\"Đặng Hữu Hoằng\"], [\"Đặng Thanh Nhàn\"], [\"Đặng Thành Luân\"], [\"Đặng Thị Kim Oanh\"], [\"Đặng Thị Ngọc Hà\"], [\"Đặng Thị Nhung\"], [\"Đặng Thị Nhâm\"], [\"Đặng Thị Thanh Hà\"], [\"Đặng Thị Thuận\"], [\"Đặng Trung Kiên\"], [\"Đặng Văn Thanh\"], [\"Đặng Đình Sáng\"], [\"Đặng Đình Thực\"], [\"Đồng Thị Lan\"], [\"Đồng Thị Thuỷ\"], [\"Đồng Đạo Khánh\"], [\"Đỗ Duy Dương\"], [\"Đỗ Duy Toàn\"], [\"Đỗ Hồng Quang\"], [\"Đỗ Như Chinh\"], [\"Đỗ Phương Đông\"], [\"Đỗ Song An\"], [\"Đỗ Thu Thuỷ\"], [\"Đỗ Thùy Dung\"], [\"Đỗ Thị Bích Hạnh\"], [\"Đỗ Thị Hiền\"], [\"Đỗ Thị Loan\"], [\"Đỗ Thị Nam\"], [\"Đỗ Thị Ngọc\"], [\"Đỗ Thị Nhàn\"], [\"Đỗ Thị Phượng\"], [\"Đỗ Thị Thu Hương\"], [\"Đỗ Thị Vân\"], [\"Đỗ Văn Chiến\"], [\"Đỗ Văn Dũng\"], [\"Đỗ Văn Vân\"], [\"Đỗ Xuân Thành\"], [\"Đỗ Xuân Tùng\"], [\"Đỗ Đăng Sơn\"]]"
+    },
+    {
+      "tool_calls": [
+        {
+          "id": "call_00_zu1q6jarq49BpW8PVsfc8341",
+          "function": {
+            "arguments": "{\"result\": [[\"BS Lưu Thị Dung\"], [\"BS Nguyễn Hồng Nhung\"], [\"BS Nguyễn Quố Quân\"], [\"BS Nguyễn Thị An Khang\"], [\"BS Nguyễn Thị Nga\"], [\"BS Nguyễn Thị Riên\"], [\"BS Nguyễn Thị Thanh Huyền\"], [\"BS Nguyễn Văn Sang\"], [\"BS Nguyễn Đình Lịch\"], [\"BS Trương Vũ Linh\"], [\"BS Trần Văn Dân\"], [\"BS Vũ Mạnh Cường\"], [\"BS Vương Trí Hồng\"], [\"BS Đỗ Thị Phượng\"], [\"BS. Cao Văn Giao\"], [\"BS. Lê Trung Tiên\"], [\"BS. Lê Đức Tuyên\"], [\"BS. Nguyễn Thị Bản\"], [\"BS. Nguyễn Văn Tuyển\"], [\"BS. Ngô Thanh Hào\"], [\"BS. Phạm Văn Dũng\"], [\"BS. Trần Trọng Thắng\"], [\"BS. Đàm Thị Mai Hoa\"], [\"BS. Đỗ Văn Thảo\"], [\"BSCK II Trương Kỳ Phong\"], [\"BSCK II Trần Quang Tuấn\"], [\"BSCKI. Phan Thị Long Hoa/ BSYHCT. Nguyễn Trà My\"], [\"BSCKII Nguyễn Văn Tý\"], [\"BSCKII Tạ Văn Sứng\"], [\"Bs Hoàng Bích Thuỷ\"], [\"Bs Hoàng Xuân Tùng\"], [\"Bs Lê Quang Trung\"], [\"Bs Nguyễn Văn Hảo\"], [\"Bs Vũ Thị Hải\"], [\"Bs. Trần Phạm Thái\"], [\"Bs. Trần Thị Hoa\"], [\"Bác sĩ Phù Vĩnh Thắng\"], [\"Bác sĩ Đào Bá Tuệ\"], [\"Bác sỹ Lê Xuân Đức\"], [\"Bác sỹ Nguyễn Công Đạt\"], [\"Bác sỹ Nguyễn Thị Huyền Trang\"], [\"Bác sỹ Nguyễn Thị Mỹ\"], [\"Bác sỹ Nguyễn Thị Nga\"], [\"Bác sỹ Nguyễn Thị Nhâm\"], [\"Bác sỹ Nguyễn Xuân Bình\"], [\"Bác sỹ Nguyễn Xuân Tính\"], [\"Bác sỹ Phạm Văn Hữu\"], [\"Bác sỹ Trần Xuân Bang\"], [\"Bác sỹ Trịnh Đắc Chung\"], [\"Bác sỹ dự phòng Lê Hữu Thắng\"], [\"Bác sỹ Đinh Tiến Diện\"], [\"Bác sỹ Đỗ Anh Tuấn\"], [\"Bác sỹ Đỗ Văn Siêng\"], [\"Bác sỹ. Phí Mạnh Dũng\"], [\"Bác sỹ: Nguyễn Thị Hòa\"], [\"Bác sỹ: Ngô Thị Hoàn\"], [\"Bùi Mạnh Kiên\"], [\"Bùi Như Hồng\"], [\"Bùi Thanh Hải\"], [\"Bùi Thanh Tịnh\"], [\"Bùi Thị Bích Thảo\"], [\"Bùi Thị Hoa\"], [\"Bùi Thị Hồng Phượng\"], [\"Bùi Thị Oanh\"], [\"Bùi Thị Ánh Tuyết\"], [\"Bùi Tiến Phương\"], [\"Bùi Trí Thuật\"], [\"Bùi Văn Linh\"], [\"Bùi Văn Thanh\"], [\"Bùi Ánh Ngọc\"], [\"CN Nguyễn Tiến Chương\"], [\"Cao Hải Yến\"], [\"Cao Nam Thắng\"], [\"Cao Thành Đạt\"], [\"Cao Thị Hà Ngân\"], [\"Cao Thị Mỹ Nga\"], [\"Cao Văn Huyên\"], [\"Cao Văn Nghị\"], [\"Chu Bá Sỹ\"], [\"Chu Thị Hương\"], [\"Chu Thị Thanh\"], [\"Chu Văn Tuấn\"], [\"Cấn Hoàng Kim\"], [\"Cấn Thị Vân\"], [\"Cử nhân YTCC Ngô Thị Kim Tuyến\"], [\"Dương Chí Chung\"], [\"Dương Mạnh Hùng\"], [\"Dương Ngọc Bích\"], [\"Dương Ngọc Huân\"], [\"Dương Thế Vinh\"], [\"Dương Thị Bích\"], [\"Dương Thị Chỉnh\"], [\"Dương Thị Hồng Nhung\"], [\"Dương Thị Thu Trang\"], [\"Dương Văn Công\"], [\"Dương Văn Huân\"], [\"Dương Văn Huệ\"], [\"Dương Văn Khương\"], [\"Dương Văn Minh\"], [\"Erwan Daniel guillaume debuc\"], [\"GS.TS. Nguyễn Viết Tiến\"], [\"Hoàng Gia Vinh\"], [\"Hoàng Hữu Huy\"], [\"Hoàng Hữu Tính\"], [\"Hoàng Lưu Sa\"], [\"Hoàng Lệ Thi\"], [\"Hoàng Thảo Ly\"], [\"Hoàng Thị Diệu Linh\"], [\"Hoàng Thị Giang\"], [\"Hoàng Thị Hạnh\"], [\"Hoàng Thị Mai Dung\"], [\"Hoàng Thị Mai Phương\"], [\"Hoàng Thị Minh Huệ\"], [\"Hoàng Thị Thanh\"], [\"Hoàng Thị Thu Màn\"], [\"Hoàng Thị Tuyền\"], [\"Hoàng Tiến Tuyên\"], [\"Hoàng Trọng Luân\"], [\"Hoàng Văn Bằng\"], [\"Hoàng Văn Tuyến\"], [\"Hoàng Văn Tự\"], [\"Hoàng Yến\"], [\"Hoàng Ánh Hồng\"], [\"Hy Việt Anh\"], [\"Hà Duy Dương\"], [\"Hà Thị Phượng\"], [\"Hà Thị Thùy Ngân\"], [\"Hà Thị Tú\"], [\"Khuất Duy Tuân\"], [\"Khuất Quang Tuyển\"], [\"Khuất Thị Hồng Nhung\"], [\"Khuất Thị Thu Nguyệt\"], [\"Khuất Đình Lư\"], [\"Khánh Thị Việt Hà\"], [\"Kiều Doãn Nghĩa\"], [\"Kiều Thị Bích Thúy\"], [\"Kiều Thị Giang\"], [\"Kiều Xuân Sang\"], [\"Kiều Xuân Tiệp\"], [\"Loan Thị Hồng Mai\"], [\"Lê Chí Đệ\"], [\"Lê Doãn Mạnh\"], [\"Lê Hải Ninh\"], [\"Lê Hữu Song/Trần Thanh Hương\"], [\"Lê Kiến Ngãi\"], [\"Lê Minh Đức\"], [\"Lê Ngọc Ánh\"], [\"Lê Phú Trùy\"], [\"Lê Thanh Cường\"], [\"Lê Thanh Hà\"], [\"Lê Thanh Nhã\"], [\"Lê Thành Văn\"], [\"Lê Thị Chuốt\"], [\"Lê Thị Chín\"], [\"Lê Thị Dung\"], [\"Lê Thị Hiển\"], [\"Lê Thị Huyền\"], [\"Lê Thị Hạnh\"], [\"Lê Thị Hải Hương\"], [\"Lê Thị Kim Hoa\"], [\"Lê Thị Kim Hoa/Chu Thị Hoa\"], [\"Lê Thị Kim Hoa/Đinh Thị Toàn\"], [\"Lê Thị Kim Ngân\"], [\"Lê Thị Kim Thanh\"], [\"Lê Thị Lan\"], [\"Lê Thị Luyến\"], [\"Lê Thị Lâm\"], [\"Lê Thị Lộc\"], [\"Lê Thị Mai Hương\"], [\"Lê Thị Mười\"], [\"Lê Thị Ngọc Anh\"], [\"Lê Thị Thanh Xuân\"], [\"Lê Thị Thoa\"], [\"Lê Thị Thư\"], [\"Lê Thị Yến\"], [\"Lê Văn Thiện\"], [\"Lê Văn Thuỳ\"], [\"Lê Văn Thành\"], [\"Lê Văn Thắng\"], [\"Lê Văn Đáp\"], [\"Lê Xuân Hùng\"], [\"Lê Đức Toàn\"], [\"Lý Thị Ánh Nguyệt\"], [\"Lưu Thị Dung\"], [\"Lưu Thị Loan\"], [\"Lưu Xuân Thắng\"], [\"Lưu Đức Hướng\"], [\"Lương Hồng Nhị\"], [\"Lương Minh Hồng\"], [\"Lương Ngọc Ánh\"], [\"Lương Quốc Chung\"], [\"Lương Thị Hường\"], [\"Lương Thị Thanh Phong\"], [\"Lương Thị Thuý Tình\"], [\"Lương Văn Phú\"], [\"Lường Công Thức\"], [\"Lại Ngọc Long\"], [\"Lại Vân Anh\"], [\"Mai Thị Hồng Diệp\"], [\"Mai Thị Tuyết Vân\"], [\"Mattias EriK Larsson\"], [\"Nghiêm Thị Dịu\"], [\"Nghiêm Thị Thanh Xuân\"], [\"Nguyễn Anh Thành\"], [\"Nguyễn Anh Tuấn\"], [\"Nguyễn Bạch Điệp\"], [\"Nguyễn Chí Thành\"], [\"Nguyễn Danh Phương\"], [\"Nguyễn Danh Đông\"], [\"Nguyễn Duy Ánh\"], [\"Nguyễn Gia Phúc\"], [\"Nguyễn Giáp Oán\"], [\"Nguyễn Hoàng Hiệp\"], [\"Nguyễn Hoàng Huyên\"], [\"Nguyễn Hoàng Lan\"], [\"Nguyễn Hoàng Loan\"], [\"Nguyễn Hoàng Văn\"], [\"Nguyễn Huy Đại\"], [\"Nguyễn Huyền Trang\"], [\"Nguyễn Hà Phương\"], [\"Nguyễn Hùng Cường\"], [\"Nguyễn Hải Kiên\"], [\"Nguyễn Hải Phong\"], [\"Nguyễn Hải Đăng\"], [\"Nguyễn Hồng Khải\"], [\"Nguyễn Hữu Giáp\"], [\"Nguyễn Hữu Thủy\"], [\"Nguyễn Hữu Tuệ\"], [\"Nguyễn Kiên Cường\"], [\"Nguyễn Kiều Hương\"], [\"Nguyễn Linh Trang\"], [\"Nguyễn Mai Lan\"], [\"Nguyễn Minh Phúc\"], [\"Nguyễn Minh Sơn\"], [\"Nguyễn Minh Tuấn\"], [\"Nguyễn Minh Tạo\"], [\"Nguyễn Mạnh Cường\"], [\"Nguyễn Mạnh Hùng\"], [\"Nguyễn Mạnh Liên\"], [\"Nguyễn Mạnh Trâm\"], [\"Nguyễn Mạnh Tưởng\"], [\"Nguyễn Ngọc Chiến\"], [\"Nguyễn Phong Lưu\"], [\"Nguyễn Phương Mai\"], [\"Nguyễn Phương Thúy\"], [\"Nguyễn Phương Trung\"], [\"Nguyễn Phương Trường\"], [\"Nguyễn Quang Cần\"], [\"Nguyễn Quang Huy\"], [\"Nguyễn Quang Hưng\"], [\"Nguyễn Quang Hải\"], [\"Nguyễn Quang Nam\"], [\"Nguyễn Quang Thắng\"], [\"Nguyễn Quang Toản\"], [\"Nguyễn Quang Trung\"], [\"Nguyễn Quang Vinh\"], [\"Nguyễn Quốc Thưởng\"], [\"Nguyễn Quỳnh Trang\"], [\"Nguyễn Sĩ Mạnh\"], [\"Nguyễn Thanh Khoa Vy\"], [\"Nguyễn Thanh Nga\"], [\"Nguyễn Thanh Nhàn\"], [\"Nguyễn Thanh Sơn\"], [\"Nguyễn Thanh Tâm\"], [\"Nguyễn Thi Hào\"], [\"Nguyễn Thu Huyền\"], [\"Nguyễn Thu Hà\"], [\"Nguyễn Thu Hương\"], [\"Nguyễn Thu Thủy\"], [\"Nguyễn Thu Trang\"], [\"Nguyễn Thuỳ Linh\"], [\"Nguyễn Thuỳ Nga\"], [\"Nguyễn Thành Minh\"], [\"Nguyễn Thùy Chinh\"], [\"Nguyễn Thắng Sơn\"], [\"Nguyễn Thế Anh\"], [\"Nguyễn Thế Hanh\"], [\"Nguyễn Thị Biên\"], [\"Nguyễn Thị Bích Hòa\"], [\"Nguyễn Thị Chuyên\"], [\"Nguyễn Thị Diệu Hợp\"], [\"Nguyễn Thị Dung\"], [\"Nguyễn Thị Giang\"], [\"Nguyễn Thị Hoa\"], [\"Nguyễn Thị Hoa Hiên\"], [\"Nguyễn Thị Hoài\"], [\"Nguyễn Thị Huyền\"], [\"Nguyễn Thị Huệ\"], [\"Nguyễn Thị Hà\"], [\"Nguyễn Thị Hòa\"], [\"Nguyễn Thị Hương Giang\"], [\"Nguyễn Thị Hạnh\"], [\"Nguyễn Thị Hải\"], [\"Nguyễn Thị Hậu\"], [\"Nguyễn Thị Hằng\"], [\"Nguyễn Thị Hằng Thúy\"], [\"Nguyễn Thị Hồng\"], [\"Nguyễn Thị Hồng Hà\"], [\"Nguyễn Thị Hồng Hạnh\"], [\"Nguyễn Thị Hồng Sâm\"], [\"Nguyễn Thị Khang\"], [\"Nguyễn Thị Khánh Huyền\"], [\"Nguyễn Thị Kim Ngân\"], [\"Nguyễn Thị Kiều Loan\"], [\"Nguyễn Thị Lan\"], [\"Nguyễn Thị Lan Anh\"], [\"Nguyễn Thị Lan Hương\"], [\"Nguyễn Thị Liên\"], [\"Nguyễn Thị Loan\"], [\"Nguyễn Thị Luyến\"], [\"Nguyễn Thị Luận\"], [\"Nguyễn Thị Lý\"], [\"Nguyễn Thị Lưỡng\"], [\"Nguyễn Thị Lệ Thúy\"], [\"Nguyễn Thị Mai\"], [\"Nguyễn Thị Mai Hoa\"], [\"Nguyễn Thị Mai Hương\"], [\"Nguyễn Thị Minh Cảnh\"], [\"Nguyễn Thị Minh Phương\"], [\"Nguyễn Thị Minh Tâm\"], [\"Nguyễn Thị Mỹ Hòa\"], [\"Nguyễn Thị Mỹ Hạnh\"], [\"Nguyễn Thị Nga\"], [\"Nguyễn Thị Nguyệt\"], [\"Nguyễn Thị Ngà\"], [\"Nguyễn Thị Ngọc\"], [\"Nguyễn Thị Ngọc Lan\"], [\"Nguyễn Thị Nhung\"], [\"Nguyễn Thị Như Quỳnh\"], [\"Nguyễn Thị Phương Hiền\"], [\"Nguyễn Thị Phương Lan\"], [\"Nguyễn Thị Phương Lâm\"], [\"Nguyễn Thị Phượng\"], [\"Nguyễn Thị Quyên\"], [\"Nguyễn Thị Riên\"], [\"Nguyễn Thị Sáu\"], [\"Nguyễn Thị Thanh Huyền\"], [\"Nguyễn Thị Thanh Hương\"], [\"Nguyễn Thị Thanh Loan\"], [\"Nguyễn Thị Thanh Thuỷ\"], [\"Nguyễn Thị Thoi\"], [\"Nguyễn Thị Thu\"], [\"Nguyễn Thị Thu Hiền\"], [\"Nguyễn Thị Thu Hà\"], [\"Nguyễn Thị Thu Phương\"], [\"Nguyễn Thị Thu Thủy\"], [\"Nguyễn Thị Thuý\"], [\"Nguyễn Thị Thuý Hà\"], [\"Nguyễn Thị Thuấn\"], [\"Nguyễn Thị Thành\"], [\"Nguyễn Thị Thòa\"], [\"Nguyễn Thị Thúy\"], [\"Nguyễn Thị Thúy Hằng\"], [\"Nguyễn Thị Thơ\"], [\"Nguyễn Thị Thảo\"], [\"Nguyễn Thị Thắm\"], [\"Nguyễn Thị Thắng\"], [\"Nguyễn Thị Thủy\"], [\"Nguyễn Thị Tuyết Hải\"], [\"Nguyễn Thị Tuyết Nhung\"], [\"Nguyễn Thị Tâm\"], [\"Nguyễn Thị Tố Chinh\"], [\"Nguyễn Thị Uyên\"], [\"Nguyễn Thị Vân\"], [\"Nguyễn Thị Vượng\"], [\"Nguyễn Thị Yên\"], [\"Nguyễn Thị Ánh\"], [\"Nguyễn Thị Ánh Nguyệt\"], [\"Nguyễn Thị Đông\"], [\"Nguyễn Tiến Cương\"], [\"Nguyễn Tiến Dũng\"], [\"Nguyễn Tiến Trung\"], [\"Nguyễn Tiến Trọng\"], [\"Nguyễn Tiến Ánh\"], [\"Nguyễn Tiến Đạt\"], [\"Nguyễn Trung Chính\"], [\"Nguyễn Trung Dũng\"], [\"Nguyễn Trung Hiếu\"], [\"Nguyễn Trung Hậu\"], [\"Nguyễn Trọng Bính\"], [\"Nguyễn Tuấn Hạnh\"], [\"Nguyễn Tuấn Quang\"], [\"Nguyễn Tùng Sơn\"], [\"Nguyễn Tường Phượng\"], [\"Nguyễn Viết Mạnh\"], [\"Nguyễn Viết Phương\"], [\"Nguyễn Việt Duy\"], [\"Nguyễn Việt Hùng\"], [\"Nguyễn Việt Phương\"], [\"Nguyễn Văn Bao\"], [\"Nguyễn Văn Bằng\"], [\"Nguyễn Văn Chung\"], [\"Nguyễn Văn Cường\"], [\"Nguyễn Văn Dũng\"], [\"Nguyễn Văn Hiếu\"], [\"Nguyễn Văn Hoà\"], [\"Nguyễn Văn Khanh\"], [\"Nguyễn Văn Khoản\"], [\"Nguyễn Văn Khâm\"], [\"Nguyễn Văn Khương\"], [\"Nguyễn Văn Mạnh\"], [\"Nguyễn Văn Nguyên\"], [\"Nguyễn Văn Nhâm\"], [\"Nguyễn Văn Năm\"], [\"Nguyễn Văn Nội\"], [\"Nguyễn Văn Oánh\"], [\"Nguyễn Văn Quang\"], [\"Nguyễn Văn Quảng\"], [\"Nguyễn Văn Sang\"], [\"Nguyễn Văn Sơn\"], [\"Nguyễn Văn Sửu\"], [\"Nguyễn Văn Thanh\"], [\"Nguyễn Văn Thiệu\"], [\"Nguyễn Văn Thơ\"], [\"Nguyễn Văn Thường\"], [\"Nguyễn Văn Thắng\"], [\"Nguyễn Văn Tiến\"], [\"Nguyễn Văn Tuấn\"], [\"Nguyễn Văn Việt\"], [\"Nguyễn Văn Xít\"], [\"Nguyễn Văn Ánh\"], [\"Nguyễn Văn Đô\"], [\"Nguyễn Văn Đạt\"], [\"Nguyễn Xuân Hùng\"], [\"Nguyễn Xuân Hương\"], [\"Nguyễn Xuân Hải\"], [\"Nguyễn Xuân Lộc\"], [\"Nguyễn Xuân Thát\"], [\"Nguyễn Xuân Đồng\"], [\"Nguyễn Đình Quân\"], [\"Nguyễn Đình Túc\"], [\"Nguyễn Đăng Hiếu\"], [\"Nguyễn Đăng Hiển/Nguyễn Thị Dương Hiền\"], [\"Nguyễn Đăng Hiển/Nguyễn Đình Kim\"], [\"Nguyễn Đăng Minh\"], [\"Nguyễn Đăng Xuân\"], [\"Nguyễn Đức Anh\"], [\"Nguyễn Đức Dương\"], [\"Nguyễn Đức Tiến\"], [\"Nguyễn Đức Trung\"], [\"Nguyễn Đức Trại\"], [\"Nguyễn Đức Tú\"], [\"Ngô Bá Phương\"], [\"Ngô Phi Phương\"], [\"Ngô Quang Hùng\"], [\"Ngô Thanh Thủy\"], [\"Ngô Thị Hải\"], [\"Ngô Thị Kim Tuyến\"], [\"Ngô Thị Mỳ\"], [\"Ngô Thị Thu Hiền\"], [\"Ngô Thị Vịnh\"], [\"Ngô Tiến Thịnh\"], [\"Ngô Trung Quyết\"], [\"Ngô Tuyết Thanh\"], [\"Ngô Văn Chuẩn\"], [\"Ngô Văn Nguyên\"], [\"Ngô Văn Thuân\"], [\"Ngô Xuân Tú\"], [\"PGS.TS.BS. Hoàng Gia Du\"], [\"Phan Ngọc Lan\"], [\"Phan Thị Bích Liên\"], [\"Phan Thị Bẩy\"], [\"Phan Thị Minh Anh\"], [\"Phan Thị Thu Hà\"], [\"Phan Văn Chuyên\"], [\"Phí Ngọc Yến Nhi\"], [\"Phí Thị Hằng\"], [\"Phí Thị Phượng\"], [\"Phù Xuân Đương\"], [\"Phùng Thế Tài\"], [\"Phùng Thị Bích Niên\"], [\"Phùng Thị Huề\"], [\"Phùng Thị Khánh\"], [\"Phùng Thị Liên\"], [\"Phùng Thị Luyến\"], [\"Phùng Thị Nguyên\"], [\"Phùng Văn Dực\"], [\"Phùng Văn Hai\"], [\"Phùng Văn Hưởng\"], [\"Phùng Văn Việt\"], [\"Phùng Xuân Diễn\"], [\"Phùng Xuân Thạch\"], [\"Phùng Xuân Thịnh\"], [\"Phương Thị Mai Hương\"], [\"Phạm Hà Giang\"], [\"Phạm Hồng Phong\"], [\"Phạm Hữu Thường\"], [\"Phạm Phú Đạo/Trần Thị Hậu\"], [\"Phạm Quang Hải\"], [\"Phạm Quang Vi\"], [\"Phạm Quỳnh Trang\"], [\"Phạm Thanh Hải\"], [\"Phạm Thị Anh Đào\"], [\"Phạm Thị Hiền\"], [\"Phạm Thị Hoài Anh\"], [\"Phạm Thị Hải Yến\"], [\"Phạm Thị Kim Thoa\"], [\"Phạm Thị Lan\"], [\"Phạm Thị Luyến\"], [\"Phạm Thị Mai Hoa\"], [\"Phạm Thị Minh\"], [\"Phạm Thị Minh Phương\"], [\"Phạm Thị Mừng\"], [\"Phạm Thị Ngọc Bảo\"], [\"Phạm Thị Quyên\"], [\"Phạm Thị Quỳnh Thư\"], [\"Phạm Thị Sáu\"], [\"Phạm Thị Thu Huyền\"], [\"Phạm Thị Thư\"], [\"Phạm Thị Xuân Hoài\"], [\"Phạm Thị Yến\"], [\"Phạm Thị Ánh Nguyệt\"], [\"Phạm Thị Ít Lan\"], [\"Phạm Văn Phán\"], [\"Phạm Văn Quang\"], [\"Phạm Xuân Hiền\"], [\"Phạm Đức Giang\"], [\"Quách Gia Định\"], [\"Quách Mạnh Khánh\"], [\"Quách Thị Hảo\"], [\"TS.BS. Bùi Ngọc Minh\"], [\"TS.BS. Nguyễn Phạm Ý Nhi\"], [\"TS.BS. Nguyễn Đức Hoan\"], [\"ThS Bác sỹ. Lưu Văn Báu\"], [\"Thạc sỹ.Bs Phạm Đăng Quân\"], [\"Tiêu Ngọc Chiến\"], [\"Trinh Duy Ưng\"], [\"Trương Thúy Quỳnh\"], [\"Trương Thị Hằng\"], [\"Trần Công Năng\"], [\"Trần Huy Long\"], [\"Trần Hùng Mạnh\"], [\"Trần Linh Trang\"], [\"Trần Minh Tân\"], [\"Trần Mạnh Thắng\"], [\"Trần Ngọc Anh\"], [\"Trần Ngọc Luân\"], [\"Trần Ngọc Nghĩa\"], [\"Trần Phương Mỹ\"], [\"Trần Quang Trịnh/ Phạm Thị Lan Anh\"], [\"Trần Quang Trịnh/ Tạ Ngọc Phương\"], [\"Trần Quyết Chiến\"], [\"Trần Sỹ Quảng\"], [\"Trần Thị Chi\"], [\"Trần Thị Hiển\"], [\"Trần Thị Hoa\"], [\"Trần Thị Hương\"], [\"Trần Thị Hường\"], [\"Trần Thị Kim Ngân\"], [\"Trần Thị Liên Hoa\"], [\"Trần Thị Mai\"], [\"Trần Thị Mai Hương\"], [\"Trần Thị Minh Lý\"], [\"Trần Thị Nga\"], [\"Trần Thị Ngân\"], [\"Trần Thị Ngọc Anh\"], [\"Trần Thị Nhinh\"], [\"Trần Thị Phượng\"], [\"Trần Thị Thanh Huyền\"], [\"Trần Thị The\"], [\"Trần Thị Tuyết Hậu\"], [\"Trần Thị Vân Khánh\"], [\"Trần Thị Yến\"], [\"Trần Văn Hay\"], [\"Trần Văn Huyên\"], [\"Trần Văn Khôi\"], [\"Trần Văn Lâm\"], [\"Trần Văn Nhất\"], [\"Trần Văn Toanh\"], [\"Trần Văn Đại\"], [\"Trần Xuân Nam\"], [\"Trần Xuân Đông\"], [\"Trần Đình Thân\"], [\"Trần Đình Thư\"], [\"Trịnh Duy Đà\"], [\"Trịnh Thị Kiện\"], [\"Trịnh Thị Thảo\"], [\"Trịnh Tuấn Hưng\"], [\"Tô Thị Lan\"], [\"Tô Thị Tuyết\"], [\"Tô Tiến Quang\"], [\"Tô Xuân Sinh\"], [\"Tạ Thị Dung\"], [\"Tạ Thị Lý\"], [\"Tạ Văn Chính\"], [\"Tống Văn Hùng\"], [\"Vi Thị Soan\"], [\"Vũ Anh Phương\"], [\"Vũ Danh Tài\"], [\"Vũ Hoàng Hải\"], [\"Vũ Mạnh Cường\"], [\"Vũ Ngọc Trung\"], [\"Vũ Quang Hiển\"], [\"Vũ Quang Sơn\"], [\"Vũ Thị Bích Huyền\"], [\"Vũ Thị Hoà\"], [\"Vũ Thị Huệ\"], [\"Vũ Thị Hương Giang\"], [\"Vũ Thị Hảo\"], [\"Vũ Thị Phước\"], [\"Vũ Thị Sơn\"], [\"Vũ Thị Thanh Hương\"], [\"Vũ Thị Thu Hòa\"], [\"Vũ Thị Thu Thuỷ\"], [\"Vũ Thị Thuỷ\"], [\"Vũ Thị Thùy\"], [\"Vũ Thị Tuệ\"], [\"Vũ Tiến Hải\"], [\"Vũ Tuấn Anh\"], [\"Vũ Văn Hiên\"], [\"Vũ Văn Hiển\"], [\"Vũ Văn Thủy\"], [\"Vũ Xuân Tình\"], [\"Vương Thị Hợi\"], [\"Vương Thị Kim Lan\"], [\"Vương Thị Phương\"], [\"Vương Thị Thu Hường\"], [\"Vương Thị Thủy\"], [\"Vương Trung Kiên\"], [\"Y sỹ Doãn Thị Xuyến\"], [\"Y sỹ Dương Thế Vinh\"], [\"Y sỹ Dương Thị Liên\"], [\"Y sỹ Hoàng Mai Ngạn\"], [\"Y sỹ Lương Thị Ngọc\"], [\"Y sỹ Mai Thị Nguyệt\"], [\"Y sỹ Nguyễn Thanh Lịch\"], [\"Y sỹ Nguyễn Thị Hồng Hạnh\"], [\"Y sỹ Nguyễn Thị Kiều Oanh\"], [\"Y sỹ Nguyễn Thị Lý\"], [\"Y sỹ Phạm Minh Tiến\"], [\"Y sỹ Trần Đình Thân\"], [\"YS Nguyễn Thị Thanh Thảo\"], [\"YS Trương Thị Minh Thư\"], [\"Ys. Dương Thị Lịch\"], [\"Ys. Nguyễn Ngọc Quý\"], [\"lê Thị Phương Anh\"], [\"Ân Thành Đặt\"], [\"Đinh Công Toàn\"], [\"Đinh Khánh Ly\"], [\"Đinh Ngọc Lương\"], [\"Đinh Ngọc Phát\"], [\"Đinh Thị Hoan\"], [\"Đinh Thị Hồng Hoa\"], [\"Đinh Thị Lũy\"], [\"Đinh Thị Mai Hoa\"], [\"Đinh Thị Thanh\"], [\"Đinh Thị Uyên\"], [\"Đinh Thị Yến\"], [\"Đoàn Thanh Thủy\"], [\"Đoàn Thị Thúy Liên\"], [\"Đào Hồng Chinh\"], [\"Đào Hồng Chỉnh\"], [\"Đào Thị Hiền\"], [\"Đào Thị Thuỷ\"], [\"Đào Văn Thưởng\"], [\"Đào Văn Vinh\"], [\"Đào Xuân Cơ\"], [\"Đậu Thu Huyền\"], [\"Đặng Huy Định\"], [\"Đặng Hồng Châu\"], [\"Đặng Hữu Bá\"], [\"Đặng Hữu Hoằng\"], [\"Đặng Thanh Nhàn\"], [\"Đặng Thành Luân\"], [\"Đặng Thị Kim Oanh\"], [\"Đặng Thị Ngọc Hà\"], [\"Đặng Thị Nhung\"], [\"Đặng Thị Nhâm\"], [\"Đặng Thị Thanh Hà\"], [\"Đặng Thị Thuận\"], [\"Đặng Trung Kiên\"], [\"Đặng Văn Thanh\"], [\"Đặng Đình Sáng\"], [\"Đặng Đình Thực\"], [\"Đồng Thị Lan\"], [\"Đồng Thị Thuỷ\"], [\"Đồng Đạo Khánh\"], [\"Đỗ Duy Dương\"], [\"Đỗ Duy Toàn\"], [\"Đỗ Hồng Quang\"], [\"Đỗ Như Chinh\"], [\"Đỗ Phương Đông\"], [\"Đỗ Song An\"], [\"Đỗ Thu Thuỷ\"], [\"Đỗ Thùy Dung\"], [\"Đỗ Thị Bích Hạnh\"], [\"Đỗ Thị Hiền\"], [\"Đỗ Thị Loan\"], [\"Đỗ Thị Nam\"], [\"Đỗ Thị Ngọc\"], [\"Đỗ Thị Nhàn\"], [\"Đỗ Thị Phượng\"], [\"Đỗ Thị Thu Hương\"], [\"Đỗ Thị Vân\"], [\"Đỗ Văn Chiến\"], [\"Đỗ Văn Dũng\"], [\"Đỗ Văn Vân\"], [\"Đỗ Xuân Thành\"], [\"Đỗ Xuân Tùng\"], [\"Đỗ Đăng Sơn\"]]}",
+            "name": "submit_answer"
+          },
+          "type": "function",
+          "index": 0
+        }
+      ],
+      "content": "",
+      "role": "assistant",
+      "reasoning_content": "The result is very long but complete. Let me now submit this answer using submit_answer."
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_00_zu1q6jarq49BpW8PVsfc8341",
+      "content": "Answer submitted."
+    }
+  ],
+  "code_parts": [
+    "import pandas as pd\ndf = pd.read_csv(\"data.csv\")\nprint(df.columns.tolist())\nprint(df.shape)\nprint(df.head(20))\nprint(\"---\")\nprint(df.dtypes)\n",
+    "import pandas as pd\ndf = pd.read_csv(\"data.csv\")\nprint(\"công_bố_mới unique values:\", df['công_bố_mới'].unique())\nprint(\"công_bố_lại unique values:\", df['công_bố_lại'].unique())\nprint(\"---\")\nprint(df['công_bố_mới'].value_counts().head(20))\nprint(\"---\")\nprint(df['công_bố_lại'].value_counts().head(20))\nprint(\"---\")\n# Check the condition: those with either công_bố_mới == 1 or công_bố_lại == 1\n# \"đóng góp thực tế\" = có tổng số lượng công bố mới và công bố lại từ 1 trở lên\n# So: công_bố_mới + công_bố_lại >= 1\ndf['total_contrib'] = df['công_bố_mới'].fillna(0) + df['công_bố_lại'].fillna(0)\nqualified = df[df['total_contrib'] >= 1]\nprint(\"Qualified rows:\", len(qualified))\nprint(qualified[['người_đứng_đầu_phụ_trách_chuyên_môn', 'công_bố_mới', 'công_bố_lại', 'total_contrib']].head(20))\nprint(\"---\")\n# List unique qualified people\nprint(\"Unique qualified people:\", qualified['người_đứng_đầu_phụ_trách_chuyên_môn'].unique().tolist())\nprint(\"Count:\", qualified['người_đứng_đầu_phụ_trách_chuyên_môn'].nunique())\n",
+    "import pandas as pd\nimport re\n\ndf = pd.read_csv(\"data.csv\")\ndf['total_contrib'] = df['công_bố_mới'].fillna(0) + df['công_bố_lại'].fillna(0)\nqualified = df[df['total_contrib'] >= 1]\n\n# Get unique people\npeople = qualified['người_đứng_đầu_phụ_trách_chuyên_môn'].unique()\nprint(\"Total unique values:\", len(people))\n\n# Let's identify which look like phone numbers\n# Phone numbers typically: start with 0, contain digits, dots, spaces, dashes\ndef looks_like_phone(val):\n    val = str(val).strip()\n    # Remove common phone characters\n    cleaned = val.replace('.', '').replace(' ', '').replace('/', '').replace('-', '')\n    # If mostly digits and starts with 0, likely a phone\n    if cleaned.isdigit() and len(cleaned) >= 7 and val.strip().startswith('0'):\n        return True\n    return False\n\nphone_like = [p for p in people if looks_like_phone(p)]\nname_like = [p for p in people if not looks_like_phone(p)]\nprint(\"Phone-like entries:\", len(phone_like))\nprint(phone_like)\nprint(\"---\")\nprint(\"Name-like entries:\", len(name_like))\nprint(sorted(name_like))\n",
+    "import pandas as pd\nimport re\n\ndf = pd.read_csv(\"data.csv\")\ndf['total_contrib'] = df['công_bố_mới'].fillna(0) + df['công_bố_lại'].fillna(0)\nqualified = df[df['total_contrib'] >= 1]\n\npeople = qualified['người_đứng_đầu_phụ_trách_chuyên_môn'].unique()\n\n# Let me check those specific ones\nprint(\"1900252560\" in people)\nprint(\"1900599858\" in people)\nprint(\"02473008866'\" in people)\n\n# Let me look at rows where these appear\nfor val in ['1900252560', '1900599858', \"02473008866'\"]:\n    rows = df[df['người_đứng_đầu_phụ_trách_chuyên_môn'] == val]\n    print(f\"--- {val} ---\")\n    print(rows[['stt', 'tên_cơ_sở', 'người_đứng_đầu_phụ_trách_chuyên_môn', 'công_bố_mới', 'công_bố_lại']].to_string())\n",
+    "import pandas as pd\nimport re\n\ndf = pd.read_csv(\"data.csv\")\ndf['total_contrib'] = df['công_bố_mới'].fillna(0) + df['công_bố_lại'].fillna(0)\nqualified = df[df['total_contrib'] >= 1]\n\n# Filter out phone number entries - keep only real names\n# A real name typically contains Vietnamese characters (letters)\ndef is_name(val):\n    val_str = str(val).strip()\n    # If it's purely numeric (with optional punctuation), it's a phone\n    cleaned = re.sub(r'[0-9\\s\\.\\-\\/\\(\\)\\+]', '', val_str)\n    if len(cleaned) == 0:\n        return False\n    # Also check if it contains any letter (Vietnamese or English)\n    if re.search(r'[a-zA-Zàáâãèéêìíòóôõùúýăđĩũơưạảấầẩẫậắằẳẵặẹẻẽềềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]', val_str, re.IGNORECASE):\n        return True\n    return False\n\nnames = qualified['người_đứng_đầu_phụ_trách_chuyên_môn'].unique()\nreal_names = sorted([n for n in names if is_name(n)])\nprint(f\"Total names: {len(real_names)}\")\nprint(\"First 20:\", real_names[:20])\nprint(\"Last 20:\", real_names[-20:])\n",
+    "import pandas as pd\nimport re\nimport json\n\ndf = pd.read_csv(\"data.csv\")\ndf['total_contrib'] = df['công_bố_mới'].fillna(0) + df['công_bố_lại'].fillna(0)\nqualified = df[df['total_contrib'] >= 1]\n\ndef is_name(val):\n    val_str = str(val).strip()\n    cleaned = re.sub(r'[0-9\\s\\.\\-\\/\\(\\)\\+]', '', val_str)\n    if len(cleaned) == 0:\n        return False\n    if re.search(r'[a-zA-Zàáâãèéêìíòóôõùúýăđĩũơưạảấầẩẫậắằẳẵặẹẻẽềềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]', val_str, re.IGNORECASE):\n        return True\n    return False\n\nnames = qualified['người_đứng_đầu_phụ_trách_chuyên_môn'].unique()\nreal_names = sorted([n for n in names if is_name(n)])\n\n# Output as array of arrays\nresult = [[name] for name in real_names]\nprint(json.dumps(result, ensure_ascii=False))\n"
+  ],
+  "exec_outputs": [
+    "['stt', 'số_văn_bản', 'ngày_công_bố', 'tên_cơ_sở', 'địa_chỉ', 'người_đứng_đầu_phụ_trách_chuyên_môn', 'số_điện_thoại', 'công_bố_mới', 'công_bố_lại', 'dừng_hoạt_động', 'ghi_chú']\n(1081, 11)\n    stt      số_văn_bản  ... dừng_hoạt_động ghi_chú\n0     1     2502/TB-FLC  ...            NaN     NaN\n1     2  01/TB-HTP-TCVN  ...            NaN     NaN\n2     3  02/TB-HTP-TCVN  ...            NaN     NaN\n3     4     2504/TB-FLC  ...            NaN     NaN\n4     5    3419/TB-TTYT  ...            NaN     NaN\n5     6    3418/TB-TTYT  ...            NaN     NaN\n6     7      03/TB-BVHN  ...            NaN     NaN\n7     8   01/TB-FUFUVAC  ...            NaN     NaN\n8     9     2508/TB-FLC  ...            NaN     NaN\n9    10   02/TB/SV-2025  ...            NaN     NaN\n10   11      01/TB-TTTC  ...            NaN     NaN\n11   12        24/CV-BV  ...            NaN     NaN\n12   13     2520/TB-FLC  ...            NaN     NaN\n13   14   001/TTTC103QO  ...            NaN     NaN\n14   15     79/TB-BVNHN  ...            NaN     NaN\n15   16       01/TB-GSP  ...            NaN     NaN\n16   17       84/CV-GVN  ...            NaN     NaN\n17   18       86/CV-GVN  ...            NaN     NaN\n18   19    15/CTCPYTNTL  ...            NaN     NaN\n19   20    16/CTCPYTNTL  ...            NaN     NaN\n\n[20 rows x 11 columns]\n---\nstt                                      int64\nsố_văn_bản                                 str\nngày_công_bố                               str\ntên_cơ_sở                                  str\nđịa_chỉ                                    str\nngười_đứng_đầu_phụ_trách_chuyên_môn        str\nsố_điện_thoại                              str\ncông_bố_mới                            float64\ncông_bố_lại                            float64\ndừng_hoạt_động                         float64\nghi_chú                                    str\ndtype: object",
+    "công_bố_mới unique values: [ 1. nan]\ncông_bố_lại unique values: [nan  1.]\n---\ncông_bố_mới\n1.0    705\nName: count, dtype: int64\n---\ncông_bố_lại\n1.0    362\nName: count, dtype: int64\n---\nQualified rows: 1067\n   người_đứng_đầu_phụ_trách_chuyên_môn  công_bố_mới  công_bố_lại  total_contrib\n0                      Nguyễn Thị Thủy          1.0          NaN            1.0\n1                          Vi Thị Soan          NaN          1.0            1.0\n2                       Nguyễn Thị Thu          NaN          1.0            1.0\n3                       Nguyễn Văn Đạt          1.0          NaN            1.0\n4                      Trần Linh Trang          NaN          1.0            1.0\n5                    Lý Thị Ánh Nguyệt          NaN          1.0            1.0\n6                          Đỗ Văn Dũng          NaN          1.0            1.0\n7                     Nguyễn Hà Phương          NaN          1.0            1.0\n8                       Phạm Đức Giang          1.0          NaN            1.0\n9                     Nguyễn Quang Nam          NaN          1.0            1.0\n10                      Đào Hồng Chinh          NaN          1.0            1.0\n11                   Nguyễn Phương Mai          NaN          1.0            1.0\n12                 Hoàng Thị Diệu Linh          1.0          NaN            1.0\n13                      Phạm Xuân Hiền          NaN          1.0            1.0\n14                      Ngô Quang Hùng          1.0          NaN            1.0\n15                     Nguyễn Hữu Thủy          1.0          NaN            1.0\n16                    Nguyễn Hoàng Lan          1.0          NaN            1.0\n17                   Trần Thị Liên Hoa          NaN          1.0            1.0\n18                        Trần Thị Yến          NaN          1.0            1.0\n19                         Đỗ Thị Loan          NaN          1.0            1.0\n---\nUnique qualified people: ['Nguyễn Thị Thủy', 'Vi Thị Soan', 'Nguyễn Thị Thu', 'Nguyễn Văn Đạt', 'Trần Linh Trang', 'Lý Thị Ánh Nguyệt', 'Đỗ Văn Dũng', 'Nguyễn Hà Phương', 'Phạm Đức Giang', 'Nguyễn Quang Nam', 'Đào Hồng Chinh', 'Nguyễn Phương Mai', 'Hoàng Thị Diệu Linh', 'Phạm Xuân Hiền', 'Ngô Quang Hùng', 'Nguyễn Hữu Thủy', 'Nguyễn Hoàng Lan', 'Trần Thị Liên Hoa', 'Trần Thị Yến', 'Đỗ Thị Loan', 'Nguyễn Phương Trung', 'Lê Thị Mười', 'Nguyễn Thu Trang', 'Nguyễn Văn Thường', 'Vũ Quang Sơn', 'Hà Duy Dương', 'Vũ Quang Hiển', 'Nguyễn Thanh Khoa Vy', 'Lê Thị Dung', 'Nguyễn Bạch Điệp', 'Nguyễn Duy Ánh', 'Vũ Ngọc Trung', 'Đào Xuân Cơ', 'Đinh Thị Uyên', 'Nguyễn Đức Tú', 'Đặng Hữu Bá', 'Đặng Thanh Nhàn', 'Lê Đức Toàn', 'Nguyễn Thuỳ Nga', 'Nguyễn Thị Nga', 'Nguyễn Thị Riên', 'Nguyễn Văn Sang', 'Lưu Thị Dung', 'Đỗ Thị Phượng', 'Vũ Mạnh Cường', 'Nguyễn Phong Lưu', 'Tạ Thị Lý', 'Hà Thị Tú', 'Nguyễn Minh Tạo', 'Vương Thị Hợi', 'Nguyễn Thị Yên', 'Trần Đình Thân', 'Nguyễn Văn Khoản', 'Tô Xuân Sinh', 'Ngô Thị Kim Tuyến', 'Dương Thế Vinh', 'Hoàng Thị Mai Dung', 'Trần Văn Đại', 'Khuất Thị Thu Nguyệt', 'Vương Trung Kiên', 'lê Thị Phương Anh', 'Đinh Thị Yến', 'Dương Chí Chung', 'Lường Công Thức', 'Bùi Thanh Hải', 'Nguyễn Thị Phượng', 'Nguyễn Thế Anh', 'Nguyễn Quang Huy', 'Đào Thị Hiền', 'Nguyễn Tiến Đạt', 'Nguyễn Văn Tiến', 'Lê Thị Kim Thanh', 'Nguyễn Viết Mạnh', 'Nguyễn Danh Phương', 'Nguyễn Văn Khương', 'Nguyễn Thị Phương Lâm', 'Hoàng Thị Tuyền', 'Đỗ Phương Đông', 'Phạm Thị Minh', 'Đinh Thị Hồng Hoa', 'Đào Văn Thưởng', 'Nguyễn Hải Đăng', 'Phạm Thị Minh Phương', 'Vũ Danh Tài', 'Nguyễn Thị Phương Hiền', 'Kiều Doãn Nghĩa', 'Nguyễn Quang Vinh', 'Đinh Thị Thanh', 'Trương Thị Hằng', 'Đồng Đạo Khánh', 'Lưu Đức Hướng', 'Nguyễn Thị Phương Lan', 'Hoàng Thị Minh Huệ', 'Nguyễn Thị Minh Tâm', 'Trịnh Thị Kiện', 'Nguyễn Văn Chung', 'Nguyễn Thị Hòa', 'Nguyễn Thị Vân', 'Vũ Tiến Hải', 'Vũ Thị Phước', 'Nguyễn Anh Thành', 'Vũ Thị Thanh Hương', 'Phùng Xuân Thạch', 'Trần Thị Phượng', 'Nghiêm Thị Thanh Xuân', 'Phạm Thị Kim Thoa', 'Đặng Thị Nhâm', 'Trịnh Tuấn Hưng', 'Dương Văn Khương', 'Phạm Thị Yến', 'Phạm Thị Luyến', 'Trần Thị Minh Lý', 'Vũ Thị Thu Thuỷ', 'Phạm Quang Vi', 'Đồng Thị Thuỷ', 'Trần Thị Mai', 'Nguyễn Linh Trang', 'Phạm Thị Hải Yến', 'Nguyễn Thanh Sơn', 'Kiều Thị Bích Thúy', 'Hoàng Văn Tự', 'Nguyễn Huy Đại', 'Trần Thị Kim Ngân', 'Nguyễn Hoàng Hiệp', 'Vũ Hoàng Hải', 'Phạm Văn Phán', 'Vũ Thị Thùy', 'Ngô Văn Thuân', 'Nguyễn Đức Tiến', 'Phạm Thị Hiền', 'Phùng Thế Tài', 'Hoàng Lệ Thi', 'Nguyễn Thị Tuyết Nhung', 'Nguyễn Phương Trường', 'Trần Đình Thư', 'Đinh Thị Lũy', 'BS. Lê Trung Tiên', 'BS. Cao Văn Giao', 'BS. Nguyễn Văn Tuyển', 'BS. Phạm Văn Dũng', 'BS. Ngô Thanh Hào', 'Hoàng Hữu Huy', 'Phan Thị Thu Hà', 'Phạm Thị Anh Đào', 'Nguyễn Thị Thuý', 'YS Nguyễn Thị Thanh Thảo', 'BS Nguyễn Thị An Khang', 'YS Trương Thị Minh Thư', 'Nguyễn Thị Huệ', 'Nguyễn Thị Thắng', 'Nguyễn Thị Tâm', 'Đỗ Thị Thu Hương', 'Lê Văn Thiện', 'Nguyễn Tiến Ánh', 'Nguyễn Văn Khanh', 'Vũ Anh Phương', 'Nguyễn Thị Ngà', 'Nguyễn Thị Huyền', 'Bác sỹ Nguyễn Xuân Tính', 'Nguyễn Văn Thanh', 'Nguyễn Hoàng Văn', 'Nguyễn Đức Trại', 'Nguyễn Văn Mạnh', 'Nguyễn Thị Mai', 'Nguyễn Hải Phong', 'Lưu Thị Loan', 'Nguyễn Thị Mai Hương', 'Phạm Thị Ít Lan', 'Nguyễn Thắng Sơn', 'Nguyễn Đức Anh', 'Thạc sỹ.Bs Phạm Đăng Quân', 'Bác sỹ Nguyễn Thị Huyền Trang', 'Bác sỹ Phạm Văn Hữu', 'Khánh Thị Việt Hà', 'Đỗ Song An', 'Nguyễn Thị Chuyên', 'Nguyễn Thị Liên', 'Đỗ Duy Dương', 'Nguyễn Huyền Trang', 'Đỗ Duy Toàn', 'Bùi Tiến Phương', 'Nguyễn Thu Hương', 'Phạm Thị Xuân Hoài', 'Phạm Quỳnh Trang', 'Lê Thị Hạnh', 'Trần Thị Mai Hương', 'Nguyễn Thị Vượng', 'Nguyễn Thị Diệu Hợp', 'Nguyễn Thị Lan Anh', 'Nguyễn Quang Hải', 'Nguyễn Thị Ánh', 'Ngô Thị Thu Hiền', 'Nguyễn Văn Thắng', 'Nguyễn Thị Thắm', 'Bùi Thị Ánh Tuyết', 'Ngô Văn Nguyên', 'Đinh Khánh Ly', 'Nguyễn Gia Phúc', 'Đặng Thành Luân', 'Nguyễn Trung Hậu', 'Nguyễn Thị Thu Thủy', 'Phạm Thị Thư', 'Đặng Thị Thuận', 'Trần Văn Toanh', 'Nguyễn Văn Năm', 'Y sỹ Mai Thị Nguyệt', 'Bác sỹ Đinh Tiến Diện', 'Y sỹ Nguyễn Thị Kiều Oanh', 'Bác sỹ Nguyễn Xuân Bình', 'Y sỹ Nguyễn Thị Lý', 'Lê Thành Văn', 'Đặng Đình Sáng', 'Nguyễn Văn Ánh', 'Nguyễn Văn Sơn', 'Nguyễn Đăng Minh', 'Dương Văn Công', 'Vũ Văn Hiển', 'Cao Thị Mỹ Nga', 'Đào Văn Vinh', 'Lê Thị Huyền', 'Nguyễn Văn Oánh', 'Bs Hoàng Bích Thuỷ', 'Bs Hoàng Xuân Tùng', 'Bs Vũ Thị Hải', 'Ngô Bá Phương', 'Lê Thị Chuốt', 'Đoàn Thanh Thủy', 'Nguyễn Thị Bích Hòa', 'Phạm Thị Mừng', 'Phùng Xuân Diễn', 'Lê Hải Ninh', 'Nguyễn Thị Ánh Nguyệt', 'Ngô Thị Mỳ', 'Phạm Thị Quyên', 'Chu Thị Thanh', 'Nguyễn Thuỳ Linh', 'Nguyễn Thị Hải', 'Lưu Xuân Thắng', 'Nguyễn Thị Quyên', 'Phạm Quang Hải', 'Nguyễn Mạnh Trâm', 'Nguyễn Thị Kim Ngân', 'Tô Thị Lan', 'Phạm Thị Hoài Anh', 'Nguyễn Thị Minh Cảnh', 'Trần Văn Lâm', 'Bác sỹ Đỗ Anh Tuấn', 'Y sỹ Lương Thị Ngọc', 'Hoàng Lưu Sa', 'Trần Sỹ Quảng', 'Phù Xuân Đương', 'Nguyễn Thị Tuyết Hải', 'Nguyễn Văn Hoà', 'Nguyễn Trọng Bính', 'Phùng Văn Việt', 'Nguyễn Văn Thiệu', 'Quách Gia Định', 'Phùng Thị Liên', 'Đỗ Văn Vân', 'Ngô Tiến Thịnh', 'Phạm Thị Lan', 'Bùi Thanh Tịnh', 'Nguyễn Thu Thủy', 'Nguyễn Văn Nội', 'Nguyễn Thị Thanh Thuỷ', 'Lê Ngọc Ánh', 'Lê Thị Lộc', 'Hoàng Thị Thanh', 'Nguyễn Mạnh Tưởng', 'Nguyễn Mạnh Liên', 'Nguyễn Thành Minh', 'Vương Thị Kim Lan', 'Bùi Văn Thanh', 'Trần Thị Hường', 'Nguyễn Thị Biên', 'Nguyễn Thị Khánh Huyền', 'Nguyễn Thị Hậu', 'Đỗ Thu Thuỷ', 'Mai Thị Tuyết Vân', 'Nguyễn Tuấn Quang', 'Nguyễn Văn Tuấn', 'Phùng Văn Hưởng', 'Nguyễn Xuân Lộc', 'Khuất Quang Tuyển', 'Khuất Duy Tuân', 'Nguyễn Hữu Tuệ', 'BS. Lê Đức Tuyên', 'BS. Đỗ Văn Thảo', 'BS. Trần Trọng Thắng', 'BS. Đàm Thị Mai Hoa', 'Ys. Nguyễn Ngọc Quý', 'BS. Nguyễn Thị Bản', 'Ys. Dương Thị Lịch', 'Nguyễn Quang Cần', 'Phí Thị Hằng', 'Nguyễn Thị Hồng Hạnh', 'Nguyễn Quang Hưng', 'Nguyễn Thị Luận', 'Chu Văn Tuấn', 'Dương Văn Huân', 'Kiều Thị Giang', 'Vương Thị Thủy', 'Nguyễn Minh Phúc', 'Phan Thị Minh Anh', 'Cao Nam Thắng', 'Hoàng Văn Tuyến', 'Nguyễn Xuân Hương', 'BSCKI. Phan Thị Long Hoa/ BSYHCT. Nguyễn Trà My', 'Nguyễn Đình Túc', 'Bùi Văn Linh', 'Đinh Công Toàn', 'Phan Thị Bẩy', 'Phạm Thị Thu Huyền', 'Lê Xuân Hùng', 'Nguyễn Thị Hồng', 'Nguyễn Anh Tuấn', 'Lê Thị Lâm', 'Hoàng Yến', 'Cấn Thị Vân', 'Hoàng Thị Thu Màn', 'Phạm Thị Quỳnh Thư', 'Phùng Thị Khánh', 'Nguyễn Thanh Nhàn', 'Nguyễn Thế Hanh', 'Lê Văn Thành', 'Y sỹ Phạm Minh Tiến', 'Bác sỹ Nguyễn Công Đạt', 'Bác sỹ Nguyễn Thị Nhâm', 'Nguyễn Thị Thơ', 'Lê Thanh Nhã', 'Nguyễn Thị Ngọc Lan', 'Nguyễn Hữu Giáp', 'Mai Thị Hồng Diệp', 'Nguyễn Mạnh Hùng', 'Nguyễn Văn Bao', 'Nguyễn Thị Loan', 'Nguyễn Thị Mỹ Hạnh', 'Nguyễn Tuấn Hạnh', 'Nguyễn Văn Việt', 'Đặng Văn Thanh', 'Nguyễn Thị Giang', 'Phùng Thị Nguyên', 'Nguyễn Thị Dung', 'Nguyễn Thị Nguyệt', 'BSCK II Trần Quang Tuấn', 'BS Nguyễn Thị Thanh Huyền', 'BS Vương Trí Hồng', 'BS Nguyễn Đình Lịch', 'BS Nguyễn Quố Quân', 'Bs Nguyễn Văn Hảo', 'Lê Văn Đáp', 'Nguyễn Thị Thuấn', 'Nguyễn Thanh Tâm', 'Nguyễn Thị Luyến', 'Lê Thị Yến', 'Nguyễn Mạnh Cường', 'Chu Bá Sỹ', 'Dương Thị Thu Trang', 'Trần Xuân Đông', 'Nguyễn Văn Khâm', 'Lương Quốc Chung', 'Lê Thị Hải Hương', 'Nguyễn Kiên Cường', 'Nguyễn Đức Trung', 'Kiều Xuân Tiệp', 'Phan Thị Bích Liên', 'Nguyễn Thị Lan', 'Lê Thanh Hà', 'Chu Thị Hương', 'Đồng Thị Lan', 'Phạm Hà Giang', 'BSCKII Nguyễn Văn Tý', 'BS Nguyễn Hồng Nhung', 'Trần Thị Ngân', 'Nguyễn Xuân Hải', 'Phùng Thị Bích Niên', 'Đinh Thị Hoan', 'Phùng Văn Dực', 'Nguyễn Thi Hào', 'Dương Thị Hồng Nhung', 'Hoàng Văn Bằng', 'Nguyễn Thị Mỹ Hòa', 'Nguyễn Giáp Oán', 'Vũ Văn Hiên', 'Hoàng Thị Giang', 'Đặng Đình Thực', 'BS Trương Vũ Linh', 'Bác sỹ Nguyễn Thị Mỹ', 'Bác sỹ. Phí Mạnh Dũng', 'Bác sỹ Lê Xuân Đức', 'Nguyễn Tiến Dũng', 'Đỗ Văn Chiến', 'Vũ Thị Hảo', 'Dương Văn Huệ', 'Nguyễn Xuân Thát', 'Vũ Thị Thuỷ', 'Loan Thị Hồng Mai', 'Quách Mạnh Khánh', 'Nguyễn Hùng Cường', 'Nguyễn Thị Lan Hương', 'Phạm Thanh Hải', 'Lê Minh Đức', 'Nguyễn Thị Thu Hà', 'Nguyễn Kiều Hương', 'Ngô Thị Hải', 'Nguyễn Thị Hằng', 'Lương Minh Hồng', 'Nguyễn Thị Khang', 'Nguyễn Tùng Sơn', 'Lương Thị Thanh Phong', 'Đặng Thị Thanh Hà', 'Nguyễn Thị Hằng Thúy', 'Nguyễn Thị Hồng Sâm', 'Đỗ Thị Nam', 'Hy Việt Anh', 'Ngô Thanh Thủy', 'ThS Bác sỹ. Lưu Văn Báu', 'Bs Lê Quang Trung', 'BS Trần Văn Dân', 'Lê Chí Đệ', 'Nguyễn Văn Sửu', 'Dương Ngọc Huân', 'Cao Văn Huyên', 'Phùng Xuân Thịnh', 'Bác sĩ Phù Vĩnh Thắng', 'Nguyễn Thị Thu Phương', 'Trần Công Năng', 'Lê Doãn Mạnh', 'Trần Thị Nga', 'Nguyễn Trung Dũng', 'Nguyễn Thị Uyên', 'Trần Ngọc Nghĩa', 'Nguyễn Thị Hoa', 'Tô Thị Tuyết', 'Tạ Văn Chính', 'Dương Thị Chỉnh', 'Nguyễn Minh Sơn', 'Dương Mạnh Hùng', 'Nguyễn Đình Quân', 'Nguyễn Xuân Hùng', 'Trịnh Duy Đà', 'Trần Văn Khôi', 'Ngô Trung Quyết', 'Tống Văn Hùng', 'Phùng Thị Luyến', 'Nguyễn Việt Phương', 'Hoàng Ánh Hồng', 'Nguyễn Thu Huyền', 'Nguyễn Thu Hà', 'Nguyễn Văn Hiếu', 'Bác sĩ Đào Bá Tuệ', 'Đỗ Thị Ngọc', 'Cao Thành Đạt', 'Phạm Thị Mai Hoa', 'Đinh Thị Mai Hoa', 'Nguyễn Đức Dương', 'Vũ Thị Sơn', 'Tiêu Ngọc Chiến', 'Lại Ngọc Long', 'Bùi Như Hồng', 'Trần Thị Chi', 'Nguyễn Quỳnh Trang', 'Lê Thị Lan', 'Nguyễn Phương Thúy', 'Nguyễn Tường Phượng', 'Nguyễn Đăng Xuân', 'Đặng Thị Kim Oanh', 'Nguyễn Thị Thúy', 'Ân Thành Đặt', 'Vũ Thị Thu Hòa', 'Nguyễn Thanh Nga', 'Ngô Tuyết Thanh', 'Đinh Ngọc Phát', 'Ngô Thị Vịnh', 'Phạm Thị Sáu', 'Đoàn Thị Thúy Liên', 'Đỗ Thùy Dung', 'Trần Phương Mỹ', 'Nguyễn Xuân Đồng', 'Trần Thị Nhinh', 'Hoàng Trọng Luân', 'Nguyễn Ngọc Chiến', 'Trần Văn Huyên', 'Nguyễn Thị Mai Hoa', 'Nguyễn Thị Nhung', 'Nguyễn Văn Nhâm', 'Quách Thị Hảo', 'BSCK II Trương Kỳ Phong', 'CN Nguyễn Tiến Chương', 'BS Vũ Mạnh Cường', 'BS Nguyễn Thị Nga', 'Y sỹ Trần Đình Thân', 'BS Nguyễn Thị Riên', 'BS Lưu Thị Dung', 'BS Nguyễn Văn Sang', 'BS Đỗ Thị Phượng', 'Bùi Thị Hoa', 'Nguyễn Thị Lưỡng', 'Vũ Văn Thủy', 'Lê Phú Trùy', 'Nguyễn Sĩ Mạnh', 'Trần Xuân Nam', 'Vũ Thị Huệ', 'Vũ Thị Hoà', 'Trần Quyết Chiến', 'Nguyễn Thị Hồng Hà', 'Nguyễn Quang Trung', 'Nguyễn Thị Sáu', 'Vũ Xuân Tình', 'Cao Văn Nghị', 'Nguyễn Thị Thanh Loan', 'Trần Thị Thanh Huyền', 'Trần Thị Hiển', 'Trần Thị Ngọc Anh', 'Lê Thị Luyến', 'Nguyễn Thị Hà', 'Phạm Văn Quang', 'Nguyễn Văn Quang', 'Nguyễn Danh Đông', 'Nguyễn Thị Thành', 'Nguyễn Hoàng Huyên', 'Nguyễn Văn Bằng', 'Đinh Ngọc Lương', 'Ngô Xuân Tú', 'Bác sỹ Đỗ Văn Siêng', 'Y sỹ Dương Thế Vinh', 'Y sỹ Hoàng Mai Ngạn', 'Cử nhân YTCC Ngô Thị Kim Tuyến', 'Bác sỹ Nguyễn Thị Nga', 'Bác sỹ dự phòng Lê Hữu Thắng', 'Y sỹ Doãn Thị Xuyến', 'Phùng Văn Hai', 'Y sỹ Dương Thị Liên', 'Y sỹ Nguyễn Thanh Lịch', 'Y sỹ Nguyễn Thị Hồng Hạnh', 'Bác sỹ Trịnh Đắc Chung', 'Bác sỹ Trần Xuân Bang', 'Đỗ Thị Hiền', 'Khuất Thị Hồng Nhung', 'Hà Thị Thùy Ngân', 'Hoàng Thị Hạnh', 'Vũ Tuấn Anh', 'Lương Ngọc Ánh', 'Tô Tiến Quang', 'Lê Thị Thoa', 'Dương Thị Bích', 'Nguyễn Thị Hoài', 'Nghiêm Thị Dịu', 'Nguyễn Chí Thành', 'Trần Huy Long', 'Trần Thị The', 'Nguyễn Thị Thanh Hương', 'Nguyễn Thị Minh Phương', 'Nguyễn Việt Duy', 'Nguyễn Mai Lan', 'Cao Hải Yến', 'Đỗ Đăng Sơn', 'Bùi Trí Thuật', 'Bác sỹ: Nguyễn Thị Hòa', 'Bác sỹ: Ngô Thị Hoàn', 'Nguyễn Tiến Trọng', 'Lê Văn Thuỳ', 'Đặng Hữu Hoằng', 'Lương Thị Hường', 'Đặng Huy Định', 'Trần Văn Hay', 'Lương Văn Phú', 'Nguyễn Văn Thơ', 'Phạm Thị Ngọc Bảo', 'Bs. Trần Phạm Thái', 'Bs. Trần Thị Hoa', 'Nguyễn Hải Kiên', 'Bùi Mạnh Kiên', 'Nguyễn Thị Thu Hiền', 'Trần Thị Hương', 'Đỗ Thị Nhàn', 'Trần Ngọc Luân', 'Nguyễn Thị Hoa Hiên', 'Trần Thị Vân Khánh', 'Lê Văn Thắng', 'Nguyễn Thị Hương Giang', 'Nguyễn Văn Xít', 'Lê Thị Mai Hương', 'Nguyễn Đăng Hiếu', 'Nguyễn Thị Thuý Hà', 'Vũ Thị Tuệ', 'Vũ Thị Hương Giang', 'Lê Thị Hiển', 'Đặng Hồng Châu', 'Nguyễn Văn Dũng', 'Nguyễn Thị Lệ Thúy', 'Bùi Thị Hồng Phượng', 'Đặng Thị Nhung', 'Ngô Văn Chuẩn', 'Nguyễn Văn Đô', 'Trần Thị Hoa', 'Hoàng Gia Vinh', 'Nguyễn Viết Phương', 'Trương Thúy Quỳnh', 'Đỗ Thị Vân', 'Dương Văn Minh', 'Phí Ngọc Yến Nhi', 'Lương Thị Thuý Tình', 'Hà Thị Phượng', 'Đỗ Xuân Tùng', 'Phương Thị Mai Hương', 'Nguyễn Quốc Thưởng', 'Lê Thị Kim Ngân', 'Trần Mạnh Thắng', 'Đỗ Xuân Thành', 'Nguyễn Thị Thảo', 'Trần Quang Trịnh/ Tạ Ngọc Phương', 'Trần Quang Trịnh/ Phạm Thị Lan Anh', 'GS.TS. Nguyễn Viết Tiến', 'Dương Ngọc Bích', 'Vương Thị Phương', 'Phan Văn Chuyên', 'Nguyễn Thị Hạnh', 'Hoàng Hữu Tính', 'Nguyễn Thị Lý', 'Nguyễn Thị Thanh Huyền', 'Phan Ngọc Lan', 'Trần Ngọc Anh', 'Nguyễn Hoàng Loan', 'Đỗ Như Chinh', 'Nguyễn Thị Thòa', 'Nguyễn Thị Thúy Hằng', 'Nguyễn Thị Ngọc', 'Phạm Hồng Phong', 'Nguyễn Thị Tố Chinh', 'Nguyễn Thị Kiều Loan', 'Nguyễn Trung Hiếu', 'Mattias EriK Larsson', 'Trần Minh Tân', 'Hoàng Thị Mai Phương', 'Đào Hồng Chỉnh', 'Vương Thị Thu Hường', 'Nguyễn Tiến Cương', 'Cao Thị Hà Ngân', 'Lê Thị Kim Hoa', 'Lê Thị Kim Hoa/Đinh Thị Toàn', 'Lê Thị Kim Hoa/Chu Thị Hoa', 'Ngô Phi Phương', 'Nguyễn Văn Nguyên', 'Nguyễn Đăng Hiển/Nguyễn Thị Dương Hiền', 'Nguyễn Đăng Hiển/Nguyễn Đình Kim', 'Đặng Trung Kiên', 'Hoàng Thảo Ly', 'Lê Thị Thư', 'Nguyễn Hồng Khải', 'Hoàng Tiến Tuyên', 'Phạm Phú Đạo/Trần Thị Hậu', 'Nguyễn Minh Tuấn', 'Trần Thị Tuyết Hậu', 'Nguyễn Tiến Trung', 'Lại Vân Anh', 'Kiều Xuân Sang', 'Trần Hùng Mạnh', 'Lê Kiến Ngãi', 'Đỗ Hồng Quang', 'Nguyễn Trung Chính', 'Erwan Daniel guillaume debuc', 'Khuất Đình Lư', 'Lê Thanh Cường', 'Trinh Duy Ưng', 'Đặng Thị Ngọc Hà', 'Lê Hữu Song/Trần Thanh Hương', 'Vũ Thị Bích Huyền', 'Bùi Thị Bích Thảo', 'Nguyễn Thị Như Quỳnh', 'Lê Thị Ngọc Anh', 'Nguyễn Thị Thoi', 'Nguyễn Văn Quảng', 'Nguyễn Quang Thắng', 'Lê Thị Thanh Xuân', 'Bùi Thị Oanh', 'TS.BS. Nguyễn Đức Hoan', 'TS.BS. Nguyễn Phạm Ý Nhi', 'Trần Văn Nhất', 'BSCKII Tạ Văn Sứng', 'Bùi Ánh Ngọc', 'Lê Thị Chín', 'Phí Thị Phượng', 'Lương Hồng Nhị', 'Nguyễn Việt Hùng', 'Phạm Hữu Thường', 'Đậu Thu Huyền', 'Phạm Thị Ánh Nguyệt', 'PGS.TS.BS. Hoàng Gia Du', 'TS.BS. Bùi Ngọc Minh', 'Nguyễn Văn Cường', 'Phùng Thị Huề', 'Nguyễn Thị Đông', 'Đào Thị Thuỷ', 'Nguyễn Quang Toản', 'Trịnh Thị Thảo', 'Đỗ Thị Bích Hạnh', 'Tạ Thị Dung', 'Cấn Hoàng Kim', 'Nguyễn Thùy Chinh', '024.668.92595 0359022909', '02871026595 0972087658', '02438824666 0903163335', '0913167722', '0974.167.895', '0243.8272075', '0919569955', '0987.669.578', '0985789236', '0964727766', '0986436783', '0967.858.929', '0906.035.999', '0989.384.858', '0356.316.354', '0936.109.235', '0977.783.975', '0399614673', '0344551621', '0906508818', '0971398142', '0972471682', '0974825172', '0977962711', '0912440355', '0971683866', '024.3975.3556', '02871026595', '02466896595', '02433991555', '02438824666', '024.7301.6595', '0902151998', '02462504455', '0983355491', '0979111418', '0988920115', '0974167895', '0977918666', '0913018575', '0912621898', '0974982297', '0974.660.951', '0328.887.388', '0373.597.222', '0984.388.997', '0986.674.464', '0976.195.157', '0915.502.807', '0982.780.745', '0983121115', '0982.171.111', '0912.611.100', '0904.341.219', '0966.229.368', '0983.832.802', '024.383.43537', '0971.841.116', '034.8885335', '0243.8360468', '0243.9717710', '0978.360285', \"02473008866'\", '0973.644733', '0987.405675', '0982.441977', '0978.986785', '0769.008547', '0983.814837', '0976.915591', '0963.990699', '0287.1026595', '0243.9714363', '0246.2914595/ 0862853418', '0978020040', '0902267486', '0981186877', '0974707997', '0962547222', '0974299288', '0382312212', '0978167260', '0976497173', '0978841379', '0986544115', '0989204169', '0398739286', '0388929862', '0828349486', '0989424223', '0973862386', '0972153668', '0985371660', '0976903190', '0984698246', '0901799662', '0912976662', '02433866224', '0986261665', '0867953890', '02437655599', '02439275568', '02437161239', '0977555568', '0944032008', '0901602411', '02438373747', '0936818922', '0936454669', '0912367839', '0817600105', '0248832727', '0906228835', '0913007127', '0369780468', '0979084793', '0904472674', '0366250347', '0972118659', '1900252560', '0912092659', '0789154255', '0986808612', '0989891321', '0965711494', '0392487984', '0243.7664751', '0967.811.616', '1900599858', '0904.773.897/ 0948.388.226', '0968553223', '0984159923', '0932455437']\nCount: 833",
+    "Total unique values: 833\nPhone-like entries: 130\n['024.668.92595 0359022909', '02871026595 0972087658', '02438824666 0903163335', '0913167722', '0974.167.895', '0243.8272075', '0919569955', '0987.669.578', '0985789236', '0964727766', '0986436783', '0967.858.929', '0906.035.999', '0989.384.858', '0356.316.354', '0936.109.235', '0977.783.975', '0399614673', '0344551621', '0906508818', '0971398142', '0972471682', '0974825172', '0977962711', '0912440355', '0971683866', '024.3975.3556', '02871026595', '02466896595', '02433991555', '02438824666', '024.7301.6595', '0902151998', '02462504455', '0983355491', '0979111418', '0988920115', '0974167895', '0977918666', '0913018575', '0912621898', '0974982297', '0974.660.951', '0328.887.388', '0373.597.222', '0984.388.997', '0986.674.464', '0976.195.157', '0915.502.807', '0982.780.745', '0983121115', '0982.171.111', '0912.611.100', '0904.341.219', '0966.229.368', '0983.832.802', '024.383.43537', '0971.841.116', '034.8885335', '0243.8360468', '0243.9717710', '0978.360285', '0973.644733', '0987.405675', '0982.441977', '0978.986785', '0769.008547', '0983.814837', '0976.915591', '0963.990699', '0287.1026595', '0243.9714363', '0246.2914595/ 0862853418', '0978020040', '0902267486', '0981186877', '0974707997', '0962547222', '0974299288', '0382312212', '0978167260', '0976497173', '0978841379', '0986544115', '0989204169', '0398739286', '0388929862', '0828349486', '0989424223', '0973862386', '0972153668', '0985371660', '0976903190', '0984698246', '0901799662', '0912976662', '02433866224', '0986261665', '0867953890', '02437655599', '02439275568', '02437161239', '0977555568', '0944032008', '0901602411', '02438373747', '0936818922', '0936454669', '0912367839', '0817600105', '0248832727', '0906228835', '0913007127', '0369780468', '0979084793', '0904472674', '0366250347', '0972118659', '0912092659', '0789154255', '0986808612', '0989891321', '0965711494', '0392487984', '0243.7664751', '0967.811.616', '0904.773.897/ 0948.388.226', '0968553223', '0984159923', '0932455437']\n---\nName-like entries: 703\n[\"02473008866'\", '1900252560', '1900599858', 'BS Lưu Thị Dung', 'BS Nguyễn Hồng Nhung', 'BS Nguyễn Quố Quân', 'BS Nguyễn Thị An Khang', 'BS Nguyễn Thị Nga', 'BS Nguyễn Thị Riên', 'BS Nguyễn Thị Thanh Huyền', 'BS Nguyễn Văn Sang', 'BS Nguyễn Đình Lịch', 'BS Trương Vũ Linh', 'BS Trần Văn Dân', 'BS Vũ Mạnh Cường', 'BS Vương Trí Hồng', 'BS Đỗ Thị Phượng', 'BS. Cao Văn Giao', 'BS. Lê Trung Tiên', 'BS. Lê Đức Tuyên', 'BS. Nguyễn Thị Bản', 'BS. Nguyễn Văn Tuyển', 'BS. Ngô Thanh Hào', 'BS. Phạm Văn Dũng', 'BS. Trần Trọng Thắng', 'BS. Đàm Thị Mai Hoa', 'BS. Đỗ Văn Thảo', 'BSCK II Trương Kỳ Phong', 'BSCK II Trần Quang Tuấn', 'BSCKI. Phan Thị Long Hoa/ BSYHCT. Nguyễn Trà My', 'BSCKII Nguyễn Văn Tý', 'BSCKII Tạ Văn Sứng', 'Bs Hoàng Bích Thuỷ', 'Bs Hoàng Xuân Tùng', 'Bs Lê Quang Trung', 'Bs Nguyễn Văn Hảo', 'Bs Vũ Thị Hải', 'Bs. Trần Phạm Thái', 'Bs. Trần Thị Hoa', 'Bác sĩ Phù Vĩnh Thắng', 'Bác sĩ Đào Bá Tuệ', 'Bác sỹ Lê Xuân Đức', 'Bác sỹ Nguyễn Công Đạt', 'Bác sỹ Nguyễn Thị Huyền Trang', 'Bác sỹ Nguyễn Thị Mỹ', 'Bác sỹ Nguyễn Thị Nga', 'Bác sỹ Nguyễn Thị Nhâm', 'Bác sỹ Nguyễn Xuân Bình', 'Bác sỹ Nguyễn Xuân Tính', 'Bác sỹ Phạm Văn Hữu', 'Bác sỹ Trần Xuân Bang', 'Bác sỹ Trịnh Đắc Chung', 'Bác sỹ dự phòng Lê Hữu Thắng', 'Bác sỹ Đinh Tiến Diện', 'Bác sỹ Đỗ Anh Tuấn', 'Bác sỹ Đỗ Văn Siêng', 'Bác sỹ. Phí Mạnh Dũng', 'Bác sỹ: Nguyễn Thị Hòa', 'Bác sỹ: Ngô Thị Hoàn', 'Bùi Mạnh Kiên', 'Bùi Như Hồng', 'Bùi Thanh Hải', 'Bùi Thanh Tịnh', 'Bùi Thị Bích Thảo', 'Bùi Thị Hoa', 'Bùi Thị Hồng Phượng', 'Bùi Thị Oanh', 'Bùi Thị Ánh Tuyết', 'Bùi Tiến Phương', 'Bùi Trí Thuật', 'Bùi Văn Linh', 'Bùi Văn Thanh', 'Bùi Ánh Ngọc', 'CN Nguyễn Tiến Chương', 'Cao Hải Yến', 'Cao Nam Thắng', 'Cao Thành Đạt', 'Cao Thị Hà Ngân', 'Cao Thị Mỹ Nga', 'Cao Văn Huyên', 'Cao Văn Nghị', 'Chu Bá Sỹ', 'Chu Thị Hương', 'Chu Thị Thanh', 'Chu Văn Tuấn', 'Cấn Hoàng Kim', 'Cấn Thị Vân', 'Cử nhân YTCC Ngô Thị Kim Tuyến', 'Dương Chí Chung', 'Dương Mạnh Hùng', 'Dương Ngọc Bích', 'Dương Ngọc Huân', 'Dương Thế Vinh', 'Dương Thị Bích', 'Dương Thị Chỉnh', 'Dương Thị Hồng Nhung', 'Dương Thị Thu Trang', 'Dương Văn Công', 'Dương Văn Huân', 'Dương Văn Huệ', 'Dương Văn Khương', 'Dương Văn Minh', 'Erwan Daniel guillaume debuc', 'GS.TS. Nguyễn Viết Tiến', 'Hoàng Gia Vinh', 'Hoàng Hữu Huy', 'Hoàng Hữu Tính', 'Hoàng Lưu Sa', 'Hoàng Lệ Thi', 'Hoàng Thảo Ly', 'Hoàng Thị Diệu Linh', 'Hoàng Thị Giang', 'Hoàng Thị Hạnh', 'Hoàng Thị Mai Dung', 'Hoàng Thị Mai Phương', 'Hoàng Thị Minh Huệ', 'Hoàng Thị Thanh', 'Hoàng Thị Thu Màn', 'Hoàng Thị Tuyền', 'Hoàng Tiến Tuyên', 'Hoàng Trọng Luân', 'Hoàng Văn Bằng', 'Hoàng Văn Tuyến', 'Hoàng Văn Tự', 'Hoàng Yến', 'Hoàng Ánh Hồng', 'Hy Việt Anh', 'Hà Duy Dương', 'Hà Thị Phượng', 'Hà Thị Thùy Ngân', 'Hà Thị Tú', 'Khuất Duy Tuân', 'Khuất Quang Tuyển', 'Khuất Thị Hồng Nhung', 'Khuất Thị Thu Nguyệt', 'Khuất Đình Lư', 'Khánh Thị Việt Hà', 'Kiều Doãn Nghĩa', 'Kiều Thị Bích Thúy', 'Kiều Thị Giang', 'Kiều Xuân Sang', 'Kiều Xuân Tiệp', 'Loan Thị Hồng Mai', 'Lê Chí Đệ', 'Lê Doãn Mạnh', 'Lê Hải Ninh', 'Lê Hữu Song/Trần Thanh Hương', 'Lê Kiến Ngãi', 'Lê Minh Đức', 'Lê Ngọc Ánh', 'Lê Phú Trùy', 'Lê Thanh Cường', 'Lê Thanh Hà', 'Lê Thanh Nhã', 'Lê Thành Văn', 'Lê Thị Chuốt', 'Lê Thị Chín', 'Lê Thị Dung', 'Lê Thị Hiển', 'Lê Thị Huyền', 'Lê Thị Hạnh', 'Lê Thị Hải Hương', 'Lê Thị Kim Hoa', 'Lê Thị Kim Hoa/Chu Thị Hoa', 'Lê Thị Kim Hoa/Đinh Thị Toàn', 'Lê Thị Kim Ngân', 'Lê Thị Kim Thanh', 'Lê Thị Lan', 'Lê Thị Luyến', 'Lê Thị Lâm', 'Lê Thị Lộc', 'Lê Thị Mai Hương', 'Lê Thị Mười', 'Lê Thị Ngọc Anh', 'Lê Thị Thanh Xuân', 'Lê Thị Thoa', 'Lê Thị Thư', 'Lê Thị Yến', 'Lê Văn Thiện', 'Lê Văn Thuỳ', 'Lê Văn Thành', 'Lê Văn Thắng', 'Lê Văn Đáp', 'Lê Xuân Hùng', 'Lê Đức Toàn', 'Lý Thị Ánh Nguyệt', 'Lưu Thị Dung', 'Lưu Thị Loan', 'Lưu Xuân Thắng', 'Lưu Đức Hướng', 'Lương Hồng Nhị', 'Lương Minh Hồng', 'Lương Ngọc Ánh', 'Lương Quốc Chung', 'Lương Thị Hường', 'Lương Thị Thanh Phong', 'Lương Thị Thuý Tình', 'Lương Văn Phú', 'Lường Công Thức', 'Lại Ngọc Long', 'Lại Vân Anh', 'Mai Thị Hồng Diệp', 'Mai Thị Tuyết Vân', 'Mattias EriK Larsson', 'Nghiêm Thị Dịu', 'Nghiêm Thị Thanh Xuân', 'Nguyễn Anh Thành', 'Nguyễn Anh Tuấn', 'Nguyễn Bạch Điệp', 'Nguyễn Chí Thành', 'Nguyễn Danh Phương', 'Nguyễn Danh Đông', 'Nguyễn Duy Ánh', 'Nguyễn Gia Phúc', 'Nguyễn Giáp Oán', 'Nguyễn Hoàng Hiệp', 'Nguyễn Hoàng Huyên', 'Nguyễn Hoàng Lan', 'Nguyễn Hoàng Loan', 'Nguyễn Hoàng Văn', 'Nguyễn Huy Đại', 'Nguyễn Huyền Trang', 'Nguyễn Hà Phương', 'Nguyễn Hùng Cường', 'Nguyễn Hải Kiên', 'Nguyễn Hải Phong', 'Nguyễn Hải Đăng', 'Nguyễn Hồng Khải', 'Nguyễn Hữu Giáp', 'Nguyễn Hữu Thủy', 'Nguyễn Hữu Tuệ', 'Nguyễn Kiên Cường', 'Nguyễn Kiều Hương', 'Nguyễn Linh Trang', 'Nguyễn Mai Lan', 'Nguyễn Minh Phúc', 'Nguyễn Minh Sơn', 'Nguyễn Minh Tuấn', 'Nguyễn Minh Tạo', 'Nguyễn Mạnh Cường', 'Nguyễn Mạnh Hùng', 'Nguyễn Mạnh Liên', 'Nguyễn Mạnh Trâm', 'Nguyễn Mạnh Tưởng', 'Nguyễn Ngọc Chiến', 'Nguyễn Phong Lưu', 'Nguyễn Phương Mai', 'Nguyễn Phương Thúy', 'Nguyễn Phương Trung', 'Nguyễn Phương Trường', 'Nguyễn Quang Cần', 'Nguyễn Quang Huy', 'Nguyễn Quang Hưng', 'Nguyễn Quang Hải', 'Nguyễn Quang Nam', 'Nguyễn Quang Thắng', 'Nguyễn Quang Toản', 'Nguyễn Quang Trung', 'Nguyễn Quang Vinh', 'Nguyễn Quốc Thưởng', 'Nguyễn Quỳnh Trang', 'Nguyễn Sĩ Mạnh', 'Nguyễn Thanh Khoa Vy', 'Nguyễn Thanh Nga', 'Nguyễn Thanh Nhàn', 'Nguyễn Thanh Sơn', 'Nguyễn Thanh Tâm', 'Nguyễn Thi Hào', 'Nguyễn Thu Huyền', 'Nguyễn Thu Hà', 'Nguyễn Thu Hương', 'Nguyễn Thu Thủy', 'Nguyễn Thu Trang', 'Nguyễn Thuỳ Linh', 'Nguyễn Thuỳ Nga', 'Nguyễn Thành Minh', 'Nguyễn Thùy Chinh', 'Nguyễn Thắng Sơn', 'Nguyễn Thế Anh', 'Nguyễn Thế Hanh', 'Nguyễn Thị Biên', 'Nguyễn Thị Bích Hòa', 'Nguyễn Thị Chuyên', 'Nguyễn Thị Diệu Hợp', 'Nguyễn Thị Dung', 'Nguyễn Thị Giang', 'Nguyễn Thị Hoa', 'Nguyễn Thị Hoa Hiên', 'Nguyễn Thị Hoài', 'Nguyễn Thị Huyền', 'Nguyễn Thị Huệ', 'Nguyễn Thị Hà', 'Nguyễn Thị Hòa', 'Nguyễn Thị Hương Giang', 'Nguyễn Thị Hạnh', 'Nguyễn Thị Hải', 'Nguyễn Thị Hậu', 'Nguyễn Thị Hằng', 'Nguyễn Thị Hằng Thúy', 'Nguyễn Thị Hồng', 'Nguyễn Thị Hồng Hà', 'Nguyễn Thị Hồng Hạnh', 'Nguyễn Thị Hồng Sâm', 'Nguyễn Thị Khang', 'Nguyễn Thị Khánh Huyền', 'Nguyễn Thị Kim Ngân', 'Nguyễn Thị Kiều Loan', 'Nguyễn Thị Lan', 'Nguyễn Thị Lan Anh', 'Nguyễn Thị Lan Hương', 'Nguyễn Thị Liên', 'Nguyễn Thị Loan', 'Nguyễn Thị Luyến', 'Nguyễn Thị Luận', 'Nguyễn Thị Lý', 'Nguyễn Thị Lưỡng', 'Nguyễn Thị Lệ Thúy', 'Nguyễn Thị Mai', 'Nguyễn Thị Mai Hoa', 'Nguyễn Thị Mai Hương', 'Nguyễn Thị Minh Cảnh', 'Nguyễn Thị Minh Phương', 'Nguyễn Thị Minh Tâm', 'Nguyễn Thị Mỹ Hòa', 'Nguyễn Thị Mỹ Hạnh', 'Nguyễn Thị Nga', 'Nguyễn Thị Nguyệt', 'Nguyễn Thị Ngà', 'Nguyễn Thị Ngọc', 'Nguyễn Thị Ngọc Lan', 'Nguyễn Thị Nhung', 'Nguyễn Thị Như Quỳnh', 'Nguyễn Thị Phương Hiền', 'Nguyễn Thị Phương Lan', 'Nguyễn Thị Phương Lâm', 'Nguyễn Thị Phượng', 'Nguyễn Thị Quyên', 'Nguyễn Thị Riên', 'Nguyễn Thị Sáu', 'Nguyễn Thị Thanh Huyền', 'Nguyễn Thị Thanh Hương', 'Nguyễn Thị Thanh Loan', 'Nguyễn Thị Thanh Thuỷ', 'Nguyễn Thị Thoi', 'Nguyễn Thị Thu', 'Nguyễn Thị Thu Hiền', 'Nguyễn Thị Thu Hà', 'Nguyễn Thị Thu Phương', 'Nguyễn Thị Thu Thủy', 'Nguyễn Thị Thuý', 'Nguyễn Thị Thuý Hà', 'Nguyễn Thị Thuấn', 'Nguyễn Thị Thành', 'Nguyễn Thị Thòa', 'Nguyễn Thị Thúy', 'Nguyễn Thị Thúy Hằng', 'Nguyễn Thị Thơ', 'Nguyễn Thị Thảo', 'Nguyễn Thị Thắm', 'Nguyễn Thị Thắng', 'Nguyễn Thị Thủy', 'Nguyễn Thị Tuyết Hải', 'Nguyễn Thị Tuyết Nhung', 'Nguyễn Thị Tâm', 'Nguyễn Thị Tố Chinh', 'Nguyễn Thị Uyên', 'Nguyễn Thị Vân', 'Nguyễn Thị Vượng', 'Nguyễn Thị Yên', 'Nguyễn Thị Ánh', 'Nguyễn Thị Ánh Nguyệt', 'Nguyễn Thị Đông', 'Nguyễn Tiến Cương', 'Nguyễn Tiến Dũng', 'Nguyễn Tiến Trung', 'Nguyễn Tiến Trọng', 'Nguyễn Tiến Ánh', 'Nguyễn Tiến Đạt', 'Nguyễn Trung Chính', 'Nguyễn Trung Dũng', 'Nguyễn Trung Hiếu', 'Nguyễn Trung Hậu', 'Nguyễn Trọng Bính', 'Nguyễn Tuấn Hạnh', 'Nguyễn Tuấn Quang', 'Nguyễn Tùng Sơn', 'Nguyễn Tường Phượng', 'Nguyễn Viết Mạnh', 'Nguyễn Viết Phương', 'Nguyễn Việt Duy', 'Nguyễn Việt Hùng', 'Nguyễn Việt Phương', 'Nguyễn Văn Bao', 'Nguyễn Văn Bằng', 'Nguyễn Văn Chung', 'Nguyễn Văn Cường', 'Nguyễn Văn Dũng', 'Nguyễn Văn Hiếu', 'Nguyễn Văn Hoà', 'Nguyễn Văn Khanh', 'Nguyễn Văn Khoản', 'Nguyễn Văn Khâm', 'Nguyễn Văn Khương', 'Nguyễn Văn Mạnh', 'Nguyễn Văn Nguyên', 'Nguyễn Văn Nhâm', 'Nguyễn Văn Năm', 'Nguyễn Văn Nội', 'Nguyễn Văn Oánh', 'Nguyễn Văn Quang', 'Nguyễn Văn Quảng', 'Nguyễn Văn Sang', 'Nguyễn Văn Sơn', 'Nguyễn Văn Sửu', 'Nguyễn Văn Thanh', 'Nguyễn Văn Thiệu', 'Nguyễn Văn Thơ', 'Nguyễn Văn Thường', 'Nguyễn Văn Thắng', 'Nguyễn Văn Tiến', 'Nguyễn Văn Tuấn', 'Nguyễn Văn Việt', 'Nguyễn Văn Xít', 'Nguyễn Văn Ánh', 'Nguyễn Văn Đô', 'Nguyễn Văn Đạt', 'Nguyễn Xuân Hùng', 'Nguyễn Xuân Hương', 'Nguyễn Xuân Hải', 'Nguyễn Xuân Lộc', 'Nguyễn Xuân Thát', 'Nguyễn Xuân Đồng', 'Nguyễn Đình Quân', 'Nguyễn Đình Túc', 'Nguyễn Đăng Hiếu', 'Nguyễn Đăng Hiển/Nguyễn Thị Dương Hiền', 'Nguyễn Đăng Hiển/Nguyễn Đình Kim', 'Nguyễn Đăng Minh', 'Nguyễn Đăng Xuân', 'Nguyễn Đức Anh', 'Nguyễn Đức Dương', 'Nguyễn Đức Tiến', 'Nguyễn Đức Trung', 'Nguyễn Đức Trại', 'Nguyễn Đức Tú', 'Ngô Bá Phương', 'Ngô Phi Phương', 'Ngô Quang Hùng', 'Ngô Thanh Thủy', 'Ngô Thị Hải', 'Ngô Thị Kim Tuyến', 'Ngô Thị Mỳ', 'Ngô Thị Thu Hiền', 'Ngô Thị Vịnh', 'Ngô Tiến Thịnh', 'Ngô Trung Quyết', 'Ngô Tuyết Thanh', 'Ngô Văn Chuẩn', 'Ngô Văn Nguyên', 'Ngô Văn Thuân', 'Ngô Xuân Tú', 'PGS.TS.BS. Hoàng Gia Du', 'Phan Ngọc Lan', 'Phan Thị Bích Liên', 'Phan Thị Bẩy', 'Phan Thị Minh Anh', 'Phan Thị Thu Hà', 'Phan Văn Chuyên', 'Phí Ngọc Yến Nhi', 'Phí Thị Hằng', 'Phí Thị Phượng', 'Phù Xuân Đương', 'Phùng Thế Tài', 'Phùng Thị Bích Niên', 'Phùng Thị Huề', 'Phùng Thị Khánh', 'Phùng Thị Liên', 'Phùng Thị Luyến', 'Phùng Thị Nguyên', 'Phùng Văn Dực', 'Phùng Văn Hai', 'Phùng Văn Hưởng', 'Phùng Văn Việt', 'Phùng Xuân Diễn', 'Phùng Xuân Thạch', 'Phùng Xuân Thịnh', 'Phương Thị Mai Hương', 'Phạm Hà Giang', 'Phạm Hồng Phong', 'Phạm Hữu Thường', 'Phạm Phú Đạo/Trần Thị Hậu', 'Phạm Quang Hải', 'Phạm Quang Vi', 'Phạm Quỳnh Trang', 'Phạm Thanh Hải', 'Phạm Thị Anh Đào', 'Phạm Thị Hiền', 'Phạm Thị Hoài Anh', 'Phạm Thị Hải Yến', 'Phạm Thị Kim Thoa', 'Phạm Thị Lan', 'Phạm Thị Luyến', 'Phạm Thị Mai Hoa', 'Phạm Thị Minh', 'Phạm Thị Minh Phương', 'Phạm Thị Mừng', 'Phạm Thị Ngọc Bảo', 'Phạm Thị Quyên', 'Phạm Thị Quỳnh Thư', 'Phạm Thị Sáu', 'Phạm Thị Thu Huyền', 'Phạm Thị Thư', 'Phạm Thị Xuân Hoài', 'Phạm Thị Yến', 'Phạm Thị Ánh Nguyệt', 'Phạm Thị Ít Lan', 'Phạm Văn Phán', 'Phạm Văn Quang', 'Phạm Xuân Hiền', 'Phạm Đức Giang', 'Quách Gia Định', 'Quách Mạnh Khánh', 'Quách Thị Hảo', 'TS.BS. Bùi Ngọc Minh', 'TS.BS. Nguyễn Phạm Ý Nhi', 'TS.BS. Nguyễn Đức Hoan', 'ThS Bác sỹ. Lưu Văn Báu', 'Thạc sỹ.Bs Phạm Đăng Quân', 'Tiêu Ngọc Chiến', 'Trinh Duy Ưng', 'Trương Thúy Quỳnh', 'Trương Thị Hằng', 'Trần Công Năng', 'Trần Huy Long', 'Trần Hùng Mạnh', 'Trần Linh Trang', 'Trần Minh Tân', 'Trần Mạnh Thắng', 'Trần Ngọc Anh', 'Trần Ngọc Luân', 'Trần Ngọc Nghĩa', 'Trần Phương Mỹ', 'Trần Quang Trịnh/ Phạm Thị Lan Anh', 'Trần Quang Trịnh/ Tạ Ngọc Phương', 'Trần Quyết Chiến', 'Trần Sỹ Quảng', 'Trần Thị Chi', 'Trần Thị Hiển', 'Trần Thị Hoa', 'Trần Thị Hương', 'Trần Thị Hường', 'Trần Thị Kim Ngân', 'Trần Thị Liên Hoa', 'Trần Thị Mai', 'Trần Thị Mai Hương', 'Trần Thị Minh Lý', 'Trần Thị Nga', 'Trần Thị Ngân', 'Trần Thị Ngọc Anh', 'Trần Thị Nhinh', 'Trần Thị Phượng', 'Trần Thị Thanh Huyền', 'Trần Thị The', 'Trần Thị Tuyết Hậu', 'Trần Thị Vân Khánh', 'Trần Thị Yến', 'Trần Văn Hay', 'Trần Văn Huyên', 'Trần Văn Khôi', 'Trần Văn Lâm', 'Trần Văn Nhất', 'Trần Văn Toanh', 'Trần Văn Đại', 'Trần Xuân Nam', 'Trần Xuân Đông', 'Trần Đình Thân', 'Trần Đình Thư', 'Trịnh Duy Đà', 'Trịnh Thị Kiện', 'Trịnh Thị Thảo', 'Trịnh Tuấn Hưng', 'Tô Thị Lan', 'Tô Thị Tuyết', 'Tô Tiến Quang', 'Tô Xuân Sinh', 'Tạ Thị Dung', 'Tạ Thị Lý', 'Tạ Văn Chính', 'Tống Văn Hùng', 'Vi Thị Soan', 'Vũ Anh Phương', 'Vũ Danh Tài', 'Vũ Hoàng Hải', 'Vũ Mạnh Cường', 'Vũ Ngọc Trung', 'Vũ Quang Hiển', 'Vũ Quang Sơn', 'Vũ Thị Bích Huyền', 'Vũ Thị Hoà', 'Vũ Thị Huệ', 'Vũ Thị Hương Giang', 'Vũ Thị Hảo', 'Vũ Thị Phước', 'Vũ Thị Sơn', 'Vũ Thị Thanh Hương', 'Vũ Thị Thu Hòa', 'Vũ Thị Thu Thuỷ', 'Vũ Thị Thuỷ', 'Vũ Thị Thùy', 'Vũ Thị Tuệ', 'Vũ Tiến Hải', 'Vũ Tuấn Anh', 'Vũ Văn Hiên', 'Vũ Văn Hiển', 'Vũ Văn Thủy', 'Vũ Xuân Tình', 'Vương Thị Hợi', 'Vương Thị Kim Lan', 'Vương Thị Phương', 'Vương Thị Thu Hường', 'Vương Thị Thủy', 'Vương Trung Kiên', 'Y sỹ Doãn Thị Xuyến', 'Y sỹ Dương Thế Vinh', 'Y sỹ Dương Thị Liên', 'Y sỹ Hoàng Mai Ngạn', 'Y sỹ Lương Thị Ngọc', 'Y sỹ Mai Thị Nguyệt', 'Y sỹ Nguyễn Thanh Lịch', 'Y sỹ Nguyễn Thị Hồng Hạnh', 'Y sỹ Nguyễn Thị Kiều Oanh', 'Y sỹ Nguyễn Thị Lý', 'Y sỹ Phạm Minh Tiến', 'Y sỹ Trần Đình Thân', 'YS Nguyễn Thị Thanh Thảo', 'YS Trương Thị Minh Thư', 'Ys. Dương Thị Lịch', 'Ys. Nguyễn Ngọc Quý', 'lê Thị Phương Anh', 'Ân Thành Đặt', 'Đinh Công Toàn', 'Đinh Khánh Ly', 'Đinh Ngọc Lương', 'Đinh Ngọc Phát', 'Đinh Thị Hoan', 'Đinh Thị Hồng Hoa', 'Đinh Thị Lũy', 'Đinh Thị Mai Hoa', 'Đinh Thị Thanh', 'Đinh Thị Uyên', 'Đinh Thị Yến', 'Đoàn Thanh Thủy', 'Đoàn Thị Thúy Liên', 'Đào Hồng Chinh', 'Đào Hồng Chỉnh', 'Đào Thị Hiền', 'Đào Thị Thuỷ', 'Đào Văn Thưởng', 'Đào Văn Vinh', 'Đào Xuân Cơ', 'Đậu Thu Huyền', 'Đặng Huy Định', 'Đặng Hồng Châu', 'Đặng Hữu Bá', 'Đặng Hữu Hoằng', 'Đặng Thanh Nhàn', 'Đặng Thành Luân', 'Đặng Thị Kim Oanh', 'Đặng Thị Ngọc Hà', 'Đặng Thị Nhung', 'Đặng Thị Nhâm', 'Đặng Thị Thanh Hà', 'Đặng Thị Thuận', 'Đặng Trung Kiên', 'Đặng Văn Thanh', 'Đặng Đình Sáng', 'Đặng Đình Thực', 'Đồng Thị Lan', 'Đồng Thị Thuỷ', 'Đồng Đạo Khánh', 'Đỗ Duy Dương', 'Đỗ Duy Toàn', 'Đỗ Hồng Quang', 'Đỗ Như Chinh', 'Đỗ Phương Đông', 'Đỗ Song An', 'Đỗ Thu Thuỷ', 'Đỗ Thùy Dung', 'Đỗ Thị Bích Hạnh', 'Đỗ Thị Hiền', 'Đỗ Thị Loan', 'Đỗ Thị Nam', 'Đỗ Thị Ngọc', 'Đỗ Thị Nhàn', 'Đỗ Thị Phượng', 'Đỗ Thị Thu Hương', 'Đỗ Thị Vân', 'Đỗ Văn Chiến', 'Đỗ Văn Dũng', 'Đỗ Văn Vân', 'Đỗ Xuân Thành', 'Đỗ Xuân Tùng', 'Đỗ Đăng Sơn']",
+    "True\nTrue\nTrue\n--- 1900252560 ---\n      stt                                                                                           tên_cơ_sở người_đứng_đầu_phụ_trách_chuyên_môn  công_bố_mới  công_bố_lại\n1064  512  Trung tâm tiêm chủng vắc xin Thường Tín cơ sở 1 Địa điểm kinh doanh Công ty cổ phần dịch vụ Y Viên                          1900252560          NaN          1.0\n1065  513                                                                       Trung tâm tiêm chủng Y Viên 4                          1900252560          NaN          1.0\n--- 1900599858 ---\n      stt                    tên_cơ_sở người_đứng_đầu_phụ_trách_chuyên_môn  công_bố_mới  công_bố_lại\n1076  524  Bệnh viện đa khoa Bảo Sơn 2                          1900599858          NaN          1.0\n--- 02473008866' ---\n     stt                                     tên_cơ_sở người_đứng_đầu_phụ_trách_chuyên_môn  công_bố_mới  công_bố_lại\n995  447  Bệnh viện Đa khoa Hồng Ngọc Phúc Trường Minh                        02473008866'          NaN          1.0",
+    "Total names: 700\nFirst 20: ['BS Lưu Thị Dung', 'BS Nguyễn Hồng Nhung', 'BS Nguyễn Quố Quân', 'BS Nguyễn Thị An Khang', 'BS Nguyễn Thị Nga', 'BS Nguyễn Thị Riên', 'BS Nguyễn Thị Thanh Huyền', 'BS Nguyễn Văn Sang', 'BS Nguyễn Đình Lịch', 'BS Trương Vũ Linh', 'BS Trần Văn Dân', 'BS Vũ Mạnh Cường', 'BS Vương Trí Hồng', 'BS Đỗ Thị Phượng', 'BS. Cao Văn Giao', 'BS. Lê Trung Tiên', 'BS. Lê Đức Tuyên', 'BS. Nguyễn Thị Bản', 'BS. Nguyễn Văn Tuyển', 'BS. Ngô Thanh Hào']\nLast 20: ['Đỗ Như Chinh', 'Đỗ Phương Đông', 'Đỗ Song An', 'Đỗ Thu Thuỷ', 'Đỗ Thùy Dung', 'Đỗ Thị Bích Hạnh', 'Đỗ Thị Hiền', 'Đỗ Thị Loan', 'Đỗ Thị Nam', 'Đỗ Thị Ngọc', 'Đỗ Thị Nhàn', 'Đỗ Thị Phượng', 'Đỗ Thị Thu Hương', 'Đỗ Thị Vân', 'Đỗ Văn Chiến', 'Đỗ Văn Dũng', 'Đỗ Văn Vân', 'Đỗ Xuân Thành', 'Đỗ Xuân Tùng', 'Đỗ Đăng Sơn']",
+    "[[\"BS Lưu Thị Dung\"], [\"BS Nguyễn Hồng Nhung\"], [\"BS Nguyễn Quố Quân\"], [\"BS Nguyễn Thị An Khang\"], [\"BS Nguyễn Thị Nga\"], [\"BS Nguyễn Thị Riên\"], [\"BS Nguyễn Thị Thanh Huyền\"], [\"BS Nguyễn Văn Sang\"], [\"BS Nguyễn Đình Lịch\"], [\"BS Trương Vũ Linh\"], [\"BS Trần Văn Dân\"], [\"BS Vũ Mạnh Cường\"], [\"BS Vương Trí Hồng\"], [\"BS Đỗ Thị Phượng\"], [\"BS. Cao Văn Giao\"], [\"BS. Lê Trung Tiên\"], [\"BS. Lê Đức Tuyên\"], [\"BS. Nguyễn Thị Bản\"], [\"BS. Nguyễn Văn Tuyển\"], [\"BS. Ngô Thanh Hào\"], [\"BS. Phạm Văn Dũng\"], [\"BS. Trần Trọng Thắng\"], [\"BS. Đàm Thị Mai Hoa\"], [\"BS. Đỗ Văn Thảo\"], [\"BSCK II Trương Kỳ Phong\"], [\"BSCK II Trần Quang Tuấn\"], [\"BSCKI. Phan Thị Long Hoa/ BSYHCT. Nguyễn Trà My\"], [\"BSCKII Nguyễn Văn Tý\"], [\"BSCKII Tạ Văn Sứng\"], [\"Bs Hoàng Bích Thuỷ\"], [\"Bs Hoàng Xuân Tùng\"], [\"Bs Lê Quang Trung\"], [\"Bs Nguyễn Văn Hảo\"], [\"Bs Vũ Thị Hải\"], [\"Bs. Trần Phạm Thái\"], [\"Bs. Trần Thị Hoa\"], [\"Bác sĩ Phù Vĩnh Thắng\"], [\"Bác sĩ Đào Bá Tuệ\"], [\"Bác sỹ Lê Xuân Đức\"], [\"Bác sỹ Nguyễn Công Đạt\"], [\"Bác sỹ Nguyễn Thị Huyền Trang\"], [\"Bác sỹ Nguyễn Thị Mỹ\"], [\"Bác sỹ Nguyễn Thị Nga\"], [\"Bác sỹ Nguyễn Thị Nhâm\"], [\"Bác sỹ Nguyễn Xuân Bình\"], [\"Bác sỹ Nguyễn Xuân Tính\"], [\"Bác sỹ Phạm Văn Hữu\"], [\"Bác sỹ Trần Xuân Bang\"], [\"Bác sỹ Trịnh Đắc Chung\"], [\"Bác sỹ dự phòng Lê Hữu Thắng\"], [\"Bác sỹ Đinh Tiến Diện\"], [\"Bác sỹ Đỗ Anh Tuấn\"], [\"Bác sỹ Đỗ Văn Siêng\"], [\"Bác sỹ. Phí Mạnh Dũng\"], [\"Bác sỹ: Nguyễn Thị Hòa\"], [\"Bác sỹ: Ngô Thị Hoàn\"], [\"Bùi Mạnh Kiên\"], [\"Bùi Như Hồng\"], [\"Bùi Thanh Hải\"], [\"Bùi Thanh Tịnh\"], [\"Bùi Thị Bích Thảo\"], [\"Bùi Thị Hoa\"], [\"Bùi Thị Hồng Phượng\"], [\"Bùi Thị Oanh\"], [\"Bùi Thị Ánh Tuyết\"], [\"Bùi Tiến Phương\"], [\"Bùi Trí Thuật\"], [\"Bùi Văn Linh\"], [\"Bùi Văn Thanh\"], [\"Bùi Ánh Ngọc\"], [\"CN Nguyễn Tiến Chương\"], [\"Cao Hải Yến\"], [\"Cao Nam Thắng\"], [\"Cao Thành Đạt\"], [\"Cao Thị Hà Ngân\"], [\"Cao Thị Mỹ Nga\"], [\"Cao Văn Huyên\"], [\"Cao Văn Nghị\"], [\"Chu Bá Sỹ\"], [\"Chu Thị Hương\"], [\"Chu Thị Thanh\"], [\"Chu Văn Tuấn\"], [\"Cấn Hoàng Kim\"], [\"Cấn Thị Vân\"], [\"Cử nhân YTCC Ngô Thị Kim Tuyến\"], [\"Dương Chí Chung\"], [\"Dương Mạnh Hùng\"], [\"Dương Ngọc Bích\"], [\"Dương Ngọc Huân\"], [\"Dương Thế Vinh\"], [\"Dương Thị Bích\"], [\"Dương Thị Chỉnh\"], [\"Dương Thị Hồng Nhung\"], [\"Dương Thị Thu Trang\"], [\"Dương Văn Công\"], [\"Dương Văn Huân\"], [\"Dương Văn Huệ\"], [\"Dương Văn Khương\"], [\"Dương Văn Minh\"], [\"Erwan Daniel guillaume debuc\"], [\"GS.TS. Nguyễn Viết Tiến\"], [\"Hoàng Gia Vinh\"], [\"Hoàng Hữu Huy\"], [\"Hoàng Hữu Tính\"], [\"Hoàng Lưu Sa\"], [\"Hoàng Lệ Thi\"], [\"Hoàng Thảo Ly\"], [\"Hoàng Thị Diệu Linh\"], [\"Hoàng Thị Giang\"], [\"Hoàng Thị Hạnh\"], [\"Hoàng Thị Mai Dung\"], [\"Hoàng Thị Mai Phương\"], [\"Hoàng Thị Minh Huệ\"], [\"Hoàng Thị Thanh\"], [\"Hoàng Thị Thu Màn\"], [\"Hoàng Thị Tuyền\"], [\"Hoàng Tiến Tuyên\"], [\"Hoàng Trọng Luân\"], [\"Hoàng Văn Bằng\"], [\"Hoàng Văn Tuyến\"], [\"Hoàng Văn Tự\"], [\"Hoàng Yến\"], [\"Hoàng Ánh Hồng\"], [\"Hy Việt Anh\"], [\"Hà Duy Dương\"], [\"Hà Thị Phượng\"], [\"Hà Thị Thùy Ngân\"], [\"Hà Thị Tú\"], [\"Khuất Duy Tuân\"], [\"Khuất Quang Tuyển\"], [\"Khuất Thị Hồng Nhung\"], [\"Khuất Thị Thu Nguyệt\"], [\"Khuất Đình Lư\"], [\"Khánh Thị Việt Hà\"], [\"Kiều Doãn Nghĩa\"], [\"Kiều Thị Bích Thúy\"], [\"Kiều Thị Giang\"], [\"Kiều Xuân Sang\"], [\"Kiều Xuân Tiệp\"], [\"Loan Thị Hồng Mai\"], [\"Lê Chí Đệ\"], [\"Lê Doãn Mạnh\"], [\"Lê Hải Ninh\"], [\"Lê Hữu Song/Trần Thanh Hương\"], [\"Lê Kiến Ngãi\"], [\"Lê Minh Đức\"], [\"Lê Ngọc Ánh\"], [\"Lê Phú Trùy\"], [\"Lê Thanh Cường\"], [\"Lê Thanh Hà\"], [\"Lê Thanh Nhã\"], [\"Lê Thành Văn\"], [\"Lê Thị Chuốt\"], [\"Lê Thị Chín\"], [\"Lê Thị Dung\"], [\"Lê Thị Hiển\"], [\"Lê Thị Huyền\"], [\"Lê Thị Hạnh\"], [\"Lê Thị Hải Hương\"], [\"Lê Thị Kim Hoa\"], [\"Lê Thị Kim Hoa/Chu Thị Hoa\"], [\"Lê Thị Kim Hoa/Đinh Thị Toàn\"], [\"Lê Thị Kim Ngân\"], [\"Lê Thị Kim Thanh\"], [\"Lê Thị Lan\"], [\"Lê Thị Luyến\"], [\"Lê Thị Lâm\"], [\"Lê Thị Lộc\"], [\"Lê Thị Mai Hương\"], [\"Lê Thị Mười\"], [\"Lê Thị Ngọc Anh\"], [\"Lê Thị Thanh Xuân\"], [\"Lê Thị Thoa\"], [\"Lê Thị Thư\"], [\"Lê Thị Yến\"], [\"Lê Văn Thiện\"], [\"Lê Văn Thuỳ\"], [\"Lê Văn Thành\"], [\"Lê Văn Thắng\"], [\"Lê Văn Đáp\"], [\"Lê Xuân Hùng\"], [\"Lê Đức Toàn\"], [\"Lý Thị Ánh Nguyệt\"], [\"Lưu Thị Dung\"], [\"Lưu Thị Loan\"], [\"Lưu Xuân Thắng\"], [\"Lưu Đức Hướng\"], [\"Lương Hồng Nhị\"], [\"Lương Minh Hồng\"], [\"Lương Ngọc Ánh\"], [\"Lương Quốc Chung\"], [\"Lương Thị Hường\"], [\"Lương Thị Thanh Phong\"], [\"Lương Thị Thuý Tình\"], [\"Lương Văn Phú\"], [\"Lường Công Thức\"], [\"Lại Ngọc Long\"], [\"Lại Vân Anh\"], [\"Mai Thị Hồng Diệp\"], [\"Mai Thị Tuyết Vân\"], [\"Mattias EriK Larsson\"], [\"Nghiêm Thị Dịu\"], [\"Nghiêm Thị Thanh Xuân\"], [\"Nguyễn Anh Thành\"], [\"Nguyễn Anh Tuấn\"], [\"Nguyễn Bạch Điệp\"], [\"Nguyễn Chí Thành\"], [\"Nguyễn Danh Phương\"], [\"Nguyễn Danh Đông\"], [\"Nguyễn Duy Ánh\"], [\"Nguyễn Gia Phúc\"], [\"Nguyễn Giáp Oán\"], [\"Nguyễn Hoàng Hiệp\"], [\"Nguyễn Hoàng Huyên\"], [\"Nguyễn Hoàng Lan\"], [\"Nguyễn Hoàng Loan\"], [\"Nguyễn Hoàng Văn\"], [\"Nguyễn Huy Đại\"], [\"Nguyễn Huyền Trang\"], [\"Nguyễn Hà Phương\"], [\"Nguyễn Hùng Cường\"], [\"Nguyễn Hải Kiên\"], [\"Nguyễn Hải Phong\"], [\"Nguyễn Hải Đăng\"], [\"Nguyễn Hồng Khải\"], [\"Nguyễn Hữu Giáp\"], [\"Nguyễn Hữu Thủy\"], [\"Nguyễn Hữu Tuệ\"], [\"Nguyễn Kiên Cường\"], [\"Nguyễn Kiều Hương\"], [\"Nguyễn Linh Trang\"], [\"Nguyễn Mai Lan\"], [\"Nguyễn Minh Phúc\"], [\"Nguyễn Minh Sơn\"], [\"Nguyễn Minh Tuấn\"], [\"Nguyễn Minh Tạo\"], [\"Nguyễn Mạnh Cường\"], [\"Nguyễn Mạnh Hùng\"], [\"Nguyễn Mạnh Liên\"], [\"Nguyễn Mạnh Trâm\"], [\"Nguyễn Mạnh Tưởng\"], [\"Nguyễn Ngọc Chiến\"], [\"Nguyễn Phong Lưu\"], [\"Nguyễn Phương Mai\"], [\"Nguyễn Phương Thúy\"], [\"Nguyễn Phương Trung\"], [\"Nguyễn Phương Trường\"], [\"Nguyễn Quang Cần\"], [\"Nguyễn Quang Huy\"], [\"Nguyễn Quang Hưng\"], [\"Nguyễn Quang Hải\"], [\"Nguyễn Quang Nam\"], [\"Nguyễn Quang Thắng\"], [\"Nguyễn Quang Toản\"], [\"Nguyễn Quang Trung\"], [\"Nguyễn Quang Vinh\"], [\"Nguyễn Quốc Thưởng\"], [\"Nguyễn Quỳnh Trang\"], [\"Nguyễn Sĩ Mạnh\"], [\"Nguyễn Thanh Khoa Vy\"], [\"Nguyễn Thanh Nga\"], [\"Nguyễn Thanh Nhàn\"], [\"Nguyễn Thanh Sơn\"], [\"Nguyễn Thanh Tâm\"], [\"Nguyễn Thi Hào\"], [\"Nguyễn Thu Huyền\"], [\"Nguyễn Thu Hà\"], [\"Nguyễn Thu Hương\"], [\"Nguyễn Thu Thủy\"], [\"Nguyễn Thu Trang\"], [\"Nguyễn Thuỳ Linh\"], [\"Nguyễn Thuỳ Nga\"], [\"Nguyễn Thành Minh\"], [\"Nguyễn Thùy Chinh\"], [\"Nguyễn Thắng Sơn\"], [\"Nguyễn Thế Anh\"], [\"Nguyễn Thế Hanh\"], [\"Nguyễn Thị Biên\"], [\"Nguyễn Thị Bích Hòa\"], [\"Nguyễn Thị Chuyên\"], [\"Nguyễn Thị Diệu Hợp\"], [\"Nguyễn Thị Dung\"], [\"Nguyễn Thị Giang\"], [\"Nguyễn Thị Hoa\"], [\"Nguyễn Thị Hoa Hiên\"], [\"Nguyễn Thị Hoài\"], [\"Nguyễn Thị Huyền\"], [\"Nguyễn Thị Huệ\"], [\"Nguyễn Thị Hà\"], [\"Nguyễn Thị Hòa\"], [\"Nguyễn Thị Hương Giang\"], [\"Nguyễn Thị Hạnh\"], [\"Nguyễn Thị Hải\"], [\"Nguyễn Thị Hậu\"], [\"Nguyễn Thị Hằng\"], [\"Nguyễn Thị Hằng Thúy\"], [\"Nguyễn Thị Hồng\"], [\"Nguyễn Thị Hồng Hà\"], [\"Nguyễn Thị Hồng Hạnh\"], [\"Nguyễn Thị Hồng Sâm\"], [\"Nguyễn Thị Khang\"], [\"Nguyễn Thị Khánh Huyền\"], [\"Nguyễn Thị Kim Ngân\"], [\"Nguyễn Thị Kiều Loan\"], [\"Nguyễn Thị Lan\"], [\"Nguyễn Thị Lan Anh\"], [\"Nguyễn Thị Lan Hương\"], [\"Nguyễn Thị Liên\"], [\"Nguyễn Thị Loan\"], [\"Nguyễn Thị Luyến\"], [\"Nguyễn Thị Luận\"], [\"Nguyễn Thị Lý\"], [\"Nguyễn Thị Lưỡng\"], [\"Nguyễn Thị Lệ Thúy\"], [\"Nguyễn Thị Mai\"], [\"Nguyễn Thị Mai Hoa\"], [\"Nguyễn Thị Mai Hương\"], [\"Nguyễn Thị Minh Cảnh\"], [\"Nguyễn Thị Minh Phương\"], [\"Nguyễn Thị Minh Tâm\"], [\"Nguyễn Thị Mỹ Hòa\"], [\"Nguyễn Thị Mỹ Hạnh\"], [\"Nguyễn Thị Nga\"], [\"Nguyễn Thị Nguyệt\"], [\"Nguyễn Thị Ngà\"], [\"Nguyễn Thị Ngọc\"], [\"Nguyễn Thị Ngọc Lan\"], [\"Nguyễn Thị Nhung\"], [\"Nguyễn Thị Như Quỳnh\"], [\"Nguyễn Thị Phương Hiền\"], [\"Nguyễn Thị Phương Lan\"], [\"Nguyễn Thị Phương Lâm\"], [\"Nguyễn Thị Phượng\"], [\"Nguyễn Thị Quyên\"], [\"Nguyễn Thị Riên\"], [\"Nguyễn Thị Sáu\"], [\"Nguyễn Thị Thanh Huyền\"], [\"Nguyễn Thị Thanh Hương\"], [\"Nguyễn Thị Thanh Loan\"], [\"Nguyễn Thị Thanh Thuỷ\"], [\"Nguyễn Thị Thoi\"], [\"Nguyễn Thị Thu\"], [\"Nguyễn Thị Thu Hiền\"], [\"Nguyễn Thị Thu Hà\"], [\"Nguyễn Thị Thu Phương\"], [\"Nguyễn Thị Thu Thủy\"], [\"Nguyễn Thị Thuý\"], [\"Nguyễn Thị Thuý Hà\"], [\"Nguyễn Thị Thuấn\"], [\"Nguyễn Thị Thành\"], [\"Nguyễn Thị Thòa\"], [\"Nguyễn Thị Thúy\"], [\"Nguyễn Thị Thúy Hằng\"], [\"Nguyễn Thị Thơ\"], [\"Nguyễn Thị Thảo\"], [\"Nguyễn Thị Thắm\"], [\"Nguyễn Thị Thắng\"], [\"Nguyễn Thị Thủy\"], [\"Nguyễn Thị Tuyết Hải\"], [\"Nguyễn Thị Tuyết Nhung\"], [\"Nguyễn Thị Tâm\"], [\"Nguyễn Thị Tố Chinh\"], [\"Nguyễn Thị Uyên\"], [\"Nguyễn Thị Vân\"], [\"Nguyễn Thị Vượng\"], [\"Nguyễn Thị Yên\"], [\"Nguyễn Thị Ánh\"], [\"Nguyễn Thị Ánh Nguyệt\"], [\"Nguyễn Thị Đông\"], [\"Nguyễn Tiến Cương\"], [\"Nguyễn Tiến Dũng\"], [\"Nguyễn Tiến Trung\"], [\"Nguyễn Tiến Trọng\"], [\"Nguyễn Tiến Ánh\"], [\"Nguyễn Tiến Đạt\"], [\"Nguyễn Trung Chính\"], [\"Nguyễn Trung Dũng\"], [\"Nguyễn Trung Hiếu\"], [\"Nguyễn Trung Hậu\"], [\"Nguyễn Trọng Bính\"], [\"Nguyễn Tuấn Hạnh\"], [\"Nguyễn Tuấn Quang\"], [\"Nguyễn Tùng Sơn\"], [\"Nguyễn Tường Phượng\"], [\"Nguyễn Viết Mạnh\"], [\"Nguyễn Viết Phương\"], [\"Nguyễn Việt Duy\"], [\"Nguyễn Việt Hùng\"], [\"Nguyễn Việt Phương\"], [\"Nguyễn Văn Bao\"], [\"Nguyễn Văn Bằng\"], [\"Nguyễn Văn Chung\"], [\"Nguyễn Văn Cường\"], [\"Nguyễn Văn Dũng\"], [\"Nguyễn Văn Hiếu\"], [\"Nguyễn Văn Hoà\"], [\"Nguyễn Văn Khanh\"], [\"Nguyễn Văn Khoản\"], [\"Nguyễn Văn Khâm\"], [\"Nguyễn Văn Khương\"], [\"Nguyễn Văn Mạnh\"], [\"Nguyễn Văn Nguyên\"], [\"Nguyễn Văn Nhâm\"], [\"Nguyễn Văn Năm\"], [\"Nguyễn Văn Nội\"], [\"Nguyễn Văn Oánh\"], [\"Nguyễn Văn Quang\"], [\"Nguyễn Văn Quảng\"], [\"Nguyễn Văn Sang\"], [\"Nguyễn Văn Sơn\"], [\"Nguyễn Văn Sửu\"], [\"Nguyễn Văn Thanh\"], [\"Nguyễn Văn Thiệu\"], [\"Nguyễn Văn Thơ\"], [\"Nguyễn Văn Thường\"], [\"Nguyễn Văn Thắng\"], [\"Nguyễn Văn Tiến\"], [\"Nguyễn Văn Tuấn\"], [\"Nguyễn Văn Việt\"], [\"Nguyễn Văn Xít\"], [\"Nguyễn Văn Ánh\"], [\"Nguyễn Văn Đô\"], [\"Nguyễn Văn Đạt\"], [\"Nguyễn Xuân Hùng\"], [\"Nguyễn Xuân Hương\"], [\"Nguyễn Xuân Hải\"], [\"Nguyễn Xuân Lộc\"], [\"Nguyễn Xuân Thát\"], [\"Nguyễn Xuân Đồng\"], [\"Nguyễn Đình Quân\"], [\"Nguyễn Đình Túc\"], [\"Nguyễn Đăng Hiếu\"], [\"Nguyễn Đăng Hiển/Nguyễn Thị Dương Hiền\"], [\"Nguyễn Đăng Hiển/Nguyễn Đình Kim\"], [\"Nguyễn Đăng Minh\"], [\"Nguyễn Đăng Xuân\"], [\"Nguyễn Đức Anh\"], [\"Nguyễn Đức Dương\"], [\"Nguyễn Đức Tiến\"], [\"Nguyễn Đức Trung\"], [\"Nguyễn Đức Trại\"], [\"Nguyễn Đức Tú\"], [\"Ngô Bá Phương\"], [\"Ngô Phi Phương\"], [\"Ngô Quang Hùng\"], [\"Ngô Thanh Thủy\"], [\"Ngô Thị Hải\"], [\"Ngô Thị Kim Tuyến\"], [\"Ngô Thị Mỳ\"], [\"Ngô Thị Thu Hiền\"], [\"Ngô Thị Vịnh\"], [\"Ngô Tiến Thịnh\"], [\"Ngô Trung Quyết\"], [\"Ngô Tuyết Thanh\"], [\"Ngô Văn Chuẩn\"], [\"Ngô Văn Nguyên\"], [\"Ngô Văn Thuân\"], [\"Ngô Xuân Tú\"], [\"PGS.TS.BS. Hoàng Gia Du\"], [\"Phan Ngọc Lan\"], [\"Phan Thị Bích Liên\"], [\"Phan Thị Bẩy\"], [\"Phan Thị Minh Anh\"], [\"Phan Thị Thu Hà\"], [\"Phan Văn Chuyên\"], [\"Phí Ngọc Yến Nhi\"], [\"Phí Thị Hằng\"], [\"Phí Thị Phượng\"], [\"Phù Xuân Đương\"], [\"Phùng Thế Tài\"], [\"Phùng Thị Bích Niên\"], [\"Phùng Thị Huề\"], [\"Phùng Thị Khánh\"], [\"Phùng Thị Liên\"], [\"Phùng Thị Luyến\"], [\"Phùng Thị Nguyên\"], [\"Phùng Văn Dực\"], [\"Phùng Văn Hai\"], [\"Phùng Văn Hưởng\"], [\"Phùng Văn Việt\"], [\"Phùng Xuân Diễn\"], [\"Phùng Xuân Thạch\"], [\"Phùng Xuân Thịnh\"], [\"Phương Thị Mai Hương\"], [\"Phạm Hà Giang\"], [\"Phạm Hồng Phong\"], [\"Phạm Hữu Thường\"], [\"Phạm Phú Đạo/Trần Thị Hậu\"], [\"Phạm Quang Hải\"], [\"Phạm Quang Vi\"], [\"Phạm Quỳnh Trang\"], [\"Phạm Thanh Hải\"], [\"Phạm Thị Anh Đào\"], [\"Phạm Thị Hiền\"], [\"Phạm Thị Hoài Anh\"], [\"Phạm Thị Hải Yến\"], [\"Phạm Thị Kim Thoa\"], [\"Phạm Thị Lan\"], [\"Phạm Thị Luyến\"], [\"Phạm Thị Mai Hoa\"], [\"Phạm Thị Minh\"], [\"Phạm Thị Minh Phương\"], [\"Phạm Thị Mừng\"], [\"Phạm Thị Ngọc Bảo\"], [\"Phạm Thị Quyên\"], [\"Phạm Thị Quỳnh Thư\"], [\"Phạm Thị Sáu\"], [\"Phạm Thị Thu Huyền\"], [\"Phạm Thị Thư\"], [\"Phạm Thị Xuân Hoài\"], [\"Phạm Thị Yến\"], [\"Phạm Thị Ánh Nguyệt\"], [\"Phạm Thị Ít Lan\"], [\"Phạm Văn Phán\"], [\"Phạm Văn Quang\"], [\"Phạm Xuân Hiền\"], [\"Phạm Đức Giang\"], [\"Quách Gia Định\"], [\"Quách Mạnh Khánh\"], [\"Quách Thị Hảo\"], [\"TS.BS. Bùi Ngọc Minh\"], [\"TS.BS. Nguyễn Phạm Ý Nhi\"], [\"TS.BS. Nguyễn Đức Hoan\"], [\"ThS Bác sỹ. Lưu Văn Báu\"], [\"Thạc sỹ.Bs Phạm Đăng Quân\"], [\"Tiêu Ngọc Chiến\"], [\"Trinh Duy Ưng\"], [\"Trương Thúy Quỳnh\"], [\"Trương Thị Hằng\"], [\"Trần Công Năng\"], [\"Trần Huy Long\"], [\"Trần Hùng Mạnh\"], [\"Trần Linh Trang\"], [\"Trần Minh Tân\"], [\"Trần Mạnh Thắng\"], [\"Trần Ngọc Anh\"], [\"Trần Ngọc Luân\"], [\"Trần Ngọc Nghĩa\"], [\"Trần Phương Mỹ\"], [\"Trần Quang Trịnh/ Phạm Thị Lan Anh\"], [\"Trần Quang Trịnh/ Tạ Ngọc Phương\"], [\"Trần Quyết Chiến\"], [\"Trần Sỹ Quảng\"], [\"Trần Thị Chi\"], [\"Trần Thị Hiển\"], [\"Trần Thị Hoa\"], [\"Trần Thị Hương\"], [\"Trần Thị Hường\"], [\"Trần Thị Kim Ngân\"], [\"Trần Thị Liên Hoa\"], [\"Trần Thị Mai\"], [\"Trần Thị Mai Hương\"], [\"Trần Thị Minh Lý\"], [\"Trần Thị Nga\"], [\"Trần Thị Ngân\"], [\"Trần Thị Ngọc Anh\"], [\"Trần Thị Nhinh\"], [\"Trần Thị Phượng\"], [\"Trần Thị Thanh Huyền\"], [\"Trần Thị The\"], [\"Trần Thị Tuyết Hậu\"], [\"Trần Thị Vân Khánh\"], [\"Trần Thị Yến\"], [\"Trần Văn Hay\"], [\"Trần Văn Huyên\"], [\"Trần Văn Khôi\"], [\"Trần Văn Lâm\"], [\"Trần Văn Nhất\"], [\"Trần Văn Toanh\"], [\"Trần Văn Đại\"], [\"Trần Xuân Nam\"], [\"Trần Xuân Đông\"], [\"Trần Đình Thân\"], [\"Trần Đình Thư\"], [\"Trịnh Duy Đà\"], [\"Trịnh Thị Kiện\"], [\"Trịnh Thị Thảo\"], [\"Trịnh Tuấn Hưng\"], [\"Tô Thị Lan\"], [\"Tô Thị Tuyết\"], [\"Tô Tiến Quang\"], [\"Tô Xuân Sinh\"], [\"Tạ Thị Dung\"], [\"Tạ Thị Lý\"], [\"Tạ Văn Chính\"], [\"Tống Văn Hùng\"], [\"Vi Thị Soan\"], [\"Vũ Anh Phương\"], [\"Vũ Danh Tài\"], [\"Vũ Hoàng Hải\"], [\"Vũ Mạnh Cường\"], [\"Vũ Ngọc Trung\"], [\"Vũ Quang Hiển\"], [\"Vũ Quang Sơn\"], [\"Vũ Thị Bích Huyền\"], [\"Vũ Thị Hoà\"], [\"Vũ Thị Huệ\"], [\"Vũ Thị Hương Giang\"], [\"Vũ Thị Hảo\"], [\"Vũ Thị Phước\"], [\"Vũ Thị Sơn\"], [\"Vũ Thị Thanh Hương\"], [\"Vũ Thị Thu Hòa\"], [\"Vũ Thị Thu Thuỷ\"], [\"Vũ Thị Thuỷ\"], [\"Vũ Thị Thùy\"], [\"Vũ Thị Tuệ\"], [\"Vũ Tiến Hải\"], [\"Vũ Tuấn Anh\"], [\"Vũ Văn Hiên\"], [\"Vũ Văn Hiển\"], [\"Vũ Văn Thủy\"], [\"Vũ Xuân Tình\"], [\"Vương Thị Hợi\"], [\"Vương Thị Kim Lan\"], [\"Vương Thị Phương\"], [\"Vương Thị Thu Hường\"], [\"Vương Thị Thủy\"], [\"Vương Trung Kiên\"], [\"Y sỹ Doãn Thị Xuyến\"], [\"Y sỹ Dương Thế Vinh\"], [\"Y sỹ Dương Thị Liên\"], [\"Y sỹ Hoàng Mai Ngạn\"], [\"Y sỹ Lương Thị Ngọc\"], [\"Y sỹ Mai Thị Nguyệt\"], [\"Y sỹ Nguyễn Thanh Lịch\"], [\"Y sỹ Nguyễn Thị Hồng Hạnh\"], [\"Y sỹ Nguyễn Thị Kiều Oanh\"], [\"Y sỹ Nguyễn Thị Lý\"], [\"Y sỹ Phạm Minh Tiến\"], [\"Y sỹ Trần Đình Thân\"], [\"YS Nguyễn Thị Thanh Thảo\"], [\"YS Trương Thị Minh Thư\"], [\"Ys. Dương Thị Lịch\"], [\"Ys. Nguyễn Ngọc Quý\"], [\"lê Thị Phương Anh\"], [\"Ân Thành Đặt\"], [\"Đinh Công Toàn\"], [\"Đinh Khánh Ly\"], [\"Đinh Ngọc Lương\"], [\"Đinh Ngọc Phát\"], [\"Đinh Thị Hoan\"], [\"Đinh Thị Hồng Hoa\"], [\"Đinh Thị Lũy\"], [\"Đinh Thị Mai Hoa\"], [\"Đinh Thị Thanh\"], [\"Đinh Thị Uyên\"], [\"Đinh Thị Yến\"], [\"Đoàn Thanh Thủy\"], [\"Đoàn Thị Thúy Liên\"], [\"Đào Hồng Chinh\"], [\"Đào Hồng Chỉnh\"], [\"Đào Thị Hiền\"], [\"Đào Thị Thuỷ\"], [\"Đào Văn Thưởng\"], [\"Đào Văn Vinh\"], [\"Đào Xuân Cơ\"], [\"Đậu Thu Huyền\"], [\"Đặng Huy Định\"], [\"Đặng Hồng Châu\"], [\"Đặng Hữu Bá\"], [\"Đặng Hữu Hoằng\"], [\"Đặng Thanh Nhàn\"], [\"Đặng Thành Luân\"], [\"Đặng Thị Kim Oanh\"], [\"Đặng Thị Ngọc Hà\"], [\"Đặng Thị Nhung\"], [\"Đặng Thị Nhâm\"], [\"Đặng Thị Thanh Hà\"], [\"Đặng Thị Thuận\"], [\"Đặng Trung Kiên\"], [\"Đặng Văn Thanh\"], [\"Đặng Đình Sáng\"], [\"Đặng Đình Thực\"], [\"Đồng Thị Lan\"], [\"Đồng Thị Thuỷ\"], [\"Đồng Đạo Khánh\"], [\"Đỗ Duy Dương\"], [\"Đỗ Duy Toàn\"], [\"Đỗ Hồng Quang\"], [\"Đỗ Như Chinh\"], [\"Đỗ Phương Đông\"], [\"Đỗ Song An\"], [\"Đỗ Thu Thuỷ\"], [\"Đỗ Thùy Dung\"], [\"Đỗ Thị Bích Hạnh\"], [\"Đỗ Thị Hiền\"], [\"Đỗ Thị Loan\"], [\"Đỗ Thị Nam\"], [\"Đỗ Thị Ngọc\"], [\"Đỗ Thị Nhàn\"], [\"Đỗ Thị Phượng\"], [\"Đỗ Thị Thu Hương\"], [\"Đỗ Thị Vân\"], [\"Đỗ Văn Chiến\"], [\"Đỗ Văn Dũng\"], [\"Đỗ Văn Vân\"], [\"Đỗ Xuân Thành\"], [\"Đỗ Xuân Tùng\"], [\"Đỗ Đăng Sơn\"]]"
+  ],
+  "final_text": "",
+  "submitted_answer": [
+    [
+      "BS Lưu Thị Dung"
+    ],
+    [
+      "BS Nguyễn Hồng Nhung"
+    ],
+    [
+      "BS Nguyễn Quố Quân"
+    ],
+    [
+      "BS Nguyễn Thị An Khang"
+    ],
+    [
+      "BS Nguyễn Thị Nga"
+    ],
+    [
+      "BS Nguyễn Thị Riên"
+    ],
+    [
+      "BS Nguyễn Thị Thanh Huyền"
+    ],
+    [
+      "BS Nguyễn Văn Sang"
+    ],
+    [
+      "BS Nguyễn Đình Lịch"
+    ],
+    [
+      "BS Trương Vũ Linh"
+    ],
+    [
+      "BS Trần Văn Dân"
+    ],
+    [
+      "BS Vũ Mạnh Cường"
+    ],
+    [
+      "BS Vương Trí Hồng"
+    ],
+    [
+      "BS Đỗ Thị Phượng"
+    ],
+    [
+      "BS. Cao Văn Giao"
+    ],
+    [
+      "BS. Lê Trung Tiên"
+    ],
+    [
+      "BS. Lê Đức Tuyên"
+    ],
+    [
+      "BS. Nguyễn Thị Bản"
+    ],
+    [
+      "BS. Nguyễn Văn Tuyển"
+    ],
+    [
+      "BS. Ngô Thanh Hào"
+    ],
+    [
+      "BS. Phạm Văn Dũng"
+    ],
+    [
+      "BS. Trần Trọng Thắng"
+    ],
+    [
+      "BS. Đàm Thị Mai Hoa"
+    ],
+    [
+      "BS. Đỗ Văn Thảo"
+    ],
+    [
+      "BSCK II Trương Kỳ Phong"
+    ],
+    [
+      "BSCK II Trần Quang Tuấn"
+    ],
+    [
+      "BSCKI. Phan Thị Long Hoa/ BSYHCT. Nguyễn Trà My"
+    ],
+    [
+      "BSCKII Nguyễn Văn Tý"
+    ],
+    [
+      "BSCKII Tạ Văn Sứng"
+    ],
+    [
+      "Bs Hoàng Bích Thuỷ"
+    ],
+    [
+      "Bs Hoàng Xuân Tùng"
+    ],
+    [
+      "Bs Lê Quang Trung"
+    ],
+    [
+      "Bs Nguyễn Văn Hảo"
+    ],
+    [
+      "Bs Vũ Thị Hải"
+    ],
+    [
+      "Bs. Trần Phạm Thái"
+    ],
+    [
+      "Bs. Trần Thị Hoa"
+    ],
+    [
+      "Bác sĩ Phù Vĩnh Thắng"
+    ],
+    [
+      "Bác sĩ Đào Bá Tuệ"
+    ],
+    [
+      "Bác sỹ Lê Xuân Đức"
+    ],
+    [
+      "Bác sỹ Nguyễn Công Đạt"
+    ],
+    [
+      "Bác sỹ Nguyễn Thị Huyền Trang"
+    ],
+    [
+      "Bác sỹ Nguyễn Thị Mỹ"
+    ],
+    [
+      "Bác sỹ Nguyễn Thị Nga"
+    ],
+    [
+      "Bác sỹ Nguyễn Thị Nhâm"
+    ],
+    [
+      "Bác sỹ Nguyễn Xuân Bình"
+    ],
+    [
+      "Bác sỹ Nguyễn Xuân Tính"
+    ],
+    [
+      "Bác sỹ Phạm Văn Hữu"
+    ],
+    [
+      "Bác sỹ Trần Xuân Bang"
+    ],
+    [
+      "Bác sỹ Trịnh Đắc Chung"
+    ],
+    [
+      "Bác sỹ dự phòng Lê Hữu Thắng"
+    ],
+    [
+      "Bác sỹ Đinh Tiến Diện"
+    ],
+    [
+      "Bác sỹ Đỗ Anh Tuấn"
+    ],
+    [
+      "Bác sỹ Đỗ Văn Siêng"
+    ],
+    [
+      "Bác sỹ. Phí Mạnh Dũng"
+    ],
+    [
+      "Bác sỹ: Nguyễn Thị Hòa"
+    ],
+    [
+      "Bác sỹ: Ngô Thị Hoàn"
+    ],
+    [
+      "Bùi Mạnh Kiên"
+    ],
+    [
+      "Bùi Như Hồng"
+    ],
+    [
+      "Bùi Thanh Hải"
+    ],
+    [
+      "Bùi Thanh Tịnh"
+    ],
+    [
+      "Bùi Thị Bích Thảo"
+    ],
+    [
+      "Bùi Thị Hoa"
+    ],
+    [
+      "Bùi Thị Hồng Phượng"
+    ],
+    [
+      "Bùi Thị Oanh"
+    ],
+    [
+      "Bùi Thị Ánh Tuyết"
+    ],
+    [
+      "Bùi Tiến Phương"
+    ],
+    [
+      "Bùi Trí Thuật"
+    ],
+    [
+      "Bùi Văn Linh"
+    ],
+    [
+      "Bùi Văn Thanh"
+    ],
+    [
+      "Bùi Ánh Ngọc"
+    ],
+    [
+      "CN Nguyễn Tiến Chương"
+    ],
+    [
+      "Cao Hải Yến"
+    ],
+    [
+      "Cao Nam Thắng"
+    ],
+    [
+      "Cao Thành Đạt"
+    ],
+    [
+      "Cao Thị Hà Ngân"
+    ],
+    [
+      "Cao Thị Mỹ Nga"
+    ],
+    [
+      "Cao Văn Huyên"
+    ],
+    [
+      "Cao Văn Nghị"
+    ],
+    [
+      "Chu Bá Sỹ"
+    ],
+    [
+      "Chu Thị Hương"
+    ],
+    [
+      "Chu Thị Thanh"
+    ],
+    [
+      "Chu Văn Tuấn"
+    ],
+    [
+      "Cấn Hoàng Kim"
+    ],
+    [
+      "Cấn Thị Vân"
+    ],
+    [
+      "Cử nhân YTCC Ngô Thị Kim Tuyến"
+    ],
+    [
+      "Dương Chí Chung"
+    ],
+    [
+      "Dương Mạnh Hùng"
+    ],
+    [
+      "Dương Ngọc Bích"
+    ],
+    [
+      "Dương Ngọc Huân"
+    ],
+    [
+      "Dương Thế Vinh"
+    ],
+    [
+      "Dương Thị Bích"
+    ],
+    [
+      "Dương Thị Chỉnh"
+    ],
+    [
+      "Dương Thị Hồng Nhung"
+    ],
+    [
+      "Dương Thị Thu Trang"
+    ],
+    [
+      "Dương Văn Công"
+    ],
+    [
+      "Dương Văn Huân"
+    ],
+    [
+      "Dương Văn Huệ"
+    ],
+    [
+      "Dương Văn Khương"
+    ],
+    [
+      "Dương Văn Minh"
+    ],
+    [
+      "Erwan Daniel guillaume debuc"
+    ],
+    [
+      "GS.TS. Nguyễn Viết Tiến"
+    ],
+    [
+      "Hoàng Gia Vinh"
+    ],
+    [
+      "Hoàng Hữu Huy"
+    ],
+    [
+      "Hoàng Hữu Tính"
+    ],
+    [
+      "Hoàng Lưu Sa"
+    ],
+    [
+      "Hoàng Lệ Thi"
+    ],
+    [
+      "Hoàng Thảo Ly"
+    ],
+    [
+      "Hoàng Thị Diệu Linh"
+    ],
+    [
+      "Hoàng Thị Giang"
+    ],
+    [
+      "Hoàng Thị Hạnh"
+    ],
+    [
+      "Hoàng Thị Mai Dung"
+    ],
+    [
+      "Hoàng Thị Mai Phương"
+    ],
+    [
+      "Hoàng Thị Minh Huệ"
+    ],
+    [
+      "Hoàng Thị Thanh"
+    ],
+    [
+      "Hoàng Thị Thu Màn"
+    ],
+    [
+      "Hoàng Thị Tuyền"
+    ],
+    [
+      "Hoàng Tiến Tuyên"
+    ],
+    [
+      "Hoàng Trọng Luân"
+    ],
+    [
+      "Hoàng Văn Bằng"
+    ],
+    [
+      "Hoàng Văn Tuyến"
+    ],
+    [
+      "Hoàng Văn Tự"
+    ],
+    [
+      "Hoàng Yến"
+    ],
+    [
+      "Hoàng Ánh Hồng"
+    ],
+    [
+      "Hy Việt Anh"
+    ],
+    [
+      "Hà Duy Dương"
+    ],
+    [
+      "Hà Thị Phượng"
+    ],
+    [
+      "Hà Thị Thùy Ngân"
+    ],
+    [
+      "Hà Thị Tú"
+    ],
+    [
+      "Khuất Duy Tuân"
+    ],
+    [
+      "Khuất Quang Tuyển"
+    ],
+    [
+      "Khuất Thị Hồng Nhung"
+    ],
+    [
+      "Khuất Thị Thu Nguyệt"
+    ],
+    [
+      "Khuất Đình Lư"
+    ],
+    [
+      "Khánh Thị Việt Hà"
+    ],
+    [
+      "Kiều Doãn Nghĩa"
+    ],
+    [
+      "Kiều Thị Bích Thúy"
+    ],
+    [
+      "Kiều Thị Giang"
+    ],
+    [
+      "Kiều Xuân Sang"
+    ],
+    [
+      "Kiều Xuân Tiệp"
+    ],
+    [
+      "Loan Thị Hồng Mai"
+    ],
+    [
+      "Lê Chí Đệ"
+    ],
+    [
+      "Lê Doãn Mạnh"
+    ],
+    [
+      "Lê Hải Ninh"
+    ],
+    [
+      "Lê Hữu Song/Trần Thanh Hương"
+    ],
+    [
+      "Lê Kiến Ngãi"
+    ],
+    [
+      "Lê Minh Đức"
+    ],
+    [
+      "Lê Ngọc Ánh"
+    ],
+    [
+      "Lê Phú Trùy"
+    ],
+    [
+      "Lê Thanh Cường"
+    ],
+    [
+      "Lê Thanh Hà"
+    ],
+    [
+      "Lê Thanh Nhã"
+    ],
+    [
+      "Lê Thành Văn"
+    ],
+    [
+      "Lê Thị Chuốt"
+    ],
+    [
+      "Lê Thị Chín"
+    ],
+    [
+      "Lê Thị Dung"
+    ],
+    [
+      "Lê Thị Hiển"
+    ],
+    [
+      "Lê Thị Huyền"
+    ],
+    [
+      "Lê Thị Hạnh"
+    ],
+    [
+      "Lê Thị Hải Hương"
+    ],
+    [
+      "Lê Thị Kim Hoa"
+    ],
+    [
+      "Lê Thị Kim Hoa/Chu Thị Hoa"
+    ],
+    [
+      "Lê Thị Kim Hoa/Đinh Thị Toàn"
+    ],
+    [
+      "Lê Thị Kim Ngân"
+    ],
+    [
+      "Lê Thị Kim Thanh"
+    ],
+    [
+      "Lê Thị Lan"
+    ],
+    [
+      "Lê Thị Luyến"
+    ],
+    [
+      "Lê Thị Lâm"
+    ],
+    [
+      "Lê Thị Lộc"
+    ],
+    [
+      "Lê Thị Mai Hương"
+    ],
+    [
+      "Lê Thị Mười"
+    ],
+    [
+      "Lê Thị Ngọc Anh"
+    ],
+    [
+      "Lê Thị Thanh Xuân"
+    ],
+    [
+      "Lê Thị Thoa"
+    ],
+    [
+      "Lê Thị Thư"
+    ],
+    [
+      "Lê Thị Yến"
+    ],
+    [
+      "Lê Văn Thiện"
+    ],
+    [
+      "Lê Văn Thuỳ"
+    ],
+    [
+      "Lê Văn Thành"
+    ],
+    [
+      "Lê Văn Thắng"
+    ],
+    [
+      "Lê Văn Đáp"
+    ],
+    [
+      "Lê Xuân Hùng"
+    ],
+    [
+      "Lê Đức Toàn"
+    ],
+    [
+      "Lý Thị Ánh Nguyệt"
+    ],
+    [
+      "Lưu Thị Dung"
+    ],
+    [
+      "Lưu Thị Loan"
+    ],
+    [
+      "Lưu Xuân Thắng"
+    ],
+    [
+      "Lưu Đức Hướng"
+    ],
+    [
+      "Lương Hồng Nhị"
+    ],
+    [
+      "Lương Minh Hồng"
+    ],
+    [
+      "Lương Ngọc Ánh"
+    ],
+    [
+      "Lương Quốc Chung"
+    ],
+    [
+      "Lương Thị Hường"
+    ],
+    [
+      "Lương Thị Thanh Phong"
+    ],
+    [
+      "Lương Thị Thuý Tình"
+    ],
+    [
+      "Lương Văn Phú"
+    ],
+    [
+      "Lường Công Thức"
+    ],
+    [
+      "Lại Ngọc Long"
+    ],
+    [
+      "Lại Vân Anh"
+    ],
+    [
+      "Mai Thị Hồng Diệp"
+    ],
+    [
+      "Mai Thị Tuyết Vân"
+    ],
+    [
+      "Mattias EriK Larsson"
+    ],
+    [
+      "Nghiêm Thị Dịu"
+    ],
+    [
+      "Nghiêm Thị Thanh Xuân"
+    ],
+    [
+      "Nguyễn Anh Thành"
+    ],
+    [
+      "Nguyễn Anh Tuấn"
+    ],
+    [
+      "Nguyễn Bạch Điệp"
+    ],
+    [
+      "Nguyễn Chí Thành"
+    ],
+    [
+      "Nguyễn Danh Phương"
+    ],
+    [
+      "Nguyễn Danh Đông"
+    ],
+    [
+      "Nguyễn Duy Ánh"
+    ],
+    [
+      "Nguyễn Gia Phúc"
+    ],
+    [
+      "Nguyễn Giáp Oán"
+    ],
+    [
+      "Nguyễn Hoàng Hiệp"
+    ],
+    [
+      "Nguyễn Hoàng Huyên"
+    ],
+    [
+      "Nguyễn Hoàng Lan"
+    ],
+    [
+      "Nguyễn Hoàng Loan"
+    ],
+    [
+      "Nguyễn Hoàng Văn"
+    ],
+    [
+      "Nguyễn Huy Đại"
+    ],
+    [
+      "Nguyễn Huyền Trang"
+    ],
+    [
+      "Nguyễn Hà Phương"
+    ],
+    [
+      "Nguyễn Hùng Cường"
+    ],
+    [
+      "Nguyễn Hải Kiên"
+    ],
+    [
+      "Nguyễn Hải Phong"
+    ],
+    [
+      "Nguyễn Hải Đăng"
+    ],
+    [
+      "Nguyễn Hồng Khải"
+    ],
+    [
+      "Nguyễn Hữu Giáp"
+    ],
+    [
+      "Nguyễn Hữu Thủy"
+    ],
+    [
+      "Nguyễn Hữu Tuệ"
+    ],
+    [
+      "Nguyễn Kiên Cường"
+    ],
+    [
+      "Nguyễn Kiều Hương"
+    ],
+    [
+      "Nguyễn Linh Trang"
+    ],
+    [
+      "Nguyễn Mai Lan"
+    ],
+    [
+      "Nguyễn Minh Phúc"
+    ],
+    [
+      "Nguyễn Minh Sơn"
+    ],
+    [
+      "Nguyễn Minh Tuấn"
+    ],
+    [
+      "Nguyễn Minh Tạo"
+    ],
+    [
+      "Nguyễn Mạnh Cường"
+    ],
+    [
+      "Nguyễn Mạnh Hùng"
+    ],
+    [
+      "Nguyễn Mạnh Liên"
+    ],
+    [
+      "Nguyễn Mạnh Trâm"
+    ],
+    [
+      "Nguyễn Mạnh Tưởng"
+    ],
+    [
+      "Nguyễn Ngọc Chiến"
+    ],
+    [
+      "Nguyễn Phong Lưu"
+    ],
+    [
+      "Nguyễn Phương Mai"
+    ],
+    [
+      "Nguyễn Phương Thúy"
+    ],
+    [
+      "Nguyễn Phương Trung"
+    ],
+    [
+      "Nguyễn Phương Trường"
+    ],
+    [
+      "Nguyễn Quang Cần"
+    ],
+    [
+      "Nguyễn Quang Huy"
+    ],
+    [
+      "Nguyễn Quang Hưng"
+    ],
+    [
+      "Nguyễn Quang Hải"
+    ],
+    [
+      "Nguyễn Quang Nam"
+    ],
+    [
+      "Nguyễn Quang Thắng"
+    ],
+    [
+      "Nguyễn Quang Toản"
+    ],
+    [
+      "Nguyễn Quang Trung"
+    ],
+    [
+      "Nguyễn Quang Vinh"
+    ],
+    [
+      "Nguyễn Quốc Thưởng"
+    ],
+    [
+      "Nguyễn Quỳnh Trang"
+    ],
+    [
+      "Nguyễn Sĩ Mạnh"
+    ],
+    [
+      "Nguyễn Thanh Khoa Vy"
+    ],
+    [
+      "Nguyễn Thanh Nga"
+    ],
+    [
+      "Nguyễn Thanh Nhàn"
+    ],
+    [
+      "Nguyễn Thanh Sơn"
+    ],
+    [
+      "Nguyễn Thanh Tâm"
+    ],
+    [
+      "Nguyễn Thi Hào"
+    ],
+    [
+      "Nguyễn Thu Huyền"
+    ],
+    [
+      "Nguyễn Thu Hà"
+    ],
+    [
+      "Nguyễn Thu Hương"
+    ],
+    [
+      "Nguyễn Thu Thủy"
+    ],
+    [
+      "Nguyễn Thu Trang"
+    ],
+    [
+      "Nguyễn Thuỳ Linh"
+    ],
+    [
+      "Nguyễn Thuỳ Nga"
+    ],
+    [
+      "Nguyễn Thành Minh"
+    ],
+    [
+      "Nguyễn Thùy Chinh"
+    ],
+    [
+      "Nguyễn Thắng Sơn"
+    ],
+    [
+      "Nguyễn Thế Anh"
+    ],
+    [
+      "Nguyễn Thế Hanh"
+    ],
+    [
+      "Nguyễn Thị Biên"
+    ],
+    [
+      "Nguyễn Thị Bích Hòa"
+    ],
+    [
+      "Nguyễn Thị Chuyên"
+    ],
+    [
+      "Nguyễn Thị Diệu Hợp"
+    ],
+    [
+      "Nguyễn Thị Dung"
+    ],
+    [
+      "Nguyễn Thị Giang"
+    ],
+    [
+      "Nguyễn Thị Hoa"
+    ],
+    [
+      "Nguyễn Thị Hoa Hiên"
+    ],
+    [
+      "Nguyễn Thị Hoài"
+    ],
+    [
+      "Nguyễn Thị Huyền"
+    ],
+    [
+      "Nguyễn Thị Huệ"
+    ],
+    [
+      "Nguyễn Thị Hà"
+    ],
+    [
+      "Nguyễn Thị Hòa"
+    ],
+    [
+      "Nguyễn Thị Hương Giang"
+    ],
+    [
+      "Nguyễn Thị Hạnh"
+    ],
+    [
+      "Nguyễn Thị Hải"
+    ],
+    [
+      "Nguyễn Thị Hậu"
+    ],
+    [
+      "Nguyễn Thị Hằng"
+    ],
+    [
+      "Nguyễn Thị Hằng Thúy"
+    ],
+    [
+      "Nguyễn Thị Hồng"
+    ],
+    [
+      "Nguyễn Thị Hồng Hà"
+    ],
+    [
+      "Nguyễn Thị Hồng Hạnh"
+    ],
+    [
+      "Nguyễn Thị Hồng Sâm"
+    ],
+    [
+      "Nguyễn Thị Khang"
+    ],
+    [
+      "Nguyễn Thị Khánh Huyền"
+    ],
+    [
+      "Nguyễn Thị Kim Ngân"
+    ],
+    [
+      "Nguyễn Thị Kiều Loan"
+    ],
+    [
+      "Nguyễn Thị Lan"
+    ],
+    [
+      "Nguyễn Thị Lan Anh"
+    ],
+    [
+      "Nguyễn Thị Lan Hương"
+    ],
+    [
+      "Nguyễn Thị Liên"
+    ],
+    [
+      "Nguyễn Thị Loan"
+    ],
+    [
+      "Nguyễn Thị Luyến"
+    ],
+    [
+      "Nguyễn Thị Luận"
+    ],
+    [
+      "Nguyễn Thị Lý"
+    ],
+    [
+      "Nguyễn Thị Lưỡng"
+    ],
+    [
+      "Nguyễn Thị Lệ Thúy"
+    ],
+    [
+      "Nguyễn Thị Mai"
+    ],
+    [
+      "Nguyễn Thị Mai Hoa"
+    ],
+    [
+      "Nguyễn Thị Mai Hương"
+    ],
+    [
+      "Nguyễn Thị Minh Cảnh"
+    ],
+    [
+      "Nguyễn Thị Minh Phương"
+    ],
+    [
+      "Nguyễn Thị Minh Tâm"
+    ],
+    [
+      "Nguyễn Thị Mỹ Hòa"
+    ],
+    [
+      "Nguyễn Thị Mỹ Hạnh"
+    ],
+    [
+      "Nguyễn Thị Nga"
+    ],
+    [
+      "Nguyễn Thị Nguyệt"
+    ],
+    [
+      "Nguyễn Thị Ngà"
+    ],
+    [
+      "Nguyễn Thị Ngọc"
+    ],
+    [
+      "Nguyễn Thị Ngọc Lan"
+    ],
+    [
+      "Nguyễn Thị Nhung"
+    ],
+    [
+      "Nguyễn Thị Như Quỳnh"
+    ],
+    [
+      "Nguyễn Thị Phương Hiền"
+    ],
+    [
+      "Nguyễn Thị Phương Lan"
+    ],
+    [
+      "Nguyễn Thị Phương Lâm"
+    ],
+    [
+      "Nguyễn Thị Phượng"
+    ],
+    [
+      "Nguyễn Thị Quyên"
+    ],
+    [
+      "Nguyễn Thị Riên"
+    ],
+    [
+      "Nguyễn Thị Sáu"
+    ],
+    [
+      "Nguyễn Thị Thanh Huyền"
+    ],
+    [
+      "Nguyễn Thị Thanh Hương"
+    ],
+    [
+      "Nguyễn Thị Thanh Loan"
+    ],
+    [
+      "Nguyễn Thị Thanh Thuỷ"
+    ],
+    [
+      "Nguyễn Thị Thoi"
+    ],
+    [
+      "Nguyễn Thị Thu"
+    ],
+    [
+      "Nguyễn Thị Thu Hiền"
+    ],
+    [
+      "Nguyễn Thị Thu Hà"
+    ],
+    [
+      "Nguyễn Thị Thu Phương"
+    ],
+    [
+      "Nguyễn Thị Thu Thủy"
+    ],
+    [
+      "Nguyễn Thị Thuý"
+    ],
+    [
+      "Nguyễn Thị Thuý Hà"
+    ],
+    [
+      "Nguyễn Thị Thuấn"
+    ],
+    [
+      "Nguyễn Thị Thành"
+    ],
+    [
+      "Nguyễn Thị Thòa"
+    ],
+    [
+      "Nguyễn Thị Thúy"
+    ],
+    [
+      "Nguyễn Thị Thúy Hằng"
+    ],
+    [
+      "Nguyễn Thị Thơ"
+    ],
+    [
+      "Nguyễn Thị Thảo"
+    ],
+    [
+      "Nguyễn Thị Thắm"
+    ],
+    [
+      "Nguyễn Thị Thắng"
+    ],
+    [
+      "Nguyễn Thị Thủy"
+    ],
+    [
+      "Nguyễn Thị Tuyết Hải"
+    ],
+    [
+      "Nguyễn Thị Tuyết Nhung"
+    ],
+    [
+      "Nguyễn Thị Tâm"
+    ],
+    [
+      "Nguyễn Thị Tố Chinh"
+    ],
+    [
+      "Nguyễn Thị Uyên"
+    ],
+    [
+      "Nguyễn Thị Vân"
+    ],
+    [
+      "Nguyễn Thị Vượng"
+    ],
+    [
+      "Nguyễn Thị Yên"
+    ],
+    [
+      "Nguyễn Thị Ánh"
+    ],
+    [
+      "Nguyễn Thị Ánh Nguyệt"
+    ],
+    [
+      "Nguyễn Thị Đông"
+    ],
+    [
+      "Nguyễn Tiến Cương"
+    ],
+    [
+      "Nguyễn Tiến Dũng"
+    ],
+    [
+      "Nguyễn Tiến Trung"
+    ],
+    [
+      "Nguyễn Tiến Trọng"
+    ],
+    [
+      "Nguyễn Tiến Ánh"
+    ],
+    [
+      "Nguyễn Tiến Đạt"
+    ],
+    [
+      "Nguyễn Trung Chính"
+    ],
+    [
+      "Nguyễn Trung Dũng"
+    ],
+    [
+      "Nguyễn Trung Hiếu"
+    ],
+    [
+      "Nguyễn Trung Hậu"
+    ],
+    [
+      "Nguyễn Trọng Bính"
+    ],
+    [
+      "Nguyễn Tuấn Hạnh"
+    ],
+    [
+      "Nguyễn Tuấn Quang"
+    ],
+    [
+      "Nguyễn Tùng Sơn"
+    ],
+    [
+      "Nguyễn Tường Phượng"
+    ],
+    [
+      "Nguyễn Viết Mạnh"
+    ],
+    [
+      "Nguyễn Viết Phương"
+    ],
+    [
+      "Nguyễn Việt Duy"
+    ],
+    [
+      "Nguyễn Việt Hùng"
+    ],
+    [
+      "Nguyễn Việt Phương"
+    ],
+    [
+      "Nguyễn Văn Bao"
+    ],
+    [
+      "Nguyễn Văn Bằng"
+    ],
+    [
+      "Nguyễn Văn Chung"
+    ],
+    [
+      "Nguyễn Văn Cường"
+    ],
+    [
+      "Nguyễn Văn Dũng"
+    ],
+    [
+      "Nguyễn Văn Hiếu"
+    ],
+    [
+      "Nguyễn Văn Hoà"
+    ],
+    [
+      "Nguyễn Văn Khanh"
+    ],
+    [
+      "Nguyễn Văn Khoản"
+    ],
+    [
+      "Nguyễn Văn Khâm"
+    ],
+    [
+      "Nguyễn Văn Khương"
+    ],
+    [
+      "Nguyễn Văn Mạnh"
+    ],
+    [
+      "Nguyễn Văn Nguyên"
+    ],
+    [
+      "Nguyễn Văn Nhâm"
+    ],
+    [
+      "Nguyễn Văn Năm"
+    ],
+    [
+      "Nguyễn Văn Nội"
+    ],
+    [
+      "Nguyễn Văn Oánh"
+    ],
+    [
+      "Nguyễn Văn Quang"
+    ],
+    [
+      "Nguyễn Văn Quảng"
+    ],
+    [
+      "Nguyễn Văn Sang"
+    ],
+    [
+      "Nguyễn Văn Sơn"
+    ],
+    [
+      "Nguyễn Văn Sửu"
+    ],
+    [
+      "Nguyễn Văn Thanh"
+    ],
+    [
+      "Nguyễn Văn Thiệu"
+    ],
+    [
+      "Nguyễn Văn Thơ"
+    ],
+    [
+      "Nguyễn Văn Thường"
+    ],
+    [
+      "Nguyễn Văn Thắng"
+    ],
+    [
+      "Nguyễn Văn Tiến"
+    ],
+    [
+      "Nguyễn Văn Tuấn"
+    ],
+    [
+      "Nguyễn Văn Việt"
+    ],
+    [
+      "Nguyễn Văn Xít"
+    ],
+    [
+      "Nguyễn Văn Ánh"
+    ],
+    [
+      "Nguyễn Văn Đô"
+    ],
+    [
+      "Nguyễn Văn Đạt"
+    ],
+    [
+      "Nguyễn Xuân Hùng"
+    ],
+    [
+      "Nguyễn Xuân Hương"
+    ],
+    [
+      "Nguyễn Xuân Hải"
+    ],
+    [
+      "Nguyễn Xuân Lộc"
+    ],
+    [
+      "Nguyễn Xuân Thát"
+    ],
+    [
+      "Nguyễn Xuân Đồng"
+    ],
+    [
+      "Nguyễn Đình Quân"
+    ],
+    [
+      "Nguyễn Đình Túc"
+    ],
+    [
+      "Nguyễn Đăng Hiếu"
+    ],
+    [
+      "Nguyễn Đăng Hiển/Nguyễn Thị Dương Hiền"
+    ],
+    [
+      "Nguyễn Đăng Hiển/Nguyễn Đình Kim"
+    ],
+    [
+      "Nguyễn Đăng Minh"
+    ],
+    [
+      "Nguyễn Đăng Xuân"
+    ],
+    [
+      "Nguyễn Đức Anh"
+    ],
+    [
+      "Nguyễn Đức Dương"
+    ],
+    [
+      "Nguyễn Đức Tiến"
+    ],
+    [
+      "Nguyễn Đức Trung"
+    ],
+    [
+      "Nguyễn Đức Trại"
+    ],
+    [
+      "Nguyễn Đức Tú"
+    ],
+    [
+      "Ngô Bá Phương"
+    ],
+    [
+      "Ngô Phi Phương"
+    ],
+    [
+      "Ngô Quang Hùng"
+    ],
+    [
+      "Ngô Thanh Thủy"
+    ],
+    [
+      "Ngô Thị Hải"
+    ],
+    [
+      "Ngô Thị Kim Tuyến"
+    ],
+    [
+      "Ngô Thị Mỳ"
+    ],
+    [
+      "Ngô Thị Thu Hiền"
+    ],
+    [
+      "Ngô Thị Vịnh"
+    ],
+    [
+      "Ngô Tiến Thịnh"
+    ],
+    [
+      "Ngô Trung Quyết"
+    ],
+    [
+      "Ngô Tuyết Thanh"
+    ],
+    [
+      "Ngô Văn Chuẩn"
+    ],
+    [
+      "Ngô Văn Nguyên"
+    ],
+    [
+      "Ngô Văn Thuân"
+    ],
+    [
+      "Ngô Xuân Tú"
+    ],
+    [
+      "PGS.TS.BS. Hoàng Gia Du"
+    ],
+    [
+      "Phan Ngọc Lan"
+    ],
+    [
+      "Phan Thị Bích Liên"
+    ],
+    [
+      "Phan Thị Bẩy"
+    ],
+    [
+      "Phan Thị Minh Anh"
+    ],
+    [
+      "Phan Thị Thu Hà"
+    ],
+    [
+      "Phan Văn Chuyên"
+    ],
+    [
+      "Phí Ngọc Yến Nhi"
+    ],
+    [
+      "Phí Thị Hằng"
+    ],
+    [
+      "Phí Thị Phượng"
+    ],
+    [
+      "Phù Xuân Đương"
+    ],
+    [
+      "Phùng Thế Tài"
+    ],
+    [
+      "Phùng Thị Bích Niên"
+    ],
+    [
+      "Phùng Thị Huề"
+    ],
+    [
+      "Phùng Thị Khánh"
+    ],
+    [
+      "Phùng Thị Liên"
+    ],
+    [
+      "Phùng Thị Luyến"
+    ],
+    [
+      "Phùng Thị Nguyên"
+    ],
+    [
+      "Phùng Văn Dực"
+    ],
+    [
+      "Phùng Văn Hai"
+    ],
+    [
+      "Phùng Văn Hưởng"
+    ],
+    [
+      "Phùng Văn Việt"
+    ],
+    [
+      "Phùng Xuân Diễn"
+    ],
+    [
+      "Phùng Xuân Thạch"
+    ],
+    [
+      "Phùng Xuân Thịnh"
+    ],
+    [
+      "Phương Thị Mai Hương"
+    ],
+    [
+      "Phạm Hà Giang"
+    ],
+    [
+      "Phạm Hồng Phong"
+    ],
+    [
+      "Phạm Hữu Thường"
+    ],
+    [
+      "Phạm Phú Đạo/Trần Thị Hậu"
+    ],
+    [
+      "Phạm Quang Hải"
+    ],
+    [
+      "Phạm Quang Vi"
+    ],
+    [
+      "Phạm Quỳnh Trang"
+    ],
+    [
+      "Phạm Thanh Hải"
+    ],
+    [
+      "Phạm Thị Anh Đào"
+    ],
+    [
+      "Phạm Thị Hiền"
+    ],
+    [
+      "Phạm Thị Hoài Anh"
+    ],
+    [
+      "Phạm Thị Hải Yến"
+    ],
+    [
+      "Phạm Thị Kim Thoa"
+    ],
+    [
+      "Phạm Thị Lan"
+    ],
+    [
+      "Phạm Thị Luyến"
+    ],
+    [
+      "Phạm Thị Mai Hoa"
+    ],
+    [
+      "Phạm Thị Minh"
+    ],
+    [
+      "Phạm Thị Minh Phương"
+    ],
+    [
+      "Phạm Thị Mừng"
+    ],
+    [
+      "Phạm Thị Ngọc Bảo"
+    ],
+    [
+      "Phạm Thị Quyên"
+    ],
+    [
+      "Phạm Thị Quỳnh Thư"
+    ],
+    [
+      "Phạm Thị Sáu"
+    ],
+    [
+      "Phạm Thị Thu Huyền"
+    ],
+    [
+      "Phạm Thị Thư"
+    ],
+    [
+      "Phạm Thị Xuân Hoài"
+    ],
+    [
+      "Phạm Thị Yến"
+    ],
+    [
+      "Phạm Thị Ánh Nguyệt"
+    ],
+    [
+      "Phạm Thị Ít Lan"
+    ],
+    [
+      "Phạm Văn Phán"
+    ],
+    [
+      "Phạm Văn Quang"
+    ],
+    [
+      "Phạm Xuân Hiền"
+    ],
+    [
+      "Phạm Đức Giang"
+    ],
+    [
+      "Quách Gia Định"
+    ],
+    [
+      "Quách Mạnh Khánh"
+    ],
+    [
+      "Quách Thị Hảo"
+    ],
+    [
+      "TS.BS. Bùi Ngọc Minh"
+    ],
+    [
+      "TS.BS. Nguyễn Phạm Ý Nhi"
+    ],
+    [
+      "TS.BS. Nguyễn Đức Hoan"
+    ],
+    [
+      "ThS Bác sỹ. Lưu Văn Báu"
+    ],
+    [
+      "Thạc sỹ.Bs Phạm Đăng Quân"
+    ],
+    [
+      "Tiêu Ngọc Chiến"
+    ],
+    [
+      "Trinh Duy Ưng"
+    ],
+    [
+      "Trương Thúy Quỳnh"
+    ],
+    [
+      "Trương Thị Hằng"
+    ],
+    [
+      "Trần Công Năng"
+    ],
+    [
+      "Trần Huy Long"
+    ],
+    [
+      "Trần Hùng Mạnh"
+    ],
+    [
+      "Trần Linh Trang"
+    ],
+    [
+      "Trần Minh Tân"
+    ],
+    [
+      "Trần Mạnh Thắng"
+    ],
+    [
+      "Trần Ngọc Anh"
+    ],
+    [
+      "Trần Ngọc Luân"
+    ],
+    [
+      "Trần Ngọc Nghĩa"
+    ],
+    [
+      "Trần Phương Mỹ"
+    ],
+    [
+      "Trần Quang Trịnh/ Phạm Thị Lan Anh"
+    ],
+    [
+      "Trần Quang Trịnh/ Tạ Ngọc Phương"
+    ],
+    [
+      "Trần Quyết Chiến"
+    ],
+    [
+      "Trần Sỹ Quảng"
+    ],
+    [
+      "Trần Thị Chi"
+    ],
+    [
+      "Trần Thị Hiển"
+    ],
+    [
+      "Trần Thị Hoa"
+    ],
+    [
+      "Trần Thị Hương"
+    ],
+    [
+      "Trần Thị Hường"
+    ],
+    [
+      "Trần Thị Kim Ngân"
+    ],
+    [
+      "Trần Thị Liên Hoa"
+    ],
+    [
+      "Trần Thị Mai"
+    ],
+    [
+      "Trần Thị Mai Hương"
+    ],
+    [
+      "Trần Thị Minh Lý"
+    ],
+    [
+      "Trần Thị Nga"
+    ],
+    [
+      "Trần Thị Ngân"
+    ],
+    [
+      "Trần Thị Ngọc Anh"
+    ],
+    [
+      "Trần Thị Nhinh"
+    ],
+    [
+      "Trần Thị Phượng"
+    ],
+    [
+      "Trần Thị Thanh Huyền"
+    ],
+    [
+      "Trần Thị The"
+    ],
+    [
+      "Trần Thị Tuyết Hậu"
+    ],
+    [
+      "Trần Thị Vân Khánh"
+    ],
+    [
+      "Trần Thị Yến"
+    ],
+    [
+      "Trần Văn Hay"
+    ],
+    [
+      "Trần Văn Huyên"
+    ],
+    [
+      "Trần Văn Khôi"
+    ],
+    [
+      "Trần Văn Lâm"
+    ],
+    [
+      "Trần Văn Nhất"
+    ],
+    [
+      "Trần Văn Toanh"
+    ],
+    [
+      "Trần Văn Đại"
+    ],
+    [
+      "Trần Xuân Nam"
+    ],
+    [
+      "Trần Xuân Đông"
+    ],
+    [
+      "Trần Đình Thân"
+    ],
+    [
+      "Trần Đình Thư"
+    ],
+    [
+      "Trịnh Duy Đà"
+    ],
+    [
+      "Trịnh Thị Kiện"
+    ],
+    [
+      "Trịnh Thị Thảo"
+    ],
+    [
+      "Trịnh Tuấn Hưng"
+    ],
+    [
+      "Tô Thị Lan"
+    ],
+    [
+      "Tô Thị Tuyết"
+    ],
+    [
+      "Tô Tiến Quang"
+    ],
+    [
+      "Tô Xuân Sinh"
+    ],
+    [
+      "Tạ Thị Dung"
+    ],
+    [
+      "Tạ Thị Lý"
+    ],
+    [
+      "Tạ Văn Chính"
+    ],
+    [
+      "Tống Văn Hùng"
+    ],
+    [
+      "Vi Thị Soan"
+    ],
+    [
+      "Vũ Anh Phương"
+    ],
+    [
+      "Vũ Danh Tài"
+    ],
+    [
+      "Vũ Hoàng Hải"
+    ],
+    [
+      "Vũ Mạnh Cường"
+    ],
+    [
+      "Vũ Ngọc Trung"
+    ],
+    [
+      "Vũ Quang Hiển"
+    ],
+    [
+      "Vũ Quang Sơn"
+    ],
+    [
+      "Vũ Thị Bích Huyền"
+    ],
+    [
+      "Vũ Thị Hoà"
+    ],
+    [
+      "Vũ Thị Huệ"
+    ],
+    [
+      "Vũ Thị Hương Giang"
+    ],
+    [
+      "Vũ Thị Hảo"
+    ],
+    [
+      "Vũ Thị Phước"
+    ],
+    [
+      "Vũ Thị Sơn"
+    ],
+    [
+      "Vũ Thị Thanh Hương"
+    ],
+    [
+      "Vũ Thị Thu Hòa"
+    ],
+    [
+      "Vũ Thị Thu Thuỷ"
+    ],
+    [
+      "Vũ Thị Thuỷ"
+    ],
+    [
+      "Vũ Thị Thùy"
+    ],
+    [
+      "Vũ Thị Tuệ"
+    ],
+    [
+      "Vũ Tiến Hải"
+    ],
+    [
+      "Vũ Tuấn Anh"
+    ],
+    [
+      "Vũ Văn Hiên"
+    ],
+    [
+      "Vũ Văn Hiển"
+    ],
+    [
+      "Vũ Văn Thủy"
+    ],
+    [
+      "Vũ Xuân Tình"
+    ],
+    [
+      "Vương Thị Hợi"
+    ],
+    [
+      "Vương Thị Kim Lan"
+    ],
+    [
+      "Vương Thị Phương"
+    ],
+    [
+      "Vương Thị Thu Hường"
+    ],
+    [
+      "Vương Thị Thủy"
+    ],
+    [
+      "Vương Trung Kiên"
+    ],
+    [
+      "Y sỹ Doãn Thị Xuyến"
+    ],
+    [
+      "Y sỹ Dương Thế Vinh"
+    ],
+    [
+      "Y sỹ Dương Thị Liên"
+    ],
+    [
+      "Y sỹ Hoàng Mai Ngạn"
+    ],
+    [
+      "Y sỹ Lương Thị Ngọc"
+    ],
+    [
+      "Y sỹ Mai Thị Nguyệt"
+    ],
+    [
+      "Y sỹ Nguyễn Thanh Lịch"
+    ],
+    [
+      "Y sỹ Nguyễn Thị Hồng Hạnh"
+    ],
+    [
+      "Y sỹ Nguyễn Thị Kiều Oanh"
+    ],
+    [
+      "Y sỹ Nguyễn Thị Lý"
+    ],
+    [
+      "Y sỹ Phạm Minh Tiến"
+    ],
+    [
+      "Y sỹ Trần Đình Thân"
+    ],
+    [
+      "YS Nguyễn Thị Thanh Thảo"
+    ],
+    [
+      "YS Trương Thị Minh Thư"
+    ],
+    [
+      "Ys. Dương Thị Lịch"
+    ],
+    [
+      "Ys. Nguyễn Ngọc Quý"
+    ],
+    [
+      "lê Thị Phương Anh"
+    ],
+    [
+      "Ân Thành Đặt"
+    ],
+    [
+      "Đinh Công Toàn"
+    ],
+    [
+      "Đinh Khánh Ly"
+    ],
+    [
+      "Đinh Ngọc Lương"
+    ],
+    [
+      "Đinh Ngọc Phát"
+    ],
+    [
+      "Đinh Thị Hoan"
+    ],
+    [
+      "Đinh Thị Hồng Hoa"
+    ],
+    [
+      "Đinh Thị Lũy"
+    ],
+    [
+      "Đinh Thị Mai Hoa"
+    ],
+    [
+      "Đinh Thị Thanh"
+    ],
+    [
+      "Đinh Thị Uyên"
+    ],
+    [
+      "Đinh Thị Yến"
+    ],
+    [
+      "Đoàn Thanh Thủy"
+    ],
+    [
+      "Đoàn Thị Thúy Liên"
+    ],
+    [
+      "Đào Hồng Chinh"
+    ],
+    [
+      "Đào Hồng Chỉnh"
+    ],
+    [
+      "Đào Thị Hiền"
+    ],
+    [
+      "Đào Thị Thuỷ"
+    ],
+    [
+      "Đào Văn Thưởng"
+    ],
+    [
+      "Đào Văn Vinh"
+    ],
+    [
+      "Đào Xuân Cơ"
+    ],
+    [
+      "Đậu Thu Huyền"
+    ],
+    [
+      "Đặng Huy Định"
+    ],
+    [
+      "Đặng Hồng Châu"
+    ],
+    [
+      "Đặng Hữu Bá"
+    ],
+    [
+      "Đặng Hữu Hoằng"
+    ],
+    [
+      "Đặng Thanh Nhàn"
+    ],
+    [
+      "Đặng Thành Luân"
+    ],
+    [
+      "Đặng Thị Kim Oanh"
+    ],
+    [
+      "Đặng Thị Ngọc Hà"
+    ],
+    [
+      "Đặng Thị Nhung"
+    ],
+    [
+      "Đặng Thị Nhâm"
+    ],
+    [
+      "Đặng Thị Thanh Hà"
+    ],
+    [
+      "Đặng Thị Thuận"
+    ],
+    [
+      "Đặng Trung Kiên"
+    ],
+    [
+      "Đặng Văn Thanh"
+    ],
+    [
+      "Đặng Đình Sáng"
+    ],
+    [
+      "Đặng Đình Thực"
+    ],
+    [
+      "Đồng Thị Lan"
+    ],
+    [
+      "Đồng Thị Thuỷ"
+    ],
+    [
+      "Đồng Đạo Khánh"
+    ],
+    [
+      "Đỗ Duy Dương"
+    ],
+    [
+      "Đỗ Duy Toàn"
+    ],
+    [
+      "Đỗ Hồng Quang"
+    ],
+    [
+      "Đỗ Như Chinh"
+    ],
+    [
+      "Đỗ Phương Đông"
+    ],
+    [
+      "Đỗ Song An"
+    ],
+    [
+      "Đỗ Thu Thuỷ"
+    ],
+    [
+      "Đỗ Thùy Dung"
+    ],
+    [
+      "Đỗ Thị Bích Hạnh"
+    ],
+    [
+      "Đỗ Thị Hiền"
+    ],
+    [
+      "Đỗ Thị Loan"
+    ],
+    [
+      "Đỗ Thị Nam"
+    ],
+    [
+      "Đỗ Thị Ngọc"
+    ],
+    [
+      "Đỗ Thị Nhàn"
+    ],
+    [
+      "Đỗ Thị Phượng"
+    ],
+    [
+      "Đỗ Thị Thu Hương"
+    ],
+    [
+      "Đỗ Thị Vân"
+    ],
+    [
+      "Đỗ Văn Chiến"
+    ],
+    [
+      "Đỗ Văn Dũng"
+    ],
+    [
+      "Đỗ Văn Vân"
+    ],
+    [
+      "Đỗ Xuân Thành"
+    ],
+    [
+      "Đỗ Xuân Tùng"
+    ],
+    [
+      "Đỗ Đăng Sơn"
+    ]
+  ],
+  "tool_limit_exceeded": false
+}

@@ -369,6 +369,62 @@ def extract_result_openrouter(response: Any) -> tuple[str, str]:
 
 
 # ---------------------------------------------------------------------------
+# DeepSeek (tool-calling loop — local execution, multi-round)
+# ---------------------------------------------------------------------------
+
+def extract_result_deepseek(response: Any) -> tuple[str, str]:
+  """
+  Read from SimpleNamespace(code_parts, exec_outputs, final_text,
+  submitted_answer, tool_limit_exceeded) returned by DeepSeekRunner._call_one_async().
+
+  Priority order:
+    1. submitted_answer — model called submit_answer tool (canonical path)
+    2. tool_limit_exceeded — runner hit _MAX_TOOL_ROUNDS without submit → error
+    3. final_text — model stopped without calling submit_answer (fallback)
+    4. last exec_output only — convergence-guard or stuck-loop exit (last resort)
+
+  Returns (result_str, raw_output).
+  """
+  code_parts: list[str] = getattr(response, "code_parts", []) or []
+  exec_outputs: list[str] = getattr(response, "exec_outputs", []) or []
+  final_text: str = getattr(response, "final_text", "") or ""
+  submitted_answer = getattr(response, "submitted_answer", None)
+  tool_limit_exceeded: bool = getattr(response, "tool_limit_exceeded", False)
+
+  # raw_output shows all rounds for inspection; last exec_output is the final stdout.
+  all_outputs = "\n\n".join(exec_outputs) if exec_outputs else final_text
+  if code_parts:
+    code_section = "\n\n---\n\n".join(code_parts)
+    raw_output = f"[CODE]\n{code_section}\n[/CODE]\n\n[OUTPUT]\n{all_outputs}\n[/OUTPUT]"
+  else:
+    raw_output = all_outputs
+
+  # Priority 1: model used submit_answer — trust it unconditionally.
+  if submitted_answer is not None:
+    try:
+      return json.dumps(submitted_answer, ensure_ascii=False), raw_output
+    except (TypeError, ValueError):
+      return "ERROR:invalid_submitted_answer", raw_output
+
+  # Priority 2: runner exhausted tool rounds without a submit.
+  if tool_limit_exceeded:
+    return "ERROR:tool_limit_exceeded", raw_output
+
+  # Priority 3: model stopped and may have put the answer in its final message.
+  if final_text.strip():
+    return _extract_json_from_text(final_text), raw_output
+
+  # Priority 4: convergence-guard or other early exit — only inspect the last
+  # exec_output, not the whole concat (avoids picking up exploration prints).
+  if exec_outputs:
+    last = exec_outputs[-1]
+    if last.strip():
+      return _extract_json_from_text(last), raw_output
+
+  return "ERROR:no_output", raw_output
+
+
+# ---------------------------------------------------------------------------
 # Dispatcher
 # ---------------------------------------------------------------------------
 
@@ -377,6 +433,7 @@ _EXTRACTORS = {
   "gemini": extract_result_gemini,
   "openai": extract_result_openai,
   "openrouter": extract_result_openrouter,
+  "deepseek": extract_result_deepseek,
 }
 
 

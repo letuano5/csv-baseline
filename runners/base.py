@@ -82,9 +82,16 @@ def load_questions(path) -> list[Question]:
 class BaseRunner(ABC):
   provider: str  # must be set by subclass
 
-  def __init__(self, model_id: str, checkpoint_name: str):
+  def __init__(self, model_id: str, checkpoint_name: str, max_rows: int | None = None):
     self.model_id = model_id
     self.checkpoint_name = checkpoint_name
+    self.max_rows = max_rows
+
+  @staticmethod
+  def _trim_csv(text: str, max_rows: int) -> str:
+    """Keep the header row plus the first max_rows data rows."""
+    lines = text.splitlines(keepends=True)
+    return "".join(lines[: max_rows + 1])
 
   # -- To be implemented by each provider --
 

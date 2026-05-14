@@ -112,8 +112,8 @@ def _use_vertex() -> bool:
 class GeminiRunner(BaseRunner):
   provider = "gemini"
 
-  def __init__(self, model_id: str, checkpoint_name: str):
-    super().__init__(model_id, checkpoint_name)
+  def __init__(self, model_id: str, checkpoint_name: str, max_rows: int | None = None):
+    super().__init__(model_id, checkpoint_name, max_rows)
     self._vertex = _use_vertex()
     if self._vertex:
       # genai.Client() reads GOOGLE_CLOUD_PROJECT / GOOGLE_CLOUD_LOCATION /
@@ -149,9 +149,14 @@ class GeminiRunner(BaseRunner):
       meta = CSV_REGISTRY[q.db_id]
       db_id = q.db_id
       if db_id not in self._csv_cache:
-        self._csv_cache[db_id] = meta.path.read_bytes()
+        if self.max_rows is not None:
+          text = meta.path.read_text(encoding=meta.encoding, errors="replace")
+          text = self._trim_csv(text, self.max_rows)
+          self._csv_cache[db_id] = text.encode(meta.encoding, errors="replace")
+        else:
+          self._csv_cache[db_id] = meta.path.read_bytes()
       csv_bytes = self._csv_cache[db_id]
-      user_text = build_user_prompt(q.question, q.db_id, q.external_knowledge, meta)
+      user_text = build_user_prompt(q.question, q.db_id, q.external_knowledge, meta, self.max_rows)
 
       contents = [
         genai_types.Part.from_bytes(data=csv_bytes, mime_type="text/csv"),
